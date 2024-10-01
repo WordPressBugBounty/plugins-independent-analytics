@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Plugin Name:       Independent Analytics
+ * Plugin Name: Independent Analytics Pro
  * Plugin URI:        https://independentwp.com/
  * Description:       User-friendly website analytics built for WordPress
- * Version:           2.8.6
+ * Version:           2.8.8
  * Requires at least: 5.9
  * Tested up to:      6.5.2
  * Requires PHP:      7.3.33

@@ -3,9 +3,9 @@ Contributors: bensibley, andrewmead
 Tags: analytics, wordpress analytics, google analytics, analytics dashboard, statistics
 Donate link: https://independentwp.com
 Requires at least: 5.9
-Tested up to: 6.5.2
+Tested up to: 6.6.2
 Requires PHP: 7.3.33
-Stable tag: 2.8.6
+Stable tag: 2.8.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -137,10 +137,6 @@ Our WordPress statistics plugin is more robust than a simple hit counter and inc
 * User role permission management
 * Views & Visitor growth over time
 
-**Do even more with Independent Analytics PRO**
-
-We've launched **[Independent Analytics Pro](https://independentwp.com/pricing/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt&utm_content=Pro+Conclusion)**, which includes campaign URL tracking, a campaign URL builder, Real time analytics, WooCommerce integration, and email reports. We're also offering a steep 45% lifetime discount for any early adopters who signup now.
-
 
 == Installation ==
 
@@ -193,6 +189,14 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 6. See the device types, browsers, and OSes your visitors are using
 
 == Changelog ==
+
+= 2.8.8 - October 1st, 2024 =
+
+* **Fix:** eCommerce orders could be accounted for multiple times
+
+= 2.8.7 - September 30th, 2024 =
+
+* **Fix:** eCommerce orders could be accounted for multiple times
 
 = 2.8.6 - September 12th, 2024 =
 
@@ -309,14 +313,19 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 
 * **Feature:** Form tracking added to Independent Analytics Pro!
 * **Feature:** Quick Stats can now be toggled on/off and saved
+* **Feature:** Added all WooCommerce metrics into the Quick Stats
 * **Feature:** Added option to change the date range in the view counter shortcode
 * **Feature:** Added the Views column to custom post type menus too
 * **Update:** Recognizing more WC order statuses as complete, such as “shipped” and “delivered”
 * **Update:** Integrated with SearchIQ plugin to recognize its search queries
+* **Update:** Updated all translations
 * **Update:** Changelog menu now says “New” in its notification instead of using a number
 * **Update:** Unminified copies of all JS files are included to comply with OSS guidelines
 * **Update:** Updated Freemius SDK to version 2.7.2
 * **Fix:** Resolved conflict with the WP Activity Log plugin
+* **Fix:** Custom colors weren’t working in email report when viewed in Outlook on a Windows PC
+* **Fix:** Email report subject line was misleading for weekly and daily reports
+* **Fix:** Email report monthly re-scheduling could be off by a day
 * **Fix:** UI fixes for filters and save button
 * **Fix:** Sorting the Views column in the Posts menu wasn’t working
 * **Fix:** Renamed some elements to prevent conflicts with plugins loading Bootstrap.css
@@ -341,6 +350,9 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 = 2.4.0 - April 15th, 2024 =
 
 * **Feature:** Added a Views column to the Posts menu
+* **Feature:** Added a “Preview” button for the email report
+* **Feature:** Added weekly and daily intervals for the email report
+* **Feature:** Added Top Entrance pages, Top Exit pages, and Device Types to email report
 * **Update:** 45% faster load times for analytics reports
 * **Update:** For multi-site installs, the iawp-geo-db.mmdb file is now added to the parent site’s uploads folder only
 * **Fix:** WooCommerce sales were overcounted for pages in the Pages report
@@ -429,6 +441,7 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 = 2.1.0 - January 17th, 2024 =
 
 * **Feature:** Implemented a developer API for accessing analytics data on other pages
+* **Feature:** Added “Order Referrer” box to the sidebar of WC Orders pages, which tells you the website and campaign that referred the sale.
 * **Feature:** Included new option to regenerate the visitor salt token every day for improved GDPR compliance
 * **Update:** Made major optimizations to the database queries to speed up the analytics dashboard and fix crashes for high-traffic websites
 * **Update:** Implemented performance optimization to speed up the REST API request on the front end
@@ -461,6 +474,7 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 * **Feature:** Added new option to hide the Dashboard Widget from the main WP admin page
 * **Update:** Data table now uses horizontal scrolling when space is limited
 * **Update:** Added option to reset analytics to zero without disrupting other settings
+* **Fix:** WooCommerce earnings per visitor now includes cents
 * **Fix:** Moved contents of /iawp/ folder from /uploads/ into the plugin
 * **Fix:** Added an option to delete + deactivate the plugin, so it can be removed without leaving DB tables behind
 
@@ -474,10 +488,13 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 * **Feature:** new CSV export button lets you export data from any report
 * **Fix:** devices that aren’t identified caused lots of warnings in the error log
 * **Fix:** various dark mode style fixes
+* **Fix:** Pro version required free version to be installed for translations to work
+* **Fix:** "Top devices" aligned weirdly in the real-time analytics dashboard
 
 = 1.29 - September 5th, 2023 =
 
 * **Feature:** added Device report! It includes the device types, browsers, and OSes your visitors are using.
+* **Feature:** added custom colors for the email report
 * **Fix:** view counter was missing number formatting
 * **Fix:** various mobile style enhancements
 * **Fix:** added error message for sites missing PDO extension and prevents crashing
@@ -497,6 +514,7 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 
 = 1.28.0 - August 14th, 2023 =
 
+* **Feature:** added a delete button for previously created campaign URLs
 * **Update:** optimized database to reduce storage space by 25% or more
 * **Update:** filter button text is now relevant to each report
 * **Update:** added notice if the REST API is blocked by the NinjaFirewall plugin
@@ -504,6 +522,7 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 * **Fix:** the ip-to-geolocation database didn't download for some websites 
 * **Fix:** the chart interval wasn't staying the same when navigating between reports
 * **Fix:** the table layout would break if the columns were edited before the table finished loading
+* **Fix:** "Views" label missing background color in Real-time report
 * **Fix:** numbers in the data table could break into two lines on small screens
 * **Fix:** various styles fixes for Dark Mode
 
@@ -548,6 +567,8 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 * **Update:** removed popup that asks for feedback when deactivating IA
 * **Update:** abbreviating large numbers in the Quick Stats
 * **Update:** Sessions table column hidden by default
+* **Update:** added multi-site support for license activations
+* **Update:** WooCommerce sales can be tracked without enabling WooCommerce Analytics
 * **Update:** settings page styles nicer for dark mode
 * **Fix:** translations from wp.org were not matching the text domain in IA
 * **Fix:** added missing i18n for the chart
@@ -562,6 +583,7 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 
 * **Feature:** added two new metrics: Session Duration & View Duration!
 * **Update:** style updates to Quick Stats that make filtered data easier to read
+* **Update:** removed branded footer from PDF report
 * **Fix:** incorrect URL displaying for articles translated with WPML
 * **Fix:** compatibility fixes for plugins adversely affecting IA's dashboard
 * **Fix:** scroll-to-top arrow wasn't working on Learn menu
@@ -578,17 +600,21 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 * **Fix:** hidden columns reappeared after refreshing the page
 * **Fix:** the update notice sometimes persisted due to aggressive caching
 * **Fix:** a second session was recorded if a visitor refreshed the page on their first page view
+* **Fix:** Not all Quick Stats showed in the PDF report when WooCommerce is activated
+* **Fix:** PDF report was cutting off page titles with diacritics in the 26th character
 
 = 1.21.0 - April 17th, 2023 =
 
 * **Update:** major performance improvements for the Referrers menu
 * **Update:** Google Docs added as a recognized referrer
+* **Fix:** real-time dashboard crashed for sites with large numbers of referrers
 
 = 1.20.0 - March 30th, 2023 =
 
 * **Feature:** added new Comments column to Pages dashboard
 * **Fix:** some text not marked for translation properly
 * **Update:** removed decimal places from Visitors Growth and Views Growth to improve readability
+* **Fix:** delivery issues with monthly email report
 
 = 1.19.1 - March 13th, 2023 =
 
@@ -601,6 +627,7 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 * **Update:** updated geolocation database for improved accuracy
 * **Fix:** the REST API notice was showing for private sites even if the API wasn't blocked
 * **Fix:** support for Polylang added so the view counter label can be translated to multiple languages
+* **Fix:** Top Ten lists in PDF report sorting incorrectly
 
 = 1.18 - March 1st, 2023 =
 
@@ -682,7 +709,7 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 
 = 1.12 - September 28th, 2022 =
 
-* **Update:** Independent Analytics Pro now available!
+* **Feature:** added Campaigns with new menu and Campaign URL builder
 * **Update:** improved caching for even faster dashboard performance
 
 = 1.11 - September 6th, 2022 =

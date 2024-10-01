@@ -251,7 +251,7 @@ abstract class Statistics
         $is_problematic_timezone = \in_array(Timezone::site_timezone()->getName(), ['Asia/Beirut', 'America/Santiago']);
         // Imagine a scenario where the offset for the start date is -4 and the offset for the
         // end date is -3. In that case, the DatePeriod is actually going to have its end date
-        // short an hour, cause a date we care about to be chopped off the end. This code makes
+        // short an hour, causing a date we care about to be chopped off the end. This code makes
         // sure that the end date is still the day after the last date we care about, so it
         // can get chopped off without consequence.
         if ($is_problematic_timezone) {
@@ -264,7 +264,7 @@ abstract class Statistics
         foreach ($date_range as $date) {
             // If the timezone switches at midnight, there will be a date where there is no midnight. It'll be something
             // like 1am instead. All dates after the day that switches will also be at 1am even though they have a
-            // midnight. This alters those back to midnight so they can be matched against correctly.
+            // midnight. This alters those back to midnight, so they can be matched against correctly.
             if ($is_problematic_timezone && $date->format('H:i:s') === "01:00:00") {
                 $date->setTime(0, 0, 0);
             }
