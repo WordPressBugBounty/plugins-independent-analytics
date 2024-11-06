@@ -13,7 +13,7 @@ use IAWP\Sort_Configuration;
 use IAWP\Statistics\Page_Statistics;
 use IAWP\Statistics\Statistic;
 use IAWP\Utils\URL;
-use IAWPSCOPED\Proper\Timezone;
+use IAWP\Utils\Timezone;
 /** @internal */
 class Email_Reports
 {
@@ -44,7 +44,9 @@ class Email_Reports
     public function unschedule()
     {
         $timestamp = \wp_next_scheduled('iawp_send_email_report');
-        \wp_unschedule_event($timestamp, 'iawp_send_email_report');
+        if (\is_int($timestamp)) {
+            \wp_unschedule_event($timestamp, 'iawp_send_email_report');
+        }
     }
     /**
      * For testing purposes, get the
@@ -68,7 +70,7 @@ class Email_Reports
         }
         $date = $this->interval->next_interval_start();
         $day = $date->format(\get_option('date_format'));
-        $time = $date->format(\get_option('time_format'));
+        $time = $date->format(\IAWPSCOPED\iawp()->get_option('time_format', 'g:i a'));
         return \sprintf(\__('Next email scheduled for %s at %s.', 'independent-analytics'), '<span>' . $day . '</span>', '<span>' . $time . '</span>');
     }
     public function maybe_reschedule()
@@ -98,8 +100,9 @@ class Email_Reports
         if (empty($to)) {
             return;
         }
+        $from = \IAWPSCOPED\iawp()->get_option('iawp_email_report_from_address', \get_option('admin_email'));
         $body = $this->get_email_body();
-        $headers[] = 'From: ' . \get_bloginfo('name') . ' <' . \get_bloginfo('admin_email') . '>';
+        $headers[] = 'From: ' . \get_bloginfo('name') . ' <' . \esc_attr($from) . '>';
         $headers[] = 'Content-Type: text/html; charset=UTF-8';
         return \wp_mail($to, $this->subject_line($is_test_email), $body, $headers);
     }
@@ -113,7 +116,7 @@ class Email_Reports
         $colors = $colors == '' ? \IAWPSCOPED\iawp()->get_option('iawp_email_report_colors', ['#5123a0', '#fafafa', '#3a1e6b', '#fafafa', '#5123a0', '#a985e6', '#ece9f2', '#f7f5fa', '#ece9f2', '#dedae6']) : \explode(',', $colors);
         return \IAWPSCOPED\iawp_blade()->run('email.email', [
             'site_title' => \get_bloginfo('name'),
-            'site_url' => (new URL(\get_site_url()))->get_domain(),
+            'site_url' => URL::new(\get_site_url())->get_domain(),
             'date' => $this->interval->report_time_period_for_humans(),
             // The value that needs to change
             'stats' => $quick_stats,

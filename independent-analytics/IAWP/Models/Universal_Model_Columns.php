@@ -85,6 +85,10 @@ trait Universal_Model_Columns
     {
         return $this->as_float('visitors_growth');
     }
+    public function clicks() : float
+    {
+        return $this->as_int('clicks');
+    }
     public function average_session_duration() : ?int
     {
         return $this->as_int('average_session_duration', null);

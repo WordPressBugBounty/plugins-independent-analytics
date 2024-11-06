@@ -2,8 +2,6 @@
 
 namespace IAWP;
 
-// DBTable
-// Use magic method with comments?
 /** @internal */
 class Query
 {

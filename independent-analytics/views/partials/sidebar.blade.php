@@ -127,6 +127,21 @@
                         'upgrade'           => false
                     ]);
                 }
+                if ($env->is_pro()) {
+                    echo iawp_blade()->run('partials.sidebar-menu-section', [
+                        'favorite_report'   => $favorite_report,
+                        'can_edit_settings' => $can_edit_settings,
+                        'current'           => $report_finder->is_click_report(),
+                        'report_name'       => esc_html__('Clicks', 'independent-analytics'),
+                        'slug'              => 'clicks',
+                        'reports'           => $report_finder->fetch_click_reports(),
+                        'collapsed_label'   => '',
+                        'has_reports'       => true,
+                        'url'               => iawp_dashboard_url(['tab' => 'clicks']),
+                        'external'          => false,
+                        'upgrade'           => false
+                    ]);
+                }
                 ?>
                 @if($env->is_free() && ! $env->is_white_labeled())
                 <?php
@@ -144,20 +159,34 @@
                         'external'          => true,
                         'upgrade'           => true
                     ]);
-                // REAL-TIME UPGRADE
-                echo iawp_blade()->run('partials.sidebar-menu-section', [
-                    'favorite_report'   => $favorite_report,
-                    'can_edit_settings' => $can_edit_settings,
-                    'current'           => false,
-                    'report_name'       => esc_html__('Real-Time', 'independent-analytics'),
-                    'slug'              => 'real-time-free',
-                    'reports'           => null,
-                    'collapsed_label'   => esc_html__('Get Real-time analytics', 'independent-analytics'),
-                    'has_reports'       => false,
-                    'url'               => 'https://independentwp.com/features/real-time/?utm_source=User+Dashboard&utm_medium=WP+Admin&utm_campaign=Real-time+menu+item&utm_content=Sidebar',
-                    'external'          => true,
-                    'upgrade'           => true
-                ]);
+                    // CLICKS UPGRADE
+                    echo iawp_blade()->run('partials.sidebar-menu-section', [
+                        'favorite_report'   => $favorite_report,
+                        'can_edit_settings' => $can_edit_settings,
+                        'current'           => false,
+                        'report_name'       => esc_html__('Clicks', 'independent-analytics'),
+                        'slug'              => 'clicks',
+                        'reports'           => null,
+                        'collapsed_label'   => esc_html__('Get click tracking', 'independent-analytics'),
+                        'has_reports'       => false,
+                        'url'               => 'https://independentwp.com/features/click-tracking/?utm_source=User+Dashboard&utm_medium=WP+Admin&utm_campaign=Clicks+menu+item&utm_content=Sidebar',
+                        'external'          => true,
+                        'upgrade'           => true
+                    ]);
+                    // REAL-TIME UPGRADE
+                    echo iawp_blade()->run('partials.sidebar-menu-section', [
+                        'favorite_report'   => $favorite_report,
+                        'can_edit_settings' => $can_edit_settings,
+                        'current'           => false,
+                        'report_name'       => esc_html__('Real-Time', 'independent-analytics'),
+                        'slug'              => 'real-time-free',
+                        'reports'           => null,
+                        'collapsed_label'   => esc_html__('Get Real-time analytics', 'independent-analytics'),
+                        'has_reports'       => false,
+                        'url'               => 'https://independentwp.com/features/real-time/?utm_source=User+Dashboard&utm_medium=WP+Admin&utm_campaign=Real-time+menu+item&utm_content=Sidebar',
+                        'external'          => true,
+                        'upgrade'           => true
+                    ]);
                 ?>
                 @endif
             </div>

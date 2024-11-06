@@ -2,6 +2,8 @@
 
 namespace IAWP;
 
+use IAWP\Click_Tracking\Link_Rule;
+use IAWP\Click_Tracking\Link_Rule_Finder;
 use IAWP\Models\Visitor;
 use IAWP\Utils\Device;
 use IAWP\Utils\Request;
@@ -20,9 +22,18 @@ class REST_API
         \add_action('tnc_pvfw_head', [$this, 'echo_tracking_script']);
         // Support for Coming Soon and Maintenance by Colorlib
         \add_action('ccsm_header', [$this, 'echo_tracking_script']);
+        // Support for CMP - Coming Soon & Maintenance
+        \add_action('cmp_footer', [$this, 'echo_tracking_script']);
     }
     public function echo_tracking_script()
     {
+        \IAWP\Migrations\Migrations::handle_migration_18_error();
+        \IAWP\Migrations\Migrations::handle_migration_22_error();
+        \IAWP\Migrations\Migrations::handle_migration_29_error();
+        \IAWP\Migrations\Migrations::create_or_migrate();
+        if (\IAWP\Migrations\Migrations::is_migrating()) {
+            return;
+        }
         if (!\get_option('iawp_track_authenticated_users') && \is_user_logged_in()) {
             // Todo - Can we clear the cache plugins to make sure that the pages so tracking code as user logs in & out?
             return;
@@ -46,10 +57,188 @@ class REST_API
         $payload['page'] = \max(1, \get_query_var('paged'));
         $data = ['payload' => $payload];
         $data['signature'] = \md5(Salt::request_payload_salt() . \json_encode($data['payload']));
-        $url = \get_rest_url() . 'iawp/search';
+        $track_view_url = \get_rest_url(null, '/iawp/search');
+        $track_click_url = \IAWPSCOPED\iawp_url_to('/iawp-click-endpoint.php');
+        $link_rules = Link_Rule_Finder::link_rules()->filter(function (Link_Rule $link_rule) {
+            return $link_rule->is_active();
+        })->map(function (Link_Rule $link_rule) {
+            return ['type' => $link_rule->type(), 'value' => $link_rule->value()];
+        })->values();
+        $link_rules_json = \json_encode($link_rules);
         ?>
         <script>
             (function () {
+                const isMatchingClass = (linkRule, href, classes) => {
+                    return classes.includes(linkRule.value)
+                }
+                const isMatchingDomain = (linkRule, href, classes) => {
+                    if(!URL.canParse(href)) {
+                        return false
+                    }
+
+                    const url = new URL(href)
+
+                    return linkRule.value === url.host
+                }
+                const isMatchingExtension = (linkRule, href, classes) => {
+                    if(!URL.canParse(href)) {
+                        return false
+                    }
+
+                    const url = new URL(href)
+
+                    return url.pathname.endsWith('.' + linkRule.value)
+                }
+                const isMatchingSubdirectory = (linkRule, href, classes) => {
+                    if(!URL.canParse(href)) {
+                        return false
+                    }
+
+                    const url = new URL(href)
+
+                    return url.pathname.startsWith('/' + linkRule.value + '/')
+                }
+                const isMatchingProtocol = (linkRule, href, classes) => {
+                    if(!URL.canParse(href)) {
+                        return false
+                    }
+
+                    const url = new URL(href)
+
+                    return url.protocol === linkRule.value + ':'
+                }
+                const isMatch = (linkRule, href, classes) => {
+                    switch (linkRule.type) {
+                        case 'class':
+                            return isMatchingClass(linkRule, href, classes)
+                        case 'domain':
+                            return isMatchingDomain(linkRule, href, classes)
+                        case 'extension':
+                            return isMatchingExtension(linkRule, href, classes)
+                        case 'subdirectory':
+                            return isMatchingSubdirectory(linkRule, href, classes)
+                        case 'protocol':
+                            return isMatchingProtocol(linkRule, href, classes)
+                        default:
+                            return false;
+                    }
+                }
+                const track = (element) => {
+                    const href = element.href ?? null
+                    const classes = Array.from(element.classList)
+                    const parentsToMatch = [
+                        'li.menu-item', // Non-block menu item
+                        'li.wp-block-navigation-item', // Block menu item
+                        'div.wp-block-button', // Block button group
+                    ]
+
+                    // When a WordPress menu or button allows a user customizable class, the class is
+                    // placed on a parent element instead of the button/a. If the parent matches one
+                    // of these elements, then it's classes should also be considered.
+                    if(parentsToMatch.some((toMatch) => element.parentElement.matches(toMatch))) {
+                        classes.push(...Array.from(element.parentElement.classList))
+                    }
+
+                    const linkRules = <?php 
+        echo $link_rules_json;
+        ?>
+
+                    if(linkRules.length === 0) {
+                        return
+                    }
+
+                    const hasMatch = linkRules.some((linkRule) => {
+                        return isMatch(linkRule, href, classes)
+                    })
+
+                    if(!hasMatch) {
+                        return
+                    } else {
+                        
+                    }
+
+                    const url = "<?php 
+        echo $track_click_url;
+        ?>";
+                    const body = {
+                        href: href,
+                        classes: classes.join(' '),
+                        ...<?php 
+        echo \json_encode($data);
+        ?>
+                    };
+
+                    if (navigator.sendBeacon) {
+                        let blob = new Blob([JSON.stringify(body)], {
+                            type: "application/json"
+                        });
+                        navigator.sendBeacon(url, blob);
+                    } else {
+                        const xhr = new XMLHttpRequest();
+                        xhr.open("POST", url, true);
+                        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                        xhr.send(JSON.stringify(body))
+                    }
+                }
+                document.addEventListener('mousedown', function (event) {
+                    <?php 
+        if (!\defined('IAWP_TESTING')) {
+            ?>
+                    if (navigator.webdriver || /bot|crawler|spider|crawling|semrushbot|chrome-lighthouse/i.test(navigator.userAgent)) {
+                        return;
+                    }
+                    <?php 
+        }
+        ?>
+
+                    const element = event.target.closest('a')
+
+                    if(!element) {
+                        return
+                    }
+
+                    const isPro = <?php 
+        echo \IAWPSCOPED\iawp_is_pro() ? 'true' : 'false';
+        ?>
+
+                    if(!isPro) {
+                        return
+                    }
+
+                    // Don't track left clicks with this event. The click event is used for that.
+                    if(event.button === 0) {
+                        return
+                    }
+
+                    track(element)
+                })
+                document.addEventListener('click', function (event) {
+                    <?php 
+        if (!\defined('IAWP_TESTING')) {
+            ?>
+                    if (navigator.webdriver || /bot|crawler|spider|crawling|semrushbot|chrome-lighthouse/i.test(navigator.userAgent)) {
+                        return;
+                    }
+                    <?php 
+        }
+        ?>
+
+                    const element = event.target.closest('a, button')
+
+                    if(!element) {
+                        return
+                    }
+
+                    const isPro = <?php 
+        echo \IAWPSCOPED\iawp_is_pro() ? 'true' : 'false';
+        ?>
+
+                    if(!isPro) {
+                        return
+                    }
+
+                    track(element)
+                })
                 document.addEventListener("DOMContentLoaded", function (e) {
                     if (document.hasOwnProperty("visibilityState") && document.visibilityState === "prerender") {
                         return;
@@ -64,7 +253,7 @@ class REST_API
                     <?php 
         }
         ?>
-                    
+
                     let referrer_url = null;
 
                     if (typeof document.referrer === 'string' && document.referrer.length > 0) {
@@ -77,7 +266,7 @@ class REST_API
                     }, {});
 
                     const url = "<?php 
-        echo $url;
+        echo $track_view_url;
         ?>";
                     const body = {
                         referrer_url,
@@ -91,10 +280,18 @@ class REST_API
         echo \json_encode($data);
         ?>
                     };
-                    const xhr = new XMLHttpRequest();
-                    xhr.open("POST", url, true);
-                    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                    xhr.send(JSON.stringify(body));
+
+                    if (navigator.sendBeacon) {
+                        let blob = new Blob([JSON.stringify(body)], {
+                            type: "application/json"
+                        });
+                        navigator.sendBeacon(url, blob);
+                    } else {
+                        const xhr = new XMLHttpRequest();
+                        xhr.open("POST", url, true);
+                        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                        xhr.send(JSON.stringify(body))
+                    }
                 });
             })();
         </script>
@@ -169,7 +366,7 @@ class REST_API
     }
     private function block_user_role() : bool
     {
-        $blocked_roles = \IAWPSCOPED\iawp()->get_option('iawp_blocked_roles', []);
+        $blocked_roles = \IAWPSCOPED\iawp()->get_option('iawp_blocked_roles', ['administrator']);
         foreach (\wp_get_current_user()->roles as $visitor_role) {
             if (\in_array($visitor_role, $blocked_roles)) {
                 return \true;

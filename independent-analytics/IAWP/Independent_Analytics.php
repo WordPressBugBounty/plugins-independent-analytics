@@ -4,11 +4,14 @@ namespace IAWP;
 
 use IAWP\Admin_Page\Analytics_Page;
 use IAWP\Admin_Page\Campaign_Builder_Page;
+use IAWP\Admin_Page\Click_Tracking_Page;
 use IAWP\Admin_Page\Settings_Page;
 use IAWP\Admin_Page\Support_Page;
 use IAWP\Admin_Page\Updates_Page;
 use IAWP\AJAX\AJAX_Manager;
+use IAWP\Click_Tracking\Click_Processing_Job;
 use IAWP\Data_Pruning\Pruner;
+use IAWP\Ecommerce\SureCart_Event_Sync_Job;
 use IAWP\Ecommerce\SureCart_Order;
 use IAWP\Ecommerce\WooCommerce_Order;
 use IAWP\Ecommerce\WooCommerce_Referrer_Meta_Box;
@@ -19,7 +22,7 @@ use IAWP\Menu_Bar_Stats\Menu_Bar_Stats;
 use IAWP\Migrations\Migrations;
 use IAWP\Utils\Plugin;
 use IAWP\Utils\Singleton;
-use IAWPSCOPED\Proper\Timezone;
+use IAWP\Utils\Timezone;
 /** @internal */
 class Independent_Analytics
 {
@@ -46,8 +49,10 @@ class Independent_Analytics
             WooCommerce_Order::register_hooks();
             SureCart_Order::register_hooks();
         }
+        \IAWP\Cron_Job::register_custom_intervals();
         $this->cron_manager = new \IAWP\Cron_Manager();
-        \IAWP\Cron_Job_Autoloader::register_handler();
+        (new SureCart_Event_Sync_Job())->register_handler();
+        (new Click_Processing_Job())->register_handler();
         if (\IAWPSCOPED\iawp_is_pro()) {
             $this->email_reports = new Email_Reports();
             new \IAWP\Campaign_Builder();
@@ -120,7 +125,7 @@ class Independent_Analytics
         \add_menu_page($title, \esc_html__('Analytics', 'independent-analytics'), \IAWP\Capability_Manager::menu_page_capability_string(), 'independent-analytics', function () {
             $analytics_page = new Analytics_Page();
             $analytics_page->render();
-        }, 'dashicons-analytics', 3);
+        }, $this->get_menu_icon(), 3);
         if (\IAWP\Capability_Manager::can_edit()) {
             \add_submenu_page('independent-analytics', \esc_html__('Settings', 'independent-analytics'), \esc_html__('Settings', 'independent-analytics'), \IAWP\Capability_Manager::menu_page_capability_string(), 'independent-analytics-settings', function () {
                 $settings_page = new Settings_Page();
@@ -132,6 +137,12 @@ class Independent_Analytics
                 $campaign_builder_page = new Campaign_Builder_Page();
                 $campaign_builder_page->render(\false);
             });
+            if (\IAWP\Capability_Manager::can_edit()) {
+                \add_submenu_page('independent-analytics', \esc_html__('Click Tracking', 'independent-analytics'), \esc_html__('Click Tracking', 'independent-analytics'), \IAWP\Capability_Manager::menu_page_capability_string(), 'independent-analytics-click-tracking', function () {
+                    $click_tracking_page = new Click_Tracking_Page();
+                    $click_tracking_page->render(\false);
+                });
+            }
         }
         if (\IAWP\Capability_Manager::show_branded_ui()) {
             \add_submenu_page('independent-analytics', \esc_html__('Help & Support', 'independent-analytics'), \esc_html__('Help & Support', 'independent-analytics'), \IAWP\Capability_Manager::menu_page_capability_string(), 'independent-analytics-support-center', function () {
@@ -162,10 +173,16 @@ class Independent_Analytics
         \wp_register_style('iawp-dashboard-widget-styles', \IAWPSCOPED\iawp_url_to('dist/styles/dashboard_widget.css'), [], \IAWP_VERSION);
         \wp_register_style('iawp-freemius-notice-styles', \IAWPSCOPED\iawp_url_to('dist/styles/freemius_notice_styles.css'), [], \IAWP_VERSION);
         \wp_register_style('iawp-posts-menu-styles', \IAWPSCOPED\iawp_url_to('dist/styles/posts_menu.css'), [], \IAWP_VERSION);
-        \wp_register_script('iawp-javascript', \IAWPSCOPED\iawp_url_to('dist/js/index.js'), [], \IAWP_VERSION);
-        \wp_register_script('iawp-dashboard-widget-javascript', \IAWPSCOPED\iawp_url_to('dist/js/dashboard_widget.js'), [], \IAWP_VERSION);
-        \wp_register_script('iawp-layout-javascript', \IAWPSCOPED\iawp_url_to('dist/js/layout.js'), [], \IAWP_VERSION);
-        \wp_register_script('iawp-settings-javascript', \IAWPSCOPED\iawp_url_to('dist/js/settings.js'), ['wp-color-picker'], \IAWP_VERSION);
+        \wp_register_script('iawp-javascript', \IAWPSCOPED\iawp_url_to('dist/js/index.js'), ['wp-i18n'], \IAWP_VERSION);
+        \wp_set_script_translations('iawp-javascript', 'independent-analytics');
+        \wp_register_script('iawp-dashboard-widget-javascript', \IAWPSCOPED\iawp_url_to('dist/js/dashboard_widget.js'), ['wp-i18n'], \IAWP_VERSION);
+        \wp_set_script_translations('iawp-dashboard-widget-javascript', 'independent-analytics');
+        \wp_register_script('iawp-layout-javascript', \IAWPSCOPED\iawp_url_to('dist/js/layout.js'), ['wp-i18n'], \IAWP_VERSION);
+        \wp_set_script_translations('iawp-layout-javascript', 'independent-analytics');
+        \wp_register_script('iawp-settings-javascript', \IAWPSCOPED\iawp_url_to('dist/js/settings.js'), ['wp-color-picker', 'wp-i18n'], \IAWP_VERSION);
+        \wp_set_script_translations('iawp-settings-javascript', 'independent-analytics');
+        \wp_register_script('iawp-click-tracking-menu-javascript', \IAWPSCOPED\iawp_url_to('dist/js/click-tracking-menu.js'), ['wp-i18n'], \IAWP_VERSION);
+        \wp_set_script_translations('iawp-click-tracking-menu-javascript', 'independent-analytics');
         if (Menu_Bar_Stats::is_option_enabled()) {
             \wp_register_style('iawp-front-end-styles', \IAWPSCOPED\iawp_url_to('dist/styles/menu_bar_stats.css'), [], \IAWP_VERSION);
         }
@@ -199,6 +216,8 @@ class Independent_Analytics
         if ($page === 'independent-analytics-settings') {
             \wp_enqueue_style('wp-color-picker');
             \wp_enqueue_script('iawp-settings-javascript');
+        } elseif ($page === 'independent-analytics-click-tracking') {
+            \wp_enqueue_script('iawp-click-tracking-menu-javascript');
         } elseif ($hook === 'index.php') {
             \wp_enqueue_script('iawp-dashboard-widget-javascript');
             \wp_enqueue_style('iawp-dashboard-widget-styles');
@@ -220,7 +239,7 @@ class Independent_Analytics
     {
         \wp_register_script('iawp-translations', '');
         \wp_enqueue_script('iawp-translations');
-        \wp_add_inline_script('iawp-translations', 'const iawpText = ' . \json_encode(['views' => \__('Views', 'independent-analytics'), 'exactDates' => \__('Apply Exact Dates', 'independent-analytics'), 'relativeDates' => \__('Apply Relative Dates', 'independent-analytics'), 'copied' => \__('Copied', 'independent-analytics'), 'exportingPages' => \__('Exporting Pages...', 'independent-analytics'), 'exportPages' => \__('Export Pages', 'independent-analytics'), 'exportingReferrers' => \__('Exporting Referrers...', 'independent-analytics'), 'exportReferrers' => \__('Export Referrers', 'independent-analytics'), 'exportingGeolocations' => \__('Exporting Geolocations...', 'independent-analytics'), 'exportGeolocations' => \__('Export Geolocations', 'independent-analytics'), 'exportingDevices' => \__('Exporting Devices...', 'independent-analytics'), 'exportDevices' => \__('Export Devices', 'independent-analytics'), 'exportingCampaigns' => \__('Exporting Campaigns...', 'independent-analytics'), 'exportCampaigns' => \__('Export Campaigns', 'independent-analytics'), 'invalidReportArchive' => \__('This report archive is invalid. Please export your reports and try again.', 'independent-analytics'), 'openMobileMenu' => \__('Open menu', 'independent-analytics'), 'closeMobileMenu' => \__('Close menu', 'independent-analytics')]), 'before');
+        \wp_add_inline_script('iawp-translations', 'const iawpText = ' . \json_encode(['views' => \__('Views', 'independent-analytics'), 'exactDates' => \__('Apply Exact Dates', 'independent-analytics'), 'relativeDates' => \__('Apply Relative Dates', 'independent-analytics'), 'copied' => \__('Copied', 'independent-analytics'), 'exportingPages' => \__('Exporting Pages...', 'independent-analytics'), 'exportPages' => \__('Export Pages', 'independent-analytics'), 'exportingReferrers' => \__('Exporting Referrers...', 'independent-analytics'), 'exportReferrers' => \__('Export Referrers', 'independent-analytics'), 'exportingGeolocations' => \__('Exporting Geolocations...', 'independent-analytics'), 'exportGeolocations' => \__('Export Geolocations', 'independent-analytics'), 'exportingDevices' => \__('Exporting Devices...', 'independent-analytics'), 'exportDevices' => \__('Export Devices', 'independent-analytics'), 'exportingCampaigns' => \__('Exporting Campaigns...', 'independent-analytics'), 'exportCampaigns' => \__('Export Campaigns', 'independent-analytics'), 'exportingClicks' => \__('Exporting Clicks', 'independent-analytics'), 'exportClicks' => \__('Export Clicks', 'independent-analytics'), 'invalidReportArchive' => \__('This report archive is invalid. Please export your reports and try again.', 'independent-analytics'), 'openMobileMenu' => \__('Open menu', 'independent-analytics'), 'closeMobileMenu' => \__('Close menu', 'independent-analytics')]), 'before');
     }
     public function enqueue_nonces()
     {
@@ -235,7 +254,7 @@ class Independent_Analytics
     }
     public function date_i18n(string $format, \DateTime $date) : string
     {
-        return \date_i18n($format, $date->setTimezone(Timezone::site_timezone())->getTimestamp() + Timezone::site_offset_in_seconds());
+        return \date_i18n($format, $date->setTimezone(Timezone::site_timezone())->getTimestamp() + Timezone::site_offset_in_seconds($date));
     }
     public function plugin_action_links($links)
     {
@@ -335,5 +354,13 @@ class Independent_Analytics
             return \false;
         }
         return \is_plugin_active('surecart/surecart.php');
+    }
+    private function get_menu_icon()
+    {
+        if (\is_null(\IAWP\Env::get_page())) {
+            return 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNTEzcHgiIGhlaWdodD0iMjU0cHgiIHZpZXdCb3g9IjAgMCA1MTMgMjU0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPHRpdGxlPkljb248L3RpdGxlPgogICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgaWQ9Ik1lbnUtSWNvbiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEyNiwgLTIyOCkiIGZpbGw9IiNBN0FBQUQiPgogICAgICAgICAgICA8ZyBpZD0iV2hpdGUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDgyLCA1NSkiPgogICAgICAgICAgICAgICAgPGcgaWQ9Ikljb24iIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ0LjUsIDE3MykiPgogICAgICAgICAgICAgICAgICAgIDxwb2x5Z29uIGlkPSJOZWNrLTMiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQwMi44MDU3LCAxMDguNjEyNSkgcm90YXRlKDQ1KSB0cmFuc2xhdGUoLTQwMi44MDU3LCAtMTA4LjYxMjUpIiBwb2ludHM9IjM5MS4xNjkzNTYgNTYuMjQ4ODI1OSA0MTQuNDQyMDgzIDU2LjI0ODgyNTkgNDE0LjQ0MjA4MyAxNjAuOTc2MDk5IDM5MS4xNjkzNTYgMTYwLjk3NjA5OSI+PC9wb2x5Z29uPgogICAgICAgICAgICAgICAgICAgIDxwb2x5Z29uIGlkPSJOZWNrLTIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI1NiwgMTI1LjY3MjcpIHJvdGF0ZSgtNjApIHRyYW5zbGF0ZSgtMjU2LCAtMTI1LjY3MjcpIiBwb2ludHM9IjI0NC4zNjM2MzYgNzMuMzA5MDkwOSAyNjcuNjM2MzY0IDczLjMwOTA5MDkgMjY3LjYzNjM2NCAxNzguMDM2MzY0IDI0NC4zNjM2MzYgMTc4LjAzNjM2NCI+PC9wb2x5Z29uPgogICAgICAgICAgICAgICAgICAgIDxwb2x5Z29uIGlkPSJOZWNrLTEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwOS41Njk0LCAxNDQuNjg1Mikgcm90YXRlKDQ1KSB0cmFuc2xhdGUoLTEwOS41Njk0LCAtMTQ0LjY4NTIpIiBwb2ludHM9Ijk3LjkzMjk5MjMgOTIuMzIxNTUzMiAxMjEuMjA1NzIgOTIuMzIxNTUzMiAxMjEuMjA1NzIgMTk3LjA0ODgyNiA5Ny45MzI5OTIzIDE5Ny4wNDg4MjYiPjwvcG9seWdvbj4KICAgICAgICAgICAgICAgICAgICA8Y2lyY2xlIGlkPSJQb2ludC00IiBjeD0iNDY4Ljk0NTQ1NSIgY3k9IjQzLjA1NDU0NTUiIHI9IjQzLjA1NDU0NTUiPjwvY2lyY2xlPgogICAgICAgICAgICAgICAgICAgIDxjaXJjbGUgaWQ9IlBvaW50LTMiIGN4PSIzMzYuMjkwOTA5IiBjeT0iMTczLjM4MTgxOCIgcj0iNDMuMDU0NTQ1NSI+PC9jaXJjbGU+CiAgICAgICAgICAgICAgICAgICAgPGNpcmNsZSBpZD0iUG9pbnQtMiIgY3g9IjE3NS43MDkwOTEiIGN5PSI3OS4xMjcyNzI3IiByPSI0My4wNTQ1NDU1Ij48L2NpcmNsZT4KICAgICAgICAgICAgICAgICAgICA8Y2lyY2xlIGlkPSJQb2ludC0xIiBjeD0iNDMuMDU0NTQ1NSIgY3k9IjIxMC42MTgxODIiIHI9IjQzLjA1NDU0NTUiPjwvY2lyY2xlPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=';
+        } else {
+            return 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNTEzcHgiIGhlaWdodD0iMjU0cHgiIHZpZXdCb3g9IjAgMCA1MTMgMjU0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPHRpdGxlPkljb248L3RpdGxlPgogICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgaWQ9Ik1lbnUtSWNvbiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTc3NSwgLTIyOSkiIGZpbGw9IiNGRkZGRkYiPgogICAgICAgICAgICA8ZyBpZD0iV2hpdGUtQ29weSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzMxLCA1NikiPgogICAgICAgICAgICAgICAgPGcgaWQ9Ikljb24iIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ0LjUsIDE3MykiPgogICAgICAgICAgICAgICAgICAgIDxwb2x5Z29uIGlkPSJOZWNrLTMiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQwMi44MDU3LCAxMDguNjEyNSkgcm90YXRlKDQ1KSB0cmFuc2xhdGUoLTQwMi44MDU3LCAtMTA4LjYxMjUpIiBwb2ludHM9IjM5MS4xNjkzNTYgNTYuMjQ4ODI1OSA0MTQuNDQyMDgzIDU2LjI0ODgyNTkgNDE0LjQ0MjA4MyAxNjAuOTc2MDk5IDM5MS4xNjkzNTYgMTYwLjk3NjA5OSI+PC9wb2x5Z29uPgogICAgICAgICAgICAgICAgICAgIDxwb2x5Z29uIGlkPSJOZWNrLTIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI1NiwgMTI1LjY3MjcpIHJvdGF0ZSgtNjApIHRyYW5zbGF0ZSgtMjU2LCAtMTI1LjY3MjcpIiBwb2ludHM9IjI0NC4zNjM2MzYgNzMuMzA5MDkwOSAyNjcuNjM2MzY0IDczLjMwOTA5MDkgMjY3LjYzNjM2NCAxNzguMDM2MzY0IDI0NC4zNjM2MzYgMTc4LjAzNjM2NCI+PC9wb2x5Z29uPgogICAgICAgICAgICAgICAgICAgIDxwb2x5Z29uIGlkPSJOZWNrLTEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwOS41Njk0LCAxNDQuNjg1Mikgcm90YXRlKDQ1KSB0cmFuc2xhdGUoLTEwOS41Njk0LCAtMTQ0LjY4NTIpIiBwb2ludHM9Ijk3LjkzMjk5MjMgOTIuMzIxNTUzMiAxMjEuMjA1NzIgOTIuMzIxNTUzMiAxMjEuMjA1NzIgMTk3LjA0ODgyNiA5Ny45MzI5OTIzIDE5Ny4wNDg4MjYiPjwvcG9seWdvbj4KICAgICAgICAgICAgICAgICAgICA8Y2lyY2xlIGlkPSJQb2ludC00IiBjeD0iNDY4Ljk0NTQ1NSIgY3k9IjQzLjA1NDU0NTUiIHI9IjQzLjA1NDU0NTUiPjwvY2lyY2xlPgogICAgICAgICAgICAgICAgICAgIDxjaXJjbGUgaWQ9IlBvaW50LTMiIGN4PSIzMzYuMjkwOTA5IiBjeT0iMTczLjM4MTgxOCIgcj0iNDMuMDU0NTQ1NSI+PC9jaXJjbGU+CiAgICAgICAgICAgICAgICAgICAgPGNpcmNsZSBpZD0iUG9pbnQtMiIgY3g9IjE3NS43MDkwOTEiIGN5PSI3OS4xMjcyNzI3IiByPSI0My4wNTQ1NDU1Ij48L2NpcmNsZT4KICAgICAgICAgICAgICAgICAgICA8Y2lyY2xlIGlkPSJQb2ludC0xIiBjeD0iNDMuMDU0NTQ1NSIgY3k9IjIxMC42MTgxODIiIHI9IjQzLjA1NDU0NTUiPjwvY2lyY2xlPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=';
+        }
     }
 }

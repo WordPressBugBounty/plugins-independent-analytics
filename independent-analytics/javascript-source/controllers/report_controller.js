@@ -359,9 +359,6 @@ class Report_Controller extends Controller {
                     format: 'letter',
                     orientation: 'landscape'
                 },
-                html2canvas: {
-                    windowWidth: 1280
-                }
             }
             let base64Image = null
 

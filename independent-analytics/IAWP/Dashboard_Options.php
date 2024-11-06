@@ -8,10 +8,9 @@ use IAWP\Date_Range\Exact_Date_Range;
 use IAWP\Date_Range\Relative_Date_Range;
 use IAWP\Statistics\Intervals\Interval;
 use IAWP\Statistics\Intervals\Intervals;
-use IAWP\Tables\Table;
 use IAWP\Utils\Request;
 use IAWP\Utils\Singleton;
-use IAWPSCOPED\Proper\Timezone;
+use IAWP\Utils\Timezone;
 use Throwable;
 /**
  * Dashboards support various options via the search query string portion of the URL.
@@ -55,6 +54,9 @@ class Dashboard_Options
         if (\is_array($decoded_value)) {
             return $decoded_value;
         }
+        if (\IAWP\Env::get_tab() === 'clicks') {
+            return ['clicks'];
+        }
         return self::$default_visible_quick_stats;
     }
     public function primary_chart_metric_id() : string
@@ -82,18 +84,18 @@ class Dashboard_Options
         if (\is_null($this->report) || \is_null($this->report->filters)) {
             return [];
         }
-        $table_class = Table::get_table_by_type($this->report->type);
+        $table_class = \IAWP\Env::get_table($this->report->type);
         $table = new $table_class($this->report->group_name ?? null);
         $filters = \json_decode($this->report->filters, \true);
         return \is_null($filters) ? [] : $table->sanitize_filters($filters);
     }
-    public function sort_column() : string
+    public function sort_column() : ?string
     {
-        return $this->report->sort_column ?? 'visitors';
+        return $this->report->sort_column ?? null;
     }
-    public function sort_direction() : string
+    public function sort_direction() : ?string
     {
-        return $this->report->sort_direction ?? 'desc';
+        return $this->report->sort_direction ?? null;
     }
     public function group() : ?string
     {
@@ -185,7 +187,7 @@ class Dashboard_Options
         if (!\is_int($report_id)) {
             return null;
         }
-        return \IAWP\Illuminate_Builder::get_builder()->from($reports_table)->where('report_id', '=', $report_id)->first();
+        return \IAWP\Illuminate_Builder::new()->from($reports_table)->where('report_id', '=', $report_id)->first();
     }
     private function has_exact_range() : bool
     {

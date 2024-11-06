@@ -11,16 +11,21 @@ class AJAX_Manager
     private $instances = [];
     private function __construct()
     {
+        $this->instances[] = new \IAWP\AJAX\Archive_Link();
+        $this->instances[] = new \IAWP\AJAX\Click_Tracking_Cache_Cleared();
         $this->instances[] = new \IAWP\AJAX\Configure_Pruner();
         $this->instances[] = new \IAWP\AJAX\Set_WooCommerce_Statuses_To_Track();
-        $this->instances[] = new \IAWP\AJAX\Confirm_Cache_Cleared();
         $this->instances[] = new \IAWP\AJAX\Copy_Report();
         $this->instances[] = new \IAWP\AJAX\Create_Campaign();
         $this->instances[] = new \IAWP\AJAX\Create_Report();
         $this->instances[] = new \IAWP\AJAX\Delete_Campaign();
         $this->instances[] = new \IAWP\AJAX\Delete_Data();
+        $this->instances[] = new \IAWP\AJAX\Delete_Link();
         $this->instances[] = new \IAWP\AJAX\Delete_Report();
+        $this->instances[] = new \IAWP\AJAX\Dismiss_Notice();
+        $this->instances[] = new \IAWP\AJAX\Edit_Link();
         $this->instances[] = new \IAWP\AJAX\Export_Campaigns();
+        $this->instances[] = new \IAWP\AJAX\Export_Clicks();
         $this->instances[] = new \IAWP\AJAX\Export_Devices();
         $this->instances[] = new \IAWP\AJAX\Export_Geo();
         $this->instances[] = new \IAWP\AJAX\Export_Pages();
@@ -35,6 +40,7 @@ class AJAX_Manager
         $this->instances[] = new \IAWP\AJAX\Reset_Analytics();
         $this->instances[] = new \IAWP\AJAX\Save_Report();
         $this->instances[] = new \IAWP\AJAX\Set_Favorite_Report();
+        $this->instances[] = new \IAWP\AJAX\Sort_Links();
         $this->instances[] = new \IAWP\AJAX\Sort_Reports();
         $this->instances[] = new \IAWP\AJAX\Test_Email();
         $this->instances[] = new \IAWP\AJAX\Update_Capabilities();

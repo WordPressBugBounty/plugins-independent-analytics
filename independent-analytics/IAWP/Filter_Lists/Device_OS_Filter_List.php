@@ -11,7 +11,7 @@ class Device_OS_Filter_List
     protected static function fetch_options() : array
     {
         $device_oss_table = Query::get_table_name(Query::DEVICE_OSS);
-        $records = Illuminate_Builder::get_builder()->from($device_oss_table)->select('device_os_id', 'device_os')->get()->all();
+        $records = Illuminate_Builder::new()->from($device_oss_table)->select('device_os_id', 'device_os')->get()->all();
         return \array_map(function ($record) {
             return [$record->device_os_id, $record->device_os];
         }, $records);

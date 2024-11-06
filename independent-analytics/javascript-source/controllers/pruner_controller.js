@@ -26,7 +26,11 @@ export default class extends Controller {
         this.saveButtonTarget.removeAttribute('disabled')
     }
 
-    cancelConfirmation() {
+    cancelConfirmation(e) {
+        if(e && e.target !== e.currentTarget) {
+            return
+        }
+
         this.hideConfirmationModal()
         this.saveButtonTarget.removeAttribute('disabled')
         this.saveButtonTarget.innerText = this.saveButtonTarget.dataset.originalText
@@ -85,11 +89,7 @@ export default class extends Controller {
     }
 
     hideConfirmationModal = (e) => {
-        if (e && e.target !== e.currentTarget) {
-            return
-        }
-
-        if (this.isModalActuallyOpen) {
+          if (this.isModalActuallyOpen) {
             this.isModalActuallyOpen = false
             MicroModal.close("prune-modal")
         }

@@ -96,7 +96,7 @@ abstract class Page
         $resources_table = Query::get_table_name(Query::RESOURCES);
         $resource_key = $this->resource_key();
         $resource_value = $this->resource_value();
-        Illuminate_Builder::get_builder()->from($resources_table)->where($resource_key, '=', $resource_value)->update(['cached_title' => $this->calculate_title(), 'cached_url' => $this->calculate_url(), 'cached_type' => $this->calculate_type(), 'cached_type_label' => $this->calculate_type_label(), 'cached_author_id' => $this->calculate_author_id(), 'cached_author' => $this->calculate_author(), 'cached_date' => $this->calculate_date(), 'cached_category' => !empty($this->calculate_category()) ? \implode(', ', $this->calculate_category()) : null]);
+        Illuminate_Builder::new()->from($resources_table)->where($resource_key, '=', $resource_value)->update(['cached_title' => $this->calculate_title(), 'cached_url' => $this->calculate_url(), 'cached_type' => $this->calculate_type(), 'cached_type_label' => $this->calculate_type_label(), 'cached_author_id' => $this->calculate_author_id(), 'cached_author' => $this->calculate_author(), 'cached_date' => $this->calculate_date(), 'cached_category' => !empty($this->calculate_category()) ? \implode(', ', $this->calculate_category()) : null]);
     }
     public final function id()
     {
@@ -262,7 +262,7 @@ abstract class Page
             case 'home':
                 return new \IAWP\Models\Page_Home($row);
             case 'virtual_page':
-                return new \IAWP\Models\Page_Virtual($row);
+                return \IAWP\Models\Page_Virtual::from($row);
             default:
                 return new \IAWP\Models\Page_Not_Found($row);
         }

@@ -10,7 +10,9 @@ class SureCart_Store
         if (\class_exists('\\SureCart\\Models\\Account')) {
             try {
                 $account = \SureCart\Models\Account::find();
-                \update_option('iawp_surecart_currency_code', $account->currency);
+                if (!\is_wp_error($account)) {
+                    \update_option('iawp_surecart_currency_code', $account->currency);
+                }
             } catch (\Throwable $e) {
                 \update_option('iawp_surecart_currency_code', 'usd');
             }

@@ -39,9 +39,9 @@ class Device
             return null;
         }
         $device_types_table = Query::get_table_name(Query::DEVICE_TYPES);
-        $id = Illuminate_Builder::get_builder()->select('device_type_id')->from($device_types_table)->where('device_type', '=', $this->type)->value('device_type_id');
+        $id = Illuminate_Builder::new()->select('device_type_id')->from($device_types_table)->where('device_type', '=', $this->type)->value('device_type_id');
         if (\is_null($id)) {
-            $id = Illuminate_Builder::get_builder()->from($device_types_table)->insertGetId(['device_type' => $this->type], 'device_type_id');
+            $id = Illuminate_Builder::new()->from($device_types_table)->insertGetId(['device_type' => $this->type], 'device_type_id');
         }
         return $id;
     }
@@ -51,9 +51,9 @@ class Device
             return null;
         }
         $device_oss_table = Query::get_table_name(Query::DEVICE_OSS);
-        $id = Illuminate_Builder::get_builder()->select('device_os_id')->from($device_oss_table)->where('device_os', '=', $this->os)->value('device_os_id');
+        $id = Illuminate_Builder::new()->select('device_os_id')->from($device_oss_table)->where('device_os', '=', $this->os)->value('device_os_id');
         if (\is_null($id)) {
-            $id = Illuminate_Builder::get_builder()->from($device_oss_table)->insertGetId(['device_os' => $this->os], 'device_os_id');
+            $id = Illuminate_Builder::new()->from($device_oss_table)->insertGetId(['device_os' => $this->os], 'device_os_id');
         }
         return $id;
     }
@@ -63,9 +63,9 @@ class Device
             return null;
         }
         $device_browsers_table = Query::get_table_name(Query::DEVICE_BROWSERS);
-        $id = Illuminate_Builder::get_builder()->select('device_browser_id')->from($device_browsers_table)->where('device_browser', '=', $this->browser)->value('device_browser_id');
+        $id = Illuminate_Builder::new()->select('device_browser_id')->from($device_browsers_table)->where('device_browser', '=', $this->browser)->value('device_browser_id');
         if (\is_null($id)) {
-            $id = Illuminate_Builder::get_builder()->from($device_browsers_table)->insertGetId(['device_browser' => $this->browser], 'device_browser_id');
+            $id = Illuminate_Builder::new()->from($device_browsers_table)->insertGetId(['device_browser' => $this->browser], 'device_browser_id');
         }
         return $id;
     }

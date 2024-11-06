@@ -34,7 +34,7 @@
                 <select id="iawp_email_report_time" name="iawp_email_report_time">
                     <?php for ($i = 0; $i < 24; $i++) {
                         $readable_time = new DateTime(date('Y-m-d') . ' ' . $i . ':00:00');
-                        $readable_time = $readable_time->format(get_option('time_format')); ?>
+                        $readable_time = $readable_time->format(iawp()->get_option('time_format', 'g:i a')); ?>
                         <option value="<?php echo esc_attr($i); ?>" <?php selected($time, $i, true); ?>><?php echo esc_html($readable_time); ?></option>
                     <?php
                     } ?>
@@ -85,6 +85,15 @@
                     </div>
                 </div>
                 <input type="hidden" id="iawp_email_report_colors" name="iawp_email_report_colors" value="<?php echo implode(',', $input_default); ?>" />
+            </div>
+            <div class="from-email iawp-section">
+                <h3><?php esc_html_e('From email address', 'independent-analytics'); ?></h3>
+                <input type="email" 
+                    name="iawp_email_report_from_address" 
+                    id="iawp_email_report_from_address"
+                    data-option="iawp_email_report_from_address"
+                    value="{{ esc_attr($from) }}">
+                    <p class="description">{{ esc_html__('The email address should come from this domain or your emails may not be delivered.', 'independent-analytics')}}</p>
             </div>
             <div class="email-addresses iawp-section">
                 <h3><?php esc_html_e('Add new email addresses', 'independent-analytics'); ?></h3>

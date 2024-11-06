@@ -18,19 +18,23 @@ class Chart
     }
     public function get_html() : string
     {
+        $options = \IAWP\Dashboard_Options::getInstance();
+        $primary_statistic = $this->statistics->get_statistic($options->primary_chart_metric_id()) ?? $this->statistics->get_statistic('clicks') ?? $this->statistics->get_statistic('visitors');
+        $secondary_statistic = \is_string($options->secondary_chart_metric_id()) ? $this->statistics->get_statistic($options->secondary_chart_metric_id()) : null;
         $labels = \array_map(function ($data_point) {
             return Security::json_encode($this->statistics->chart_interval()->get_label_for($data_point[0]));
-        }, $this->statistics->get_statistic('views')->statistic_over_time());
+        }, $primary_statistic->statistic_over_time());
         $data = [];
         foreach ($this->statistics->get_statistics() as $statistic) {
             $data[$statistic->id()] = \array_map(function ($data_point) {
                 return $data_point[1];
             }, $statistic->statistic_over_time());
         }
-        $options = \IAWP\Dashboard_Options::getInstance();
-        $primary_statistic = $this->statistics->get_statistic($options->primary_chart_metric_id()) ?? $this->statistics->get_statistic('visitors');
-        $secondary_statistic = \is_string($options->secondary_chart_metric_id()) ? $this->statistics->get_statistic($options->secondary_chart_metric_id()) : null;
-        return \IAWPSCOPED\iawp_blade()->run('chart', ['chart' => $this, 'intervals' => Intervals::all(), 'current_interval' => $this->statistics->chart_interval(), 'available_datasets' => $this->statistics->get_grouped_statistics(), 'primary_chart_metric_id' => $primary_statistic->id(), 'secondary_chart_metric_id' => \is_null($secondary_statistic) ? null : $secondary_statistic->id(), 'stimulus_values' => ['locale' => \get_bloginfo('language'), 'currency' => $this->get_currency_code(), 'is-preview' => $this->is_preview() ? '1' : '0', 'primary-chart-metric-id' => $primary_statistic->id(), 'primary-chart-metric-name' => $primary_statistic->name(), 'secondary-chart-metric-id' => \is_null($secondary_statistic) ? null : $secondary_statistic->id(), 'secondary-chart-metric-name' => \is_null($secondary_statistic) ? null : $secondary_statistic->name(), 'labels' => $labels, 'data' => $data]]);
+        $total_chart_statistics = 0;
+        foreach ($this->statistics->get_grouped_statistics() as $group) {
+            $total_chart_statistics += \count($group['items']);
+        }
+        return \IAWPSCOPED\iawp_blade()->run('chart', ['chart' => $this, 'intervals' => Intervals::all(), 'current_interval' => $this->statistics->chart_interval(), 'available_datasets' => $this->statistics->get_grouped_statistics(), 'primary_chart_metric_id' => $primary_statistic->id(), 'secondary_chart_metric_id' => \is_null($secondary_statistic) ? null : $secondary_statistic->id(), 'stimulus_values' => ['locale' => \get_bloginfo('language'), 'currency' => $this->get_currency_code(), 'is-preview' => $this->is_preview() ? '1' : '0', 'primary-chart-metric-id' => $primary_statistic->id(), 'primary-chart-metric-name' => $primary_statistic->name(), 'secondary-chart-metric-id' => \is_null($secondary_statistic) ? null : $secondary_statistic->id(), 'secondary-chart-metric-name' => \is_null($secondary_statistic) ? null : $secondary_statistic->name(), 'labels' => $labels, 'data' => $data, 'has-multiple-datasets' => $total_chart_statistics > 1 ? 1 : 0]]);
     }
     public function is_preview() : bool
     {

@@ -18,7 +18,7 @@ class Plugin_Conflict_Detector
      */
     public function has_conflict() : bool
     {
-        return empty($this->error);
+        return !empty($this->error);
     }
     /**
      * Returns the health check error, if any
@@ -147,5 +147,22 @@ class Plugin_Conflict_Detector
             }
         }
         return null;
+    }
+    public function plugin_requiring_logged_in_tracking()
+    {
+        if (\is_plugin_active('woocommerce/woocommerce.php')) {
+            return 'WooCommerce';
+        } elseif (\is_plugin_active('surecart/surecart.php')) {
+            return 'SureCart';
+        } elseif (\is_plugin_active('paid-memberships-pro/paid-memberships-pro.php')) {
+            return 'Paid Memberships Pro';
+        } elseif (\is_plugin_active('ultimate-member/ultimate-member.php')) {
+            return 'Ultimate Member';
+        } elseif (\is_plugin_active('simple-membership/simple-wp-membership.php')) {
+            return 'Simple WordPress Membership';
+        } elseif (\is_plugin_active('members/members.php')) {
+            return 'Members plugin';
+        }
+        return \false;
     }
 }

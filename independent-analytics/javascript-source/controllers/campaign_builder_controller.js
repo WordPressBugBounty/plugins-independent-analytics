@@ -16,10 +16,10 @@ export default class extends Controller {
             'utm_content': this.formTarget.elements['utm_content'].value,
         };
         this.submitButtonTarget.setAttribute('disabled', 'disabled')
-        this.submitButtonTarget.classList.add('building');
+        this.submitButtonTarget.classList.add('sending');
         jQuery.post(ajaxurl, data, (response) => {
             this.submitButtonTarget.removeAttribute('disabled');
-            this.submitButtonTarget.classList.remove('building');
+            this.submitButtonTarget.classList.remove('sending');
             this.element.outerHTML = response.data.html
         });
     }

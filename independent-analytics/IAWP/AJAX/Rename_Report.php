@@ -31,7 +31,7 @@ class Rename_Report extends \IAWP\AJAX\AJAX
         if (\strlen($name) === 0) {
             \wp_send_json_error([], 400);
         }
-        Illuminate_Builder::get_builder()->from($reports_table)->where('report_id', '=', $this->get_field('id'))->update(['name' => $name]);
+        Illuminate_Builder::new()->from($reports_table)->where('report_id', '=', $this->get_field('id'))->update(['name' => $name]);
         \wp_send_json_success(['name' => $name]);
     }
 }

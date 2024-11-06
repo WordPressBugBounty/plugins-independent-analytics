@@ -172,4 +172,12 @@ class Page_Virtual extends \IAWP\Models\Page
         }
         return null;
     }
+    public static function from(object $row) : \IAWP\Models\Page_Virtual
+    {
+        $virtual_page_id = $row->virtual_page_id;
+        if (Str::startsWith($virtual_page_id, 'clickwhale_link_page')) {
+            return new \IAWP\Models\ClickWhale_Link_Page($row);
+        }
+        return new self($row);
+    }
 }

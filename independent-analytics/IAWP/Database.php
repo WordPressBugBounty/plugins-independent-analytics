@@ -27,9 +27,9 @@ class Database
     public static function is_missing_all_tables() : bool
     {
         global $wpdb;
-        $tables = \IAWP\Illuminate_Builder::get_builder()->select('*')->from('INFORMATION_SCHEMA.TABLES')->where('TABLE_SCHEMA', '=', $wpdb->dbname)->where('TABLE_NAME', 'LIKE', $wpdb->prefix . 'independent_analytics_%');
+        $tables = \IAWP\Illuminate_Builder::new()->select('*')->from('INFORMATION_SCHEMA.TABLES')->where('TABLE_SCHEMA', '=', $wpdb->dbname)->where('TABLE_NAME', 'LIKE', $wpdb->prefix . 'independent_analytics_%');
         $views_table = \IAWP\Query::get_table_name(\IAWP\Query::VIEWS);
-        $views_query = \IAWP\Illuminate_Builder::get_builder()->selectRaw('0 AS number')->from($views_table);
+        $views_query = \IAWP\Illuminate_Builder::new()->selectRaw('0 AS number')->from($views_table);
         try {
             $views_query->doesntExist();
             $missing_views_table = \false;
@@ -78,14 +78,14 @@ class Database
         if (!\is_null(self::$user_privileges)) {
             return self::$user_privileges;
         }
-        $user = \IAWP\Illuminate_Builder::get_builder()->selectRaw('CURRENT_USER() as user')->value('user');
+        $user = \IAWP\Illuminate_Builder::new()->selectRaw('CURRENT_USER() as user')->value('user');
         $parts = \explode('@', $user);
         $grantee = "'" . $parts[0] . "'@'" . $parts[1] . "'";
-        $global_privileges_query = \IAWP\Illuminate_Builder::get_builder()->select('*')->from('information_schema.user_privileges')->where('grantee', '=', $grantee);
+        $global_privileges_query = \IAWP\Illuminate_Builder::new()->select('*')->from('information_schema.user_privileges')->where('grantee', '=', $grantee);
         $global_privileges = \array_map(function ($record) {
             return $record->PRIVILEGE_TYPE;
         }, $global_privileges_query->get()->all());
-        $database_privileges_query = \IAWP\Illuminate_Builder::get_builder()->select('*')->from('information_schema.schema_privileges')->where('grantee', '=', $grantee)->where('table_schema', '=', $wpdb->dbname);
+        $database_privileges_query = \IAWP\Illuminate_Builder::new()->select('*')->from('information_schema.schema_privileges')->where('grantee', '=', $grantee)->where('table_schema', '=', $wpdb->dbname);
         $database_privileges = \array_map(function ($record) {
             return $record->PRIVILEGE_TYPE;
         }, $database_privileges_query->get()->all());
@@ -101,7 +101,7 @@ class Database
     private static function populate_character_set_and_collation() : void
     {
         global $wpdb;
-        $query = \IAWP\Illuminate_Builder::get_builder()->selectRaw('CCSA.CHARACTER_SET_NAME AS character_set_name')->selectRaw('CCSA.COLLATION_NAME AS collation_name')->from('information_schema.TABLES', 'THE_TABLES')->leftJoin('information_schema.COLLATION_CHARACTER_SET_APPLICABILITY AS CCSA', 'CCSA.COLLATION_NAME', '=', 'THE_TABLES.TABLE_COLLATION')->where('THE_TABLES.TABLE_SCHEMA', '=', $wpdb->dbname)->where('THE_TABLES.TABLE_NAME', '=', \IAWP\Query::get_table_name(\IAWP\Query::SESSIONS));
+        $query = \IAWP\Illuminate_Builder::new()->selectRaw('CCSA.CHARACTER_SET_NAME AS character_set_name')->selectRaw('CCSA.COLLATION_NAME AS collation_name')->from('information_schema.TABLES', 'THE_TABLES')->leftJoin('information_schema.COLLATION_CHARACTER_SET_APPLICABILITY AS CCSA', 'CCSA.COLLATION_NAME', '=', 'THE_TABLES.TABLE_COLLATION')->where('THE_TABLES.TABLE_SCHEMA', '=', $wpdb->dbname)->where('THE_TABLES.TABLE_NAME', '=', \IAWP\Query::get_table_name(\IAWP\Query::SESSIONS));
         $result = $query->first();
         self::$character_set = $result->character_set_name ?? null;
         self::$collation = $result->collation_name ?? null;

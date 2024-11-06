@@ -19,13 +19,14 @@ use IAWP\Utils\CSV;
 use IAWP\Utils\Currency;
 use IAWP\Utils\Number_Formatter;
 use IAWP\Utils\Security;
+use IAWP\Utils\Timezone;
 use IAWP\Utils\URL;
 use IAWP\Utils\WordPress_Site_Date_Format_Pattern;
 use IAWPSCOPED\Illuminate\Support\Str;
-use IAWPSCOPED\Proper\Timezone;
 /** @internal */
 abstract class Table
 {
+    protected $default_sorting_column = 'visitors';
     private $filters;
     private $visible_columns;
     private $group;
@@ -153,6 +154,16 @@ abstract class Table
             return Security::string(Currency::format($row->{$column_id}(), \false));
         } elseif ($column_id === 'views_per_session') {
             return Number_Formatter::decimal($row->{$column_id}(), 2);
+        } elseif ($column_id === 'link_target') {
+            $value = $row->{$column_id}();
+            if (!\is_string($value)) {
+                return $value;
+            }
+            $url = new URL($value);
+            if ($url->is_valid_url()) {
+                return '<a href="' . Security::string($value) . '" target="_blank" class="external-link">' . Security::string($value) . '<span class="dashicons dashicons-external"></span></a>';
+            }
+            return $value;
         } else {
             return Security::string($row->{$column_id}());
         }
@@ -314,6 +325,20 @@ abstract class Table
                 $filter['operand'] = \site_url($filter['operand']);
             }
         }
+        // Link rules can be archived and then deleted by the user. That means that there's a very
+        // reasonable chance that a report is filtering by an id for a rule that's since been
+        // removed. We need to check and make sure that filters link rules still exist.
+        if ($column->id() === 'link_name') {
+            $match = \false;
+            foreach ($column->options() as $option) {
+                if ((int) $option[0] === (int) $filter['operand']) {
+                    $match = \true;
+                }
+            }
+            if (!$match) {
+                return null;
+            }
+        }
         return new Filter(['inclusion' => Security::string($filter['inclusion']), 'column' => $column->id(), 'operator' => Security::string($filter['operator']), 'operand' => Security::string($filter['operand']), 'database_column' => $column->database_column()]);
     }
     public function get_column(string $id) : ?Column
@@ -321,17 +346,24 @@ abstract class Table
         $matches = \array_filter($this->local_columns(), function (Column $column) use($id) {
             return $column->id() === $id;
         });
-        return \count($matches) === 1 ? \reset($matches) : null;
+        $column = \count($matches) === 1 ? \reset($matches) : null;
+        if (!$column->is_enabled()) {
+            return null;
+        }
+        return $column;
     }
-    public function sanitize_sort_parameters(?string $sort_column, ?string $sort_direction) : Sort_Configuration
+    public function sanitize_sort_parameters(?string $sort_column = null, ?string $sort_direction = 'desc') : Sort_Configuration
     {
+        if (\is_null($sort_column)) {
+            return new Sort_Configuration($this->default_sorting_column);
+        }
         $column = $this->get_column($sort_column);
-        if (\is_null($column) || !$column->is_enabled_for_group($this->group)) {
-            return new Sort_Configuration();
+        if (!$column->is_enabled_for_group($this->group)) {
+            return new Sort_Configuration($this->default_sorting_column);
         }
         return new Sort_Configuration($sort_column, $sort_direction, $column->is_nullable());
     }
-    public function get_rendered_template($rows, $just_rows = \false, string $sort_column = 'visitors', string $sort_direction = 'desc')
+    public function get_rendered_template(array $rows, bool $just_rows, string $sort_column, string $sort_direction)
     {
         if ($just_rows) {
             return \IAWPSCOPED\iawp_blade()->run('tables.rows', ['table' => $this, 'table_name' => $this->table_name(), 'all_columns' => $this->get_columns(), 'visible_column_count' => $this->visible_column_count(), 'number_of_shown_rows' => \count($rows), 'rows' => $rows, 'render_skeleton' => \false, 'page_size' => \IAWPSCOPED\iawp()->pagination_page_size(), 'sort_column' => $sort_column, 'sort_direction' => $sort_direction, 'has_campaigns' => Campaign_Builder::has_campaigns()]);
@@ -370,7 +402,7 @@ abstract class Table
     private function get_columns($show_disabled_columns = \false) : array
     {
         $columns_for_group = \array_filter($this->local_columns(), function (Column $column) {
-            return $column->is_enabled_for_group($this->group) && $column->is_subgroup_plugin_enabled();
+            return $column->is_enabled() && $column->is_enabled_for_group($this->group) && $column->is_subgroup_plugin_enabled();
         });
         if ($show_disabled_columns === \true) {
         } else {
@@ -414,27 +446,5 @@ abstract class Table
     private function filters()
     {
         return $this->filters;
-    }
-    /**
-     * @param string $type
-     *
-     * @return ?class-string<Table>
-     */
-    public static function get_table_by_type(string $type) : ?string
-    {
-        switch ($type) {
-            case 'views':
-                return \IAWP\Tables\Table_Pages::class;
-            case 'referrers':
-                return \IAWP\Tables\Table_Referrers::class;
-            case 'geo':
-                return \IAWP\Tables\Table_Geo::class;
-            case 'campaigns':
-                return \IAWP\Tables\Table_Campaigns::class;
-            case 'devices':
-                return \IAWP\Tables\Table_Devices::class;
-            default:
-                return null;
-        }
     }
 }

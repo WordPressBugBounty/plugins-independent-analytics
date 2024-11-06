@@ -7,6 +7,7 @@ use IAWP\Filter_Lists\Category_Filter_List;
 use IAWP\Filter_Lists\Device_Browser_Filter_List;
 use IAWP\Filter_Lists\Device_OS_Filter_List;
 use IAWP\Filter_Lists\Device_Type_Filter_List;
+use IAWP\Filter_Lists\Link_Name_Filter_List;
 use IAWP\Filter_Lists\Page_Type_Filter_List;
 use IAWP\Filter_Lists\Referrer_Type_Filter_List;
 use IAWP\Form_Submissions\Form;
@@ -132,6 +133,8 @@ class Filter implements JsonSerializable
                 $condition_string = Category_Filter_List::option($value);
             } elseif ($key == 'operand' && $condition['column'] == 'referrer_type') {
                 $condition_string = Referrer_Type_Filter_List::option($value);
+            } elseif ($key == 'operand' && $condition['column'] == 'link_name') {
+                $condition_string = Link_Name_Filter_List::option($value);
             } elseif ($key == 'operand' && $condition['column'] == 'type') {
                 $condition_string = Page_Type_Filter_List::option($value);
             } elseif ($key == 'column' && \str_contains($value, 'wc')) {
@@ -141,6 +144,8 @@ class Filter implements JsonSerializable
                 $condition_string = \__('Submissions for', 'independent-analytics') . ' ' . Form::find_form_by_column_name($condition['column'])->title();
             } elseif ($key == 'column' && String_Util::str_starts_with($condition['column'], 'form_conversion_rate_for_')) {
                 $condition_string = \__('Conversion rate for', 'independent-analytics') . ' ' . Form::find_form_by_column_name($condition['column'])->title();
+            } elseif ($key == 'column' && $condition['column'] == 'link_name') {
+                $condition_string = \__('Link Pattern', 'independent-analytics') . ' ';
             } else {
                 $condition_string .= \ucwords(\str_replace(['_', '-'], ' ', $value)) . ' ';
             }

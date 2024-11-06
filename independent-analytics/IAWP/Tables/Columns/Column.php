@@ -20,6 +20,7 @@ class Column implements Plugin_Group_Option
     private $database_column;
     private $is_nullable;
     private $is_plugin_active;
+    private $requires_pro;
     public function __construct($attributes)
     {
         $this->id = $attributes['id'];
@@ -35,6 +36,14 @@ class Column implements Plugin_Group_Option
         $this->database_column = $attributes['database_column'] ?? null;
         $this->is_nullable = $attributes['is_nullable'] ?? \false;
         $this->is_plugin_active = $attributes['is_subgroup_plugin_active'] ?? \true;
+        $this->requires_pro = $attributes['requires_pro'] ?? \false;
+    }
+    public function is_enabled() : bool
+    {
+        if ($this->requires_pro === \true && \IAWPSCOPED\iawp_is_free()) {
+            return \false;
+        }
+        return \true;
     }
     public function is_enabled_for_group(Group $group) : bool
     {

@@ -4,7 +4,7 @@ namespace IAWP;
 
 use DateInterval;
 use DateTime;
-use IAWPSCOPED\Proper\Timezone;
+use IAWP\Utils\Timezone;
 use Throwable;
 use ZipArchive;
 /** @internal */

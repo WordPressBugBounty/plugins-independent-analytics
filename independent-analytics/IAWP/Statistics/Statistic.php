@@ -22,6 +22,7 @@ class Statistic implements Plugin_Group_Option
     private $format;
     private $is_growth_good;
     private $is_subgroup_plugin_enabled;
+    private $requires_pro;
     public function __construct(array $attributes)
     {
         $this->id = $attributes['id'];
@@ -37,6 +38,14 @@ class Statistic implements Plugin_Group_Option
         $this->format = $attributes['format'] ?? null;
         $this->is_growth_good = $attributes['is_growth_good'] ?? \true;
         $this->is_subgroup_plugin_enabled = $attributes['is_subgroup_plugin_active'] ?? \true;
+        $this->requires_pro = $attributes['requires_pro'] ?? \false;
+    }
+    public function is_enabled() : bool
+    {
+        if ($this->requires_pro === \true && \IAWPSCOPED\iawp_is_free()) {
+            return \false;
+        }
+        return \true;
     }
     public function id() : string
     {

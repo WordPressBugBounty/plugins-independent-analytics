@@ -30,7 +30,7 @@ class Save_Report extends \IAWP\AJAX\AJAX
         $reports_table = Query::get_table_name(Query::REPORTS);
         $report_options_parser = Report_Options_Parser::from_json($_POST['changes']);
         if (\count($report_options_parser->get_options_for_updating()) > 0) {
-            Illuminate_Builder::get_builder()->from($reports_table)->where('report_id', '=', $this->get_field('id'))->update($report_options_parser->get_options_for_updating());
+            Illuminate_Builder::new()->from($reports_table)->where('report_id', '=', $this->get_field('id'))->update($report_options_parser->get_options_for_updating());
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace IAWP\Date_Picker;
 
-use IAWPSCOPED\Proper\Timezone;
+use IAWP\Utils\Timezone;
 /** @internal */
 class Month
 {

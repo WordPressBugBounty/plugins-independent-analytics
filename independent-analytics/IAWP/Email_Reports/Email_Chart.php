@@ -41,7 +41,7 @@ class Email_Chart
         if ($interval == 'weekly') {
             $format = 'D';
         } elseif ($interval == 'daily') {
-            $format = \get_option('time_format', 'g:i a');
+            $format = \IAWPSCOPED\iawp()->get_option('time_format', 'g:i a');
         }
         $all_x_labels = \array_map(function ($day) use($format) {
             return $day[0]->format($format);

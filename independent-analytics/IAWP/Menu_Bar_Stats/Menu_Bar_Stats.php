@@ -68,7 +68,7 @@ class Menu_Bar_Stats
     {
         $resources_table = Query::get_table_name(Query::RESOURCES);
         $views_table = Query::get_table_name(Query::VIEWS);
-        $resource_statistics_query = Illuminate_Builder::get_builder();
+        $resource_statistics_query = Illuminate_Builder::new();
         $resource = $this->current_resource_identifier;
         $resource_statistics_query->selectRaw('COUNT(*) AS views')->from("{$resources_table} as resources")->join("{$views_table} AS views", function (JoinClause $join) {
             $join->on('resources.id', '=', 'views.resource_id');

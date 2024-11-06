@@ -52,7 +52,7 @@ class View
     public function create_session() : int
     {
         $sessions_table = \IAWP\Query::get_table_name(\IAWP\Query::SESSIONS);
-        return \IAWP\Illuminate_Builder::get_builder()->from($sessions_table)->insertGetId(['visitor_id' => $this->visitor->id(), 'referrer_id' => $this->fetch_or_create_referrer(), 'country_id' => $this->fetch_or_create_country(), 'city_id' => $this->fetch_or_create_city(), 'campaign_id' => $this->get_campaign(), 'device_type_id' => Device::getInstance()->type_id(), 'device_os_id' => Device::getInstance()->os_id(), 'device_browser_id' => Device::getInstance()->browser_id(), 'created_at' => $this->viewed_at()]);
+        return \IAWP\Illuminate_Builder::new()->from($sessions_table)->insertGetId(['visitor_id' => $this->visitor->id(), 'referrer_id' => $this->fetch_or_create_referrer(), 'country_id' => $this->fetch_or_create_country(), 'city_id' => $this->fetch_or_create_city(), 'campaign_id' => $this->get_campaign(), 'device_type_id' => Device::getInstance()->type_id(), 'device_os_id' => Device::getInstance()->os_id(), 'device_browser_id' => Device::getInstance()->browser_id(), 'created_at' => $this->viewed_at()]);
     }
     public function fetch_or_create_country() : ?int
     {
@@ -60,12 +60,12 @@ class View
             return null;
         }
         $countries_table = \IAWP\Query::get_table_name(\IAWP\Query::COUNTRIES);
-        $country_id = \IAWP\Illuminate_Builder::get_builder()->from($countries_table)->where('country_code', '=', $this->visitor->geoposition()->country_code())->where('country', '=', $this->visitor->geoposition()->country())->where('continent', '=', $this->visitor->geoposition()->continent())->value('country_id');
+        $country_id = \IAWP\Illuminate_Builder::new()->from($countries_table)->where('country_code', '=', $this->visitor->geoposition()->country_code())->where('country', '=', $this->visitor->geoposition()->country())->where('continent', '=', $this->visitor->geoposition()->continent())->value('country_id');
         if (!\is_null($country_id)) {
             return $country_id;
         }
-        \IAWP\Illuminate_Builder::get_builder()->from($countries_table)->insertOrIgnore(['country_code' => $this->visitor->geoposition()->country_code(), 'country' => $this->visitor->geoposition()->country(), 'continent' => $this->visitor->geoposition()->continent()]);
-        return \IAWP\Illuminate_Builder::get_builder()->from($countries_table)->where('country_code', '=', $this->visitor->geoposition()->country_code())->where('country', '=', $this->visitor->geoposition()->country())->where('continent', '=', $this->visitor->geoposition()->continent())->value('country_id');
+        \IAWP\Illuminate_Builder::new()->from($countries_table)->insertOrIgnore(['country_code' => $this->visitor->geoposition()->country_code(), 'country' => $this->visitor->geoposition()->country(), 'continent' => $this->visitor->geoposition()->continent()]);
+        return \IAWP\Illuminate_Builder::new()->from($countries_table)->where('country_code', '=', $this->visitor->geoposition()->country_code())->where('country', '=', $this->visitor->geoposition()->country())->where('continent', '=', $this->visitor->geoposition()->continent())->value('country_id');
     }
     public function fetch_or_create_city() : ?int
     {
@@ -74,12 +74,12 @@ class View
         }
         $country_id = $this->fetch_or_create_country();
         $cities_table = \IAWP\Query::get_table_name(\IAWP\Query::CITIES);
-        $city_id = \IAWP\Illuminate_Builder::get_builder()->from($cities_table)->where('country_id', $country_id)->where('subdivision', '=', $this->visitor->geoposition()->subdivision())->where('city', '=', $this->visitor->geoposition()->city())->value('city_id');
+        $city_id = \IAWP\Illuminate_Builder::new()->from($cities_table)->where('country_id', $country_id)->where('subdivision', '=', $this->visitor->geoposition()->subdivision())->where('city', '=', $this->visitor->geoposition()->city())->value('city_id');
         if (!\is_null($city_id)) {
             return $city_id;
         }
-        \IAWP\Illuminate_Builder::get_builder()->from($cities_table)->insertOrIgnore(['country_id' => $country_id, 'subdivision' => $this->visitor->geoposition()->subdivision(), 'city' => $this->visitor->geoposition()->city()]);
-        return \IAWP\Illuminate_Builder::get_builder()->from($cities_table)->where('country_id', $country_id)->where('subdivision', '=', $this->visitor->geoposition()->subdivision())->where('city', '=', $this->visitor->geoposition()->city())->value('city_id');
+        \IAWP\Illuminate_Builder::new()->from($cities_table)->insertOrIgnore(['country_id' => $country_id, 'subdivision' => $this->visitor->geoposition()->subdivision(), 'city' => $this->visitor->geoposition()->city()]);
+        return \IAWP\Illuminate_Builder::new()->from($cities_table)->where('country_id', $country_id)->where('subdivision', '=', $this->visitor->geoposition()->subdivision())->where('city', '=', $this->visitor->geoposition()->city())->value('city_id');
     }
     /**
      * Fetch the last view, if any.
@@ -109,7 +109,7 @@ class View
         global $wpdb;
         $views_tables = \IAWP\Query::get_table_name(\IAWP\Query::VIEWS);
         $sessions_tables = \IAWP\Query::get_table_name(\IAWP\Query::SESSIONS);
-        $session = \IAWP\Illuminate_Builder::get_builder()->from($sessions_tables)->where('session_id', '=', $this->session)->first();
+        $session = \IAWP\Illuminate_Builder::new()->from($sessions_tables)->where('session_id', '=', $this->session)->first();
         if (\is_null($session)) {
             return;
         }
@@ -143,7 +143,7 @@ class View
     private function create_view() : int
     {
         $views_table = \IAWP\Query::get_table_name(\IAWP\Query::VIEWS);
-        return \IAWP\Illuminate_Builder::get_builder()->from($views_table)->insertGetId(['resource_id' => $this->resource->id(), 'viewed_at' => $this->viewed_at(), 'page' => $this->payload['page'], 'session_id' => $this->session]);
+        return \IAWP\Illuminate_Builder::new()->from($views_table)->insertGetId(['resource_id' => $this->resource->id(), 'viewed_at' => $this->viewed_at(), 'page' => $this->payload['page'], 'session_id' => $this->session]);
     }
     private function fetch_resource()
     {
@@ -239,9 +239,9 @@ class View
     private function fetch_referrer(array $referrer) : int
     {
         $referrers_table = \IAWP\Query::get_table_name(\IAWP\Query::REFERRERS);
-        $id = \IAWP\Illuminate_Builder::get_builder()->select('id')->from($referrers_table)->where('domain', '=', $referrer['domain'])->value('id');
+        $id = \IAWP\Illuminate_Builder::new()->select('id')->from($referrers_table)->where('domain', '=', $referrer['domain'])->value('id');
         if (\is_null($id)) {
-            $id = \IAWP\Illuminate_Builder::get_builder()->from($referrers_table)->insertGetId(['domain' => $referrer['domain'], 'type' => $referrer['type'], 'referrer' => $referrer['referrer']]);
+            $id = \IAWP\Illuminate_Builder::new()->from($referrers_table)->insertGetId(['domain' => $referrer['domain'], 'type' => $referrer['type'], 'referrer' => $referrer['referrer']]);
         }
         return $id;
     }
@@ -292,7 +292,7 @@ class View
     private function fetch_current_session() : ?object
     {
         $sessions_table = \IAWP\Query::get_table_name(\IAWP\Query::SESSIONS);
-        $session = \IAWP\Illuminate_Builder::get_builder()->from($sessions_table, 'sessions')->selectRaw('IFNULL(ended_at, created_at) AS latest_view_at')->selectRaw('sessions.*')->where('visitor_id', '=', $this->visitor->id())->havingRaw('latest_view_at > DATE_SUB(UTC_TIMESTAMP(), INTERVAL 30 MINUTE)')->orderBy('latest_view_at', 'DESC')->first();
+        $session = \IAWP\Illuminate_Builder::new()->from($sessions_table, 'sessions')->selectRaw('IFNULL(ended_at, created_at) AS latest_view_at')->selectRaw('sessions.*')->where('visitor_id', '=', $this->visitor->id())->havingRaw('latest_view_at > DATE_SUB(UTC_TIMESTAMP(), INTERVAL 30 MINUTE)')->orderBy('latest_view_at', 'DESC')->first();
         return $session;
     }
     private function update_postmeta(Page $resource) : void
@@ -303,7 +303,7 @@ class View
         }
         $views_table = \IAWP\Query::get_table_name(\IAWP\Query::VIEWS);
         $resources_table = \IAWP\Query::get_table_name(\IAWP\Query::RESOURCES);
-        $total_views = \IAWP\Illuminate_Builder::get_builder()->selectRaw('COUNT(*) AS views')->from("{$resources_table} as resources")->join("{$views_table} AS views", function (JoinClause $join) {
+        $total_views = \IAWP\Illuminate_Builder::new()->selectRaw('COUNT(*) AS views')->from("{$resources_table} as resources")->join("{$views_table} AS views", function (JoinClause $join) {
             $join->on('resources.id', '=', 'views.resource_id');
         })->where('singular_id', '=', $singular_id)->value('views');
         \update_post_meta($singular_id, Views_Column::$meta_key, $total_views);

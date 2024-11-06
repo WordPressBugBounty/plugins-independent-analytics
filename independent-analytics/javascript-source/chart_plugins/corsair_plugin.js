@@ -68,7 +68,6 @@ module.exports = {
             return;
         }
 
-        // console.log(chart);
         x = chart.tooltip.caretX;
 
         ctx.lineWidth = opts.width || 0;

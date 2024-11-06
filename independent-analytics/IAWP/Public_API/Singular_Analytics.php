@@ -34,7 +34,7 @@ class Singular_Analytics
         $resources_table = Query::get_table_name(Query::RESOURCES);
         $views_table = Query::get_table_name(Query::VIEWS);
         $sessions_table = Query::get_table_name(Query::SESSIONS);
-        $resource_statistics_query = Illuminate_Builder::get_builder();
+        $resource_statistics_query = Illuminate_Builder::new();
         $resource_statistics_query->selectRaw('COUNT(DISTINCT views.id) AS views')->selectRaw('COUNT(DISTINCT sessions.visitor_id) AS visitors')->selectRaw('COUNT(DISTINCT sessions.session_id) AS sessions')->from("{$views_table} as views")->join("{$resources_table} AS resources", function (JoinClause $join) {
             $join->on('resources.id', '=', 'views.resource_id');
         })->join("{$sessions_table} AS sessions", function (JoinClause $join) {

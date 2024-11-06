@@ -7,6 +7,31 @@
 {{-- Array indicies are used to add section headers. Make sure there are no gaps. --}}
 @php $options = array_values($options); @endphp
 
+@php
+$plugin_groups = array_filter($plugin_groups, function ($plugin_group) use ($options) {
+    foreach ($options as $option) {
+        if($option->is_member_of_plugin_group($plugin_group->id())) {
+            return true;
+        }
+    }
+
+    return false;
+});
+@endphp
+
+@php
+    // Only one group with one option? Don't render the button or modal.
+    if(count($plugin_groups) === 1) {
+        $plugin_group_options = array_filter($options, function ($option) use ($plugin_groups) {
+           return $option->is_member_of_plugin_group($plugin_groups[0]->id());
+        });
+
+        if(count($plugin_group_options) === 1) {
+            return;
+        }
+    }
+@endphp
+
 <div data-controller="plugin-group-options"
      data-plugin-group-options-option-type-value="{{ $option_type }}"
      class="button-modal-container"

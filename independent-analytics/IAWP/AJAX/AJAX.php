@@ -103,6 +103,20 @@ abstract class AJAX
             return \stripslashes(\sanitize_text_field($_POST[$field]));
         }
     }
+    protected function get_int_field($field) : ?int
+    {
+        if (!\array_key_exists($field, $_POST)) {
+            return null;
+        }
+        $type = \gettype($_POST[$field]);
+        if ($type === 'int') {
+            return $_POST[$field];
+        } elseif ($type === 'string') {
+            return \ctype_digit($_POST[$field]) ? (int) $_POST[$field] : null;
+        } else {
+            return null;
+        }
+    }
     protected function get_boolean_field($field) : ?bool
     {
         if (!\array_key_exists($field, $_POST)) {

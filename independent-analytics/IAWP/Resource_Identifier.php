@@ -129,6 +129,9 @@ class Resource_Identifier
     }
     private static function get_virtual_page_id() : ?string
     {
+        if (\is_404()) {
+            return null;
+        }
         $post = \get_post();
         if (\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && is_checkout() && is_wc_endpoint_url('order-received')) {
             return 'wc_checkout_success';
@@ -141,6 +144,10 @@ class Resource_Identifier
         }
         if (\IAWPSCOPED\iawp()->is_surecart_support_enabled() && $post->post_type === 'sc_upsell' && \property_exists($post, 'sc_id')) {
             return 'sc_upsell_' . $post->sc_id;
+        }
+        // TODO - What's the pro slug?
+        if (\is_plugin_active('clickwhale/clickwhale.php') && \property_exists($post, 'linkpage') && \is_array($post->linkpage)) {
+            return 'clickwhale_link_page_' . $post->linkpage['id'];
         }
         return null;
     }

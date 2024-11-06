@@ -21,10 +21,14 @@ export default class extends Controller {
         primaryChartMetricName: String,
         secondaryChartMetricId: String,
         secondaryChartMetricName: String,
+        hasMultipleDatasets: Number
     }
 
     metricGroups = [{
         metrics: ['views', 'visitors', 'sessions'],
+        format: 'int'
+    }, {
+        metrics: ['clicks'],
         format: 'int'
     }, {
         metrics: ['average_session_duration'],
@@ -166,7 +170,10 @@ export default class extends Controller {
     connect() {
         if (!this.isPreviewValue) {
             this.updateMetricSelectWidth(this.primaryMetricSelectTarget)
-            this.updateMetricSelectWidth(this.secondaryMetricSelectTarget)
+            // Only show the secondary metric select if there is a second metric to select
+            if(this.hasMultipleDatasetsValue === 1) {
+                this.updateMetricSelectWidth(this.secondaryMetricSelectTarget)
+            }
         }
         this.createChart()
         this.updateChart()

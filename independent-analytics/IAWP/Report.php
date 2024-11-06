@@ -6,7 +6,7 @@ namespace IAWP;
 class Report
 {
     private $row;
-    private static $report_types = ['views', 'referrers', 'geo', 'devices', 'campaigns'];
+    private static $report_types = ['views', 'referrers', 'geo', 'devices', 'campaigns', 'clicks'];
     public function __construct($row)
     {
         $this->row = $row;

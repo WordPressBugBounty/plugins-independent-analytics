@@ -33,12 +33,12 @@ class Copy_Report extends \IAWP\AJAX\AJAX
         if (\is_null($existing_report_options)) {
             \wp_send_json_error();
         }
-        $new_report_id = Illuminate_Builder::get_builder()->from($reports_table)->insertGetId($existing_report_options);
+        $new_report_id = Illuminate_Builder::new()->from($reports_table)->insertGetId($existing_report_options);
         $report_options_parser = Report_Options_Parser::from_json($_POST['changes']);
         if (\count($report_options_parser->get_options_for_updating()) > 0) {
-            Illuminate_Builder::get_builder()->from($reports_table)->where('report_id', '=', $new_report_id)->update($report_options_parser->get_options_for_updating());
+            Illuminate_Builder::new()->from($reports_table)->where('report_id', '=', $new_report_id)->update($report_options_parser->get_options_for_updating());
         }
-        $row = Illuminate_Builder::get_builder()->from($reports_table)->where('report_id', '=', $new_report_id)->first();
+        $row = Illuminate_Builder::new()->from($reports_table)->where('report_id', '=', $new_report_id)->first();
         $report = new Report($row);
         \wp_send_json_success(['url' => $report->url()]);
     }
@@ -48,7 +48,7 @@ class Copy_Report extends \IAWP\AJAX\AJAX
             return ['name' => $this->get_field('name'), 'type' => $this->get_field('type')];
         }
         $reports_table = Query::get_table_name(Query::REPORTS);
-        $existing_report = Illuminate_Builder::get_builder()->from($reports_table)->where('report_id', '=', $this->get_field('id'))->first();
+        $existing_report = Illuminate_Builder::new()->from($reports_table)->where('report_id', '=', $this->get_field('id'))->first();
         if (\is_null($existing_report)) {
             return null;
         }

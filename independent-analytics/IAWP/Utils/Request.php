@@ -40,20 +40,28 @@ class Request
             return \IAWP_TEST_IP;
         }
         $headers = ['HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR', 'HTTP_CF_CONNECTING_IP', 'HTTP_CLIENT_IP', 'HTTP_INCAP_CLIENT_IP', 'HTTP_CF_CONNECTING_IP'];
-        // add_filter('iawp_header_with_ip_address', function () {
-        //     return 'CUSTOM_HEADER_NAME';
-        // });
-        $user_defined_header = \apply_filters('iawp_header_with_ip_address', null);
-        if (\is_string($user_defined_header)) {
-            $user_defined_header = \IAWP\Utils\Security::string($user_defined_header);
-            if (Str::of($user_defined_header)->test('/^[a-zA-Z_]+$/')) {
-                \array_unshift($headers, $user_defined_header);
-            }
+        if (\is_string(self::custom_ip_header())) {
+            \array_unshift($headers, self::custom_ip_header());
         }
         foreach ($headers as $header) {
             if (isset($_SERVER[$header])) {
                 return \explode(',', $_SERVER[$header])[0];
             }
+        }
+        return null;
+    }
+    public static function custom_ip_header() : ?string
+    {
+        // add_filter('iawp_header_with_ip_address', function () {
+        //     return 'CUSTOM_HEADER_NAME';
+        // });
+        $user_defined_header = \apply_filters('iawp_header_with_ip_address', null);
+        if (!\is_string($user_defined_header)) {
+            return null;
+        }
+        $user_defined_header = \IAWP\Utils\Security::string($user_defined_header);
+        if (Str::of($user_defined_header)->test('/^[a-zA-Z_]+$/')) {
+            return $user_defined_header;
         }
         return null;
     }

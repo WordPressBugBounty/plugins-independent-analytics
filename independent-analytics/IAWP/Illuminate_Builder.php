@@ -25,7 +25,7 @@ class Illuminate_Builder
         }
         return self::$connection;
     }
-    public static function get_builder() : Builder
+    public static function new() : Builder
     {
         if (self::$connection === null) {
             self::$connection = self::make_connection();

@@ -29,7 +29,7 @@ class Delete_Report extends \IAWP\AJAX\AJAX
     protected function action_callback() : void
     {
         $reports_table = Query::get_table_name(Query::REPORTS);
-        $existing_report = Illuminate_Builder::get_builder()->from($reports_table)->where('report_id', '=', $this->get_field('id'))->first();
+        $existing_report = Illuminate_Builder::new()->from($reports_table)->where('report_id', '=', $this->get_field('id'))->first();
         if (\is_null($existing_report)) {
             \wp_send_json_error();
         }
@@ -47,7 +47,7 @@ class Delete_Report extends \IAWP\AJAX\AJAX
         } elseif ($report_index > 0 && \array_key_exists($report_index - 1, $reports)) {
             $report = $reports[$report_index - 1];
         }
-        Illuminate_Builder::get_builder()->from($reports_table)->where('report_id', '=', $this->get_field('id'))->delete();
+        Illuminate_Builder::new()->from($reports_table)->where('report_id', '=', $this->get_field('id'))->delete();
         \wp_send_json_success(['url' => $report->url()]);
     }
 }

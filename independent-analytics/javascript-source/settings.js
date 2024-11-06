@@ -101,4 +101,25 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
+
+    const clickExportButton = document.getElementById("iawp-export-clicks")
+
+    if (clickExportButton) {
+        clickExportButton.addEventListener('click', function (e) {
+            const button = e.target;
+
+            button.textContent = iawpText.exportingClicks
+            button.setAttribute('disabled', 'disabled');
+
+            const data = {
+                ...iawpActions.export_clicks
+            };
+
+            jQuery.post(ajaxurl, data, (response) => {
+                downloadCSV('exported-clicks.csv', response);
+                button.textContent = iawpText.exportClicks
+                button.removeAttribute('disabled');
+            });
+        });
+    }
 });

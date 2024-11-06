@@ -33,7 +33,7 @@ class Visitor
      */
     public function __construct(string $ip, string $user_agent)
     {
-        $this->id = $this->fetch_visitor_id($this->calculate_hash($ip, $user_agent));
+        $this->id = $this->fetch_visitor_id_by_hash($this->calculate_hash($ip, $user_agent));
         $this->geoposition = new Geoposition($ip);
         $this->current_session = $this->fetch_current_session();
     }
@@ -96,17 +96,17 @@ class Visitor
         $result = $salt . $ip . $user_agent;
         return \md5($result);
     }
-    private function fetch_visitor_id(string $hash) : int
-    {
-        $visitors_table = Query::get_table_name(Query::VISITORS);
-        Illuminate_Builder::get_builder()->from($visitors_table)->insertOrIgnore([['hash' => $hash]]);
-        return Illuminate_Builder::get_builder()->from($visitors_table)->where('hash', '=', $hash)->value('visitor_id');
-    }
     private function fetch_current_session()
     {
         $sessions_table = Query::get_table_name(Query::SESSIONS);
-        $session = Illuminate_Builder::get_builder()->from($sessions_table, 'sessions')->selectRaw('IFNULL(ended_at, created_at) AS latest_view_at')->selectRaw('sessions.*')->where('visitor_id', '=', $this->id)->havingRaw('latest_view_at > DATE_SUB(UTC_TIMESTAMP(), INTERVAL 30 MINUTE)')->orderBy('latest_view_at', 'DESC')->first();
+        $session = Illuminate_Builder::new()->from($sessions_table, 'sessions')->selectRaw('IFNULL(ended_at, created_at) AS latest_view_at')->selectRaw('sessions.*')->where('visitor_id', '=', $this->id)->havingRaw('latest_view_at > DATE_SUB(UTC_TIMESTAMP(), INTERVAL 30 MINUTE)')->orderBy('latest_view_at', 'DESC')->first();
         return $session;
+    }
+    public static function fetch_visitor_id_by_hash(string $hash) : int
+    {
+        $visitors_table = Query::get_table_name(Query::VISITORS);
+        Illuminate_Builder::new()->from($visitors_table)->insertOrIgnore([['hash' => $hash]]);
+        return Illuminate_Builder::new()->from($visitors_table)->where('hash', '=', $hash)->value('visitor_id');
     }
     public static function fetch_current_visitor() : self
     {

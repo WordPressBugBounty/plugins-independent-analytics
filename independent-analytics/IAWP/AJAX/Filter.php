@@ -8,10 +8,12 @@ use IAWP\Chart_Geo;
 use IAWP\Date_Range\Date_Range;
 use IAWP\Date_Range\Exact_Date_Range;
 use IAWP\Date_Range\Relative_Date_Range;
+use IAWP\Env;
 use IAWP\Quick_Stats;
 use IAWP\Statistics\Intervals\Intervals;
+use IAWP\Statistics\Statistics;
 use IAWP\Tables\Table;
-use IAWPSCOPED\Proper\Timezone;
+use IAWP\Utils\Timezone;
 use Throwable;
 /** @internal */
 class Filter extends \IAWP\AJAX\AJAX
@@ -39,10 +41,8 @@ class Filter extends \IAWP\AJAX\AJAX
         $number_of_rows = $page * \IAWPSCOPED\iawp()->pagination_page_size();
         $table_type = $this->get_field('table_type');
         $is_geo_table = $table_type === 'geo';
-        $table_class = Table::get_table_by_type($this->get_field('table_type'));
-        if (\is_null($table_class)) {
-            return;
-        }
+        $table_class = Env::get_table();
+        /** @var Table $table */
         $table = new $table_class($group, $is_new_group);
         $filters = $table->sanitize_filters($filters);
         $sort_configuration = $table->sanitize_sort_parameters($sort_column, $sort_direction);
@@ -62,6 +62,7 @@ class Filter extends \IAWP\AJAX\AJAX
         }
         $rows = $rows_query->rows();
         if (empty($filters)) {
+            /** @var Statistics $statistics */
             $statistics = new $statistics_class($date_range, null, $chart_interval);
         } else {
             $statistics = new $statistics_class($date_range, $rows_query, $chart_interval);

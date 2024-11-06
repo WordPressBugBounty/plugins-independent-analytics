@@ -82,7 +82,7 @@ class WooCommerce_Referrer_Meta_Box
         $campaigns_table = Query::get_table_name(Query::CAMPAIGNS);
         $views_table = Query::get_table_name(Query::VIEWS);
         $sessions_table = Query::get_table_name(Query::SESSIONS);
-        $campaign_query = Illuminate_Builder::get_builder()->select("landing_page_title AS title", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content")->from($orders_table, 'orders')->join("{$views_table} AS views", function (JoinClause $join) {
+        $campaign_query = Illuminate_Builder::new()->select("landing_page_title AS title", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content")->from($orders_table, 'orders')->join("{$views_table} AS views", function (JoinClause $join) {
             $join->on('views.id', '=', 'orders.view_id');
         })->join("{$sessions_table} AS sessions", function (JoinClause $join) {
             $join->on('sessions.session_id', '=', 'views.session_id');
@@ -98,7 +98,7 @@ class WooCommerce_Referrer_Meta_Box
         $views_table = Query::get_table_name(Query::VIEWS);
         $sessions_table = Query::get_table_name(Query::SESSIONS);
         $referrer_table = Query::get_table_name(Query::REFERRERS);
-        $referrer_query = Illuminate_Builder::get_builder()->select('sessions.referrer_id', 'referrer', 'type AS referrer_type', 'domain')->from($orders_table, 'orders')->join("{$views_table} AS views", function (JoinClause $join) {
+        $referrer_query = Illuminate_Builder::new()->select('sessions.referrer_id', 'referrer', 'type AS referrer_type', 'domain')->from($orders_table, 'orders')->join("{$views_table} AS views", function (JoinClause $join) {
             $join->on('views.id', '=', 'orders.view_id');
         })->join("{$sessions_table} AS sessions", function (JoinClause $join) {
             $join->on('sessions.session_id', '=', 'views.session_id');

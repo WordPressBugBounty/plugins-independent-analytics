@@ -159,7 +159,7 @@ class Submission_Listener
             try {
                 global $wpdb;
                 $forms_table = "{$wpdb->prefix}arf_forms";
-                $form_name = Illuminate_Builder::get_builder()->from($forms_table)->where('id', $form_id)->value('name');
+                $form_name = Illuminate_Builder::new()->from($forms_table)->where('id', $form_id)->value('name');
                 if (\is_null($form_name)) {
                     return;
                 }
@@ -173,7 +173,7 @@ class Submission_Listener
             try {
                 global $wpdb;
                 $forms_table = "{$wpdb->prefix}arf_forms";
-                $form_name = Illuminate_Builder::get_builder()->from($forms_table)->where('id', $form_id)->value('name');
+                $form_name = Illuminate_Builder::new()->from($forms_table)->where('id', $form_id)->value('name');
                 if (\is_null($form_name)) {
                     return;
                 }
@@ -241,6 +241,16 @@ class Submission_Listener
                     return;
                 }
                 $submission = new \IAWP\Form_Submissions\Submission(18, \intval($module_id), Security::string($module->module_name));
+                $submission->record_submission();
+            } catch (\Throwable $e) {
+            }
+        }, 10, 2);
+        // Avada
+        \add_action('fusion_form_submission_data', function ($form_data, $form_post_id) {
+            try {
+                $form_id = $form_data['submission']['form_id'];
+                $form_name = \get_the_title($form_post_id);
+                $submission = new \IAWP\Form_Submissions\Submission(19, \intval($form_id), Security::string($form_name));
                 $submission->record_submission();
             } catch (\Throwable $e) {
             }

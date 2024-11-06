@@ -10,7 +10,7 @@ class Report_Finder
     }
     public function fetch_reports_by_type() : array
     {
-        return [['name' => \esc_html__('Pages', 'independent-analytics'), 'reports' => $this->fetch_page_reports()], ['name' => \esc_html__('Referrers', 'independent-analytics'), 'reports' => $this->fetch_referrer_reports()], ['name' => \esc_html__('Geographic', 'independent-analytics'), 'reports' => $this->fetch_geographic_reports()], ['name' => \esc_html__('Devices', 'independent-analytics'), 'reports' => $this->fetch_device_reports()], ['name' => \esc_html__('Campaigns', 'independent-analytics'), 'reports' => $this->fetch_campaign_reports()]];
+        return [['name' => \esc_html__('Pages', 'independent-analytics'), 'reports' => $this->fetch_page_reports()], ['name' => \esc_html__('Referrers', 'independent-analytics'), 'reports' => $this->fetch_referrer_reports()], ['name' => \esc_html__('Geographic', 'independent-analytics'), 'reports' => $this->fetch_geographic_reports()], ['name' => \esc_html__('Devices', 'independent-analytics'), 'reports' => $this->fetch_device_reports()], ['name' => \esc_html__('Campaigns', 'independent-analytics'), 'reports' => $this->fetch_campaign_reports()], ['name' => \esc_html__('Clicks', 'independent-analytics'), 'reports' => $this->fetch_click_reports()]];
     }
     /**
      * @return Report[]
@@ -47,6 +47,13 @@ class Report_Finder
     {
         return $this->by_type('campaigns');
     }
+    /**
+     * @return Report[]
+     */
+    public function fetch_click_reports() : array
+    {
+        return $this->by_type('clicks');
+    }
     public function is_real_time() : bool
     {
         return \IAWP\Env::get_tab() === 'real-time';
@@ -79,6 +86,10 @@ class Report_Finder
     {
         return \IAWP\Env::get_tab() === 'campaigns';
     }
+    public function is_click_report() : bool
+    {
+        return \IAWP\Env::get_tab() === 'clicks';
+    }
     public function is_saved_report() : bool
     {
         $report = $this->current();
@@ -107,7 +118,7 @@ class Report_Finder
     public function by_ids(array $ids) : ?array
     {
         $reports_table = \IAWP\Query::get_table_name(\IAWP\Query::REPORTS);
-        $rows = \IAWP\Illuminate_Builder::get_builder()->from($reports_table)->whereIn('report_id', $ids)->get()->toArray();
+        $rows = \IAWP\Illuminate_Builder::new()->from($reports_table)->whereIn('report_id', $ids)->get()->toArray();
         return \array_map(function ($row) {
             return new \IAWP\Report($row);
         }, $rows);
@@ -120,7 +131,7 @@ class Report_Finder
     public function by_type(string $type) : array
     {
         $reports_table = \IAWP\Query::get_table_name(\IAWP\Query::REPORTS);
-        $builder = \IAWP\Illuminate_Builder::get_builder()->from($reports_table)->where('type', '=', $type)->orderByRaw('position IS NULL')->orderBy('position')->orderBy('report_id')->get()->escapeWhenCastingToString();
+        $builder = \IAWP\Illuminate_Builder::new()->from($reports_table)->where('type', '=', $type)->orderByRaw('position IS NULL')->orderBy('position')->orderBy('report_id')->get()->escapeWhenCastingToString();
         $rows = $builder->toArray();
         return \array_map(function ($row) {
             return new \IAWP\Report($row);
@@ -153,7 +164,7 @@ class Report_Finder
         if (!\ctype_digit($id)) {
             return null;
         }
-        $row = \IAWP\Illuminate_Builder::get_builder()->from($reports_table)->where('report_id', '=', $id)->first();
+        $row = \IAWP\Illuminate_Builder::new()->from($reports_table)->where('report_id', '=', $id)->first();
         if (\is_null($row)) {
             return null;
         }
@@ -168,7 +179,7 @@ class Report_Finder
         if (\array_key_exists('filters', $attributes) && \is_array($attributes['filters'])) {
             $attributes['filters'] = \json_encode($attributes['filters']);
         }
-        $report_id = \IAWP\Illuminate_Builder::get_builder()->from($reports_table)->insertGetId($attributes);
+        $report_id = \IAWP\Illuminate_Builder::new()->from($reports_table)->insertGetId($attributes);
         return self::by_id($report_id);
     }
     private static function get_base_report_for_type(string $type) : ?\IAWP\Report
@@ -184,6 +195,8 @@ class Report_Finder
                 return new \IAWP\Report((object) ['name' => \esc_html__('Devices', 'independent-analytics'), 'type' => 'devices']);
             case 'campaigns':
                 return new \IAWP\Report((object) ['name' => \esc_html__('Campaigns', 'independent-analytics'), 'type' => 'campaigns']);
+            case 'clicks':
+                return new \IAWP\Report((object) ['name' => \esc_html__('Clicks', 'independent-analytics'), 'type' => 'clicks']);
             default:
                 return null;
         }

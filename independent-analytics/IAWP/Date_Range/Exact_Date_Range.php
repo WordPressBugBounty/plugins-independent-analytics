@@ -3,7 +3,7 @@
 namespace IAWP\Date_Range;
 
 use DateTime;
-use IAWPSCOPED\Proper\Timezone;
+use IAWP\Utils\Timezone;
 /** @internal */
 class Exact_Date_Range extends \IAWP\Date_Range\Date_Range
 {

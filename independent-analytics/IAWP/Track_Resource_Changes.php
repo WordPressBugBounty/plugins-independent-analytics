@@ -33,7 +33,7 @@ class Track_Resource_Changes
         $sessions_table = \IAWP\Query::get_table_name(\IAWP\Query::SESSIONS);
         $views_table = \IAWP\Query::get_table_name(\IAWP\Query::VIEWS);
         $resources_table = \IAWP\Query::get_table_name(\IAWP\Query::RESOURCES);
-        \IAWP\Illuminate_Builder::get_builder()->from($campaigns_table, 'campaigns')->join("{$sessions_table} AS sessions", function (JoinClause $join) {
+        \IAWP\Illuminate_Builder::new()->from($campaigns_table, 'campaigns')->join("{$sessions_table} AS sessions", function (JoinClause $join) {
             $join->on('sessions.campaign_id', '=', 'campaigns.campaign_id');
         })->join("{$views_table} AS views", function (JoinClause $join) {
             $join->on('views.id', '=', 'sessions.initial_view_id');

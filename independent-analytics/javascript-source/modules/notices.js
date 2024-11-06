@@ -2,13 +2,17 @@ const $ = jQuery;
 
 const Notices = {
     setup() {
-        $('#dismiss-notice').on('click', function() {
+        $('.dismiss-notice').on('click', function() {
+            const id = $(this).data('notice-id');
             const data = {
-                ...iawpActions.confirm_cache_cleared
+                ...iawpActions.dismiss_notice,
+                id
             };
-
-            $('.iawp-notice.iawp-warning').hide();
-    
+            if (id === 'iawp_show_gsg') {
+                $('.iawp-getting-started-notice').hide();
+            } else {
+                $(this).parents('.iawp-notice').hide();
+            }
             jQuery.post(ajaxurl, data, (response) => {
 
             }).fail(() => {

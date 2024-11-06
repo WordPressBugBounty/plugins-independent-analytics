@@ -60,8 +60,8 @@ class WooCommerce_Status_Manager
     public function update_order_records_based_on_tracked_statuses() : void
     {
         $orders_table = Query::get_table_name(Query::ORDERS);
-        Illuminate_Builder::get_builder()->from($orders_table)->whereNotIn('woocommerce_order_status', $this->get_tracked_status_ids())->update(['is_included_in_analytics' => \false]);
-        Illuminate_Builder::get_builder()->from($orders_table)->whereIn('woocommerce_order_status', $this->get_tracked_status_ids())->update(['is_included_in_analytics' => \true]);
+        Illuminate_Builder::new()->from($orders_table)->whereNotIn('woocommerce_order_status', $this->get_tracked_status_ids())->update(['is_included_in_analytics' => \false]);
+        Illuminate_Builder::new()->from($orders_table)->whereIn('woocommerce_order_status', $this->get_tracked_status_ids())->update(['is_included_in_analytics' => \true]);
     }
     public function set_tracked_statuses(array $tracked_status_ids) : void
     {

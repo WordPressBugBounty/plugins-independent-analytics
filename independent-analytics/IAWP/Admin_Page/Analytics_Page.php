@@ -14,6 +14,7 @@ use IAWP\Real_Time;
 use IAWP\Report_Finder;
 use IAWP\Tables\Table;
 use IAWP\Tables\Table_Campaigns;
+use IAWP\Tables\Table_Clicks;
 use IAWP\Tables\Table_Devices;
 use IAWP\Tables\Table_Geo;
 use IAWP\Tables\Table_Pages;
@@ -52,6 +53,13 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
             $this->interface($table, $stats, $chart);
         } elseif ($tab === 'campaigns') {
             $table = new Table_Campaigns();
+            $statistics_class = $table->group()->statistics_class();
+            $statistics = new $statistics_class($date_rage, null, $options->chart_interval());
+            $stats = new Quick_Stats($statistics);
+            $chart = new Chart($statistics);
+            $this->interface($table, $stats, $chart);
+        } elseif ($tab === 'clicks') {
+            $table = new Table_Clicks();
             $statistics_class = $table->group()->statistics_class();
             $statistics = new $statistics_class($date_rage, null, $options->chart_interval());
             $stats = new Quick_Stats($statistics);
@@ -96,10 +104,10 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         echo Security::attr($options->chart_interval()->id());
         ?>"
              data-report-sort-column-value="<?php 
-        echo Security::attr($options->sort_column());
+        echo Security::attr($sort_configuration->column());
         ?>"
              data-report-sort-direction-value="<?php 
-        echo Security::attr($options->sort_direction());
+        echo Security::attr($sort_configuration->direction());
         ?>"
              data-report-columns-value="<?php 
         echo \esc_attr(Security::json_encode($table->visible_column_ids()));
@@ -143,21 +151,33 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
             echo '</div>';
         }
         ?>
-        <div class="iawp-notices">
-        <?php 
+        <div class="iawp-notices"><?php 
         if (Capability_Manager::can_edit()) {
             $plugin_conflict_detector = new Plugin_Conflict_Detector();
-            if (!$plugin_conflict_detector->has_conflict()) {
-                echo \IAWPSCOPED\iawp_blade()->run('settings.notice', ['notice_text' => $plugin_conflict_detector->get_error(), 'button_text' => \false, 'notice' => 'iawp-error', 'url' => 'https://independentwp.com/knowledgebase/tracking/secure-rest-api/']);
+            if ($plugin_conflict_detector->has_conflict()) {
+                echo \IAWPSCOPED\iawp_blade()->run('notices.notice', ['notice_text' => $plugin_conflict_detector->get_error(), 'button_text' => \false, 'id' => 'plugin-conflict', 'notice' => 'iawp-error', 'url' => 'https://independentwp.com/knowledgebase/tracking/secure-rest-api/']);
             }
             if (\get_option('iawp_need_clear_cache')) {
-                echo \IAWPSCOPED\iawp_blade()->run('settings.notice', ['notice_text' => \__('Please clear your cache to ensure tracking works properly.', 'independent-analytics'), 'button_text' => \__('I\'ve cleared the cache', 'independent-analytics'), 'notice' => 'iawp-warning', 'url' => 'https://independentwp.com/knowledgebase/common-questions/views-not-recording/']);
+                echo \IAWPSCOPED\iawp_blade()->run('notices.notice', ['notice_text' => \__('Please clear your cache to ensure tracking works properly.', 'independent-analytics'), 'button_text' => \__('I\'ve cleared the cache', 'independent-analytics'), 'id' => 'iawp_need_clear_cache', 'notice' => 'iawp-warning', 'url' => 'https://independentwp.com/knowledgebase/common-questions/views-not-recording/']);
+            }
+            $requires_logged_in_tracking = $plugin_conflict_detector->plugin_requiring_logged_in_tracking();
+            $show_logged_in_tracking_notice = $requires_logged_in_tracking && !\get_option('iawp_track_authenticated_users') && !\get_option('iawp_need_clear_cache');
+            if ($show_logged_in_tracking_notice) {
+                echo \IAWPSCOPED\iawp_blade()->run('notices.notice', ['notice_text' => '<strong>' . \sprintf(\_x('%s compatibility:', 'Variable is the name of a plugin', 'independent-analytics'), $requires_logged_in_tracking) . '</strong> ' . \__('We recommend you enable tracking for logged-in visitors.', 'independent-analytics'), 'button_text' => \false, 'id' => 'enable-logged-in-tracking', 'notice' => 'iawp-warning', 'url' => 'https://independentwp.com/knowledgebase/tracking/how-to-track-logged-in-visitors/']);
             }
             if (\IAWPSCOPED\iawp_db_version() > 0 && !Database::has_correct_database_privileges()) {
-                echo \IAWPSCOPED\iawp_blade()->run('settings.notice', ['notice_text' => \__('Your site is missing the following critical database permissions:', 'independent-analytics') . ' ' . \implode(', ', Database::missing_database_privileges()) . '. ' . \__('There is no issue at this time, but you will need to enable the missing permissions before updating the plugin to a newer version to ensure an error is avoided. Please click this link to read our tutorial:', 'independent-analytics'), 'button_text' => \false, 'notice' => 'iawp-error', 'url' => 'https://independentwp.com/knowledgebase/common-questions/missing-database-permissions/']);
+                echo \IAWPSCOPED\iawp_blade()->run('notices.notice', ['notice_text' => \__('Your site is missing the following critical database permissions:', 'independent-analytics') . ' ' . \implode(', ', Database::missing_database_privileges()) . '. ' . \__('There is no issue at this time, but you will need to enable the missing permissions before updating the plugin to a newer version to ensure an error is avoided. Please click this link to read our tutorial:', 'independent-analytics'), 'button_text' => \false, 'id' => 'missing-permissions', 'notice' => 'iawp-error', 'url' => 'https://independentwp.com/knowledgebase/common-questions/missing-database-permissions/']);
+            }
+            if (Env::get_tab() === 'clicks') {
+                if (!\get_option('iawp_clicks_sync_notice')) {
+                    echo \IAWPSCOPED\iawp_blade()->run('notices.notice', ['notice_text' => \__('Click data syncs every 60 seconds. Please allow for this delay when testing clicks on new links.', 'independent-analytics'), 'button_text' => \__('Dismiss', 'independent-analytics'), 'id' => 'iawp_clicks_sync_notice', 'notice' => 'iawp-warning', 'url' => 'https://independentwp.com/knowledgebase/click-tracking/click-tracking-update-process/']);
+                }
             }
         }
         ?>
         </div><?php 
+        if (\get_option('iawp_show_gsg') === '1' && !\get_option('iawp_need_clear_cache') && !$show_logged_in_tracking_notice && !$plugin_conflict_detector->has_conflict() && (Env::get_tab() !== 'clicks' || Env::get_tab() === 'clicks' && \get_option('iawp_clicks_sync_notice'))) {
+            echo \IAWPSCOPED\iawp_blade()->run('notices.getting-started');
+        }
     }
 }

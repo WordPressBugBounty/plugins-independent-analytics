@@ -2,8 +2,9 @@
 
 namespace IAWP;
 
+use IAWP\Click_Tracking\Config_File_Manager;
 use IAWP\Utils\Salt;
-use IAWPSCOPED\Proper\Timezone;
+use IAWP\Utils\Timezone;
 /** @internal */
 class Cron_Manager
 {
@@ -30,5 +31,6 @@ class Cron_Manager
     public function refresh_salt()
     {
         Salt::refresh_visitor_token_salt();
+        Config_File_Manager::recreate();
     }
 }

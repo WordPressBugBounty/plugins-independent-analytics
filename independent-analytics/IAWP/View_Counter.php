@@ -139,7 +139,7 @@ class View_Counter
         $resources_table = \IAWP\Query::get_table_name(\IAWP\Query::RESOURCES);
         $views_table = \IAWP\Query::get_table_name(\IAWP\Query::VIEWS);
         $relative_range = new Relative_Date_Range($relative_range_id);
-        $query = \IAWP\Illuminate_Builder::get_builder()->selectRaw('COUNT(views.id) AS views')->from($resources_table, 'resources')->leftJoin("{$views_table} AS views", function (JoinClause $join) {
+        $query = \IAWP\Illuminate_Builder::new()->selectRaw('COUNT(views.id) AS views')->from($resources_table, 'resources')->leftJoin("{$views_table} AS views", function (JoinClause $join) {
             $join->on('resources.id', '=', 'views.resource_id');
         })->where('resource', '=', $resource->type())->when($resource->has_meta(), function (Builder $query) use($resource) {
             $query->where($resource->meta_key(), '=', $resource->meta_value());

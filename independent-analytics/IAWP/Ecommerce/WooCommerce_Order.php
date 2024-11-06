@@ -5,7 +5,6 @@ namespace IAWP\Ecommerce;
 use IAWP\Illuminate_Builder;
 use IAWP\Models\Visitor;
 use IAWP\Query;
-use IAWP\Utils\Plugin;
 /** @internal */
 class WooCommerce_Order
 {
@@ -39,6 +38,13 @@ class WooCommerce_Order
             $total = \intval(\round($total / $wpml_exchange_rate));
             $total_refunded = \intval(\round($total_refunded / $wpml_exchange_rate));
         }
+        // Price Based on Country for WooCommerce
+        $wcpbc_exchange_rate = $order->get_meta('_wcpbc_base_exchange_rate');
+        if (\is_numeric($wcpbc_exchange_rate)) {
+            // Exchange rate is from order currency to shop currency (multiply)
+            $total = \intval(\round($total * \floatval($wcpbc_exchange_rate)));
+            $total_refunded = \intval(\round($total_refunded * \floatval($wcpbc_exchange_rate)));
+        }
         $this->order_id = $order_id;
         $this->status = $order->get_status();
         $this->total = $total;
@@ -53,12 +59,12 @@ class WooCommerce_Order
             return;
         }
         $orders_table = Query::get_table_name(Query::ORDERS);
-        Illuminate_Builder::get_builder()->from($orders_table)->insertOrIgnore(['is_included_in_analytics' => (new \IAWP\Ecommerce\WooCommerce_Status_Manager())->is_tracked_status($this->status), 'woocommerce_order_id' => $this->order_id, 'woocommerce_order_status' => $this->status, 'view_id' => $visitor->most_recent_view_id(), 'initial_view_id' => $visitor->most_recent_initial_view_id(), 'total' => $this->total, 'total_refunded' => $this->total_refunded, 'total_refunds' => $this->total_refunds, 'is_discounted' => $this->is_discounted, 'created_at' => (new \DateTime())->format('Y-m-d H:i:s')]);
+        Illuminate_Builder::new()->from($orders_table)->insertOrIgnore(['is_included_in_analytics' => (new \IAWP\Ecommerce\WooCommerce_Status_Manager())->is_tracked_status($this->status), 'woocommerce_order_id' => $this->order_id, 'woocommerce_order_status' => $this->status, 'view_id' => $visitor->most_recent_view_id(), 'initial_view_id' => $visitor->most_recent_initial_view_id(), 'total' => $this->total, 'total_refunded' => $this->total_refunded, 'total_refunds' => $this->total_refunds, 'is_discounted' => $this->is_discounted, 'created_at' => (new \DateTime())->format('Y-m-d H:i:s')]);
     }
     public function update() : void
     {
         $orders_table = Query::get_table_name(Query::ORDERS);
-        Illuminate_Builder::get_builder()->from($orders_table)->where('woocommerce_order_id', '=', $this->order_id)->update(['is_included_in_analytics' => (new \IAWP\Ecommerce\WooCommerce_Status_Manager())->is_tracked_status($this->status), 'woocommerce_order_status' => $this->status, 'total' => $this->total, 'total_refunded' => $this->total_refunded, 'total_refunds' => $this->total_refunds, 'is_discounted' => $this->is_discounted]);
+        Illuminate_Builder::new()->from($orders_table)->where('woocommerce_order_id', '=', $this->order_id)->update(['is_included_in_analytics' => (new \IAWP\Ecommerce\WooCommerce_Status_Manager())->is_tracked_status($this->status), 'woocommerce_order_status' => $this->status, 'total' => $this->total, 'total_refunded' => $this->total_refunded, 'total_refunds' => $this->total_refunds, 'is_discounted' => $this->is_discounted]);
     }
     private function is_discounted_order($order) : bool
     {

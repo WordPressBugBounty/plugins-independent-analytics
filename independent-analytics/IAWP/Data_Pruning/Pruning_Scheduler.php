@@ -6,7 +6,7 @@ use IAWPSCOPED\Carbon\CarbonImmutable;
 use IAWP\Illuminate_Builder;
 use IAWP\Query;
 use IAWP\Utils\WordPress_Site_Date_Format_Pattern;
-use IAWPSCOPED\Proper\Timezone;
+use IAWP\Utils\Timezone;
 /** @internal */
 class Pruning_Scheduler
 {
@@ -39,7 +39,7 @@ class Pruning_Scheduler
         $scheduled_at->setTimezone(Timezone::site_timezone());
         $scheduled_at->setTimestamp(\wp_next_scheduled('iawp_prune'));
         $day = $scheduled_at->format(\get_option('date_format'));
-        $time = $scheduled_at->format(\get_option('time_format'));
+        $time = $scheduled_at->format(\IAWPSCOPED\iawp()->get_option('time_format', 'g:i a'));
         return \sprintf(\__('Next data pruning scheduled for %s at %s.', 'independent-analytics'), '<span>' . $day . '</span>', '<span>' . $time . '</span>');
     }
     public function get_pruning_description(string $cutoff) : string
@@ -56,8 +56,8 @@ class Pruning_Scheduler
     public function get_pruning_estimates(\DateTime $cutoff_date) : array
     {
         $sessions_table = Query::get_table_name(Query::SESSIONS);
-        $sessions = Illuminate_Builder::get_builder()->from($sessions_table)->selectRaw('COUNT(*) as sessions')->value('sessions');
-        $sessions_to_be_deleted = Illuminate_Builder::get_builder()->from($sessions_table)->selectRaw('COUNT(*) as sessions')->where('created_at', '<', $cutoff_date)->value('sessions');
+        $sessions = Illuminate_Builder::new()->from($sessions_table)->selectRaw('COUNT(*) as sessions')->value('sessions');
+        $sessions_to_be_deleted = Illuminate_Builder::new()->from($sessions_table)->selectRaw('COUNT(*) as sessions')->where('created_at', '<', $cutoff_date)->value('sessions');
         return ['sessions' => $sessions, 'sessions_to_be_deleted' => $sessions_to_be_deleted];
     }
     public function update_pruning_cutoff(string $cutoff) : bool

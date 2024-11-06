@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.6.2
 Requires PHP: 7.3.33
-Stable tag: 2.8.9
+Stable tag: 2.9.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,78 +20,48 @@ A simple WordPress analytics plugin that is GDPR compliant, lightning fast, and 
 **Main Features:**
 
 * Analytics dashboard inside your WP admin
-* Shows your most popular posts and pages
-* Lists your top traffic sources
-* Geodata with interactive world map
+* Most popular posts and pages
+* Top traffic sources
+* Geographic data with interactive world map
 * Device report with device types, browsers, and OS
 * Virtually zero performance impact
 * GDPR compliant
 
-> **PRO version now available**
-> **[Independent Analytics Pro](https://independentwp.com/pricing/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt&utm_content=Pro+Intro)** adds Campaign URLs, Real-time analytics, WooCommerce integration, and email reports. It's on sale for a limited time at 45% off.
-
-**Beautiful & Customizable Dashboard**
-
-Independent Analytics adds a full-featured analytics dashboard into your WP admin. The analytics dashboard shows you:
-
-* **Quick Stats** show you the total views & visitors
-* **Visual Chart** shows you traffic for each day
-* **Data Table** includes every page that's received a visit
-
-You can also sort and filter your data by any column, such as the page type, author, publication date, title, and more.
+> <strong>Independent Analytics Pro</strong><br />
+> Gain even more valuable insights with the Independent Analytics Pro plugin, which includes UTM campaign tracking, click tracking, real-time analytics, eCommerce sales tracking (WooCommerce & SureCart support), form submission tracking, and HTML email reports. 
+> [Click here to get Independent Analytics Pro &rarr;](https://independentwp.com/pricing/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt&utm_content=Intro)
 
 **The ONLY analytics tool with full WordPress integration**
 
-Independent Analytics is different from Google Analytics and other analytics WordPress plugins.
+Independent Analytics is different from Google Analytics and other analytics apps.
 
-Other tools show you a list of URLs alongside their metrics. Independent Analytics can show you the title of every page, the page type, the author, the publication date, the categories, and more, all alongside metrics like Views and Visitors.
+Other analytics tools watch your site from the outside like a visitor, but as a plugin, Independent Analytics runs on the inside. This means it has access to much more data to display in your reports. For instance, tools like Google Analytics will only list your URLs, but Independent Analytics lists each page by title and includes other properties, like the author, post type, and more.
 
-We call it a [page-based analytics tool](https://independentwp.com/knowledgebase/common-questions/page-based-analytics/).
+**Loved by the WP community** ❤️
 
-**No more copy & pasting tracking codes**
+https://www.youtube.com/watch?v=kd2hK68OFLc&t=2s
+
+**No more copying & pasting tracking codes**
 
 Just install the plugin, and tracking starts right away. You don't need to mess with any tracking codes, edit your site's head element, or create an account elsewhere.
 
 **GDPR Compliant**
 
-Independent Analytics is GDPR compliant out-of-box. Here's what makes it privacy-friendly:
+Independent Analytics is privacy-friendly by design.
 
 * Does not use cookies
-* Does not store personally identifiable information
+* Does not store personally identifiable information (PII)
 * Data is created and stored entirely on your server
 
-Since Independent Analytics uses cookie-less tracking, you don't need to add a cookie popup to your site.
-
-**Top traffic sources**
-
-Find out where your site visitors are coming from with the Referrer report. It shows you:
-
-* Every website that sent you a visitor
-* Automatic detection for popular search engines and social sites
-* Filter and sort referrers however you want.
-
-Using the traffic analytics, you'll quickly figure out which marketing tactics are working and which ones aren't.
-
-**Geolocation report**
-
-Find out where your visitors are located with the [Geolocation dashboard](https://independentwp.com/features/geographic-data/). It includes the following data for every visitor:
-
-* Continent
-* Country
-* Subdivision/Region
-* City
-
-Like other reports, you can set a custom date range, sort, and filter the results.
+Since Independent Analytics uses cookie-less tracking and doesn't store PII, you don't need to add a cookie popup to collect tracking consent.
 
 **Data portability**
 
-As an analytics WordPress plugin, your data is collected and stored entirely on your servers. This means you can:
+As an analytics WordPress plugin, your data is collected and stored entirely on your server. This means you can:
 
 * Backup your analytics every time you backup your site
 * Transfer your analytics to any domain
-* Export your data to CSV whenever you want
-
-Unlike the other analytics solutions that use your URLs, Independent Analytics keeps track of your pages, so if you transfer to a new domain, you won't see any difference in your analytics - the URLs will automatically update to match the new domain.
+* Export your data and save it locally or on the cloud
 
 **Who's it for?**
 
@@ -102,45 +72,53 @@ Independent Analytics is easy enough for a total beginner to use while still off
 * **News sites:** get same-day statistics for all your posts and filter by author to find your most successful writers.
 * **Startups:** start tracking your visits right away and find out which early marketing tactics are driving results.
 
-**All Features**
+**Top Features**
 
 Our WordPress statistics plugin is more robust than a simple hit counter and includes all of the following features:
 
-* Simple analytics dashboard
-* Views and Visitors metrics
-* Filter your analytics by page type
-* Instantly sort the data table
-* Pick custom date ranges
-* One-click pre-defined date ranges
-* Dashboard widget for quick referencing
-* Daily site views tracking
-* Referrer tracking & report
-* Device types and browsers
-* Ignore views from logged-in users
-* Ignore views from specific user roles
-* See searches on your site
-* Find 404 errors you missed
-* Beautiful data charts
-* Site stats for views & view growth
-* Responsive toolbar
-* CSV export for views and referrers
-* GDPR-compliant web stats
-* No cookies
-* Track visitors in WordPress
-* Public post view counter
-* Lightning fast tracking code
-* Fully internationalized and ready for translation
-* Custom calendar starting day and localized date formatting
-* Blog analytics
-* Dark mode
-* IP blocking
-* User role permission management
-* Views & Visitor growth over time
+* [Beautiful analytics dashboard](https://independentwp.com/features/dashboard/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - check your stats right inside your WP admin dashboard.
+* [Easy installation](https://independentwp.com/features/easy-setup/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - the tracking code is added to every page automatically.
+* [GDPR-friendly](https://independentwp.com/features/gdpr-analytics/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - enjoy privacy-friendly analytics without any cookie popups.
+* [Made for WordPress](https://independentwp.com/features/wordpress-analytics/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - deep integration with no outside account required.
+* [Referrer report](https://independentwp.com/features/referrers/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - find the sites sending you traffic.
+* [Geographic report](https://independentwp.com/features/geographic-data/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - see which countries and cities your visitors are from.
+* [Device report](https://independentwp.com/features/device-data/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - get a breakdown of traffic by device type, browser, and OS.
+* [Saved reports](https://independentwp.com/features/saved-reports/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - create and save your own custom reports to the sidebar.
+* [Filtering system](https://independentwp.com/knowledgebase/dashboard/how-to-filter-your-data/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - segment your data with the powerful filters.
+* [Vital metrics](https://independentwp.com/knowledgebase/data/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - find your views, visitors, sessions, bounce rate, session duration, and views per session metrics in the Quick Stats, chart, and data table.
+* [Visitors Growth](https://independentwp.com/knowledgebase/insights/find-growing-pages/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - find your fastest-growing pages and referrers.
+* [Author stats](https://independentwp.com/knowledgebase/insights/analyze-content-by-author/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - sort and filter your pages by author.
+* [Post type stats](https://independentwp.com/knowledgebase/insights/stats-single-post-type/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - segment by post type to view stats for your posts, search results, custom post types, and more.
+* [Ignore user roles](https://independentwp.com/knowledgebase/tracking/block-user-roles/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - easily ignore activity from admins while recording traffic from Subscribers and Customers
+* [Ignore IP addresses](https://independentwp.com/knowledgebase/tracking/block-ip-addresses/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - add any IP address to your ignore list in just two clicks.
+* [Landing page stats](https://independentwp.com/knowledgebase/data/what-are-entrances-exits-exit-percentage/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - Use the Entrances metric to find your top landing pages.
+* [CSV exporting](https://independentwp.com/knowledgebase/your-data/import-export-data/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - export any report to CSV for additional analysis.
+* [PDF exporting](https://independentwp.com/knowledgebase/dashboard/download-pdf-report/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - export any report as a beautiful PDF to share with colleagues.
+* [Share access with authors](https://independentwp.com/knowledgebase/dashboard/give-users-permission-view-analytics/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - share access with any user role in a few clicks and optionally limit the stats to only content published by the author.
+* [White-label the dashboard](https://independentwp.com/knowledgebase/dashboard/give-users-permission-view-analytics/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - white-label the analytics for non-admins to remove any branding and external links.
+* [View counts in the Posts menu](https://independentwp.com/knowledgebase/dashboard/view-count-column-posts-menu/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - check how many views your recent posts have while browsing the Posts menu
+* [Admin toolbar stats](https://independentwp.com/knowledgebase/dashboard/admin-bar-stats/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - see how many views each page has while viewing or editing it.
+* [Dashboard widget](https://independentwp.com/knowledgebase/dashboard/dashboard-widget-reposition-hide/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - get a quick look at your stats when you login.
+* [Public view counter](https://independentwp.com/knowledgebase/dashboard/display-view-counter/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - show off how many views each post on your site has gotten.
+* [Automatically delete old data](https://independentwp.com/knowledgebase/your-data/automatically-delete-old-data/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - delete data older than X days/years to limit the total data storage.
+* [Developer API](https://independentwp.com/knowledgebase/developer/developer-api/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - the rudimentary developer API lets you get stats from any page on your site.
+* [RTL support](https://independentwp.com/knowledgebase/common-questions/rtl-compatibility/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) - Independent Analytics works just as well for right-to-left languages.
+* **[Campaigns report](https://independentwp.com/features/campaigns/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) (Pro)** - create and track UTM campaign links.
+* **[Click tracking](https://independentwp.com/features/click-tracking/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) (Pro)** - track clicks on any link without touching code.
+* **[Real-time analytics](https://independentwp.com/features/real-time/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) (Pro)** - see how many visitors are currently on your site.
+* **[eCommerce analytics](https://independentwp.com/features/woocommerce-analytics/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) (Pro)** - integration with WooCommerce & SureCart lets you find your most profitable campaigns, landing pages, and referrers.
+* **[Form tracking](https://independentwp.com/features/form-tracking/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) (Pro)** - integration with 17 top form plugins lets you track submissions automatically and discover where your leads are coming from.
+* **[HTML email reports](https://independentwp.com/features/email-reports/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) (Pro)** - schedule a beautiful daily, weekly, or monthly email report for yourself and your clients.
 
-**Do even more with Independent Analytics PRO**
+**[Explore every feature with screenshots here &rarr;](https://independentwp.com/features/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt)**
 
-We've launched **[Independent Analytics Pro](https://independentwp.com/pricing/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt&utm_content=Pro+Conclusion)**, which includes campaign URL tracking, a campaign URL builder, Real time analytics, WooCommerce integration, and email reports. We're also offering a steep 45% lifetime discount for any early adopters who signup now.
+> <strong>Independent Analytics Pro</strong><br />
+> Gain even more valuable insights with the Independent Analytics Pro plugin, which includes UTM campaign tracking, real-time analytics, eCommerce sales tracking (WooCommerce & SureCart support), form submission tracking, and HTML email reports. 
+> [Click here to get Independent Analytics Pro &rarr;](https://independentwp.com/pricing/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt&utm_content=Outro)
 
+**About Us**
+
+Independent Analytics is designed and developed by Ben Sibley and Andrew Mead in the beautiful city of Philadelphia.
 
 == Installation ==
 
@@ -170,7 +148,7 @@ No, the tracking script is only 2kb and is inlined to the page, so there will be
 Yes, the moment you install Independent Analytics it will start tracking views. If you don't see any views right away, clear your site's cache and then visit your site in a private browser tab to record your first view.
 
 = What metrics does it track? =
-It tracks Views, Visitors, Referrers, and the approximate location of your visitors.
+It tracks views, visitors, sessions, session duration, bounce rate, and average session duration. 
 
 = Do I need to use a cookie popup with it? =
 No, Independent Analytics does not use cookies.
@@ -193,6 +171,36 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 6. See the device types, browsers, and OSes your visitors are using
 
 == Changelog ==
+
+= 2.9.2 - November 5th, 2024 =
+
+* **Fix:** move click tracking files into the plugin folder
+
+= 2.9.1 - November 4th, 2024 =
+
+* **Fix:** tracking script could trigger errors before database migration finished
+
+= 2.9.0 - November 4th, 2024 =
+
+* **Feature:** added click tracking to Independent Analytics Pro! You can now track clicks on any link on your website.
+* **Update:** improved the accessibility of the date picker with better keyboard navigation and button labeling
+* **Update:** added form tracking for Avada forms
+* **Update:** you can now customize the email address the email report comes from
+* **Update:** added a recommendation to watch the Getting Started tutorial for new users
+* **Update:** added a recommendation to track logged-in visitors when using WooCommerce or SureCart
+* **Update:** administrators are now ignored by default
+* **Update:** updated the Analytics menu icon
+* **Update:** now tracking link pages created by the ClickWhale plugin
+* **Update:** added integration with WC Price Based on Country plugin to get correct currency for WooCommerce sales
+* **Fix:** date picker months incorrect for users in the Rome timezone
+* **Fix:** bug made it difficult to select only one day in the date picker
+* **Fix:** mobile layout included extra horizontal space and scrolling
+* **Fix:** cursor would glitch when hovering over a table sorting button
+* **Fix:** chart was missing data if DST started in the visible range and using Cuban or Paraguay timezones
+* **Fix:** links couldn’t be clicked in the PDF report
+* **Fix:** error could be triggered if SureCart is installed and not yet connected to an account
+* **Fix:** error notices were getting logged every time a 404 page was visited if SureCart was installed
+* **Fix:** date of first recorded data wasn’t updating when old data is deleted via the automatic deletion feature
 
 = 2.8.9 - October 29th, 2024 =
 

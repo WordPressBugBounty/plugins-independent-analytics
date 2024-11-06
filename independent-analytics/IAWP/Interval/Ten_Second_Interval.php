@@ -13,7 +13,7 @@ class Ten_Second_Interval extends \IAWP\Interval\Interval
     {
         $views_table = Query::get_table_name(Query::VIEWS);
         $sessions_table = Query::get_table_name(Query::SESSIONS);
-        return Illuminate_Builder::get_builder()->from($views_table, 'views')->selectRaw('COUNT(DISTINCT (sessions.visitor_id)) AS visitors')->selectRaw('COUNT(*) AS views')->selectRaw("ABS(CEILING(TIMESTAMPDIFF(SECOND, '{$date_range->iso_end()}', views.viewed_at) / 10)) AS interval_ago")->leftJoin("{$sessions_table} AS sessions", function (JoinClause $join) {
+        return Illuminate_Builder::new()->from($views_table, 'views')->selectRaw('COUNT(DISTINCT (sessions.visitor_id)) AS visitors')->selectRaw('COUNT(*) AS views')->selectRaw("ABS(CEILING(TIMESTAMPDIFF(SECOND, '{$date_range->iso_end()}', views.viewed_at) / 10)) AS interval_ago")->leftJoin("{$sessions_table} AS sessions", function (JoinClause $join) {
             $join->on('views.session_id', '=', 'sessions.session_id');
         })->whereBetween('viewed_at', [$date_range->iso_start(), $date_range->iso_end()])->groupBy('interval_ago')->get()->all();
     }

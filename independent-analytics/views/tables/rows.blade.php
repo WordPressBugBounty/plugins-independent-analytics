@@ -28,6 +28,20 @@
         </p>
         <?php endif; ?>
     </div>
+    <?php elseif ($table_name == 'clicks'): ?>
+        <div class="data-error">
+            <p>
+                <?php esc_html_e('No click data found', 'independent-analytics'); ?>
+            </p>
+            <?php if(!$has_campaigns): ?>
+                <p>
+                    <a href="?page=independent-analytics-click-tracking"
+                       class="iawp-button purple">
+                            <?php esc_html_e('Edit your tracked links', 'independent-analytics'); ?>
+                    </a>
+                </p>
+            <?php endif; ?>
+        </div>
     <?php endif; ?>
 
     <?php else: ?>

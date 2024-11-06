@@ -9,19 +9,12 @@ class Sort_Configuration
     public const DESCENDING = 'desc';
     public const VALID_DIRECTIONS = [self::ASCENDING, self::DESCENDING];
     public const DEFAULT_DIRECTION = self::DESCENDING;
-    private $column = 'visitors';
     private $direction = self::DEFAULT_DIRECTION;
+    private $column;
     private $is_column_nullable;
-    /**
-     * @param string|null $column
-     * @param string|null $direction
-     * @param bool        $is_column_nullable
-     */
-    public function __construct(?string $column = null, ?string $direction = null, bool $is_column_nullable = \false)
+    public function __construct(string $column, ?string $direction = null, bool $is_column_nullable = \false)
     {
-        if (\is_string($column)) {
-            $this->column = $column;
-        }
+        $this->column = $column;
         if (\in_array($direction, self::VALID_DIRECTIONS)) {
             $this->direction = $direction;
         }

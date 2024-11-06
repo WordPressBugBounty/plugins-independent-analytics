@@ -4,6 +4,7 @@ const DatePicker = {
     datePicker: null,
     selectingStartDate: true,
     inputs: null,
+    inputsKeyboardMode: null,
     prevMonth: null,
     currentMonth: null,
     fastTravelButtons: null,
@@ -14,6 +15,10 @@ const DatePicker = {
         this.inputs = {
             'start': $('#iawp-start-date'), 
             'end': $('#iawp-end-date')
+        };
+        this.inputsKeyboardMode = {
+            'start': $('#iawp-start-date-keyboard'),
+            'end': $('#iawp-end-date-keyboard')
         };
         this.prevMonth = $('.iawp-calendar-month.iawp-previous');
         this.currentMonth = $('.iawp-calendar-month.iawp-current');
@@ -29,6 +34,7 @@ const DatePicker = {
         this.watchClicksOnFastTravelButtons();
         this.watchHoverEventsOnDays();
         this.watchChangesToDate();
+        this.watchChangesToKeyboardInputs();
         $('#dates-button, #cancel-date').on('click', function() {
             self.toggleModal();
         });
@@ -45,15 +51,18 @@ const DatePicker = {
         $('#apply-date').on('click', function() {
             self.apply();
         });
+        $('.keyboard-input').on('focus', function() {
+            self.datePicker.addClass('keyboard-mode');
+        });
     },
     watchClicksOnDays: function(){
         var self = this;
         this.datePicker.on('click', '.iawp-day', function() {
-            if (this.selectingStartDate && $(this).hasClass('iawp-start')) {
+            if (self.selectingStartDate && $(this).hasClass('iawp-start')) {
                 self.toggleInputs();
                 return;
             }
-            if (!this.selectingStartDate && $(this).hasClass('iawp-end')) {
+            if (!self.selectingStartDate && $(this).hasClass('iawp-end')) {
                 self.toggleInputs();
                 return;
             }
@@ -103,6 +112,15 @@ const DatePicker = {
             });
         }
     },
+    watchChangesToKeyboardInputs: function() {
+        var self = this;
+        for (let input in this.inputsKeyboardMode){
+            this.inputsKeyboardMode[input].on('change', function() {
+                $('.iawp-date-range-buttons .active').removeClass('active');
+                self.datePicker.data('relative-range', '')
+            });
+        }
+    },
     changeRangeCustomDates: function(day) {
         if (this.selectingStartDate) {
             this.changeStartOrEndDate('start', day);
@@ -144,6 +162,8 @@ const DatePicker = {
             $('.iawp-day[data-date="'+ formatted +'"').addClass(elemClass);
             this.inputs[bound].val(display);
             this.inputs[bound].data('date', formatted).trigger('date-changed');
+            // Update keyboard mode inputs
+            this.inputsKeyboardMode[bound].val(formatted);
         }
     },
     updateInRange: function() {
@@ -223,9 +243,16 @@ const DatePicker = {
         if (relativeRange != '') {
             detail = {relativeRangeId: relativeRange}
         } else {
-            detail = {
-                exactStart: this.inputs.start.data('date'),
-                exactEnd: this.inputs.end.data('date')
+            if (this.datePicker.hasClass('keyboard-mode')) {
+                detail = {
+                    exactStart: this.inputsKeyboardMode.start.val(),
+                    exactEnd: this.inputsKeyboardMode.end.val()
+                }
+            } else {
+                detail = {
+                    exactStart: this.inputs.start.data('date'),
+                    exactEnd: this.inputs.end.data('date')
+                }
             }
         }
         this.toggleModal();

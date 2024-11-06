@@ -7,7 +7,7 @@ use IAWP\Date_Range\Date_Range;
 use IAWP\Date_Range\Relative_Date_Range;
 use IAWP\Utils\String_Util;
 use IAWPSCOPED\Illuminate\Support\Carbon;
-use IAWPSCOPED\Proper\Timezone;
+use IAWP\Utils\Timezone;
 /** @internal */
 class Interval
 {

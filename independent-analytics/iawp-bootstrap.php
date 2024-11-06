@@ -2,12 +2,17 @@
 
 namespace IAWPSCOPED;
 
+// TODO The files that need to move
+// /Users/andrewmead/Herd/iawp/wp-content/uploads/iawp-click-config.php
+// /Users/andrewmead/Herd/iawp/wp-content/uploads/iawp-click-data.php
+// /Users/andrewmead/Herd/iawp/wp-content/uploads/iawp-click-endpoint.php
+use IAWP\Click_Tracking\Click_Processing_Job;
 use IAWP\Custom_WordPress_Columns\Views_Column;
 use IAWP\Dashboard_Options;
 use IAWP\Data_Pruning\Pruning_Scheduler;
 use IAWP\Database;
 use IAWP\Date_Range\Exact_Date_Range;
-use IAWP\Ecommerce\SureCart_Cron_Job;
+use IAWP\Ecommerce\SureCart_Event_Sync_Job;
 use IAWP\Ecommerce\SureCart_Store;
 use IAWP\Env;
 use IAWP\Geo_Database_Background_Job;
@@ -22,8 +27,8 @@ use IAWP\WP_Option_Cache_Bust;
 use IAWPSCOPED\Illuminate\Support\Carbon;
 \define( 'IAWP_DIRECTORY', \rtrim( \plugin_dir_path( __FILE__ ), \DIRECTORY_SEPARATOR ) );
 \define( 'IAWP_URL', \rtrim( \plugin_dir_url( __FILE__ ), '/' ) );
-\define( 'IAWP_VERSION', '2.8.9' );
-\define( 'IAWP_DATABASE_VERSION', '37' );
+\define( 'IAWP_VERSION', '2.9.2' );
+\define( 'IAWP_DATABASE_VERSION', '38' );
 \define( 'IAWP_LANGUAGES_DIRECTORY', \dirname( \plugin_basename( __FILE__ ) ) . '/languages' );
 \define( 'IAWP_PLUGIN_FILE', __DIR__ . '/iawp.php' );
 if ( \file_exists( \IAWPSCOPED\iawp_path_to( 'vendor/scoper-autoload.php' ) ) ) {
@@ -58,6 +63,12 @@ function iawp_path_to(  string $path  ) : string {
     return \implode( \DIRECTORY_SEPARATOR, [\IAWP_DIRECTORY, $path] );
 }
 
+/** @internal */
+function iawp_url_to(  string $path  ) : string {
+    $path = \trim( $path, '/' );
+    return \implode( '/', [\IAWP_URL, $path] );
+}
+
 /**
  * add_filter('iawp_temp_directory_path', function ($value) {
  *     return '/Users/andrew/site/wp-content/uploads/iawp';
@@ -78,18 +89,12 @@ function iawp_temp_path_to(  string $path  ) : string {
     $temp_directory = \rtrim( $temp_directory, \DIRECTORY_SEPARATOR );
     if ( !\is_writable( $temp_directory ) ) {
         \wp_mkdir_p( $temp_directory );
-    }
-    // Separate condition to see if wp_mkdir_p call fixed the issue
-    if ( !\is_writable( $temp_directory ) ) {
-        throw new \Exception('You have provided and missing or non-writable directory for the iawp_temp_directory_path filter: ' . $temp_directory);
+        // Separate condition to see if wp_mkdir_p call fixed the issue
+        if ( !\is_writable( $temp_directory ) ) {
+            throw new \Exception('The temp directory set with the iawp_temp_directory_path filter is missing or is not writable: ' . $temp_directory);
+        }
     }
     return \implode( \DIRECTORY_SEPARATOR, [$temp_directory, $path] );
-}
-
-/** @internal */
-function iawp_url_to(  string $path  ) : string {
-    $path = \trim( $path, '/' );
-    return \implode( '/', [\IAWP_URL, $path] );
 }
 
 /**
@@ -110,6 +115,13 @@ function iawp_upload_path_to(  string $path, bool $prefer_parent_site_upload_pat
         }
     }
     return \implode( \DIRECTORY_SEPARATOR, [$upload_directory, $path] );
+}
+
+/** @internal */
+function iawp_upload_url_to(  string $path  ) : string {
+    $upload_url = \wp_upload_dir()['baseurl'];
+    $path = \trim( $path, '/' );
+    return \implode( '/', [$upload_url, $path] );
 }
 
 /**
@@ -262,9 +274,11 @@ function iawp() {
     }
     Geo_Database_Background_Job::maybe_dispatch();
     \update_option( 'iawp_need_clear_cache', \true, \true );
+    if ( \get_option( 'iawp_show_gsg' ) == '' ) {
+        \update_option( 'iawp_show_gsg', '1', \true );
+    }
     \IAWPSCOPED\iawp()->cron_manager->schedule_refresh_salt();
     ( new Pruning_Scheduler() )->schedule();
-    \IAWP\Cron_Job_Autoloader::schedule();
     if ( \IAWPSCOPED\iawp_is_pro() ) {
         \IAWPSCOPED\iawp()->email_reports->schedule();
     }
@@ -274,28 +288,34 @@ function iawp() {
         \update_option( 'iawp_missing_tables', '1', \true );
     }
 } );
+\register_deactivation_hook( \IAWP_PLUGIN_FILE, function () {
+    \IAWPSCOPED\iawp()->cron_manager->unschedule_daily_salt_refresh();
+    ( new Pruning_Scheduler() )->unschedule();
+    if ( \IAWPSCOPED\iawp_is_pro() ) {
+        \IAWPSCOPED\iawp()->email_reports->unschedule();
+        ( new Click_Processing_Job() )->unschedule();
+        ( new SureCart_Event_Sync_Job() )->unschedule();
+    }
+    \wp_delete_file( \trailingslashit( \WPMU_PLUGIN_DIR ) . 'iawp-performance-boost.php' );
+    \delete_option( 'iawp_must_use_directory_not_writable' );
+} );
+// This fires for the original version of the plugin and not the updated version of the plugin
+\add_action( 'upgrader_process_complete', function () {
+    // Trigger the click processing cron job so no clicks are lost
+    \do_action( 'iawp_click_processing' );
+} );
 \add_action( 'init', function () {
-    if ( \IAWPSCOPED\iawp()->is_surecart_support_enabled() && \in_array( \get_option( 'iawp_surecart_event_syncing' ), ['', \false] ) ) {
-        $job = new SureCart_Cron_Job();
-        $job->schedule();
+    \IAWP\Click_Tracking\Config_File_Manager::ensure();
+    if ( \IAWPSCOPED\iawp_is_pro() ) {
+        ( new Click_Processing_Job() )->schedule();
+    }
+    if ( \IAWPSCOPED\iawp()->is_surecart_support_enabled() ) {
+        ( new SureCart_Event_Sync_Job() )->schedule();
     }
     if ( \IAWPSCOPED\iawp()->is_surecart_support_enabled() && \in_array( \get_option( 'iawp_surecart_currency_code' ), ['', \false] ) ) {
         SureCart_Store::cache_currency_code();
     }
 } );
-\register_deactivation_hook( \IAWP_PLUGIN_FILE, function () {
-    \IAWPSCOPED\iawp()->cron_manager->unschedule_daily_salt_refresh();
-    ( new Pruning_Scheduler() )->unschedule();
-    \IAWP\Cron_Job_Autoloader::unschedule();
-    if ( \IAWPSCOPED\iawp_is_pro() ) {
-        \IAWPSCOPED\iawp()->email_reports->unschedule();
-    }
-    \wp_delete_file( \trailingslashit( \WPMU_PLUGIN_DIR ) . 'iawp-performance-boost.php' );
-    \delete_option( 'iawp_must_use_directory_not_writable' );
-} );
-/*
-* The admin_init hook will fire when the dashboard is loaded or an admin ajax request is made
-*/
 \add_action( 'admin_init', function () {
     Carbon::setLocale( \get_locale() );
     Migrations\Migrations::handle_migration_18_error();
@@ -303,6 +323,7 @@ function iawp() {
     Migrations\Migrations::handle_migration_29_error();
     Patch::patch_2_6_2_incorrect_email_report_schedule();
     Patch::patch_2_8_7_potential_duplicates();
+    \IAWP\Click_Tracking\Config_File_Manager::ensure();
     $options = Dashboard_Options::getInstance();
     $options->maybe_redirect();
     new Migrations\Migration_Job();

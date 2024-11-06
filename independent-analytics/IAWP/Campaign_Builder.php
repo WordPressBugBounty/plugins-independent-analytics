@@ -93,7 +93,7 @@ class Campaign_Builder
     public static function delete_campaign(string $campaign_url_id)
     {
         $campaign_urls_table = \IAWP\Query::get_table_name(\IAWP\Query::CAMPAIGN_URLS);
-        $delete_campaign = \IAWP\Illuminate_Builder::get_builder();
+        $delete_campaign = \IAWP\Illuminate_Builder::new();
         $delete_campaign->from($campaign_urls_table)->where('campaign_url_id', '=', $campaign_url_id)->delete();
     }
 }

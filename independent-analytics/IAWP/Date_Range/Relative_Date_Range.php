@@ -5,7 +5,7 @@ namespace IAWP\Date_Range;
 use DateTime;
 use IAWP\Illuminate_Builder;
 use IAWP\Query;
-use IAWPSCOPED\Proper\Timezone;
+use IAWP\Utils\Timezone;
 /** @internal */
 class Relative_Date_Range extends \IAWP\Date_Range\Date_Range
 {
@@ -208,18 +208,20 @@ class Relative_Date_Range extends \IAWP\Date_Range\Date_Range
         $option_value = \get_option('iawp_beginning_of_time');
         if ($option_value !== \false && $option_value !== '') {
             try {
-                return new DateTime($option_value, Timezone::site_timezone());
+                $date = new DateTime($option_value, Timezone::utc_timezone());
+                $date->setTimezone(Timezone::site_timezone());
+                return $date;
             } catch (\Throwable $e) {
                 return new DateTime('now', Timezone::site_timezone());
             }
         }
         $views_table = Query::get_table_name(Query::VIEWS);
-        $first_view_at = Illuminate_Builder::get_builder()->select('viewed_at')->from($views_table, 'views')->orderBy('viewed_at')->value('viewed_at');
+        $first_view_at = Illuminate_Builder::new()->select('viewed_at')->from($views_table, 'views')->orderBy('viewed_at')->value('viewed_at');
         if (\is_null($first_view_at)) {
             return new DateTime('now', Timezone::site_timezone());
         }
         try {
-            $date = new DateTime($first_view_at, Timezone::site_timezone());
+            $date = new DateTime($first_view_at, Timezone::utc_timezone());
             \update_option('iawp_beginning_of_time', $first_view_at);
             return $date;
         } catch (\Throwable $e) {
