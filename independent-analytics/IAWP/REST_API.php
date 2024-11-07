@@ -35,7 +35,6 @@ class REST_API
             return;
         }
         if (!\get_option('iawp_track_authenticated_users') && \is_user_logged_in()) {
-            // Todo - Can we clear the cache plugins to make sure that the pages so tracking code as user logs in & out?
             return;
         }
         if ($this->block_user_role()) {
@@ -68,6 +67,23 @@ class REST_API
         ?>
         <script>
             (function () {
+                const calculateParentDistance = (child, parent) => {
+                    let count = 0;
+                    let currentElement = child;
+
+                    // Traverse up the DOM tree until we reach parent or the top of the DOM
+                    while (currentElement && currentElement !== parent) {
+                        currentElement = currentElement.parentNode;
+                        count++;
+                    }
+
+                    // If parent was not found in the hierarchy, return -1
+                    if (!currentElement) {
+                        return -1; // Indicates parent is not an ancestor of element
+                    }
+
+                    return count; // Number of layers between element and parent
+                }
                 const isMatchingClass = (linkRule, href, classes) => {
                     return classes.includes(linkRule.value)
                 }
@@ -126,19 +142,6 @@ class REST_API
                 const track = (element) => {
                     const href = element.href ?? null
                     const classes = Array.from(element.classList)
-                    const parentsToMatch = [
-                        'li.menu-item', // Non-block menu item
-                        'li.wp-block-navigation-item', // Block menu item
-                        'div.wp-block-button', // Block button group
-                    ]
-
-                    // When a WordPress menu or button allows a user customizable class, the class is
-                    // placed on a parent element instead of the button/a. If the parent matches one
-                    // of these elements, then it's classes should also be considered.
-                    if(parentsToMatch.some((toMatch) => element.parentElement.matches(toMatch))) {
-                        classes.push(...Array.from(element.parentElement.classList))
-                    }
-
                     const linkRules = <?php 
         echo $link_rules_json;
         ?>
@@ -147,14 +150,33 @@ class REST_API
                         return
                     }
 
+                    // For link rules that target a class, we need to allow that class to appear
+                    // in any ancestor up to the 7th ancestor. This loop looks for those matches
+                    // and counts them.
+                    linkRules.forEach((linkRule) => {
+                        if(linkRule.type !== 'class') {
+                            return;
+                        }
+
+                        const matchingAncestor = element.closest('.' + linkRule.value)
+
+                        if(!matchingAncestor || matchingAncestor.matches('html, body')) {
+                            return;
+                        }
+
+                        const depth = calculateParentDistance(element, matchingAncestor)
+
+                        if(depth < 7) {
+                            classes.push(linkRule.value)
+                        }
+                    });
+
                     const hasMatch = linkRules.some((linkRule) => {
                         return isMatch(linkRule, href, classes)
                     })
 
                     if(!hasMatch) {
                         return
-                    } else {
-                        
                     }
 
                     const url = "<?php 
@@ -223,7 +245,7 @@ class REST_API
         }
         ?>
 
-                    const element = event.target.closest('a, button')
+                    const element = event.target.closest('a, button, input[type="submit"], input[type="button"]')
 
                     if(!element) {
                         return

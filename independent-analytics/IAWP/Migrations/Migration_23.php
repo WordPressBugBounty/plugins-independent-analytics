@@ -79,8 +79,6 @@ class Migration_23 extends \IAWP\Migrations\Step_Migration
         $device_browsers_table = Query::get_table_name(Query::DEVICE_BROWSERS);
         return "\n            INSERT INTO {$device_browsers_table} (device_browser)\n            SELECT DISTINCT browser\n            FROM {$devices_table} WHERE browser IS NOT NULL\n        ";
     }
-    // TODO This one is failing
-    // Illegal mix of collations (utf8mb4_unicode_ci,IMPLICIT) and (utf8mb4_unicode_520_ci,IMPLICIT) for operation '='
     private function link_sessions_with_types() : string
     {
         $sessions_table = Query::get_table_name(Query::SESSIONS);

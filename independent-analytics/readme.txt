@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.6.2
 Requires PHP: 7.3.33
-Stable tag: 2.9.2
+Stable tag: 2.9.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -171,6 +171,11 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 6. See the device types, browsers, and OSes your visitors are using
 
 == Changelog ==
+
+= 2.9.3 - November 7th, 2024 =
+
+* **Fix:** updated click tracking to allow classes to be present on parent elements
+* **Fix:** date picker now works for mobile devices
 
 = 2.9.2 - November 5th, 2024 =
 
