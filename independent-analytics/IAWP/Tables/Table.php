@@ -347,7 +347,7 @@ abstract class Table
             return $column->id() === $id;
         });
         $column = \count($matches) === 1 ? \reset($matches) : null;
-        if (!$column->is_enabled()) {
+        if (\is_null($column) || !$column->is_enabled()) {
             return null;
         }
         return $column;
@@ -358,7 +358,7 @@ abstract class Table
             return new Sort_Configuration($this->default_sorting_column);
         }
         $column = $this->get_column($sort_column);
-        if (!$column->is_enabled_for_group($this->group)) {
+        if (\is_null($column) || !$column->is_enabled_for_group($this->group)) {
             return new Sort_Configuration($this->default_sorting_column);
         }
         return new Sort_Configuration($sort_column, $sort_direction, $column->is_nullable());

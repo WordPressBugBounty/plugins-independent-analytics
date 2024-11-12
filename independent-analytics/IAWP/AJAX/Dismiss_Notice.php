@@ -22,6 +22,8 @@ class Dismiss_Notice extends \IAWP\AJAX\AJAX
             \update_option('iawp_show_gsg', '0', \true);
         } elseif ($id == 'iawp_clicks_sync_notice') {
             \update_option('iawp_clicks_sync_notice', \true, \true);
+        } elseif ($id == 'enable-logged-in-tracking') {
+            \update_option('iawp_logged_in_tracking_notice', \true, \true);
         }
         return;
     }

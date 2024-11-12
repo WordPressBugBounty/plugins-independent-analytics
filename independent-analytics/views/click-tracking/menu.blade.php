@@ -68,8 +68,7 @@
                 {{ esc_html__('Archived Link Patterns', 'independent-analytics') }}
             </h2>
             <p class="description">
-                {{ esc_html__('Archived link patterns are no longer tracked, but their data remains in the Clicks report. Deleting an archived link pattern will remove it from this
-                list and remove its data from the Clicks report permanently.', 'independent-analytics') }}
+                {{ esc_html__('Archived link patterns are no longer tracked, but their data remains in the Clicks report. Deleting an archived link pattern will remove it from this list and remove its data from the Clicks report permanently.', 'independent-analytics') }}
             </p>
             <button id="toggle-archived-links" class="iawp-button toggle-archived-links" data-alt-text="{{ __('Hide Archived Links', 'independent-analytics') }}">{{ __('Show Archived Links', 'independent-analytics') }}</button>
             <div class="archived-links-table">

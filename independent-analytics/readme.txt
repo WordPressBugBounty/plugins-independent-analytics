@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.6.2
 Requires PHP: 7.3.33
-Stable tag: 2.9.3
+Stable tag: 2.9.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -171,6 +171,11 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 6. See the device types, browsers, and OSes your visitors are using
 
 == Changelog ==
+
+= 2.9.4 - November 12th, 2024 =
+
+* **Update:** add epub support for click tracking
+* **Fix:** invalid report columns could cause a PHP error
 
 = 2.9.3 - November 7th, 2024 =
 
