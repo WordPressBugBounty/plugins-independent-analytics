@@ -337,7 +337,7 @@ class REST_API
         if (\IAWP\Migrations\Migrations::is_migrating()) {
             return;
         }
-        if ($this->maybe_block_ip_address()) {
+        if (Request::is_ip_address_blocked()) {
             return;
         }
         $visitor = Visitor::fetch_current_visitor();
@@ -377,14 +377,6 @@ class REST_API
             return null;
         }
         return $safe_string;
-    }
-    private function maybe_block_ip_address()
-    {
-        $blocked_ips = \IAWPSCOPED\iawp()->get_option('iawp_blocked_ips', []);
-        if (\count($blocked_ips) == 0) {
-            return \false;
-        }
-        return Request::is_ip_address_blocked($blocked_ips);
     }
     private function block_user_role() : bool
     {

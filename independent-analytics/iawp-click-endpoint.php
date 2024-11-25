@@ -100,6 +100,44 @@ function get_visitor_token(Cache $cache): ?string
     return md5($cache->get_visitor_token_salt() . get_ip_address($cache) . $_SERVER['HTTP_USER_AGENT']);
 }
 
+function trailing_slash(string $path): string
+{
+    $path = rtrim($path, '/\\');
+
+    return $path . DIRECTORY_SEPARATOR;
+}
+
+/**
+ * Get the path to the click data file and create it if needed.
+ *
+ * @return string
+ */
+function get_click_data_file(): string
+{
+    $text_file = trailing_slash(sys_get_temp_dir()) . "iawp-click-data.txt";
+
+    if (is_file($text_file)) {
+        return $text_file;
+    }
+
+    if (file_put_contents($text_file, "") !== false) {
+        return $text_file;
+    }
+
+    $php_file = trailing_slash(__DIR__) . "iawp-click-data.php";
+
+    if (is_file($php_file)) {
+        return $php_file;
+    }
+
+    if (file_put_contents($php_file, "<?php exit; ?>\n") !== false) {
+        return $php_file;
+    }
+
+    // Unable to create either data file so there's nowhere to store the click data
+    exit;
+}
+
 $cache = get_cache();
 
 if (is_null($cache) || is_null(get_ip_address($cache))) {
@@ -117,13 +155,8 @@ if (is_null($body)) {
     exit;
 }
 
-$clicks_file = __DIR__ . "/iawp-click-data.php";
-
-if (!is_file($clicks_file)) {
-    file_put_contents($clicks_file, "<?php exit; ?>\n");
-}
-
-$data = [
+$click_data_file = get_click_data_file();
+$data            = [
     'href'          => $body['href'],
     'classes'       => $body['classes'],
     'payload'       => json_encode($body['payload']),
@@ -132,5 +165,6 @@ $data = [
     'created_at'    => time(),
 ];
 
-$file_resource = fopen($clicks_file, 'a');
+$file_resource = fopen($click_data_file, 'a');
 fwrite($file_resource, json_encode($data) . "\n");
+fclose($file_resource);

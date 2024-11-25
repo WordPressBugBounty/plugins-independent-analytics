@@ -3,9 +3,9 @@ Contributors: bensibley, andrewmead
 Tags: analytics, wordpress analytics, google analytics, analytics dashboard, statistics
 Donate link: https://independentwp.com
 Requires at least: 5.9
-Tested up to: 6.6.2
+Tested up to: 6.7
 Requires PHP: 7.3.33
-Stable tag: 2.9.4
+Stable tag: 2.9.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -163,14 +163,26 @@ Yes, Independent Analytics will run smoothly and won't create any errors even if
 We use best practice techniques to filter out bot visits as efficiently as possible. If you compare to traffic from Google Analytics, you'll find that your views and visitors are very similar. If you need to further eliminate bots from getting counted, we recommend adding a Firewall with Cloudflare.
 
 == Screenshots ==
-1. The analytics dashboard
-2. See page titles and types instead of just URLs
-3. Find your top traffic sources
-4. Geographic menu with world map chart
-5. Switch to Dark Mode
-6. See the device types, browsers, and OSes your visitors are using
+1. Beautiful analytics dashboard inside your WP admin
+2. Analyze your traffic sources with the Referrers report
+3. The Geographic report shows traffic from each country and city
+4. Find which devices and browsers your visitors use the most
+5. Customize your reports, then save them in the sidebar
+6. Filter your reports to analyze specific groups of pages
+7. View any metrics you want in the chart
+8. Customize the columns in the data table
+9. Export any report to PDF or CSV in one click
+10. Find stats in the admin toolbar when viewing a page
+11. Check your stats at a glance with the dashboard widget
+12. Share access with other users and limit the stats to their own posts only
+13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.9.5 - November 25th, 2024 =
+
+* **Update:** added CIDR support for IP address blocking
+* **Fix:** translation warning in WordPress 6.7
 
 = 2.9.4 - November 12th, 2024 =
 

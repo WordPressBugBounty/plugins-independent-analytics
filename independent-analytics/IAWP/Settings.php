@@ -6,7 +6,6 @@ use IAWP\Data_Pruning\Pruning_Scheduler;
 use IAWP\Ecommerce\WooCommerce_Status_Manager;
 use IAWP\Email_Reports\Interval_Factory;
 use IAWP\Utils\Request;
-use IAWP\Utils\String_Util;
 /** @internal */
 class Settings
 {
@@ -35,7 +34,7 @@ class Settings
             echo \IAWPSCOPED\iawp_blade()->run('settings.email-reports', ['is_scheduled' => \wp_next_scheduled('iawp_send_email_report'), 'scheduled_date' => \IAWPSCOPED\iawp()->email_reports->next_email_at_for_humans(), 'interval' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_interval', 'monthly'), 'time' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_time', 9), 'emails' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_email_addresses', []), 'from' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_from_address', \get_option('admin_email')), 'default_colors' => $defaults, 'input_default' => $input_defaults, 'timestamp' => $interval->next_interval_start()->getTimestamp()]);
         }
         $ips = \IAWPSCOPED\iawp()->get_option('iawp_blocked_ips', []);
-        echo \IAWPSCOPED\iawp_blade()->run('settings.block-ips', ['current_ip' => Request::ip(), 'ip_is_blocked' => Request::is_ip_address_blocked($ips), 'ips' => $ips]);
+        echo \IAWPSCOPED\iawp_blade()->run('settings.block-ips', ['current_ip' => Request::ip(), 'ip_is_blocked' => Request::is_ip_address_blocked(), 'ips' => $ips]);
         echo \IAWPSCOPED\iawp_blade()->run('settings.block-by-role', ['roles' => \wp_roles()->roles, 'blocked' => \IAWPSCOPED\iawp()->get_option('iawp_blocked_roles', ['administrator'])]);
         echo \IAWPSCOPED\iawp_blade()->run('settings.capabilities', ['editable_roles' => $this->get_editable_roles(), 'capabilities' => \IAWP\Capability_Manager::all_capabilities()]);
         echo \IAWPSCOPED\iawp_blade()->run('settings.view-counter');
@@ -256,22 +255,18 @@ class Settings
         $to_save = \implode(',', $to_save);
         return $to_save;
     }
-    public function sanitize_blocked_ips($user_input)
+    public function sanitize_blocked_ips($ips)
     {
-        $to_save = [];
-        foreach ($user_input as $ip) {
-            // Limit to two wildcards
-            if (\substr_count($ip, '*') > 2) {
+        $valid_ips = [];
+        foreach ($ips as $ip) {
+            $address = \IAWPSCOPED\IPLib\Factory::parseRangeString($ip);
+            // Skip invalid ip address ranges
+            if ($address === null) {
                 continue;
             }
-            // If it's safe with wildcard replacements, it's safe with them
-            $safe_replacement = String_Util::str_contains($ip, '.') ? '172' : '2601';
-            $wildcards_replaced = \str_replace('*', $safe_replacement, $ip);
-            if (\filter_var($wildcards_replaced, \FILTER_VALIDATE_IP)) {
-                $to_save[] = $ip;
-            }
+            $valid_ips[] = $ip;
         }
-        return $to_save;
+        return $valid_ips;
     }
     public function sanitize_email_address($email)
     {

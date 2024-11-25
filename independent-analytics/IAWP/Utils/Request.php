@@ -3,6 +3,7 @@
 namespace IAWP\Utils;
 
 use IAWPSCOPED\Illuminate\Support\Str;
+use IAWPSCOPED\IPLib\Factory;
 /** @internal */
 class Request
 {
@@ -69,38 +70,26 @@ class Request
     {
         return $_SERVER['HTTP_USER_AGENT'];
     }
-    public static function is_ip_address_blocked($blocked_ips)
+    public static function is_ip_address_blocked() : bool
     {
-        $visitor_ip = self::ip();
-        if (\in_array($visitor_ip, $blocked_ips)) {
-            return \true;
-        }
-        $wildcard_ips = [];
-        foreach ($blocked_ips as $blocked_ip) {
-            if (\IAWP\Utils\String_Util::str_contains($blocked_ip, '*')) {
-                $wildcard_ips[] = $blocked_ip;
-            }
-        }
-        if (\count($wildcard_ips) == 0) {
+        $blocked_ips = \IAWPSCOPED\iawp()->get_option('iawp_blocked_ips', []);
+        // No address could be blocked
+        if (\count($blocked_ips) == 0) {
             return \false;
         }
-        $delimeter = \IAWP\Utils\String_Util::str_contains($visitor_ip, '.') ? '.' : ':';
-        $visitor_parts = \explode($delimeter, $visitor_ip);
-        $goal = \count($visitor_parts);
-        foreach ($wildcard_ips as $blocked_ip) {
-            $blocked_parts = \explode($delimeter, $blocked_ip);
-            $matches = 0;
-            for ($i = 0; $i < \count($visitor_parts); $i++) {
-                if (!\array_key_exists($i, $blocked_parts)) {
-                    $matches++;
-                } elseif ($visitor_parts[$i] == $blocked_parts[$i] || $blocked_parts[$i] == '*') {
-                    $matches++;
-                    continue;
-                } else {
-                    break;
-                }
+        $visitor_address = Factory::parseAddressString(self::ip());
+        // We cannot block invalid ip addresses
+        if ($visitor_address === null) {
+            return \false;
+        }
+        foreach ($blocked_ips as $blocked_ip) {
+            $blocked_range = Factory::parseRangeString($blocked_ip);
+            // We cannot check an ip address against an invalid range
+            if ($blocked_range === null) {
+                continue;
             }
-            if ($matches == $goal) {
+            // If the address matches this particular blocked range, then the ip address is indeed blocked
+            if ($blocked_range->contains($visitor_address)) {
                 return \true;
             }
         }

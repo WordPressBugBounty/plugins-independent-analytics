@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Independent Analytics 2.9.4\n"
+"Project-Id-Version: Independent Analytics 2.9.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/independent-analytics-production\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-11-12T13:39:43+00:00\n"
+"POT-Creation-Date: 2024-11-25T17:29:26+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: independent-analytics\n"
@@ -132,7 +132,7 @@ msgid "Every minute"
 msgstr ""
 
 #: IAWP/Custom_WordPress_Columns/Views_Column.php:34
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:243
 #: IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
 #: IAWP/Statistics/Statistics.php:150
 #: IAWP/Tables/Table_Campaigns.php:25
@@ -146,8 +146,8 @@ msgid "Views"
 msgstr ""
 
 #: IAWP/Dashboard_Widget.php:24
-#: IAWP/Independent_Analytics.php:124
 #: IAWP/Independent_Analytics.php:125
+#: IAWP/Independent_Analytics.php:126
 #: IAWP/Interrupt.php:19
 #: IAWP/Interrupt.php:20
 msgid "Analytics"
@@ -498,116 +498,116 @@ msgstr ""
 msgid "Event"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:130
+#: IAWP/Independent_Analytics.php:131
 msgid "Settings"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:136
+#: IAWP/Independent_Analytics.php:137
 msgid "Campaign Builder"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:141
+#: IAWP/Independent_Analytics.php:142
 #: views/click-tracking/menu.blade.php:4
 msgid "Click Tracking"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:148
+#: IAWP/Independent_Analytics.php:149
 msgid "Help & Support"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:154
-#: IAWP/Independent_Analytics.php:156
+#: IAWP/Independent_Analytics.php:155
+#: IAWP/Independent_Analytics.php:157
 msgid "Changelog"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:155
+#: IAWP/Independent_Analytics.php:156
 msgid "New"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:162
+#: IAWP/Independent_Analytics.php:163
 msgid "Upgrade to Pro &rarr;"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:243
 msgid "Apply Exact Dates"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:243
 msgid "Apply Relative Dates"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:243
 msgid "Copied"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:243
 msgid "Exporting Pages..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:243
 #: views/settings/export-data.blade.php:11
 msgid "Export Pages"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:243
 msgid "Exporting Referrers..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:243
 #: views/settings/export-data.blade.php:13
 msgid "Export Referrers"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:243
 msgid "Exporting Geolocations..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:243
 #: views/settings/export-data.blade.php:15
 msgid "Export Geolocations"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:243
 msgid "Exporting Devices..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:243
 #: views/settings/export-data.blade.php:17
 msgid "Export Devices"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:243
 msgid "Exporting Campaigns..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:243
 #: views/settings/export-data.blade.php:19
 msgid "Export Campaigns"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:243
 msgid "Exporting Clicks"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:243
 #: views/settings/export-data.blade.php:20
 msgid "Export Clicks"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:243
 msgid "This report archive is invalid. Please export your reports and try again."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:243
 #: views/partials/sidebar.blade.php:35
 msgid "Open menu"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:243
 msgid "Close menu"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:262
+#: IAWP/Independent_Analytics.php:263
 #: IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
 msgid "Analytics Dashboard"
 msgstr ""
@@ -695,7 +695,7 @@ msgstr ""
 
 #: IAWP/Models/Page_Author_Archive.php:32
 #: IAWP/Models/Page_Post_Type_Archive.php:39
-#: views/click-tracking/link.blade.php:95
+#: views/click-tracking/link.blade.php:102
 #: views/click-tracking/menu.blade.php:37
 msgid "Archive"
 msgstr ""
@@ -902,131 +902,131 @@ msgstr ""
 msgid "Link Pattern"
 msgstr ""
 
-#: IAWP/Settings.php:52
+#: IAWP/Settings.php:51
 msgid "Basic Settings"
 msgstr ""
 
-#: IAWP/Settings.php:56
+#: IAWP/Settings.php:55
 msgid "Dark mode"
 msgstr ""
 
-#: IAWP/Settings.php:58
+#: IAWP/Settings.php:57
 msgid "Track logged in users"
 msgstr ""
 
-#: IAWP/Settings.php:60
+#: IAWP/Settings.php:59
 msgid "Admin toolbar stats"
 msgstr ""
 
-#: IAWP/Settings.php:62
+#: IAWP/Settings.php:61
 msgid "Dashboard widget"
 msgstr ""
 
-#: IAWP/Settings.php:64
+#: IAWP/Settings.php:63
 msgid "Views column"
 msgstr ""
 
-#: IAWP/Settings.php:67
+#: IAWP/Settings.php:66
 msgid "First day of week"
 msgstr ""
 
-#: IAWP/Settings.php:70
+#: IAWP/Settings.php:69
 msgid "Salt refresh rate"
 msgstr ""
 
-#: IAWP/Settings.php:94
+#: IAWP/Settings.php:93
 msgid "Sunday"
 msgstr ""
 
-#: IAWP/Settings.php:94
+#: IAWP/Settings.php:93
 msgid "Monday"
 msgstr ""
 
-#: IAWP/Settings.php:94
+#: IAWP/Settings.php:93
 msgid "Tuesday"
 msgstr ""
 
-#: IAWP/Settings.php:94
+#: IAWP/Settings.php:93
 msgid "Wednesday"
 msgstr ""
 
-#: IAWP/Settings.php:94
+#: IAWP/Settings.php:93
 msgid "Thursday"
 msgstr ""
 
-#: IAWP/Settings.php:94
+#: IAWP/Settings.php:93
 msgid "Friday"
 msgstr ""
 
-#: IAWP/Settings.php:94
+#: IAWP/Settings.php:93
 msgid "Saturday"
 msgstr ""
 
-#: IAWP/Settings.php:102
+#: IAWP/Settings.php:101
 msgid "Public View Counter"
 msgstr ""
 
-#: IAWP/Settings.php:106
+#: IAWP/Settings.php:105
 #: views/settings/view-counter/enable.blade.php:3
 msgid "Enable the view counter"
 msgstr ""
 
-#: IAWP/Settings.php:109
+#: IAWP/Settings.php:108
 msgid "Display on these post types"
 msgstr ""
 
-#: IAWP/Settings.php:113
+#: IAWP/Settings.php:112
 msgid "Show it in this location"
 msgstr ""
 
-#: IAWP/Settings.php:116
+#: IAWP/Settings.php:115
 msgid "Date range to count views"
 msgstr ""
 
-#: IAWP/Settings.php:120
+#: IAWP/Settings.php:119
 msgid "Exclude these pages"
 msgstr ""
 
-#: IAWP/Settings.php:122
-#: IAWP/Settings.php:173
+#: IAWP/Settings.php:121
+#: IAWP/Settings.php:172
 #: IAWP/View_Counter.php:59
 #: IAWP/View_Counter.php:78
 msgid "Views:"
 msgstr ""
 
-#: IAWP/Settings.php:125
+#: IAWP/Settings.php:124
 msgid "Edit the label"
 msgstr ""
 
-#: IAWP/Settings.php:129
+#: IAWP/Settings.php:128
 msgid "Display the label"
 msgstr ""
 
-#: IAWP/Settings.php:133
+#: IAWP/Settings.php:132
 msgid "Display the icon"
 msgstr ""
 
-#: IAWP/Settings.php:136
+#: IAWP/Settings.php:135
 msgid "Make the view counter private?"
 msgstr ""
 
-#: IAWP/Settings.php:139
+#: IAWP/Settings.php:138
 msgid "Allow manual adjustment?"
 msgstr ""
 
-#: IAWP/Settings.php:155
+#: IAWP/Settings.php:154
 msgid "Uncheck all boxes to only show view count manually. See shortcode documentation below for details."
 msgstr ""
 
-#: IAWP/Settings.php:194
+#: IAWP/Settings.php:193
 msgid "Block IP Addresses"
 msgstr ""
 
-#: IAWP/Settings.php:201
+#: IAWP/Settings.php:200
 msgid "Scheduled Email Reports"
 msgstr ""
 
-#: IAWP/Settings.php:211
+#: IAWP/Settings.php:210
 msgid "Block by User Role"
 msgstr ""
 
@@ -1460,7 +1460,7 @@ msgid "Copy to Form"
 msgstr ""
 
 #: views/campaign-builder.blade.php:215
-#: views/click-tracking/link.blade.php:103
+#: views/click-tracking/link.blade.php:110
 #: views/click-tracking/menu.blade.php:84
 msgid "Delete"
 msgstr ""
@@ -1482,7 +1482,7 @@ msgstr ""
 #: views/settings/delete.blade.php:33
 #: views/settings/delete.blade.php:56
 #: views/settings/pruner.blade.php:73
-#: views/click-tracking/link.blade.php:89
+#: views/click-tracking/link.blade.php:96
 #: views/click-tracking/menu.blade.php:106
 #: views/settings/pruner.blade.php:74
 msgid "Cancel"
@@ -1652,7 +1652,7 @@ msgstr ""
 #: views/settings/pruner.blade.php:32
 #: views/settings/pruner.blade.php:37
 #: views/settings/woocommerce.blade.php:38
-#: views/click-tracking/link.blade.php:88
+#: views/click-tracking/link.blade.php:95
 #: views/settings/pruner.blade.php:33
 #: views/settings/pruner.blade.php:38
 #: views/settings/woocommerce.blade.php:40
@@ -2287,12 +2287,12 @@ msgstr ""
 msgid "Load Next %d Rows"
 msgstr ""
 
-#: views/click-tracking/link.blade.php:85
+#: views/click-tracking/link.blade.php:92
 #: views/click-tracking/menu.blade.php:36
 msgid "Edit"
 msgstr ""
 
-#: views/click-tracking/link.blade.php:98
+#: views/click-tracking/link.blade.php:105
 #: views/click-tracking/menu.blade.php:83
 msgid "Resume Tracking"
 msgstr ""

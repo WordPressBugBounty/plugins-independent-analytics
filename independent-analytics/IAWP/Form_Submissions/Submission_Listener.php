@@ -203,6 +203,7 @@ class Submission_Listener
             } catch (\Throwable $e) {
             }
         }, 10, 3);
+        // Forminator
         \add_action('forminator_form_submit_response', function ($response, $form_id) {
             if (!\function_exists('IAWPSCOPED\\forminator_get_form_name')) {
                 return $response;
@@ -215,6 +216,7 @@ class Submission_Listener
             }
             return $response;
         }, 10, 2);
+        // Forminator (ajax)
         \add_action('forminator_form_ajax_submit_response', function ($response, $form_id) {
             if (!\function_exists('IAWPSCOPED\\forminator_get_form_name')) {
                 return $response;
@@ -255,6 +257,22 @@ class Submission_Listener
             } catch (\Throwable $e) {
             }
         }, 10, 2);
+        // WP Store Locator
+        \add_action('wpsl_store_search', function () {
+            try {
+                $is_autoloaded = isset($_GET['autoload']) && $_GET['autoload'];
+                // This hooks fires after the locations are fetched on page load. We only want to track
+                // manual form submissions.
+                if ($is_autoloaded) {
+                    return;
+                }
+                // There's only one possible form for this plugin. This is why the form id and the forms
+                // name are hardcoded.
+                $submission = new \IAWP\Form_Submissions\Submission(20, \intval(1), Security::string('WP Store Locator'));
+                $submission->record_submission();
+            } catch (\Throwable $e) {
+            }
+        }, 10, 0);
         // // Template
         // add_action('iawp_some_form_callback', function () {
         //     try {

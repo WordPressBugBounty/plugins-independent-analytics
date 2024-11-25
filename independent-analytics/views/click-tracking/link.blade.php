@@ -56,7 +56,13 @@
         </span>
         <span class="type">{{ esc_html($types[$link['type']]) }}</span>
         <span class="value">
-            @if ($link['type'] == 'class' || $link['type'] == 'extension')
+            @if ($link['type'] == 'class')
+                {{ '.' . esc_html($link['value']) }}
+                <button class="copy-class" data-controller="clipboard" data-action="clipboard#copy"
+                    data-clipboard-text-value="{{ esc_attr($link['value']) }}">
+                    <span class="dashicons dashicons-clipboard"></span>
+                </button>
+            @elseif ($link['type'] == 'extension')
                 {{ '.' . esc_html($link['value']) }}
             @elseif ($link['type'] == 'domain')
                 {{ 'http://' . esc_html($link['value']) }}

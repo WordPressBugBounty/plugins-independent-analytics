@@ -21,7 +21,7 @@
                         <p>Learn more about <a
                             href="https://independentwp.com/features/click-tracking/"
                             target="_blank">click tracking here</a> or review the <a
-                            href="https://feedback.independentwp.com/updates/version-2-9-click-tracking-added-to-ia-pro"
+                            href="https://independentwp.com/changelog/version-2-9/"
                             target="_blank">full changelog here</a>.
                         </p>
                 </div>
@@ -45,7 +45,7 @@
                         brand new date picker and the option to choose which WooCommerce order statuses to include in
                         the analytics.</p>
                     <p>You can review the <a
-                            href="https://feedback.independentwp.com/updates/version-2-8-surecart-integration-is-here"
+                            href="https://independentwp.com/changelog/version-2-8/"
                             target="_blank">full changelog here</a>.</p>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                     <p>Version 2.7.0 adds a new option to automatically delete data older than X days/years, and lets
                         your authors view analytics for their own content only.</p>
                     <p>You can review the <a
-                            href="https://feedback.independentwp.com/updates/version-2-7-delete-old-data-author-analytics-dashboards"
+                            href="https://independentwp.com/changelog/version-2-7/"
                             target="_blank">full changelog here</a>.</p>
                 </div>
             </div>

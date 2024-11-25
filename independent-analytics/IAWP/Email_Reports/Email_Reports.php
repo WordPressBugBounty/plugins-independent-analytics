@@ -17,10 +17,8 @@ use IAWP\Utils\Timezone;
 /** @internal */
 class Email_Reports
 {
-    private $interval;
     public function __construct()
     {
-        $this->interval = \IAWP\Email_Reports\Interval_Factory::from_option();
         $monitored_options = ['iawp_email_report_interval', 'iawp_email_report_time', 'iawp_email_report_email_addresses'];
         foreach ($monitored_options as $option) {
             \add_action('update_option_' . $option, [$this, 'schedule'], 10, 0);
@@ -31,15 +29,17 @@ class Email_Reports
         \add_action('add_option_iawp_dow', [$this, 'maybe_reschedule'], 10, 0);
         \add_action('iawp_send_email_report', [$this, 'send_email_report']);
     }
+    private function interval() : \IAWP\Email_Reports\Interval
+    {
+        return \IAWP\Email_Reports\Interval_Factory::from_option();
+    }
     public function schedule()
     {
-        // Necessary to update the interval as the option backing it may have changed
-        $this->interval = \IAWP\Email_Reports\Interval_Factory::from_option();
         $this->unschedule();
         if (empty(\IAWPSCOPED\iawp()->get_option('iawp_email_report_email_addresses', []))) {
             return;
         }
-        \wp_schedule_event($this->interval->next_interval_start()->getTimestamp(), $this->interval->id(), 'iawp_send_email_report');
+        \wp_schedule_event($this->interval()->next_interval_start()->getTimestamp(), $this->interval()->id(), 'iawp_send_email_report');
     }
     public function unschedule()
     {
@@ -68,7 +68,7 @@ class Email_Reports
         if (!\wp_next_scheduled('iawp_send_email_report')) {
             return \esc_html__('There is no email scheduled.', 'independent-analytics');
         }
-        $date = $this->interval->next_interval_start();
+        $date = $this->interval()->next_interval_start();
         $day = $date->format(\get_option('date_format'));
         $time = $date->format(\IAWPSCOPED\iawp()->get_option('time_format', 'g:i a'));
         return \sprintf(\__('Next email scheduled for %s at %s.', 'independent-analytics'), '<span>' . $day . '</span>', '<span>' . $time . '</span>');
@@ -93,7 +93,7 @@ class Email_Reports
         // rescheduling monthly email reports as they're sent. That allows us to pinpoint the exact
         // correct next time to run it, while still falling back to the inaccurate monthly interval
         // should a given email never send for some reason.
-        if ($this->interval->id() === 'monthly') {
+        if ($this->interval()->id() === 'monthly') {
             $this->schedule();
         }
         $to = \IAWPSCOPED\iawp()->get_option('iawp_email_report_email_addresses', []);
@@ -108,7 +108,7 @@ class Email_Reports
     }
     public function get_email_body($colors = '')
     {
-        $statistics = new Page_Statistics($this->interval->date_range());
+        $statistics = new Page_Statistics($this->interval()->date_range());
         $quick_stats = \array_values(\array_filter($statistics->get_statistics(), function (Statistic $statistics) {
             return $statistics->is_visible() && $statistics->is_group_plugin_enabled();
         }));
@@ -117,12 +117,12 @@ class Email_Reports
         return \IAWPSCOPED\iawp_blade()->run('email.email', [
             'site_title' => \get_bloginfo('name'),
             'site_url' => URL::new(\get_site_url())->get_domain(),
-            'date' => $this->interval->report_time_period_for_humans(),
+            'date' => $this->interval()->report_time_period_for_humans(),
             // The value that needs to change
             'stats' => $quick_stats,
             'top_ten' => $this->get_top_ten(),
             'chart_views' => $chart->views,
-            'chart_title' => $this->interval->chart_title(),
+            'chart_title' => $this->interval()->chart_title(),
             'most_views' => $chart->most_views,
             'y_labels' => $chart->y_labels,
             'x_labels' => $chart->x_labels,
@@ -137,12 +137,12 @@ class Email_Reports
         }
         $parts[] = \__('Analytics Report for', 'independent-analytics');
         $parts[] = \get_bloginfo('name');
-        $parts[] = '[' . $this->interval->report_time_period_for_humans() . ']';
+        $parts[] = '[' . $this->interval()->report_time_period_for_humans() . ']';
         return \esc_html(\implode(' ', $parts));
     }
     private function get_top_ten() : array
     {
-        $date_range = $this->interval->date_range();
+        $date_range = $this->interval()->date_range();
         $queries = ['pages' => 'title', 'referrers' => 'referrer', 'countries' => 'country', 'devices' => 'device_type', 'campaigns' => 'title', 'landing_pages' => 'title', 'exit_pages' => 'title'];
         $top_ten = [];
         $sort_configuration = new Sort_Configuration('views', 'desc');

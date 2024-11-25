@@ -11,13 +11,13 @@ export default class extends Controller {
 
     copy(e) {
         const statusTextElement = this.hasStatusTextElementTarget ? this.statusTextElementTarget : this.element
-        const initialText = statusTextElement.textContent
+        const initialText = statusTextElement.innerHTML
         const textToCopy = this.textValue
 
         this.copyTextToClipboard(textToCopy)
-        statusTextElement.textContent = iawpText.copied
+        statusTextElement.innerHTML = iawpText.copied
         setTimeout(() => {
-            statusTextElement.textContent = initialText
+            statusTextElement.innerHTML = initialText
         }, 1000)
     }
 

@@ -6,6 +6,7 @@ use IAWP\Cron_Job;
 use IAWP\Models\Visitor;
 use IAWP\Payload_Validator;
 use IAWP\Utils\Security;
+use IAWPSCOPED\Illuminate\Support\Str;
 /** @internal */
 class Click_Processing_Job extends Cron_Job
 {
@@ -19,24 +20,24 @@ class Click_Processing_Job extends Cron_Job
             self::unschedule();
             return;
         }
-        $job_id = \rand();
-        $original_file = \IAWPSCOPED\iawp_path_to('iawp-click-data.php');
-        $job_file = \IAWPSCOPED\iawp_path_to("iawp-click-data-{$job_id}.php");
-        if (!\is_file($original_file)) {
+        $click_data_file = $this->get_click_data_file();
+        if ($click_data_file === null) {
             return;
         }
-        $original_handle = \fopen($original_file, 'r');
-        if ($original_handle === \false) {
+        $job_file = $this->create_job_file($click_data_file);
+        if ($job_file === null) {
             return;
         }
-        \fclose($original_handle);
-        \rename($original_file, $job_file);
         $job_handle = \fopen($job_file, 'r');
         if ($job_handle === \false) {
             return;
         }
-        // Skip the first line which is just a php exit; statement
-        \fgets($job_handle);
+        // The first line for the PHP file is an exit statement to keep the contents private. This
+        // should be skipped when parsing the file.
+        if (\pathinfo($job_file, \PATHINFO_EXTENSION) === 'php') {
+            \fgets($job_handle);
+            // Skip first line
+        }
         while (($json = \fgets($job_handle)) !== \false) {
             $event = \json_decode($json, \true);
             $event['href'] = Security::string($event['href']);
@@ -53,5 +54,31 @@ class Click_Processing_Job extends Cron_Job
         }
         \fclose($job_handle);
         \unlink($job_file);
+    }
+    private function get_click_data_file() : ?string
+    {
+        $text_file = Str::finish(\sys_get_temp_dir(), \DIRECTORY_SEPARATOR) . "iawp-click-data.txt";
+        if (\is_file($text_file)) {
+            return $text_file;
+        }
+        $php_file = \IAWPSCOPED\iawp_path_to('iawp-click-data.php');
+        if (\is_file($php_file)) {
+            return $php_file;
+        }
+        return null;
+    }
+    private function create_job_file(string $file) : ?string
+    {
+        if (!\is_file($file)) {
+            return null;
+        }
+        $job_id = \rand();
+        $extension = \pathinfo($file, \PATHINFO_EXTENSION);
+        $job_file = Str::finish(\dirname($file), \DIRECTORY_SEPARATOR) . "iawp-click-data-{$job_id}.{$extension}";
+        \rename($file, $job_file);
+        if (!\is_file($job_file)) {
+            return null;
+        }
+        return $job_file;
     }
 }
