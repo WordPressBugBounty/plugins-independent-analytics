@@ -73,6 +73,7 @@ class Independent_Analytics
         \add_action('admin_init', [$this, 'maybe_delete_mu_plugin']);
         \add_action('admin_body_class', [$this, 'add_body_class']);
         \add_filter('sgs_whitelist_wp_content', [$this, 'whitelist_click_endpoint']);
+        \add_filter('cmplz_whitelisted_script_tags', [$this, 'whitelist_script_tag_for_complianz']);
     }
     public function add_body_class($classes)
     {
@@ -326,6 +327,12 @@ class Independent_Analytics
     public function is_ecommerce_support_enabled() : bool
     {
         return $this->is_woocommerce_support_enabled() || $this->is_surecart_support_enabled();
+    }
+    // This whitelists our plugin with the "Complianz" plugin
+    public function whitelist_script_tag_for_complianz($scripts)
+    {
+        $scripts[] = '/wp-json/iawp/search';
+        return $scripts;
     }
     private function actually_check_if_woocommerce_support_is_enabled() : bool
     {

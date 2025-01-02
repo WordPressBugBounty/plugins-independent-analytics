@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.7
 Requires PHP: 7.3.33
-Stable tag: 2.9.5
+Stable tag: 2.9.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -178,6 +178,16 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.9.6 - December 30th, 2024 =
+
+* **Fix:** resolved incompatibility with Complianz
+* **Fix:** resolved incompatibility with AnalyticsWP
+* **Fix:** resolved incompatibility with GiveWP
+* **Fix:** very long URLs could trigger a fatal error
+* **Fix:** deleting old data didn't include click data
+* **Fix:** resolved scenario where clicks could go untracked
+* **Fix:** eCommerce analytics correctly calculate orders with a negative total
 
 = 2.9.5 - November 25th, 2024 =
 

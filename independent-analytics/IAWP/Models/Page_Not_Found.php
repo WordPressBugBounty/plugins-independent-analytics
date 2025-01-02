@@ -2,6 +2,7 @@
 
 namespace IAWP\Models;
 
+use IAWPSCOPED\Illuminate\Support\Str;
 /** @internal */
 class Page_Not_Found extends \IAWP\Models\Page
 {
@@ -21,7 +22,7 @@ class Page_Not_Found extends \IAWP\Models\Page
     }
     protected function resource_value() : string
     {
-        return $this->not_found_url;
+        return Str::limit($this->not_found_url, 2083);
     }
     protected function calculate_is_deleted() : bool
     {

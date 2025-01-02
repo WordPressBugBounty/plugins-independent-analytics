@@ -4,6 +4,7 @@ namespace IAWP\Data_Pruning;
 
 use IAWP\Illuminate_Builder;
 use IAWP\Query;
+use IAWP\Tables;
 /** @internal */
 class Pruner
 {
@@ -56,6 +57,13 @@ class Pruner
             // Delete orphaned campaigns
             $campaigns_table = Query::get_table_name(Query::CAMPAIGNS);
             $this->delete_session_orphans($campaigns_table, 'campaign_id');
+            // Delete orphaned clicks
+            $this->delete_view_orphans(Tables::clicks(), 'view_id', 'id');
+            // Delete orphaned clicked links
+            $clicks_table = Tables::clicks();
+            Illuminate_Builder::new()->from(Tables::clicked_links(), 'orphans')->leftJoin("{$clicks_table} AS clicks", "orphans.click_id", '=', "clicks.click_id")->whereNull('clicks.click_id')->delete();
+            // Delete orphaned click targets
+            Illuminate_Builder::new()->from(Tables::click_targets(), 'orphans')->leftJoin("{$clicks_table} AS clicks", "orphans.click_target_id", '=', "clicks.click_target_id")->whereNull('clicks.click_id')->delete();
         });
         \delete_option('iawp_beginning_of_time');
     }

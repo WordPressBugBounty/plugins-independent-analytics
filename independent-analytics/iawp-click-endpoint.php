@@ -120,7 +120,7 @@ function get_click_data_file(): string
         return $text_file;
     }
 
-    if (file_put_contents($text_file, "") !== false) {
+    if (file_put_contents($text_file, "") !== false && file_get_contents($text_file) !== false) {
         return $text_file;
     }
 
