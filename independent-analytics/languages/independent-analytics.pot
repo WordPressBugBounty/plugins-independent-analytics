@@ -1,15 +1,15 @@
-# Copyright (C) 2024 Independent Analytics
+# Copyright (C) 2025 Independent Analytics
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Independent Analytics 2.9.6\n"
+"Project-Id-Version: Independent Analytics 2.9.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/independent-analytics-production\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-12-30T14:49:45+00:00\n"
+"POT-Creation-Date: 2025-01-09T16:22:11+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: independent-analytics\n"
@@ -132,7 +132,7 @@ msgid "Every minute"
 msgstr ""
 
 #: IAWP/Custom_WordPress_Columns/Views_Column.php:34
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:246
 #: IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
 #: IAWP/Statistics/Statistics.php:150
 #: IAWP/Tables/Table_Campaigns.php:25
@@ -146,8 +146,8 @@ msgid "Views"
 msgstr ""
 
 #: IAWP/Dashboard_Widget.php:24
-#: IAWP/Independent_Analytics.php:126
-#: IAWP/Independent_Analytics.php:127
+#: IAWP/Independent_Analytics.php:128
+#: IAWP/Independent_Analytics.php:129
 #: IAWP/Interrupt.php:19
 #: IAWP/Interrupt.php:20
 msgid "Analytics"
@@ -498,116 +498,116 @@ msgstr ""
 msgid "Event"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:132
+#: IAWP/Independent_Analytics.php:134
 msgid "Settings"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:138
+#: IAWP/Independent_Analytics.php:140
 msgid "Campaign Builder"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:143
+#: IAWP/Independent_Analytics.php:145
 #: views/click-tracking/menu.blade.php:4
 msgid "Click Tracking"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:150
+#: IAWP/Independent_Analytics.php:152
 msgid "Help & Support"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:156
 #: IAWP/Independent_Analytics.php:158
+#: IAWP/Independent_Analytics.php:160
 msgid "Changelog"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:157
+#: IAWP/Independent_Analytics.php:159
 msgid "New"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:164
+#: IAWP/Independent_Analytics.php:166
 msgid "Upgrade to Pro &rarr;"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:246
 msgid "Apply Exact Dates"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:246
 msgid "Apply Relative Dates"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:246
 msgid "Copied"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:246
 msgid "Exporting Pages..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:246
 #: views/settings/export-data.blade.php:11
 msgid "Export Pages"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:246
 msgid "Exporting Referrers..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:246
 #: views/settings/export-data.blade.php:13
 msgid "Export Referrers"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:246
 msgid "Exporting Geolocations..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:246
 #: views/settings/export-data.blade.php:15
 msgid "Export Geolocations"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:246
 msgid "Exporting Devices..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:246
 #: views/settings/export-data.blade.php:17
 msgid "Export Devices"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:246
 msgid "Exporting Campaigns..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:246
 #: views/settings/export-data.blade.php:19
 msgid "Export Campaigns"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:246
 msgid "Exporting Clicks"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:246
 #: views/settings/export-data.blade.php:20
 msgid "Export Clicks"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:246
 msgid "This report archive is invalid. Please export your reports and try again."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:246
 #: views/partials/sidebar.blade.php:35
 msgid "Open menu"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:246
 msgid "Close menu"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:264
+#: IAWP/Independent_Analytics.php:266
 #: IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
 msgid "Analytics Dashboard"
 msgstr ""

@@ -23,6 +23,7 @@ use IAWP\Migrations\Migrations;
 use IAWP\Utils\Plugin;
 use IAWP\Utils\Singleton;
 use IAWP\Utils\Timezone;
+use IAWPSCOPED\Illuminate\Support\Carbon;
 /** @internal */
 class Independent_Analytics
 {
@@ -36,6 +37,7 @@ class Independent_Analytics
     // This is where we attach functions to WP hooks
     private function __construct()
     {
+        $this->configure_carbon();
         $this->settings = new \IAWP\Settings();
         new \IAWP\REST_API();
         new \IAWP\Dashboard_Widget();
@@ -334,6 +336,15 @@ class Independent_Analytics
         $scripts[] = '/wp-json/iawp/search';
         return $scripts;
     }
+    // This is for compatibility with the "Lock and Protect System Folders" setting in the Security Optimizer plugin
+    public function whitelist_click_endpoint($whitelist)
+    {
+        if (\IAWPSCOPED\iawp_is_free()) {
+            return $whitelist;
+        }
+        $whitelist[] = 'iawp-click-endpoint.php';
+        return $whitelist;
+    }
     private function actually_check_if_woocommerce_support_is_enabled() : bool
     {
         global $wpdb;
@@ -371,13 +382,13 @@ class Independent_Analytics
             return 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNTEzcHgiIGhlaWdodD0iMjU0cHgiIHZpZXdCb3g9IjAgMCA1MTMgMjU0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPHRpdGxlPkljb248L3RpdGxlPgogICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGcgaWQ9Ik1lbnUtSWNvbiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTc3NSwgLTIyOSkiIGZpbGw9IiNGRkZGRkYiPgogICAgICAgICAgICA8ZyBpZD0iV2hpdGUtQ29weSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzMxLCA1NikiPgogICAgICAgICAgICAgICAgPGcgaWQ9Ikljb24iIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ0LjUsIDE3MykiPgogICAgICAgICAgICAgICAgICAgIDxwb2x5Z29uIGlkPSJOZWNrLTMiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQwMi44MDU3LCAxMDguNjEyNSkgcm90YXRlKDQ1KSB0cmFuc2xhdGUoLTQwMi44MDU3LCAtMTA4LjYxMjUpIiBwb2ludHM9IjM5MS4xNjkzNTYgNTYuMjQ4ODI1OSA0MTQuNDQyMDgzIDU2LjI0ODgyNTkgNDE0LjQ0MjA4MyAxNjAuOTc2MDk5IDM5MS4xNjkzNTYgMTYwLjk3NjA5OSI+PC9wb2x5Z29uPgogICAgICAgICAgICAgICAgICAgIDxwb2x5Z29uIGlkPSJOZWNrLTIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI1NiwgMTI1LjY3MjcpIHJvdGF0ZSgtNjApIHRyYW5zbGF0ZSgtMjU2LCAtMTI1LjY3MjcpIiBwb2ludHM9IjI0NC4zNjM2MzYgNzMuMzA5MDkwOSAyNjcuNjM2MzY0IDczLjMwOTA5MDkgMjY3LjYzNjM2NCAxNzguMDM2MzY0IDI0NC4zNjM2MzYgMTc4LjAzNjM2NCI+PC9wb2x5Z29uPgogICAgICAgICAgICAgICAgICAgIDxwb2x5Z29uIGlkPSJOZWNrLTEiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwOS41Njk0LCAxNDQuNjg1Mikgcm90YXRlKDQ1KSB0cmFuc2xhdGUoLTEwOS41Njk0LCAtMTQ0LjY4NTIpIiBwb2ludHM9Ijk3LjkzMjk5MjMgOTIuMzIxNTUzMiAxMjEuMjA1NzIgOTIuMzIxNTUzMiAxMjEuMjA1NzIgMTk3LjA0ODgyNiA5Ny45MzI5OTIzIDE5Ny4wNDg4MjYiPjwvcG9seWdvbj4KICAgICAgICAgICAgICAgICAgICA8Y2lyY2xlIGlkPSJQb2ludC00IiBjeD0iNDY4Ljk0NTQ1NSIgY3k9IjQzLjA1NDU0NTUiIHI9IjQzLjA1NDU0NTUiPjwvY2lyY2xlPgogICAgICAgICAgICAgICAgICAgIDxjaXJjbGUgaWQ9IlBvaW50LTMiIGN4PSIzMzYuMjkwOTA5IiBjeT0iMTczLjM4MTgxOCIgcj0iNDMuMDU0NTQ1NSI+PC9jaXJjbGU+CiAgICAgICAgICAgICAgICAgICAgPGNpcmNsZSBpZD0iUG9pbnQtMiIgY3g9IjE3NS43MDkwOTEiIGN5PSI3OS4xMjcyNzI3IiByPSI0My4wNTQ1NDU1Ij48L2NpcmNsZT4KICAgICAgICAgICAgICAgICAgICA8Y2lyY2xlIGlkPSJQb2ludC0xIiBjeD0iNDMuMDU0NTQ1NSIgY3k9IjIxMC42MTgxODIiIHI9IjQzLjA1NDU0NTUiPjwvY2lyY2xlPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=';
         }
     }
-    // This is for compatibility with the "Lock and Protect System Folders" setting in the Security Optimizer plugin
-    public function whitelist_click_endpoint($whitelist)
+    private function configure_carbon()
     {
-        if (\IAWPSCOPED\iawp_is_free()) {
-            return $whitelist;
+        $locale = \get_locale();
+        // Carbon will throw an error if de_DE_Formal is used
+        if ('de_de_formal' === \strtolower($locale)) {
+            $locale = 'de_DE';
         }
-        $whitelist[] = 'iawp-click-endpoint.php';
-        return $whitelist;
+        Carbon::setLocale($locale);
     }
 }
