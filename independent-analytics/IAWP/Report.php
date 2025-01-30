@@ -34,6 +34,15 @@ class Report
     {
         return \property_exists($this->row, 'report_id');
     }
+    public function has_filters() : bool
+    {
+        $array = (array) $this->row;
+        if (\array_key_exists('filters', $array) && \is_string($array['filters'])) {
+            $filters = \json_decode($array['filters'], \true);
+            return \false !== $filters && \is_array($filters);
+        }
+        return \false;
+    }
     public function is_current() : bool
     {
         $report_id = \array_key_exists('report', $_GET) ? \sanitize_text_field($_GET['report']) : null;

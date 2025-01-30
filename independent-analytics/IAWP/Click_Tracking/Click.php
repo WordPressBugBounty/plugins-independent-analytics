@@ -52,7 +52,7 @@ class Click
         if (\is_null($href)) {
             return null;
         }
-        if (Str::startsWith($href, ['tel:', 'mailto:'])) {
+        if (Str::startsWith($href, ['tel:', 'sms:', 'mailto:'])) {
             return Str::before($href, ':');
         }
         return null;
@@ -62,7 +62,7 @@ class Click
         if (\is_null($href)) {
             return null;
         }
-        if (Str::startsWith($href, ['tel:', 'mailto:'])) {
+        if (Str::startsWith($href, ['tel:', 'sms:', 'mailto:'])) {
             return Str::after($href, ':');
         }
         return $href;

@@ -16,11 +16,13 @@ use IAWP\Statistics\Intervals\Interval;
 use IAWP\Statistics\Intervals\Intervals;
 use IAWP\Tables;
 use IAWP\Utils\Calculations;
+use IAWP\Utils\CSV;
+use IAWP\Utils\Timezone;
+use IAWP\Utils\WordPress_Site_Date_Format_Pattern;
 use IAWPSCOPED\Illuminate\Database\Query\Builder;
 use IAWPSCOPED\Illuminate\Database\Query\JoinClause;
 use IAWPSCOPED\Illuminate\Support\Collection;
 use IAWPSCOPED\Illuminate\Support\Str;
-use IAWP\Utils\Timezone;
 use Throwable;
 /** @internal */
 abstract class Statistics
@@ -121,6 +123,38 @@ abstract class Statistics
             $this->rows->attach_filters($query);
         })->whereBetween('sessions.created_at', [$this->date_range->iso_start(), $this->date_range->iso_end()])->whereBetween('views.viewed_at', [$this->date_range->iso_start(), $this->date_range->iso_end()]);
         return $query->value('total_table_rows');
+    }
+    public function get_statistics_as_csv() : CSV
+    {
+        $statistics = \array_values(\array_filter($this->get_statistics(), function (\IAWP\Statistics\Statistic $statistic) {
+            return $statistic->is_visible() && $statistic->is_enabled() && $statistic->is_group_plugin_enabled();
+        }));
+        $csv_header = [];
+        $csv_rows = [];
+        // The first column is the date interval label. There's no title for this column.
+        $csv_header[] = '';
+        foreach ($statistics as $statistic) {
+            $csv_header[] = $statistic->name();
+        }
+        $total_rows = \count($statistics[0]->statistic_over_time());
+        for ($i = 0; $i < $total_rows; $i++) {
+            $csv_row = [];
+            // The first row is the date interval label
+            $csv_row[] = $statistics[0]->statistic_over_time()[$i][0]->format(WordPress_Site_Date_Format_Pattern::for_php());
+            foreach ($statistics as $statistic) {
+                $csv_row[] = $statistic->format_value($statistic->statistic_over_time()[$i][1]);
+            }
+            $csv_rows[] = $csv_row;
+        }
+        // Use the summary row to show statistic totals
+        $summary_row = ['Total'];
+        foreach ($statistics as $index => $statistic) {
+            $summary_row[$index + 1] = $statistic->formatted_value();
+        }
+        // Add summary row to the top
+        \array_unshift($csv_rows, $summary_row);
+        $csv = new CSV($csv_header, $csv_rows);
+        return $csv;
     }
     /**
      * Define which id column to use to count up the total table rows. This is only required
@@ -322,11 +356,17 @@ abstract class Statistics
     }
     private function get_ecommerce_icon() : ?string
     {
-        if (\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_surecart_support_enabled()) {
+        if (\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_edd_support_enabled() && !\IAWPSCOPED\iawp()->is_pmpro_support_enabled()) {
             return 'woocommerce';
         }
-        if (\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_woocommerce_support_enabled()) {
+        if (\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_edd_support_enabled() && !\IAWPSCOPED\iawp()->is_pmpro_support_enabled()) {
             return 'surecart';
+        }
+        if (\IAWPSCOPED\iawp()->is_edd_support_enabled() && !\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_pmpro_support_enabled()) {
+            return 'edd';
+        }
+        if (\IAWPSCOPED\iawp()->is_pmpro_support_enabled() && !\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_edd_support_enabled()) {
+            return 'pmpro';
         }
         return null;
     }

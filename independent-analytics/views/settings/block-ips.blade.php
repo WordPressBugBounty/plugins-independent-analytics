@@ -8,7 +8,11 @@
     <p><?php esc_html_e('Ignored IP addresses can still access the site, but their activity will not show up in the analytics.', 'independent-analytics'); ?></p>
     <p class="current-ip-status <?php echo $ip_is_blocked ? 'blocked' : 'unblocked'; ?>">
         <?php $ip_is_blocked ? esc_html_e('Your IP address is ignored:', 'independent-analytics') : esc_html_e('Your IP address is not ignored:', 'independent-analytics'); ?>
-        <span class="current-ip"><?php echo esc_html($current_ip); ?></span></p>
+        <span id="current-ip" class="current-ip" data-current-ip="{{ esc_attr($current_ip) }}">{{ esc_html($current_ip) }}</span>
+        @if (!$ip_is_blocked) 
+            <button id="block-current-ip" class="block-current-ip iawp-button">{{ esc_html__('Block this IP', 'independent-analytics')}}</button>
+        @endif
+    </p>
     <form method='post' action='options.php' id="block-ip-form" class="block-ip-form">
         <input type='hidden' name='option_page' value='iawp_blocked_ip_settings'/>
         <input type="hidden" name="action" value="update"/>

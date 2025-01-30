@@ -37,6 +37,18 @@ class Tables
     {
         return self::prefix('reports');
     }
+    public static function orders() : string
+    {
+        return self::prefix('orders');
+    }
+    public static function forms() : string
+    {
+        return self::prefix('forms');
+    }
+    public static function form_submissions() : string
+    {
+        return self::prefix('form_submissions');
+    }
     private static function prefix(string $name)
     {
         global $wpdb;

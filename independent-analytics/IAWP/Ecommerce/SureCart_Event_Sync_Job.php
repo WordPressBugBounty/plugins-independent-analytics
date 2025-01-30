@@ -15,7 +15,8 @@ class SureCart_Event_Sync_Job extends Cron_Job
     }
     public function handle() : void
     {
-        $last_seen_event_at = \get_option('iawp_last_seen_surecart_event_at', \time());
+        $one_day_ago = \time() - 86400;
+        $last_seen_event_at = \get_option('iawp_last_seen_surecart_event_at', $one_day_ago);
         $events = new Collection();
         $page = 1;
         while (\true) {

@@ -2,7 +2,6 @@
 
 namespace IAWP\Models;
 
-use IAWP\Utils\Plugin;
 use IAWP\Utils\String_Util;
 /** @internal */
 class Page_Singular extends \IAWP\Models\Page

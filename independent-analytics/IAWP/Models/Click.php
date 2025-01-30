@@ -22,6 +22,9 @@ class Click
     }
     public function link_target() : ?string
     {
+        if ($this->link_target === "") {
+            return null;
+        }
         return $this->link_target;
     }
     public function link_clicks() : int

@@ -8,20 +8,26 @@ class Chart_Geo
 {
     private $countries;
     private $title;
+    private $is_showing_skeleton_ui;
     /**
      * @param Geo[] $geos
      * @param $title
      */
-    public function __construct(array $geos, $title = null)
+    public function __construct(array $geos, $title = null, bool $is_showing_skeleton_ui = \false)
     {
         $this->countries = $this->parse($geos);
         $this->title = $title;
+        $this->is_showing_skeleton_ui = $is_showing_skeleton_ui;
     }
     public function get_html()
     {
-        $chart_data = \array_map(function ($country) {
-            return [$country['country_code'], $country['views'], $this->get_tooltip($country)];
-        }, $this->countries);
+        if ($this->is_showing_skeleton_ui) {
+            $chart_data = [];
+        } else {
+            $chart_data = \array_map(function ($country) {
+                return [$country['country_code'], $country['views'], $this->get_tooltip($country)];
+            }, $this->countries);
+        }
         $dark_mode = \IAWPSCOPED\iawp()->get_option('iawp_dark_mode', '0');
         \ob_start();
         ?>

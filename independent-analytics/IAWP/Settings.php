@@ -23,15 +23,15 @@ class Settings
     {
         echo \IAWPSCOPED\iawp_blade()->run('settings.index');
         if (\IAWPSCOPED\iawp_is_pro()) {
-            $defaults = $this->email_report_colors();
-            $saved = \IAWPSCOPED\iawp()->get_option('iawp_email_report_colors', $defaults);
+            $default_colors = $this->email_report_colors();
+            $saved = \IAWPSCOPED\iawp()->get_option('iawp_email_report_colors', $default_colors);
             // There were 6 colors and now 9, so there is a saved value but 7-9 don't exist
-            $input_defaults = $defaults;
+            $input_defaults = $default_colors;
             for ($i = 0; $i < \count($saved); $i++) {
                 $input_defaults[$i] = $saved[$i];
             }
             $interval = Interval_Factory::from_option();
-            echo \IAWPSCOPED\iawp_blade()->run('settings.email-reports', ['is_scheduled' => \wp_next_scheduled('iawp_send_email_report'), 'scheduled_date' => \IAWPSCOPED\iawp()->email_reports->next_email_at_for_humans(), 'interval' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_interval', 'monthly'), 'time' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_time', 9), 'emails' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_email_addresses', []), 'from' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_from_address', \get_option('admin_email')), 'default_colors' => $defaults, 'input_default' => $input_defaults, 'timestamp' => $interval->next_interval_start()->getTimestamp()]);
+            echo \IAWPSCOPED\iawp_blade()->run('settings.email-reports', ['is_scheduled' => \wp_next_scheduled('iawp_send_email_report'), 'scheduled_date' => \IAWPSCOPED\iawp()->email_reports->next_email_at_for_humans(), 'interval' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_interval', 'monthly'), 'time' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_time', 9), 'emails' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_email_addresses', []), 'from' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_from_address', \get_option('admin_email')), 'reply_to' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_reply_to_address', \get_option('admin_email')), 'footer_text' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_footer', $this->email_footer()), 'default_colors' => $default_colors, 'input_default' => $input_defaults, 'timestamp' => $interval->next_interval_start()->getTimestamp()]);
         }
         $ips = \IAWPSCOPED\iawp()->get_option('iawp_blocked_ips', []);
         echo \IAWPSCOPED\iawp_blade()->run('settings.block-ips', ['current_ip' => Request::ip(), 'ip_is_blocked' => Request::is_ip_address_blocked(), 'ips' => $ips]);
@@ -42,7 +42,6 @@ class Settings
             echo \IAWPSCOPED\iawp_blade()->run('settings.woocommerce', ['statuses' => new WooCommerce_Status_Manager()]);
         }
         echo \IAWPSCOPED\iawp_blade()->run('settings.export-reports', ['report_finder' => new \IAWP\Report_Finder()]);
-        echo \IAWPSCOPED\iawp_blade()->run('settings.export-data');
         echo \IAWPSCOPED\iawp_blade()->run('settings.pruner', ['pruner' => new Pruning_Scheduler()]);
         echo \IAWPSCOPED\iawp_blade()->run('settings.delete', ['site_name' => \get_bloginfo('name'), 'site_url' => \site_url()]);
     }
@@ -204,6 +203,8 @@ class Settings
         \register_setting('iawp_email_report_settings', 'iawp_email_report_email_addresses', ['type' => 'array', 'default' => [], 'sanitize_callback' => [$this, 'sanitize_email_addresses']]);
         \register_setting('iawp_email_report_settings', 'iawp_email_report_colors', ['type' => 'array', 'default' => $this->email_report_colors(), 'sanitize_callback' => [$this, 'sanitize_email_report_colors']]);
         \register_setting('iawp_email_report_settings', 'iawp_email_report_from_address', ['type' => 'string', 'default' => \get_option('admin_email'), 'sanitize_callback' => [$this, 'sanitize_email_address']]);
+        \register_setting('iawp_email_report_settings', 'iawp_email_report_reply_to_address', ['type' => 'string', 'default' => \get_option('admin_email'), 'sanitize_callback' => [$this, 'sanitize_email_address']]);
+        \register_setting('iawp_email_report_settings', 'iawp_email_report_footer', ['type' => 'string', 'default' => $this->email_footer(), 'sanitize_callback' => 'sanitize_text_field']);
     }
     public function register_block_by_role_settings()
     {
@@ -355,5 +356,9 @@ class Settings
     private function email_report_colors()
     {
         return ['#5123a0', '#fafafa', '#3a1e6b', '#fafafa', '#5123a0', '#a985e6', '#ece9f2', '#f7f5fa', '#ece9f2', '#dedae6'];
+    }
+    private function email_footer()
+    {
+        return \sprintf(\esc_html__('This email was generated and delivered by %s', 'independent-analytics'), \esc_url(\get_site_url()));
     }
 }

@@ -156,11 +156,7 @@ abstract class Table
             return Number_Formatter::decimal($row->{$column_id}(), 2);
         } elseif ($column_id === 'link_target') {
             $value = $row->{$column_id}();
-            if (!\is_string($value)) {
-                return $value;
-            }
-            $url = new URL($value);
-            if ($url->is_valid_url()) {
+            if (\is_string($value) && URL::new($value)->is_valid_url()) {
                 return '<a href="' . Security::string($value) . '" target="_blank" class="external-link">' . Security::string($value) . '<span class="dashicons dashicons-external"></span></a>';
             }
             return $value;
@@ -220,22 +216,34 @@ abstract class Table
         ?>
                             <span data-report-target="spinner" class="dashicons dashicons-update spin hidden"></span>
                         </div>
-                        <button id="download-csv" class="iawp-button" data-report-target="exportCSV" data-action="report#exportCSV">
-                            <span class="dashicons dashicons-media-spreadsheet"></span>
-                            <span class="iawp-label">
-                                <?php 
-        \esc_html_e('Download CSV', 'independent-analytics');
+                        <div class="download-button-container">
+                            <button id="download-csv" class="iawp-button" data-report-target="exportReportTable" data-action="report#exportReportTable">
+                                <span class="dashicons dashicons-media-spreadsheet"></span>
+                                <span class="iawp-label">
+                                    <?php 
+        \esc_html_e('Download Table CSV', 'independent-analytics');
         ?>
-                            </span>
-                        </button>
-                        <button id="download-pdf" class="iawp-button" data-report-target="exportPDF" data-action="report#exportPDF" disabled="disabled">
-                            <span class="dashicons dashicons-pdf"></span>
-                            <span class="iawp-label">
-                                <?php 
+                                </span>
+                            </button>
+                            <button id="download-report-statistics-csv" class="iawp-button" data-report-target="exportReportStatistics" data-action="report#exportReportStatistics">
+                                <span class="dashicons dashicons-media-spreadsheet"></span>
+                                <span class="iawp-label">
+                                    <?php 
+        \esc_html_e('Download Daily Metrics CSV', 'independent-analytics');
+        ?>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="download-button-container">
+                            <button id="download-pdf" class="iawp-button" data-report-target="exportPDF" data-action="report#exportPDF" disabled="disabled">
+                                <span class="dashicons dashicons-pdf"></span>
+                                <span class="iawp-label">
+                                    <?php 
         \esc_html_e('Download PDF', 'independent-analytics');
         ?>
-                            </span>
-                        </button>
+                                </span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -279,6 +287,10 @@ abstract class Table
                     $csv_row[] = Number_Formatter::second_to_minute_timestamp($value);
                 } elseif ($column_id === 'views_per_session') {
                     $csv_row[] = Number_Formatter::decimal($value, 2);
+                } elseif ($column_id === 'wc_gross_sales' || $column_id === 'wc_refunded_amount' || $column_id === 'wc_net_sales' || $column_id === 'wc_average_order_volume') {
+                    $csv_row[] = Currency::format($value);
+                } elseif ($column_id === 'wc_earnings_per_visitor') {
+                    $csv_row[] = Currency::format($value);
                 } else {
                     $csv_row[] = $row->{$column_id}();
                 }

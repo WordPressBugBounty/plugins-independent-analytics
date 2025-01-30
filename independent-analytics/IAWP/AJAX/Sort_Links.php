@@ -4,7 +4,6 @@ namespace IAWP\AJAX;
 
 use IAWP\Capability_Manager;
 use IAWP\Illuminate_Builder;
-use IAWP\Query;
 use IAWP\Tables;
 /** @internal */
 class Sort_Links extends \IAWP\AJAX\AJAX

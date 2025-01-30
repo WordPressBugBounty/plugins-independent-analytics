@@ -14,6 +14,12 @@ const FieldDuplicator = {
         entries.each(function() {
             self.attachRemoveEvent($(this));
         });
+        // TODO: find a better place for this
+        $('#block-current-ip').on('click', function() {
+            $('.block-new-ip .new-field').val($('#current-ip').data('current-ip'));
+            $('.block-new-ip .duplicate-button').click();
+            $(this).prop('disabled', true);
+        });
     },
     createNewEntry: function(duplicator) {
         var entryField = duplicator.find('.new-field');

@@ -11,6 +11,8 @@ use IAWP\Admin_Page\Updates_Page;
 use IAWP\AJAX\AJAX_Manager;
 use IAWP\Click_Tracking\Click_Processing_Job;
 use IAWP\Data_Pruning\Pruner;
+use IAWP\Ecommerce\EDD_Order;
+use IAWP\Ecommerce\PMPro_Order;
 use IAWP\Ecommerce\SureCart_Event_Sync_Job;
 use IAWP\Ecommerce\SureCart_Order;
 use IAWP\Ecommerce\WooCommerce_Order;
@@ -33,6 +35,8 @@ class Independent_Analytics
     public $cron_manager;
     private $is_woocommerce_support_enabled;
     private $is_surecart_support_enabled;
+    private $is_edd_support_enabled;
+    private $is_pmpro_support_enabled;
     private $is_form_submission_support_enabled;
     // This is where we attach functions to WP hooks
     private function __construct()
@@ -49,6 +53,8 @@ class Independent_Analytics
             new \IAWP\Track_Resource_Changes();
             Menu_Bar_Stats::register();
             WooCommerce_Order::register_hooks();
+            EDD_Order::register_hooks();
+            PMPro_Order::register_hooks();
             SureCart_Order::register_hooks();
         }
         \IAWP\Cron_Job::register_custom_intervals();
@@ -68,14 +74,37 @@ class Independent_Analytics
         \add_filter('plugin_action_links_independent-analytics/iawp.php', [$this, 'plugin_action_links']);
         \add_action('init', [$this, 'polylang_translations']);
         \add_action('init', [$this, 'load_textdomain']);
+        // Freemius adjustments
         \IAWP_FS()->add_filter('pricing_url', [$this, 'change_freemius_pricing_url'], 10);
         \IAWP_FS()->add_filter('show_deactivation_feedback_form', function () {
             return \false;
         });
+        \IAWP_FS()->override_i18n(['yee-haw' => \__('Success', 'independent-analytics')]);
+        // Other hooks
         \add_action('admin_init', [$this, 'maybe_delete_mu_plugin']);
         \add_action('admin_body_class', [$this, 'add_body_class']);
         \add_filter('sgs_whitelist_wp_content', [$this, 'whitelist_click_endpoint']);
         \add_filter('cmplz_whitelisted_script_tags', [$this, 'whitelist_script_tag_for_complianz']);
+        \add_filter('plugin_action_links_independent-analytics/iawp.php', [$this, 'add_upgrade_link_in_plugins_menu'], 999);
+        \add_filter('plugin_row_meta', [$this, 'add_docs_link_in_plugins_menu'], 10, 2);
+    }
+    public function add_upgrade_link_in_plugins_menu($links)
+    {
+        if (\IAWPSCOPED\iawp_is_pro()) {
+            return $links;
+        }
+        $upgrade_link = '<a target="_blank" style="color:#36B366;font-weight:700;"
+            href="https://independentwp.com/pricing/?utm_source=User+Dashboard&utm_medium=WP+Admin&utm_campaign=Plugin+Settings+Link"
+            >' . \esc_html__('Upgrade to Pro', 'independent-analytics') . '</a>';
+        \array_unshift($links, $upgrade_link);
+        return $links;
+    }
+    public function add_docs_link_in_plugins_menu($plugin_meta, $plugin_file)
+    {
+        if ($plugin_file == 'independent-analytics/iawp.php' || $plugin_file == 'independent-analytics-pro/iawp.php') {
+            $plugin_meta[] = '<a target="_blank" href="https://independentwp.com/knowledgebase/">' . \esc_html__('Knowledge Base', 'independent-analytics') . '</a>';
+        }
+        return $plugin_meta;
     }
     public function add_body_class($classes)
     {
@@ -326,15 +355,23 @@ class Independent_Analytics
         }
         return $this->is_surecart_support_enabled;
     }
+    public function is_edd_support_enabled() : bool
+    {
+        if (!\is_bool($this->is_edd_support_enabled)) {
+            $this->is_edd_support_enabled = $this->actually_check_if_edd_support_is_enabled();
+        }
+        return $this->is_edd_support_enabled;
+    }
+    public function is_pmpro_support_enabled() : bool
+    {
+        if (!\is_bool($this->is_pmpro_support_enabled)) {
+            $this->is_pmpro_support_enabled = $this->actually_check_if_pmpro_support_is_enabled();
+        }
+        return $this->is_pmpro_support_enabled;
+    }
     public function is_ecommerce_support_enabled() : bool
     {
-        return $this->is_woocommerce_support_enabled() || $this->is_surecart_support_enabled();
-    }
-    // This whitelists our plugin with the "Complianz" plugin
-    public function whitelist_script_tag_for_complianz($scripts)
-    {
-        $scripts[] = '/wp-json/iawp/search';
-        return $scripts;
+        return $this->is_woocommerce_support_enabled() || $this->is_surecart_support_enabled() || $this->is_edd_support_enabled() || $this->is_pmpro_support_enabled();
     }
     // This is for compatibility with the "Lock and Protect System Folders" setting in the Security Optimizer plugin
     public function whitelist_click_endpoint($whitelist)
@@ -344,6 +381,12 @@ class Independent_Analytics
         }
         $whitelist[] = 'iawp-click-endpoint.php';
         return $whitelist;
+    }
+    // This whitelists our plugin with the "Complianz" plugin
+    public function whitelist_script_tag_for_complianz($scripts)
+    {
+        $scripts[] = '/wp-json/iawp/search';
+        return $scripts;
     }
     private function actually_check_if_woocommerce_support_is_enabled() : bool
     {
@@ -372,7 +415,30 @@ class Independent_Analytics
         if (\IAWPSCOPED\iawp_is_free()) {
             return \false;
         }
+        if (\IAWP\Capability_Manager::can_only_view_authored_analytics()) {
+            return \false;
+        }
         return \is_plugin_active('surecart/surecart.php');
+    }
+    private function actually_check_if_edd_support_is_enabled() : bool
+    {
+        if (\IAWPSCOPED\iawp_is_free()) {
+            return \false;
+        }
+        if (\IAWP\Capability_Manager::can_only_view_authored_analytics()) {
+            return \false;
+        }
+        return \is_plugin_active('easy-digital-downloads/easy-digital-downloads.php') || \is_plugin_active('easy-digital-downloads-pro/easy-digital-downloads.php');
+    }
+    private function actually_check_if_pmpro_support_is_enabled() : bool
+    {
+        if (\IAWPSCOPED\iawp_is_free()) {
+            return \false;
+        }
+        if (\IAWP\Capability_Manager::can_only_view_authored_analytics()) {
+            return \false;
+        }
+        return \is_plugin_active('paid-memberships-pro-dev/paid-memberships-pro.php') || \is_plugin_active('paid-memberships-pro/paid-memberships-pro.php');
     }
     private function get_menu_icon()
     {

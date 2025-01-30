@@ -7,13 +7,15 @@ use IAWP\Email_Reports\Intervals\Monthly;
 use IAWP\Rows\Campaigns;
 use IAWP\Rows\Countries;
 use IAWP\Rows\Device_Types;
+use IAWP\Rows\Forms;
+use IAWP\Rows\Link_Patterns;
 use IAWP\Rows\Pages;
 use IAWP\Rows\Referrers;
 use IAWP\Sort_Configuration;
 use IAWP\Statistics\Page_Statistics;
 use IAWP\Statistics\Statistic;
-use IAWP\Utils\URL;
 use IAWP\Utils\Timezone;
+use IAWP\Utils\URL;
 /** @internal */
 class Email_Reports
 {
@@ -28,10 +30,6 @@ class Email_Reports
         \add_action('update_option_iawp_dow', [$this, 'maybe_reschedule'], 10, 0);
         \add_action('add_option_iawp_dow', [$this, 'maybe_reschedule'], 10, 0);
         \add_action('iawp_send_email_report', [$this, 'send_email_report']);
-    }
-    private function interval() : \IAWP\Email_Reports\Interval
-    {
-        return \IAWP\Email_Reports\Interval_Factory::from_option();
     }
     public function schedule()
     {
@@ -101,9 +99,15 @@ class Email_Reports
             return;
         }
         $from = \IAWPSCOPED\iawp()->get_option('iawp_email_report_from_address', \get_option('admin_email'));
+        $reply_to = \IAWPSCOPED\iawp()->get_option('iawp_email_report_reply_to_address', \get_option('admin_email'));
         $body = $this->get_email_body();
         $headers[] = 'From: ' . \get_bloginfo('name') . ' <' . \esc_attr($from) . '>';
+        $headers[] = 'Reply-To: ' . \esc_attr($reply_to);
         $headers[] = 'Content-Type: text/html; charset=UTF-8';
+        // Prevents WP HTML Mail plugin from breaking email design (https://wordpress.org/plugins/wp-html-mail/)
+        \add_filter('haet_mail_use_template', function () {
+            return \false;
+        });
         return \wp_mail($to, $this->subject_line($is_test_email), $body, $headers);
     }
     public function get_email_body($colors = '')
@@ -114,6 +118,7 @@ class Email_Reports
         }));
         $chart = new \IAWP\Email_Reports\Email_Chart($statistics);
         $colors = $colors == '' ? \IAWPSCOPED\iawp()->get_option('iawp_email_report_colors', ['#5123a0', '#fafafa', '#3a1e6b', '#fafafa', '#5123a0', '#a985e6', '#ece9f2', '#f7f5fa', '#ece9f2', '#dedae6']) : \explode(',', $colors);
+        $footer_text = \IAWPSCOPED\iawp()->get_option('iawp_email_report_footer', \sprintf(\esc_html__('This email was generated and delivered by %s', 'independent-analytics'), \esc_url(\get_site_url())));
         return \IAWPSCOPED\iawp_blade()->run('email.email', [
             'site_title' => \get_bloginfo('name'),
             'site_url' => URL::new(\get_site_url())->get_domain(),
@@ -127,7 +132,12 @@ class Email_Reports
             'y_labels' => $chart->y_labels,
             'x_labels' => $chart->x_labels,
             'colors' => $colors,
+            'footer_text' => $footer_text,
         ]);
+    }
+    private function interval() : \IAWP\Email_Reports\Interval
+    {
+        return \IAWP\Email_Reports\Interval_Factory::from_option();
     }
     private function subject_line(bool $is_test_email) : string
     {
@@ -143,7 +153,7 @@ class Email_Reports
     private function get_top_ten() : array
     {
         $date_range = $this->interval()->date_range();
-        $queries = ['pages' => 'title', 'referrers' => 'referrer', 'countries' => 'country', 'devices' => 'device_type', 'campaigns' => 'title', 'landing_pages' => 'title', 'exit_pages' => 'title'];
+        $queries = ['pages' => 'title', 'referrers' => 'referrer', 'countries' => 'country', 'devices' => 'device_type', 'campaigns' => 'title', 'forms' => 'form_title', 'clicks' => 'link_name', 'landing_pages' => 'title', 'exit_pages' => 'title'];
         $top_ten = [];
         $sort_configuration = new Sort_Configuration('views', 'desc');
         $title = '';
@@ -163,6 +173,12 @@ class Email_Reports
             } elseif ($type === 'campaigns') {
                 $query = new Campaigns($date_range, 10, null, $sort_configuration);
                 $title = \esc_html__('Campaigns', 'independent-analytics');
+            } elseif ($type === 'forms') {
+                $query = new Forms($date_range, 10, null, new Sort_Configuration('submissions', 'desc'));
+                $title = \esc_html__('Forms', 'independent-analytics');
+            } elseif ($type === 'clicks') {
+                $query = new Link_Patterns($date_range, 10, null, new Sort_Configuration('link_clicks', 'desc'));
+                $title = \esc_html__('Link Patterns', 'independent-analytics');
             } elseif ($type === 'landing_pages') {
                 $query = new Pages($date_range, 10, null, new Sort_Configuration('entrances', 'desc'));
                 $title = \esc_html__('Landing Pages', 'independent-analytics');
@@ -181,12 +197,20 @@ class Email_Reports
                     $edited_title = $row->device_type();
                 } elseif ($type == 'campaigns') {
                     $edited_title = $row->utm_campaign();
+                } elseif ($type == 'forms') {
+                    $edited_title = $row->form_title();
+                } elseif ($type == 'clicks') {
+                    $edited_title = $row->link_name();
                 } else {
                     $edited_title = $row->title();
                 }
                 $edited_title = \mb_strlen($edited_title) > 30 ? \mb_substr($edited_title, 0, 30) . '...' : $edited_title;
                 $metric = 'views';
-                if ($type == 'landing_pages') {
+                if ($type == 'clicks') {
+                    $metric = 'link_clicks';
+                } elseif ($type == 'forms') {
+                    $metric = 'submissions';
+                } elseif ($type == 'landing_pages') {
                     $metric = 'entrances';
                 } elseif ($type == 'exit_pages') {
                     $metric = 'exits';

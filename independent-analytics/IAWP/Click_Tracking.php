@@ -16,9 +16,9 @@ class Click_Tracking
             return $link_rule->to_array();
         })->all(), 'types' => self::types(), 'extensions' => self::extensions(), 'protocols' => self::protocols(), 'error_messages' => Link_Validator::error_messages(), 'show_click_tracking_cache_message' => $show_click_tracking_cache_message]);
     }
-    public static function types()
+    public static function types() : array
     {
-        return ['class' => \esc_html__('Class', 'independent-analytics'), 'extension' => \esc_html__('Extension', 'independent-analytics'), 'domain' => \esc_html__('Domain', 'independent-analytics'), 'subdirectory' => \esc_html__('Subdirectory', 'independent-analytics'), 'protocol' => \esc_html__('Protocol', 'independent-analytics')];
+        return ['class' => \__('Class', 'independent-analytics'), 'extension' => \__('Extension', 'independent-analytics'), 'domain' => \__('Domain', 'independent-analytics'), 'external' => \__('External', 'independent-analytics'), 'subdirectory' => \__('Subdirectory', 'independent-analytics'), 'protocol' => \__('Protocol', 'independent-analytics')];
     }
     public static function extensions()
     {
@@ -26,6 +26,6 @@ class Click_Tracking
     }
     public static function protocols()
     {
-        return ['mailto', 'tel'];
+        return ['mailto', 'tel', 'sms'];
     }
 }

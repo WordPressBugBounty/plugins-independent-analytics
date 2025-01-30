@@ -123,6 +123,19 @@ class REST_API
 
                     return url.protocol === linkRule.value + ':'
                 }
+                const isMatchingExternal = (linkRule, href, classes) => {
+                    if(!URL.canParse(href) || !URL.canParse(document.location.href)) {
+                        return false
+                    }
+
+                    const matchingProtocols = ['http:', 'https:']
+                    const siteUrl = new URL(document.location.href)
+                    const linkUrl = new URL(href)
+
+                    // Links to subdomains will appear to be external matches according to JavaScript,
+                    // but the PHP rules will filter those events out.
+                    return matchingProtocols.includes(linkUrl.protocol) && siteUrl.host !== linkUrl.host
+                }
                 const isMatch = (linkRule, href, classes) => {
                     switch (linkRule.type) {
                         case 'class':
@@ -135,6 +148,8 @@ class REST_API
                             return isMatchingSubdirectory(linkRule, href, classes)
                         case 'protocol':
                             return isMatchingProtocol(linkRule, href, classes)
+                        case 'external':
+                            return isMatchingExternal(linkRule, href, classes)
                         default:
                             return false;
                     }
@@ -261,6 +276,33 @@ class REST_API
 
                     track(element)
                 })
+                document.addEventListener('play', function (event) {
+                    <?php 
+        if (!\defined('IAWP_TESTING')) {
+            ?>
+                    if (navigator.webdriver || /bot|crawler|spider|crawling|semrushbot|chrome-lighthouse/i.test(navigator.userAgent)) {
+                        return;
+                    }
+                    <?php 
+        }
+        ?>
+
+                    const element = event.target.closest('audio, video')
+
+                    if(!element) {
+                        return
+                    }
+
+                    const isPro = <?php 
+        echo \IAWPSCOPED\iawp_is_pro() ? 'true' : 'false';
+        ?>
+
+                    if(!isPro) {
+                        return
+                    }
+
+                    track(element)
+                }, true)
                 document.addEventListener("DOMContentLoaded", function (e) {
                     if (document.hasOwnProperty("visibilityState") && document.visibilityState === "prerender") {
                         return;

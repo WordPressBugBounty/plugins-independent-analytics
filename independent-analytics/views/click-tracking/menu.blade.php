@@ -8,8 +8,8 @@
         <div id="click-tracking-cache-message-container" class="@if($show_click_tracking_cache_message) show @endif">
             <div class="cache-note">
                 <span class="dashicons dashicons-warning"></span>
-                <p>{{ esc_html('Please empty your cache to ensure your newest changes are tracked properly.', 'independent-analytics') }}</p>
-                <button id="click-tracking-cache-cleared" class="iawp-button">{{ esc_html('Ok', 'independent-analytics') }}</button>
+                <p>{{ esc_html__('Please empty your cache to ensure your newest changes are tracked properly.', 'independent-analytics') }}</p>
+                <button id="click-tracking-cache-cleared" class="iawp-button">{{ esc_html__('Ok', 'independent-analytics') }}</button>
             </div>
         </div>
         <div id="validation-error-messages" class="validation-error-messages">
@@ -47,7 +47,7 @@
                     } ?>
                 </div>
             </div>
-            <p class="tracked-links-empty-message {{ count($active_links) === 0 ? "show" : "" }}">{{ esc_html('No link patterns found', 'independent-analytics') }}</p>
+            <p class="tracked-links-empty-message {{ count($active_links) === 0 ? "show" : "" }}">{{ esc_html__('No link patterns found', 'independent-analytics') }}</p>
             <div id="blueprint-link" class="blueprint-link"><?php 
                 echo iawp_blade()->run('click-tracking.link', [
                     'link' => [
@@ -89,7 +89,7 @@
                         ]);
                     } ?>
                 </div>
-                <p class="archived-links-empty-message {{ count($inactive_links) === 0 ? "show" : "" }}">{{ esc_html('No archived link patterns found', 'independent-analytics') }}</p>
+                <p class="archived-links-empty-message {{ count($inactive_links) === 0 ? "show" : "" }}">{{ esc_html__('No archived link patterns found', 'independent-analytics') }}</p>
             </div>
         </div>
     </div>

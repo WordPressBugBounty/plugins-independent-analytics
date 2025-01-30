@@ -149,7 +149,7 @@ class Statistic implements Plugin_Group_Option
         $percent_growth = ($this->statistic / $this->previous_period_statistic - 1) * 100;
         return \round($percent_growth, 0);
     }
-    private function format_value($value) : string
+    public function format_value($value) : string
     {
         switch ($this->format) {
             case 'time':

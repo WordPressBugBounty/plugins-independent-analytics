@@ -21,10 +21,6 @@ export default class extends Controller {
     }
 
     onFetchingReport = () => {
-        if(this.optionTypeValue !== 'columns') {
-            return;
-        }
-
         const enabledElements = this.element.querySelectorAll('input:not([disabled])')
 
         enabledElements.forEach(element => element.disabled = true)

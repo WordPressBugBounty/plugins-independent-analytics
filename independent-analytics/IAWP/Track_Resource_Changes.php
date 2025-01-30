@@ -18,12 +18,16 @@ class Track_Resource_Changes
         if (!$is_update) {
             return;
         }
+        // Auto-save sometimes (why not always?) fires this hook, but these aren't real changes we need to worry about
+        if (\defined('DOING_AUTOSAVE') && \DOING_AUTOSAVE) {
+            return;
+        }
         // Bail if the update was for a non-public post type such as wp_navigation
         if (!\is_post_type_viewable($post->post_type)) {
             return;
         }
         $post = \get_post($post_id);
-        if (\is_null($post) || $post->post_status === 'trash') {
+        if (\is_null($post) || $post->post_status === 'trash' || $post->post_status === 'auto-draft') {
             return;
         }
         $row = (object) ['resource' => 'singular', 'singular_id' => $post_id];

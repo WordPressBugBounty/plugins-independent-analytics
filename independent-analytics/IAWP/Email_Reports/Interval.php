@@ -6,8 +6,8 @@ use DateTime;
 use IAWP\Date_Range\Date_Range;
 use IAWP\Date_Range\Relative_Date_Range;
 use IAWP\Utils\String_Util;
-use IAWPSCOPED\Illuminate\Support\Carbon;
 use IAWP\Utils\Timezone;
+use IAWPSCOPED\Illuminate\Support\Carbon;
 /** @internal */
 class Interval
 {

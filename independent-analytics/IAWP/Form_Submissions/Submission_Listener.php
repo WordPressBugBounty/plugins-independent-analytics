@@ -273,6 +273,56 @@ class Submission_Listener
             } catch (\Throwable $e) {
             }
         }, 10, 0);
+        // Thrive
+        // add_action('thrive_core_lead_signup', function ($data, $user) {
+        //     try {
+        //         $submission = new Submission(
+        //             21,
+        //             intval($data['form_id']),
+        //             Security::string($data['form_name'])
+        //         );
+        //         $submission->record_submission();
+        //     } catch (\Throwable $e) {
+        //
+        //     }
+        // }, 10, 2);
+        // Thrive
+        // add_action('tcb_api_form_submit', function ($data) {
+        //     try {
+        //         // This parsing of the object is copied from Thrive Leads own tve_leads_process_conversion function
+        //         $form_id   = ! empty($data['thrive_leads']['tl_data']['form_type_id']) ? $data['thrive_leads']['tl_data']['form_type_id'] : null;
+        //         $form_name = ! empty($data['thrive_leads']['tl_data']['form_name']) ? $data['thrive_leads']['tl_data']['form_name'] : null;
+        //
+        //         if (!is_numeric($form_id) || null === $form_id || null === $form_name) {
+        //             return;
+        //         }
+        //
+        //         $submission = new Submission(
+        //             21,
+        //             intval($form_id),
+        //             Security::string($form_name)
+        //         );
+        //         $submission->record_submission();
+        //     } catch (\Throwable $e) {
+        //
+        //     }
+        // }, 10, 1);
+        // SureForms
+        \add_action('srfm_form_submit', function ($data) {
+            try {
+                $submission = new \IAWP\Form_Submissions\Submission(22, \intval($data['form_id']), Security::string($data['form_name']));
+                $submission->record_submission();
+            } catch (\Throwable $e) {
+            }
+        }, 10, 1);
+        // Kali Forms
+        \add_action('kaliforms_after_form_process_action', function ($data) {
+            try {
+                $submission = new \IAWP\Form_Submissions\Submission(23, \intval($data['data']['formId']), Security::string(\get_the_title($data['data']['formId'])));
+                $submission->record_submission();
+            } catch (\Throwable $e) {
+            }
+        }, 10, 1);
         // // Template
         // add_action('iawp_some_form_callback', function () {
         //     try {

@@ -26,7 +26,7 @@
         </select>
     </div>
     <div class="button-group">
-        <button class="button iawp-button purple"
+        <button class="iawp-button purple"
                 data-pruner-target="saveButton"
                 data-action="pruner#saveClick"
                 data-original-text="<?php echo __('Save', 'independent-analytics') ?>"

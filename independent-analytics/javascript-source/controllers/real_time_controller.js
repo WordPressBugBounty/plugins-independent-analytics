@@ -34,14 +34,12 @@ export default class extends Controller {
         document.addEventListener('visibilitychange', this.tabVisibilityChanged)
         this.initializeChart({
             element: this.minuteChartTarget,
-            visitors: this.chartDataValue['minute_interval_visitors'],
             views: this.chartDataValue['minute_interval_views'],
             labelsShort: this.chartDataValue['minute_interval_labels_short'],
             labelsFull: this.chartDataValue['minute_interval_labels_full']
         })
         this.initializeChart({
             element: this.secondChartTarget,
-            visitors: this.chartDataValue['second_interval_visitors'],
             views: this.chartDataValue['second_interval_views'],
             labelsShort: this.chartDataValue['second_interval_labels_short'],
             labelsFull: this.chartDataValue['second_interval_labels_full']
@@ -211,7 +209,6 @@ export default class extends Controller {
 
     initializeChart({
                         element,
-                        visitors,
                         views,
                         labelsShort,
                         labelsFull

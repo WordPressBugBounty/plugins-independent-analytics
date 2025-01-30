@@ -11,6 +11,7 @@ use IAWP\Env;
 use IAWP\Plugin_Conflict_Detector;
 use IAWP\Quick_Stats;
 use IAWP\Real_Time;
+use IAWP\Report;
 use IAWP\Report_Finder;
 use IAWP\Tables\Table;
 use IAWP\Tables\Table_Campaigns;
@@ -28,49 +29,51 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         $options = Dashboard_Options::getInstance();
         $date_rage = $options->get_date_range();
         $tab = (new Env())->get_tab();
+        $report = (new Report_Finder())->current();
+        $is_showing_skeleton_ui = $report instanceof Report && $report->has_filters();
         if ($tab === 'views') {
             $table = new Table_Pages();
             $statistics_class = $table->group()->statistics_class();
             $statistics = new $statistics_class($date_rage, null, $options->chart_interval());
-            $stats = new Quick_Stats($statistics);
-            $chart = new Chart($statistics);
+            $stats = new Quick_Stats($statistics, \false, $is_showing_skeleton_ui);
+            $chart = new Chart($statistics, \false, $is_showing_skeleton_ui);
             $this->interface($table, $stats, $chart);
         } elseif ($tab === 'referrers') {
             $table = new Table_Referrers();
             $statistics_class = $table->group()->statistics_class();
             $statistics = new $statistics_class($date_rage, null, $options->chart_interval());
-            $stats = new Quick_Stats($statistics);
-            $chart = new Chart($statistics);
+            $stats = new Quick_Stats($statistics, \false, $is_showing_skeleton_ui);
+            $chart = new Chart($statistics, \false, $is_showing_skeleton_ui);
             $this->interface($table, $stats, $chart);
         } elseif ($tab === 'geo') {
             $table = new Table_Geo($options->group());
             $statistics_class = $table->group()->statistics_class();
             $statistics = new $statistics_class($date_rage, null, $options->chart_interval());
-            $stats = new Quick_Stats($statistics);
+            $stats = new Quick_Stats($statistics, \false, $is_showing_skeleton_ui);
             $table_data_class = $table->group()->rows_class();
             $geo_data = new $table_data_class($date_rage);
-            $chart = new Chart_Geo($geo_data->rows());
+            $chart = new Chart_Geo($geo_data->rows(), null, $is_showing_skeleton_ui);
             $this->interface($table, $stats, $chart);
         } elseif ($tab === 'campaigns') {
             $table = new Table_Campaigns();
             $statistics_class = $table->group()->statistics_class();
             $statistics = new $statistics_class($date_rage, null, $options->chart_interval());
-            $stats = new Quick_Stats($statistics);
-            $chart = new Chart($statistics);
+            $stats = new Quick_Stats($statistics, \false, $is_showing_skeleton_ui);
+            $chart = new Chart($statistics, \false, $is_showing_skeleton_ui);
             $this->interface($table, $stats, $chart);
         } elseif ($tab === 'clicks') {
-            $table = new Table_Clicks();
+            $table = new Table_Clicks($options->group());
             $statistics_class = $table->group()->statistics_class();
             $statistics = new $statistics_class($date_rage, null, $options->chart_interval());
-            $stats = new Quick_Stats($statistics);
-            $chart = new Chart($statistics);
+            $stats = new Quick_Stats($statistics, \false, $is_showing_skeleton_ui);
+            $chart = new Chart($statistics, \false, $is_showing_skeleton_ui);
             $this->interface($table, $stats, $chart);
         } elseif ($tab === 'devices') {
             $table = new Table_Devices($options->group());
             $statistics_class = $table->group()->statistics_class();
             $statistics = new $statistics_class($date_rage, null, $options->chart_interval());
-            $stats = new Quick_Stats($statistics);
-            $chart = new Chart($statistics);
+            $stats = new Quick_Stats($statistics, \false, $is_showing_skeleton_ui);
+            $chart = new Chart($statistics, \false, $is_showing_skeleton_ui);
             $this->interface($table, $stats, $chart);
         } elseif ($tab === 'real-time') {
             (new Real_Time())->render_real_time_analytics();

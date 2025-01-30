@@ -22,6 +22,10 @@ class Link_Validator
                 return 'invalid-type';
             }
         } elseif ($property == 'value') {
+            if ($type === 'external') {
+                // There is no value for the external type
+                return \false;
+            }
             if (\trim($value) == '') {
                 return 'empty-value';
             }

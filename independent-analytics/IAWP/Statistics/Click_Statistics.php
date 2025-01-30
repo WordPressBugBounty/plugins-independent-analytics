@@ -6,8 +6,8 @@ use IAWP\Date_Range\Date_Range;
 use IAWP\Illuminate_Builder;
 use IAWP\Query_Taps;
 use IAWP\Rows\Rows;
-use IAWPSCOPED\Illuminate\Database\Query\Builder;
 use IAWP\Utils\Timezone;
+use IAWPSCOPED\Illuminate\Database\Query\Builder;
 /** @internal */
 class Click_Statistics extends \IAWP\Statistics\Statistics
 {

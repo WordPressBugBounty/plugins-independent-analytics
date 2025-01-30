@@ -41,6 +41,8 @@ class Link_Rule_Finder
                 return $this->is_matching_subdirectory($link_rule);
             case 'protocol':
                 return $this->is_matching_protocol($link_rule);
+            case 'external':
+                return $this->is_matching_external($link_rule);
             default:
                 return \false;
         }
@@ -99,6 +101,19 @@ class Link_Rule_Finder
             return \false;
         }
         return $this->protocol === $link_rule->value();
+    }
+    private function is_matching_external($link_rule) : bool
+    {
+        if (\is_null($this->href)) {
+            return \false;
+        }
+        $site_url = URL::new(\get_site_url());
+        $link_url = URL::new($this->href);
+        // Only track valid http/https URLs and not other protocols like mailto:, tel:, etc
+        if (!$link_url->is_valid_url()) {
+            return \false;
+        }
+        return $link_url->get_domain() !== $site_url->get_domain();
     }
     public static function new(?string $protocol, ?string $href, string $classes) : self
     {

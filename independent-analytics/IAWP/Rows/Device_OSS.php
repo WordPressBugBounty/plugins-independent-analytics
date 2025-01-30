@@ -87,7 +87,6 @@ class Device_OSS extends \IAWP\Rows\Rows
                 $query->limit($this->number_of_rows);
             });
         });
-        Illuminate_Builder::ray($outer_query);
         return $outer_query;
     }
 }

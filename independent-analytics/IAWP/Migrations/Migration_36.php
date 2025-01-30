@@ -2,7 +2,6 @@
 
 namespace IAWP\Migrations;
 
-use IAWP\Database;
 use IAWP\Query;
 /** @internal */
 class Migration_36 extends \IAWP\Migrations\Step_Migration

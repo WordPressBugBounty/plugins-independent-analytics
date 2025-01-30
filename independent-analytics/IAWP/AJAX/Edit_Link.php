@@ -39,6 +39,9 @@ class Edit_Link extends \IAWP\AJAX\AJAX
             $link_properties['value'] = Link_Validator::sanitize_domain($link_properties['value']);
         } elseif ($link_properties['type'] == 'subdirectory') {
             $link_properties['value'] = Link_Validator::sanitize_subdirectory($link_properties['value']);
+        } elseif ($link_properties['type'] == 'external') {
+            // There's no value for external
+            $link_properties['value'] = '';
         } else {
             $link_properties['value'] = \sanitize_text_field($link_properties['value']);
         }

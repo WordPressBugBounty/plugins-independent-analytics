@@ -41,7 +41,7 @@ class Migrations
             new \IAWP\Migrations\Migration_19();
             new \IAWP\Migrations\Migration_20();
             new \IAWP\Migrations\Migration_21();
-            $completed = self::run_step_migrations([new \IAWP\Migrations\Migration_22(), new \IAWP\Migrations\Migration_23(), new \IAWP\Migrations\Migration_24(), new \IAWP\Migrations\Migration_25(), new \IAWP\Migrations\Migration_26(), new \IAWP\Migrations\Migration_27(), new \IAWP\Migrations\Migration_28(), new \IAWP\Migrations\Migration_29(), new \IAWP\Migrations\Migration_30(), new \IAWP\Migrations\Migration_31(), new \IAWP\Migrations\Migration_32(), new \IAWP\Migrations\Migration_33(), new \IAWP\Migrations\Migration_34(), new \IAWP\Migrations\Migration_35(), new \IAWP\Migrations\Migration_36(), new \IAWP\Migrations\Migration_37(), new \IAWP\Migrations\Migration_38(), new \IAWP\Migrations\Migration_39()]);
+            $completed = self::run_step_migrations([new \IAWP\Migrations\Migration_22(), new \IAWP\Migrations\Migration_23(), new \IAWP\Migrations\Migration_24(), new \IAWP\Migrations\Migration_25(), new \IAWP\Migrations\Migration_26(), new \IAWP\Migrations\Migration_27(), new \IAWP\Migrations\Migration_28(), new \IAWP\Migrations\Migration_29(), new \IAWP\Migrations\Migration_30(), new \IAWP\Migrations\Migration_31(), new \IAWP\Migrations\Migration_32(), new \IAWP\Migrations\Migration_33(), new \IAWP\Migrations\Migration_34(), new \IAWP\Migrations\Migration_35(), new \IAWP\Migrations\Migration_36(), new \IAWP\Migrations\Migration_37(), new \IAWP\Migrations\Migration_38(), new \IAWP\Migrations\Migration_39(), new \IAWP\Migrations\Migration_40(), new \IAWP\Migrations\Migration_41(), new \IAWP\Migrations\Migration_42()]);
             if ($completed === \true) {
                 \update_option('iawp_is_migrating', '0', \true);
                 \delete_option('iawp_last_finished_migration_step');
@@ -62,14 +62,14 @@ class Migrations
     {
         $db_version = \get_option('iawp_db_version', '0');
         $is_migrating = \get_option('iawp_is_migrating') === '1';
-        $is_current = \version_compare($db_version, '39', '=');
+        $is_current = \version_compare($db_version, '42', '=');
         $is_outdated = !$is_current;
         return $is_outdated || $is_migrating;
     }
     public static function is_database_ahead_of_plugin() : bool
     {
         $db_version = \get_option('iawp_db_version', '0');
-        return \version_compare($db_version, '39', '>');
+        return \version_compare($db_version, '42', '>');
     }
     public static function is_actually_migrating() : bool
     {
@@ -82,7 +82,7 @@ class Migrations
     {
         $db_version = \get_option('iawp_db_version', '0');
         $is_migrating = \get_option('iawp_is_migrating') === '1';
-        $is_current = \version_compare($db_version, '39', '=');
+        $is_current = \version_compare($db_version, '42', '=');
         $is_outdated = !$is_current;
         return $is_outdated && !$is_migrating;
     }

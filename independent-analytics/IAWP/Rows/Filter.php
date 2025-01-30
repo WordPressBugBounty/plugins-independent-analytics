@@ -146,8 +146,12 @@ class Filter implements JsonSerializable
                 $condition_string = \__('Conversion rate for', 'independent-analytics') . ' ' . Form::find_form_by_column_name($condition['column'])->title();
             } elseif ($key == 'column' && $condition['column'] == 'link_name') {
                 $condition_string = \__('Link Pattern', 'independent-analytics') . ' ';
+            } elseif ($key == 'column' && $value == 'url') {
+                $condition_string = 'URL ';
+            } elseif ($key != 'operand') {
+                $condition_string .= \ucwords(\str_replace('_', ' ', $value)) . ' ';
             } else {
-                $condition_string .= \ucwords(\str_replace(['_', '-'], ' ', $value)) . ' ';
+                $condition_string = $value;
             }
             if ($key == 'column' || $key == 'operand') {
                 $condition_string = '<strong>' . $condition_string . '</strong> ';

@@ -2,10 +2,6 @@
 
 namespace IAWPSCOPED;
 
-// TODO The files that need to move
-// /Users/andrewmead/Herd/iawp/wp-content/uploads/iawp-click-config.php
-// /Users/andrewmead/Herd/iawp/wp-content/uploads/iawp-click-data.php
-// /Users/andrewmead/Herd/iawp/wp-content/uploads/iawp-click-endpoint.php
 use IAWP\Click_Tracking\Click_Processing_Job;
 use IAWP\Custom_WordPress_Columns\Views_Column;
 use IAWP\Dashboard_Options;
@@ -18,6 +14,7 @@ use IAWP\Env;
 use IAWP\Geo_Database_Background_Job;
 use IAWP\Independent_Analytics;
 use IAWP\Interrupt;
+use IAWP\MainWP;
 use IAWP\Migrations;
 use IAWP\Patch;
 use IAWP\Public_API\Analytics;
@@ -26,8 +23,8 @@ use IAWP\Utils\BladeOne;
 use IAWP\WP_Option_Cache_Bust;
 \define( 'IAWP_DIRECTORY', \rtrim( \plugin_dir_path( __FILE__ ), \DIRECTORY_SEPARATOR ) );
 \define( 'IAWP_URL', \rtrim( \plugin_dir_url( __FILE__ ), '/' ) );
-\define( 'IAWP_VERSION', '2.9.7' );
-\define( 'IAWP_DATABASE_VERSION', '39' );
+\define( 'IAWP_VERSION', '2.10.0' );
+\define( 'IAWP_DATABASE_VERSION', '42' );
 \define( 'IAWP_LANGUAGES_DIRECTORY', \dirname( \plugin_basename( __FILE__ ) ) . '/languages' );
 \define( 'IAWP_PLUGIN_FILE', __DIR__ . '/iawp.php' );
 if ( \file_exists( \IAWPSCOPED\iawp_path_to( 'vendor/scoper-autoload.php' ) ) ) {
@@ -330,3 +327,4 @@ function iawp() {
     Geo_Database_Background_Job::maybe_dispatch();
 } );
 Views_Column::initialize();
+MainWP::initialize();

@@ -90,4 +90,5 @@
             </div>
         </div>
     </div>
+    <?php echo iawp_blade()->run('partials.email-course-ad'); ?>
 </div>

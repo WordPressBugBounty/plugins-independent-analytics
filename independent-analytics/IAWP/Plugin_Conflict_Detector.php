@@ -2,7 +2,6 @@
 
 namespace IAWP;
 
-use IAWP\Utils\Plugin;
 /** @internal */
 class Plugin_Conflict_Detector
 {
@@ -28,6 +27,23 @@ class Plugin_Conflict_Detector
     public function get_error() : ?string
     {
         return $this->error;
+    }
+    public function plugin_requiring_logged_in_tracking()
+    {
+        if (\is_plugin_active('woocommerce/woocommerce.php')) {
+            return 'WooCommerce';
+        } elseif (\is_plugin_active('surecart/surecart.php')) {
+            return 'SureCart';
+        } elseif (\is_plugin_active('paid-memberships-pro/paid-memberships-pro.php')) {
+            return 'Paid Memberships Pro';
+        } elseif (\is_plugin_active('ultimate-member/ultimate-member.php')) {
+            return 'Ultimate Member';
+        } elseif (\is_plugin_active('simple-membership/simple-wp-membership.php')) {
+            return 'Simple WordPress Membership';
+        } elseif (\is_plugin_active('members/members.php')) {
+            return 'Members plugin';
+        }
+        return \false;
     }
     /**
      * @return string|null Returns a string error message if the health check fails
@@ -138,7 +154,7 @@ class Plugin_Conflict_Detector
                 }
             }
         }
-        if (\is_plugin_active('admin-site-enhancements/admin-site-enhancements.php')) {
+        if (\is_plugin_active('admin-site-enhancements/admin-site-enhancements.php') || \is_plugin_active('admin-site-enhancements-pro/admin-site-enhancements.php')) {
             $settings = \get_option('admin_site_enhancements');
             if (\array_key_exists('disable_rest_api', $settings)) {
                 if ($settings['disable_rest_api']) {
@@ -147,22 +163,5 @@ class Plugin_Conflict_Detector
             }
         }
         return null;
-    }
-    public function plugin_requiring_logged_in_tracking()
-    {
-        if (\is_plugin_active('woocommerce/woocommerce.php')) {
-            return 'WooCommerce';
-        } elseif (\is_plugin_active('surecart/surecart.php')) {
-            return 'SureCart';
-        } elseif (\is_plugin_active('paid-memberships-pro/paid-memberships-pro.php')) {
-            return 'Paid Memberships Pro';
-        } elseif (\is_plugin_active('ultimate-member/ultimate-member.php')) {
-            return 'Ultimate Member';
-        } elseif (\is_plugin_active('simple-membership/simple-wp-membership.php')) {
-            return 'Simple WordPress Membership';
-        } elseif (\is_plugin_active('members/members.php')) {
-            return 'Members plugin';
-        }
-        return \false;
     }
 }

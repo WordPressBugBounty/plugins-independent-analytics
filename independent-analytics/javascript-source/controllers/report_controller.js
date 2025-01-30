@@ -8,7 +8,7 @@ class Report_Controller extends Controller {
      * current one is fetched.
      */
     static request;
-    static targets = ['loadMore', 'exportCSV', 'exportPDF', 'spinner']
+    static targets = ['loadMore', 'exportReportTable', 'exportReportStatistics', 'exportPDF', 'spinner']
     static values = {
         name: String,
         relativeRangeId: String,
@@ -65,7 +65,7 @@ class Report_Controller extends Controller {
         document.addEventListener('iawp:fetchingReport', this.onFetchingReport)
         setTimeout(() => {
             this.fetch({
-                tableOnly: this.filters.length === 0,
+                isInitialFetch: true,
                 showLoadingOverlay: false
             })
         }, 0)
@@ -153,7 +153,7 @@ class Report_Controller extends Controller {
             'sort_column': this.sortColumn,
             'sort_direction': this.sortDirection
         })
-        this.fetch({tableOnly: true})
+        this.fetch()
     }
 
     changeGroup = (e) => {
@@ -194,11 +194,11 @@ class Report_Controller extends Controller {
     loadMore = () => {
         this.page = this.page + 1
 
-        this.fetch({tableOnly: true})
+        this.fetch()
     }
 
     fetch({
-              tableOnly = false,
+              isInitialFetch = false,
               showLoadingOverlay = true,
               newGroup = false,
               newDateRange = false
@@ -265,10 +265,17 @@ class Report_Controller extends Controller {
                 jQuery('#iawp-rows').replaceWith(response.rows);
             }
 
-            if (!tableOnly) {
-                jQuery('#dates-button span:last-child').text(response.label)
+            jQuery('#dates-button span:last-child').text(response.label)
+
+            const parser = new DOMParser();
+            const statsDocument = parser.parseFromString(response.stats, 'text/html');
+            jQuery('#quick-stats .iawp-stats').replaceWith(statsDocument.querySelector('.iawp-stats'))
+            jQuery('#quick-stats').removeClass('skeleton-ui');
+
+            if (isInitialFetch && this.filtersValue.length === 0) {
+                // Do not update the chart if there are no filters and it's the initial load
+            } else {
                 jQuery('#independent-analytics-chart').closest('.chart-container').replaceWith(response.chart);
-                jQuery('#quick-stats').replaceWith(response.stats);
             }
 
             document.dispatchEvent(
@@ -305,9 +312,42 @@ class Report_Controller extends Controller {
         });
     }
 
-    exportCSV() {
+    exportReportTable() {
         const data = {
-            ...iawpActions.filter,
+            ...iawpActions.export_report_table,
+            'table_type': jQuery('#data-table').data('table-name'),
+            'columns': this.columns,
+            'filters': this.filters,
+            'exact_start': this.exactStart,
+            'exact_end': this.exactEnd,
+            'relative_range_id': this.relativeRangeId,
+            'sort_column': this.sortColumn,
+            'sort_direction': this.sortDirection,
+            'group': this.group,
+        };
+
+        this.exportReportTableTarget.classList.add('sending')
+        this.exportReportTableTarget.setAttribute('disabled', 'disabled')
+
+        if (Report_Controller.csvRequest) {
+            Report_Controller.csvRequest.abort();
+        }
+
+        Report_Controller.csvRequest = jQuery.post(ajaxurl, data, (response) => {
+            downloadCSV(this.getFileName('csv', 'table'), response.data.csv)
+            this.exportReportTableTarget.classList.add('sent')
+            this.exportReportTableTarget.classList.remove('sending')
+            this.exportReportTableTarget.removeAttribute('disabled')
+
+            setTimeout(() => {
+                this.exportReportTableTarget.classList.remove('sent')
+            }, 1000)
+        })
+    }
+
+    exportReportStatistics() {
+        const data = {
+            ...iawpActions.export_report_statistics,
             'filters': this.filters,
             'exact_start': this.exactStart,
             'exact_end': this.exactEnd,
@@ -315,8 +355,6 @@ class Report_Controller extends Controller {
             'relative_range_id': this.relativeRangeId,
             'table_type': jQuery('#data-table').data('table-name'),
             'columns': this.columns,
-            'primary_chart_metric_id': this.primaryChartMetricId,
-            'secondary_chart_metric_id': this.secondaryChartMetricId,
             'sort_column': this.sortColumn,
             'quick_stats': this.quickStats,
             'sort_direction': this.sortDirection,
@@ -324,24 +362,23 @@ class Report_Controller extends Controller {
             'is_new_group': false,
             'chart_interval': this.chartInterval,
             'page': this.page,
-            'as_csv': true
         };
 
-        this.exportCSVTarget.classList.add('sending')
-        this.exportCSVTarget.setAttribute('disabled', 'disabled')
+        this.exportReportStatisticsTarget.classList.add('sending')
+        this.exportReportStatisticsTarget.setAttribute('disabled', 'disabled')
 
         if (Report_Controller.csvRequest) {
             Report_Controller.csvRequest.abort();
         }
 
         Report_Controller.csvRequest = jQuery.post(ajaxurl, data, (response) => {
-            downloadCSV(this.getFileName('csv'), response)
-            this.exportCSVTarget.classList.add('sent')
-            this.exportCSVTarget.classList.remove('sending')
-            this.exportCSVTarget.removeAttribute('disabled')
+            downloadCSV(this.getFileName('csv', 'statistics'), response.data.csv)
+            this.exportReportStatisticsTarget.classList.add('sent')
+            this.exportReportStatisticsTarget.classList.remove('sending')
+            this.exportReportStatisticsTarget.removeAttribute('disabled')
 
             setTimeout(() => {
-                this.exportCSVTarget.classList.remove('sent')
+                this.exportReportStatisticsTarget.classList.remove('sent')
             }, 1000)
         })
     }
@@ -370,11 +407,11 @@ class Report_Controller extends Controller {
                 window.iawp_chart.resize()
             }
 
-            if(window.iawp_geo_chart) {
+            if (window.iawp_geo_chart) {
                 base64Image = window.iawp_geo_chart.getImageURI()
             }
 
-            if(base64Image) {
+            if (base64Image) {
                 const imageElement = document.createElement('img')
                 imageElement.src = base64Image
 
@@ -388,7 +425,7 @@ class Report_Controller extends Controller {
 
             // Preserve selected values in clone by manually adding "selected" to options
             element.querySelectorAll('select').forEach((element) => {
-                if(!element.id) {
+                if (!element.id) {
                     return
                 }
 
@@ -411,14 +448,15 @@ class Report_Controller extends Controller {
         }, 250) // Allow animations to finish before exporting blocks things up
     }
 
-    getFileName(fileExtension) {
+    getFileName(fileExtension, type = null) {
         const reportTitleElement = document.querySelector('#report-title-bar .report-title')
+        let reportTitle = reportTitleElement ? reportTitleElement.innerText : 'report'
 
-        if (!reportTitleElement) {
-            return 'report.' + fileExtension
+        if (type) {
+            reportTitle += '-' + type
         }
 
-        return reportTitleElement.innerText.replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase() + '.' + fileExtension
+        return reportTitle.replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase() + '.' + fileExtension
     }
 }
 

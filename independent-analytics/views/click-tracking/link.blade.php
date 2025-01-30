@@ -26,12 +26,11 @@
                                 <option value="{{ esc_attr($protocol) }}" {{ selected($protocol, $link['value'], true)}}>{{ esc_html($protocol) }}</option>
                             @endforeach
                         </select>
+                    @elseif ($type === 'external')
+                        <input class="link-value external" type="text" disabled/>
                     @else
                         @if ($type == 'class')
                             <span class="value-prefix">.</span>
-                        @endif
-                        @if ($type == 'domain')
-                            <span class="value-prefix">http://</span>
                         @endif
                         @if ($type == 'subdirectory')
                             <span class="value-prefix">/</span>
@@ -65,7 +64,7 @@
             @elseif ($link['type'] == 'extension')
                 {{ '.' . esc_html($link['value']) }}
             @elseif ($link['type'] == 'domain')
-                {{ 'http://' . esc_html($link['value']) }}
+                {{ esc_html($link['value']) }}
             @elseif ($link['type'] == 'subdirectory')
                 {{ '/' . esc_html($link['value']) . '/' }}
             @elseif ($link['type'] == 'protocol')

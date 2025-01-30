@@ -11,10 +11,12 @@ class Chart
 {
     private $statistics;
     private $is_preview;
-    public function __construct(Statistics $statistics, bool $is_preview = \false)
+    private $is_showing_skeleton_ui;
+    public function __construct(Statistics $statistics, bool $is_preview = \false, bool $is_showing_skeleton_ui = \false)
     {
         $this->statistics = $statistics;
         $this->is_preview = $is_preview;
+        $this->is_showing_skeleton_ui = $is_showing_skeleton_ui;
     }
     public function get_html() : string
     {
@@ -26,6 +28,10 @@ class Chart
         }, $primary_statistic->statistic_over_time());
         $data = [];
         foreach ($this->statistics->get_statistics() as $statistic) {
+            if ($this->is_showing_skeleton_ui) {
+                $data[$statistic->id()] = [];
+                continue;
+            }
             $data[$statistic->id()] = \array_map(function ($data_point) {
                 return $data_point[1];
             }, $statistic->statistic_over_time());
@@ -51,6 +57,13 @@ class Chart
         }
         if (\IAWPSCOPED\iawp()->is_surecart_support_enabled()) {
             return SureCart_Store::get_currency_code();
+        }
+        if (\IAWPSCOPED\iawp()->is_edd_support_enabled()) {
+            return \edd_get_currency();
+        }
+        if (\IAWPSCOPED\iawp()->is_pmpro_support_enabled()) {
+            global $pmpro_default_currency;
+            return $pmpro_default_currency;
         }
         return null;
     }

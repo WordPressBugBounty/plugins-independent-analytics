@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.7
 Requires PHP: 7.3.33
-Stable tag: 2.9.7
+Stable tag: 2.10.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -178,6 +178,28 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.10.0 - January 29th, 2025 =
+
+* **Feature:** added eCommerce tracking for Easy Digital Downloads
+* **Feature:** added eCommerce tracking for Paid Memberships Pro
+* **Feature:** added option to group the Clicks table by Link Pattern
+* **Feature:** added option to track all external clicks
+* **Feature:** added option to download a CSV with daily metrics from any report
+* **Enhancement:** form tracking integrations added for SureForms and Kali Forms
+* **Enhancement:** top link patterns and top form submissions added to the email report
+* **Enhancement:** added new Reply To address setting for the email report
+* **Enhancement:** added option for customizable footer text in the email report
+* **Enhancement:** flipped the Real-time chart to read in the opposite direction
+* **Enhancement:** click tracking works for video and audio blocks too
+* **Enhancement:** added SMS as a protocol for click tracking
+* **Enhancement:** added button to quickly block your own IP address
+* **Enhancement:** added a REST API notice when it’s blocked by ASE Pro
+* **Enhancement:** removed the old CSV export option in the settings menu
+* **Fix:** Quick Stats were showing unfiltered results before report filters applied
+* **Fix:** Top 10 lists in the real-time report were sorted by visitors instead of views
+* **Fix:** WP HTML Mail plugin was breaking email report layout
+* **Fix:** filter condition buttons no longer removing hyphens in URLs
 
 = 2.9.7 - January 9th, 2025 =
 

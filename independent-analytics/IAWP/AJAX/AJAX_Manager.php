@@ -24,12 +24,8 @@ class AJAX_Manager
         $this->instances[] = new \IAWP\AJAX\Delete_Report();
         $this->instances[] = new \IAWP\AJAX\Dismiss_Notice();
         $this->instances[] = new \IAWP\AJAX\Edit_Link();
-        $this->instances[] = new \IAWP\AJAX\Export_Campaigns();
-        $this->instances[] = new \IAWP\AJAX\Export_Clicks();
-        $this->instances[] = new \IAWP\AJAX\Export_Devices();
-        $this->instances[] = new \IAWP\AJAX\Export_Geo();
-        $this->instances[] = new \IAWP\AJAX\Export_Pages();
-        $this->instances[] = new \IAWP\AJAX\Export_Referrers();
+        $this->instances[] = new \IAWP\AJAX\Export_Report_Statistics();
+        $this->instances[] = new \IAWP\AJAX\Export_Report_Table();
         $this->instances[] = new \IAWP\AJAX\Export_Reports();
         $this->instances[] = new \IAWP\AJAX\Filter();
         $this->instances[] = new \IAWP\AJAX\Import_Reports();

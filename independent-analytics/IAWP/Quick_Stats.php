@@ -9,14 +9,16 @@ class Quick_Stats
 {
     private $statistics;
     private $is_dashboard_widget;
+    private $is_showing_skeleton_ui;
     /**
      * @param Statistics $statistics
      * @param bool $is_dashboard_widget
      */
-    public function __construct(Statistics $statistics, bool $is_dashboard_widget = \false)
+    public function __construct(Statistics $statistics, bool $is_dashboard_widget = \false, bool $is_showing_skeleton_ui = \false)
     {
         $this->statistics = $statistics;
         $this->is_dashboard_widget = $is_dashboard_widget;
+        $this->is_showing_skeleton_ui = $is_showing_skeleton_ui;
     }
     public function get_html() : string
     {
@@ -28,6 +30,9 @@ class Quick_Stats
         if ($this->statistics->has_filters()) {
             $quick_stats_html_class .= ' filtered';
         }
-        return \IAWPSCOPED\iawp_blade()->run('quick-stats', ['is_dashboard_widget' => $this->is_dashboard_widget, 'quick_stats_html_class' => $quick_stats_html_class, 'statistics' => $statistics, 'plugin_groups' => \IAWP\Plugin_Group::get_plugin_groups()]);
+        if ($this->is_showing_skeleton_ui) {
+            $quick_stats_html_class .= ' skeleton-ui';
+        }
+        return \IAWPSCOPED\iawp_blade()->run('quick-stats', ['is_dashboard_widget' => $this->is_dashboard_widget, 'is_showing_skeleton_ui' => $this->is_showing_skeleton_ui, 'quick_stats_html_class' => $quick_stats_html_class, 'statistics' => $statistics, 'plugin_groups' => \IAWP\Plugin_Group::get_plugin_groups()]);
     }
 }
