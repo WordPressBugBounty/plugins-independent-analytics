@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.7
 Requires PHP: 7.3.33
-Stable tag: 2.10.0
+Stable tag: 2.10.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -178,6 +178,11 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.10.1 - January 31st, 2025 =
+
+* **Enhancement:** added Swedish translation
+* **Fix:** resolved PHP warning about text domain being loaded too early
 
 = 2.10.0 - January 29th, 2025 =
 
@@ -778,54 +783,3 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 * **Feature:** added dashboard widget with quick stats and views chart
 * **Feature:** added view counter to display your page/post views on the front-end of your site
 * **Feature:** added new Learn menu with search bar and links to tutorials
-
-= 1.9 - August 15th, 2022 =
-
-* **Feature:** Geo data added! Find out where your visitors are coming from in the new Geographic dashboard.
-* **Fix:** visitors weren't counted properly for some hosts like Rocket.net due to the use of Cloudflare Enterprise
-* **Fix:** extremely long search qeuries from users could affect the data table's formatting
-
-= 1.8 - July 20th, 2022 =
-
-* **Update:** added Scroll to Top arrow to make navigating large tables easier
-* **Update:** back-end improvements to data integrity and performance
-* **Update:** added migration system to make updates from older versions smoother
-* **Fix:** views weren't tracked if WP was installed in a subdirectory
-
-= 1.7 - June 29th, 2022 =
-
-* **Update:** added the day of week to the tooltip that shows when hovering over a day in the chart
-* **Fix:** added Visitors to the Referrers CSV export
-* **Fix:** sorting for Visitors now working as expected
-
-= 1.6 - June 28th, 2022 =
-
-* **Feature:** Visitors are now tracked in addition to Views
-* **Update:** UI style and layout improvements
-* **Update:** Removed the site's domain from the URL in the table, so only the slug shows (ex. /blog/post-title/)
-* **Update:** the Views & Referrers report can both be filtered by Visitor counts
-* **Update:** when filtering, you can see your unfiltered Visitor & View totals next to your filtered totals
-* **Update:** added a button to review the plugin in the header (please leave us a rating if you like Independent Analytics!)
-
-= 1.5 - June 14th, 2022 =
-
-* **Update:** added more one-click date ranges to date picker
-* **Update:** added option in Settings to delete all data
-* **Update:** added Analytics Dashboard link in the Plugins page  
-* **Fix:** no longer tracking views for post previews
-* **Fix:** added placeholder text for pages missing a title
-* **Fix:** displaying correct date format in CSV exports
-* **Fix:** data displayed in the dashboard didn't recognize the local timezone
-
-= 1.4 - June 3rd, 2022 =
-
-* Feature: added new Post Category column
-* Update: styled Freemius optin form
-* Fix: filter reset button not visually disabled when unusable
-* Fix: conflict with SG Security plugin
-* FIx: conflict with plugins using Twig
-
-= 1.3 - May 31st, 2022 =
-
-* Feature: Added option to change starting date
-* Update: Add support for PHP 8

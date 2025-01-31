@@ -73,13 +73,12 @@ class Independent_Analytics
         \add_action('admin_init', [$this, 'remove_freemius_pricing_menu']);
         \add_filter('plugin_action_links_independent-analytics/iawp.php', [$this, 'plugin_action_links']);
         \add_action('init', [$this, 'polylang_translations']);
-        \add_action('init', [$this, 'load_textdomain']);
+        \add_action('init', [$this, 'load_text_domain']);
         // Freemius adjustments
         \IAWP_FS()->add_filter('pricing_url', [$this, 'change_freemius_pricing_url'], 10);
         \IAWP_FS()->add_filter('show_deactivation_feedback_form', function () {
             return \false;
         });
-        \IAWP_FS()->override_i18n(['yee-haw' => \__('Success', 'independent-analytics')]);
         // Other hooks
         \add_action('admin_init', [$this, 'maybe_delete_mu_plugin']);
         \add_action('admin_body_class', [$this, 'add_body_class']);
@@ -137,9 +136,11 @@ class Independent_Analytics
         }
         \update_option('iawp_attempted_to_delete_mu_plugin', '1', \true);
     }
-    public function load_textdomain()
+    public function load_text_domain()
     {
         \load_plugin_textdomain('independent-analytics', \false, \IAWP_LANGUAGES_DIRECTORY);
+        // Freemius overrides must happen after the text domain is loaded
+        \IAWP_FS()->override_i18n(['yee-haw' => \__('Success', 'independent-analytics')]);
     }
     public function polylang_translations()
     {
