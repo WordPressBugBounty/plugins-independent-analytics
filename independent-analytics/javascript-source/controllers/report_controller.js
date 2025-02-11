@@ -398,10 +398,10 @@ class Report_Controller extends Controller {
                 },
             }
             let base64Image = null
+            const chartImageWidth = 1080
+            const chartImageHeight = chartImageWidth * .25
 
             if (window.iawp_chart) {
-                const chartImageWidth = 1080
-                const chartImageHeight = chartImageWidth * .25
                 window.iawp_chart.resize(chartImageWidth, chartImageHeight)
                 base64Image = window.iawp_chart.toBase64Image('image/png', 1);
                 window.iawp_chart.resize()
@@ -414,6 +414,8 @@ class Report_Controller extends Controller {
             if (base64Image) {
                 const imageElement = document.createElement('img')
                 imageElement.src = base64Image
+                imageElement.style.width = chartImageWidth + "px"
+                imageElement.style.height = chartImageHeight + "px"
 
                 element.querySelector('#independent-analytics-chart').replaceWith(imageElement)
             }

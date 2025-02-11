@@ -150,29 +150,17 @@ export default class extends Controller {
             })
         }
 
-        // Remove any that are no longer around and update existing ones
+        // Remove existing elements
         this.existingElements().forEach((existingElement) => {
-            const existingId = existingElement.dataset.id
-            const match = entries.find((entry) => entry['id'] === existingId)
-
-            if (match) {
-                existingElement.dataset.position = match['position']
-                existingElement.querySelector('.real-time-position').textContent = match['position'] + '.'
-                existingElement.querySelector('.real-time-stat').textContent = match['views']
-            } else {
-                iso.remove(existingElement)
-            }
+            iso.remove(existingElement)
         })
 
-        // Add new ones
+        // Add new elements
         entries.forEach((entry, index) => {
-            if (!this.existingIds().includes(entry['id'])) {
-                const entryElement = this.elementFromEntry(entry)
-                iso.insert(entryElement)
-            }
+            const entryElement = this.elementFromEntry(entry)
+            iso.insert(entryElement)
         })
 
-        iso.updateSortData()
         iso.arrange()
 
         const totalElements = iso.items.length

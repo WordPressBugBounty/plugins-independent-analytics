@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.7
 Requires PHP: 7.3.33
-Stable tag: 2.10.1
+Stable tag: 2.10.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -178,6 +178,13 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.10.2 - February 12th, 2025 =
+
+* **Fix:** improved RTL language support
+* **Fix:** links in PDF exports were not clickable
+* **Fix:** average session duration calculation could be skewed in certain conditions
+* **Fix:** tables in real-time report would update without reorder
 
 = 2.10.1 - January 31st, 2025 =
 

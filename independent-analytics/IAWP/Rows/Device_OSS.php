@@ -7,7 +7,6 @@ use IAWP\Illuminate_Builder;
 use IAWP\Models\Device;
 use IAWP\Query;
 use IAWP\Query_Taps;
-use IAWP\Tables;
 use IAWPSCOPED\Illuminate\Database\Query\Builder;
 use IAWPSCOPED\Illuminate\Database\Query\JoinClause;
 /** @internal */
@@ -35,26 +34,30 @@ class Device_OSS extends \IAWP\Rows\Rows
         $sessions_table = Query::get_table_name(Query::SESSIONS);
         $orders_table = Query::get_table_name(Query::ORDERS);
         $device_oss_table = Query::get_table_name(Query::DEVICE_OSS);
-        $orders_query = Illuminate_Builder::new();
-        $orders_query->select(['orders.view_id AS view_id'])->selectRaw('IFNULL(COUNT(DISTINCT orders.order_id), 0) AS wc_orders')->selectRaw('IFNULL(ROUND(CAST(SUM(orders.total) AS SIGNED)), 0) AS wc_gross_sales')->selectRaw('IFNULL(ROUND(CAST(SUM(orders.total_refunded) AS SIGNED)), 0) AS wc_refunded_amount')->selectRaw('IFNULL(SUM(orders.total_refunds), 0) AS wc_refunds')->from($orders_table, 'orders')->where('orders.is_included_in_analytics', '=', \true)->whereBetween('orders.created_at', $this->get_current_period_iso_range())->groupBy('orders.view_id');
-        $device_oss_query = Illuminate_Builder::new();
-        $device_oss_query->select('device_oss.device_os_id', 'device_oss.device_os AS os')->selectRaw('COUNT(DISTINCT views.id)  AS views')->selectRaw('COUNT(DISTINCT sessions.visitor_id)  AS visitors')->selectRaw('COUNT(DISTINCT sessions.session_id)  AS sessions')->selectRaw('ROUND(AVG( TIMESTAMPDIFF(SECOND, sessions.created_at, sessions.ended_at))) AS average_session_duration')->selectRaw('COUNT(DISTINCT IF(sessions.final_view_id IS NULL, sessions.session_id, NULL))  AS bounces')->selectRaw('COUNT(DISTINCT clicks.click_id)  AS clicks')->selectRaw('IFNULL(SUM(the_orders.wc_orders), 0) AS wc_orders')->selectRaw('IFNULL(SUM(the_orders.wc_gross_sales), 0) AS wc_gross_sales')->selectRaw('IFNULL(SUM(the_orders.wc_refunded_amount), 0) AS wc_refunded_amount')->selectRaw('IFNULL(SUM(the_orders.wc_refunds), 0) AS wc_refunds')->selectRaw('IFNULL(SUM(form_submissions.form_submissions), 0) AS form_submissions')->tap(function (Builder $query) {
+        $session_statistics = Illuminate_Builder::new();
+        $session_statistics->select('sessions.*')->selectRaw('COUNT(DISTINCT views.id) AS views')->selectRaw('COUNT(DISTINCT clicks.click_id) AS clicks')->selectRaw('COUNT(DISTINCT orders.order_id) AS wc_orders')->selectRaw('IFNULL(CAST(SUM(orders.total) AS SIGNED), 0) AS wc_gross_sales')->selectRaw('IFNULL(CAST(SUM(orders.total_refunded) AS SIGNED), 0) AS wc_refunded_amount')->selectRaw('IFNULL(CAST(SUM(orders.total_refunds) AS SIGNED), 0) AS wc_refunds')->selectRaw('IFNULL(SUM(form_submissions.form_submissions), 0) AS form_submissions')->tap(function (Builder $query) {
             foreach (Form::get_forms() as $form) {
                 $query->selectRaw("SUM(IF(form_submissions.form_id = ?, form_submissions.form_submissions, 0)) AS {$form->submissions_column()}", [$form->id()]);
             }
-        })->from($views_table, 'views')->leftJoin($device_oss_query->raw($sessions_table . ' AS sessions'), function (JoinClause $join) {
-            $join->on('views.session_id', '=', 'sessions.session_id');
-        })->join($device_oss_query->raw($device_oss_table . ' AS device_oss'), function (JoinClause $join) {
-            $join->on('sessions.device_os_id', '=', 'device_oss.device_os_id');
-        })->leftJoin($device_oss_query->raw(Tables::clicks() . ' AS clicks'), function (JoinClause $join) {
-            $join->on('clicks.view_id', '=', 'views.id');
-        })->leftJoinSub($orders_query, 'the_orders', function (JoinClause $join) {
-            $join->on('the_orders.view_id', '=', 'views.id');
-        })->leftJoinSub($this->get_form_submissions_query(), 'form_submissions', function (JoinClause $join) {
+        })->from("{$sessions_table} AS sessions")->join("{$views_table} AS views", function (JoinClause $join) {
+            $join->on('sessions.session_id', '=', 'views.session_id');
+        })->leftJoin("{$orders_table} AS orders", function (JoinClause $join) {
+            $join->on('views.id', '=', 'orders.initial_view_id')->where('orders.is_included_in_analytics', '=', \true);
+        })->leftJoin("{$this->tables::clicks()} AS clicks", function (JoinClause $join) {
+            $join->on('views.id', '=', 'clicks.view_id');
+        })->tap(Query_Taps::tap_authored_content_check())->whereBetween('sessions.created_at', $this->get_current_period_iso_range())->whereBetween('views.viewed_at', $this->get_current_period_iso_range())->leftJoinSub($this->get_form_submissions_query(), 'form_submissions', function (JoinClause $join) {
             $join->on('form_submissions.view_id', '=', 'views.id');
-        })->whereBetween('views.viewed_at', $this->get_current_period_iso_range())->when(!$this->appears_to_be_for_real_time_analytics(), function (Builder $query) {
+        })->whereNotNull('sessions.device_os_id')->groupBy('sessions.session_id');
+        $device_oss_query = Illuminate_Builder::new();
+        $device_oss_query->select('device_oss.device_os_id', 'device_oss.device_os AS os')->selectRaw('IFNULL(CAST(SUM(sessions.views) AS SIGNED), 0) AS views')->selectRaw('COUNT(DISTINCT sessions.visitor_id)  AS visitors')->selectRaw('COUNT(DISTINCT sessions.session_id)  AS sessions')->selectRaw('ROUND(AVG( TIMESTAMPDIFF(SECOND, sessions.created_at, sessions.ended_at))) AS average_session_duration')->selectRaw('COUNT(DISTINCT IF(sessions.final_view_id IS NULL, sessions.session_id, NULL))  AS bounces')->selectRaw('SUM(sessions.clicks)  AS clicks')->selectRaw('SUM(sessions.wc_orders) AS wc_orders')->selectRaw('SUM(sessions.wc_gross_sales) AS wc_gross_sales')->selectRaw('SUM(sessions.wc_refunded_amount) AS wc_refunded_amount')->selectRaw('SUM(sessions.wc_refunds) AS wc_refunds')->selectRaw('SUM(sessions.form_submissions) AS form_submissions')->tap(function (Builder $query) {
+            foreach (Form::get_forms() as $form) {
+                $query->selectRaw("SUM(sessions.{$form->submissions_column()}) AS {$form->submissions_column()}");
+            }
+        })->fromSub($session_statistics, 'sessions')->join($device_oss_query->raw($device_oss_table . ' AS device_oss'), function (JoinClause $join) {
+            $join->on('sessions.device_os_id', '=', 'device_oss.device_os_id');
+        })->when(!$this->appears_to_be_for_real_time_analytics(), function (Builder $query) {
             $query->whereBetween('sessions.created_at', $this->get_current_period_iso_range());
-        })->tap(Query_Taps::tap_authored_content_check())->when(\count($this->filters) > 0, function (Builder $query) {
+        })->when(\count($this->filters) > 0, function (Builder $query) {
             foreach ($this->filters as $filter) {
                 if (!$this->is_a_calculated_column($filter->column())) {
                     $filter->apply_to_query($query);
