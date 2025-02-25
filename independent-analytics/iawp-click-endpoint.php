@@ -121,7 +121,7 @@ function get_click_data_file(): string
 {
     $text_file = trailing_slash(sys_get_temp_dir()) . "iawp-click-data.txt";
 
-    if (is_file($text_file)) {
+    if (is_file($text_file) && is_readable($text_file) && is_writable($text_file)) {
         return $text_file;
     }
 
@@ -170,7 +170,7 @@ $data            = [
     'created_at'    => time(),
 ];
 
-if(!is_readable($click_data_file) || !is_writable($click_data_file)) {
+if (!is_readable($click_data_file) || !is_writable($click_data_file)) {
     exit;
 }
 

@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.7
 Requires PHP: 7.3.33
-Stable tag: 2.10.2
+Stable tag: 2.10.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -178,6 +178,11 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.10.3 - February 25th, 2025 =
+
+* **Fix:** real-time report could show inconsistent data
+* **Fix:** click tracking data file could exist without being writable
 
 = 2.10.2 - February 12th, 2025 =
 

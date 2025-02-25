@@ -46,7 +46,9 @@ class Campaigns extends \IAWP\Rows\Rows
             $join->on('views.id', '=', 'orders.initial_view_id')->where('orders.is_included_in_analytics', '=', \true);
         })->leftJoin("{$this->tables::clicks()} AS clicks", function (JoinClause $join) {
             $join->on('views.id', '=', 'clicks.view_id');
-        })->tap(Query_Taps::tap_authored_content_check())->whereBetween('sessions.created_at', $this->get_current_period_iso_range())->whereBetween('views.viewed_at', $this->get_current_period_iso_range())->leftJoinSub($this->get_form_submissions_query(), 'form_submissions', function (JoinClause $join) {
+        })->tap(Query_Taps::tap_authored_content_check())->when(!$this->appears_to_be_for_real_time_analytics(), function (Builder $query) {
+            $query->whereBetween('sessions.created_at', $this->get_current_period_iso_range());
+        })->whereBetween('views.viewed_at', $this->get_current_period_iso_range())->leftJoinSub($this->get_form_submissions_query(), 'form_submissions', function (JoinClause $join) {
             $join->on('form_submissions.view_id', '=', 'views.id');
         })->whereNotNull('sessions.campaign_id')->groupBy('sessions.session_id');
         $campaigns_query = Illuminate_Builder::new();

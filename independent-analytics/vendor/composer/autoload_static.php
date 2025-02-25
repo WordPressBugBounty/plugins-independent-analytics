@@ -149,9 +149,9 @@ class ComposerStaticInitf677a81a53b5af64f9a5d44891fba130
         ),
         'IAWPSCOPED\\Illuminate\\Support\\' => 
         array (
-            0 => __DIR__ . '/..' . '/illuminate/collections',
-            1 => __DIR__ . '/..' . '/illuminate/macroable',
-            2 => __DIR__ . '/..' . '/illuminate/support',
+            0 => __DIR__ . '/..' . '/illuminate/support',
+            1 => __DIR__ . '/..' . '/illuminate/collections',
+            2 => __DIR__ . '/..' . '/illuminate/macroable',
         ),
         'IAWPSCOPED\\Illuminate\\Database\\' => 
         array (

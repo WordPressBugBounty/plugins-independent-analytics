@@ -27,7 +27,7 @@ return array(
     'IAWPSCOPED\\Proper\\' => array($vendorDir . '/andrewmead/wordpress-proper/source', $vendorDir . '/andrewmead/wordpress-proper/tests'),
     'IAWPSCOPED\\MaxMind\\Db\\' => array($vendorDir . '/maxmind-db/reader/src/MaxMind/Db'),
     'IAWPSCOPED\\League\\Uri\\' => array($vendorDir . '/league/uri/src', $vendorDir . '/league/uri-interfaces/src'),
-    'IAWPSCOPED\\Illuminate\\Support\\' => array($vendorDir . '/illuminate/collections', $vendorDir . '/illuminate/macroable', $vendorDir . '/illuminate/support'),
+    'IAWPSCOPED\\Illuminate\\Support\\' => array($vendorDir . '/illuminate/support', $vendorDir . '/illuminate/collections', $vendorDir . '/illuminate/macroable'),
     'IAWPSCOPED\\Illuminate\\Database\\' => array($vendorDir . '/illuminate/database'),
     'IAWPSCOPED\\Illuminate\\Contracts\\' => array($vendorDir . '/illuminate/contracts'),
     'IAWPSCOPED\\Illuminate\\Container\\' => array($vendorDir . '/illuminate/container'),
