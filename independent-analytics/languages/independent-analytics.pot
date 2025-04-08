@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Independent Analytics 2.10.3\n"
+"Project-Id-Version: Independent Analytics 2.10.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/independent-analytics-production\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-24T17:23:25+00:00\n"
+"POT-Creation-Date: 2025-04-08T13:17:39+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: independent-analytics\n"
@@ -1112,44 +1112,44 @@ msgid "Views Per Session"
 msgstr ""
 
 #: IAWP/Statistics/Statistics.php:188
-#: IAWP/Tables/Table.php:387
+#: IAWP/Tables/Table.php:392
 msgid "Orders"
 msgstr ""
 
 #: IAWP/Statistics/Statistics.php:188
-#: IAWP/Tables/Table.php:387
+#: IAWP/Tables/Table.php:392
 msgid "Gross Sales"
 msgstr ""
 
 #: IAWP/Statistics/Statistics.php:188
-#: IAWP/Tables/Table.php:387
+#: IAWP/Tables/Table.php:392
 msgid "Refunds"
 msgstr ""
 
 #: IAWP/Statistics/Statistics.php:188
-#: IAWP/Tables/Table.php:387
+#: IAWP/Tables/Table.php:392
 msgid "Refunded Amount"
 msgstr ""
 
 #: IAWP/Statistics/Statistics.php:188
-#: IAWP/Tables/Table.php:387
+#: IAWP/Tables/Table.php:392
 msgid "Total Sales"
 msgstr ""
 
 #: IAWP/Statistics/Statistics.php:188
-#: IAWP/Tables/Table.php:387
-#: IAWP/Tables/Table.php:391
-#: IAWP/Tables/Table.php:394
+#: IAWP/Tables/Table.php:392
+#: IAWP/Tables/Table.php:396
+#: IAWP/Tables/Table.php:399
 msgid "Conversion Rate"
 msgstr ""
 
 #: IAWP/Statistics/Statistics.php:188
-#: IAWP/Tables/Table.php:387
+#: IAWP/Tables/Table.php:392
 msgid "Earnings Per Visitor"
 msgstr ""
 
 #: IAWP/Statistics/Statistics.php:188
-#: IAWP/Tables/Table.php:387
+#: IAWP/Tables/Table.php:392
 msgid "Average Order Volume"
 msgstr ""
 
@@ -1200,8 +1200,8 @@ msgstr ""
 msgid "Download PDF"
 msgstr ""
 
-#: IAWP/Tables/Table.php:391
-#: IAWP/Tables/Table.php:393
+#: IAWP/Tables/Table.php:396
+#: IAWP/Tables/Table.php:398
 #: views/email/email.blade.php:121
 msgid "Submissions"
 msgstr ""

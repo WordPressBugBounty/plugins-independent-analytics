@@ -277,6 +277,11 @@ abstract class Table
                 }
                 $column_id = $column->id();
                 $value = $row->{$column_id}();
+                if (\is_string($value)) {
+                    $value = \html_entity_decode($value);
+                    // Fix apostrophes for Excel
+                    $value = \str_replace("’", "'", $value);
+                }
                 // Todo - This logic is similar to the rendering logic for table cells. This should
                 //  all be handled via the column class itself.
                 if (\is_null($value)) {
@@ -292,7 +297,7 @@ abstract class Table
                 } elseif ($column_id === 'wc_earnings_per_visitor') {
                     $csv_row[] = Currency::format($value);
                 } else {
-                    $csv_row[] = $row->{$column_id}();
+                    $csv_row[] = $value;
                 }
             }
             $csv_rows[] = $csv_row;

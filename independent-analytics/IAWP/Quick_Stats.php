@@ -33,6 +33,6 @@ class Quick_Stats
         if ($this->is_showing_skeleton_ui) {
             $quick_stats_html_class .= ' skeleton-ui';
         }
-        return \IAWPSCOPED\iawp_blade()->run('quick-stats', ['is_dashboard_widget' => $this->is_dashboard_widget, 'is_showing_skeleton_ui' => $this->is_showing_skeleton_ui, 'quick_stats_html_class' => $quick_stats_html_class, 'statistics' => $statistics, 'plugin_groups' => \IAWP\Plugin_Group::get_plugin_groups()]);
+        return \IAWPSCOPED\iawp_blade()->run('quick-stats', ['is_dashboard_widget' => $this->is_dashboard_widget, 'quick_stats_html_class' => $quick_stats_html_class, 'statistics' => $statistics, 'plugin_groups' => \IAWP\Plugin_Group::get_plugin_groups()]);
     }
 }

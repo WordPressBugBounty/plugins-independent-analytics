@@ -4,6 +4,8 @@ namespace IAWP;
 
 use IAWP\Custom_WordPress_Columns\Views_Column;
 use IAWP\Models\Page;
+use IAWP\Models\Page_Home;
+use IAWP\Models\Page_Singular;
 use IAWP\Models\Visitor;
 use IAWP\Utils\Device;
 use IAWP\Utils\String_Util;
@@ -44,7 +46,7 @@ class View
         $this->set_session_total_views();
         $this->set_sessions_initial_view($view_id);
         $this->set_sessions_final_view($view_id);
-        $this->update_postmeta($this->resource);
+        $this->set_views_postmeta($this->resource);
     }
     /**
      * @return int ID of newly created session
@@ -295,7 +297,15 @@ class View
         $session = \IAWP\Illuminate_Builder::new()->from($sessions_table, 'sessions')->selectRaw('IFNULL(ended_at, created_at) AS latest_view_at')->selectRaw('sessions.*')->where('visitor_id', '=', $this->visitor->id())->havingRaw('latest_view_at > DATE_SUB(UTC_TIMESTAMP(), INTERVAL 30 MINUTE)')->orderBy('latest_view_at', 'DESC')->first();
         return $session;
     }
-    private function update_postmeta(Page $resource) : void
+    private function set_views_postmeta(Page $resource) : void
+    {
+        if ($resource instanceof Page_Singular) {
+            $this->set_views_postmeta_for_singular($resource);
+        } elseif ($resource instanceof Page_Home) {
+            $this->set_views_postmeta_for_home($resource);
+        }
+    }
+    private function set_views_postmeta_for_singular(Page_Singular $resource) : void
     {
         $singular_id = $resource->get_singular_id();
         if ($singular_id === null) {
@@ -307,5 +317,22 @@ class View
             $join->on('resources.id', '=', 'views.resource_id');
         })->where('singular_id', '=', $singular_id)->value('views');
         \update_post_meta($singular_id, Views_Column::$meta_key, $total_views);
+    }
+    private function set_views_postmeta_for_home(Page_Home $resource) : void
+    {
+        $blog_page_id = \get_option('page_for_posts');
+        if (\is_string($blog_page_id) && \ctype_digit($blog_page_id)) {
+            $blog_page_id = \intval($blog_page_id);
+        }
+        $blog_page = \get_post($blog_page_id);
+        if ($blog_page === null) {
+            return;
+        }
+        $views_table = \IAWP\Query::get_table_name(\IAWP\Query::VIEWS);
+        $resources_table = \IAWP\Query::get_table_name(\IAWP\Query::RESOURCES);
+        $total_views = \IAWP\Illuminate_Builder::new()->selectRaw('COUNT(*) AS views')->from("{$resources_table} as resources")->join("{$views_table} AS views", function (JoinClause $join) {
+            $join->on('resources.id', '=', 'views.resource_id');
+        })->where('resource', '=', 'home')->value('views');
+        \update_post_meta($blog_page_id, Views_Column::$meta_key, $total_views);
     }
 }

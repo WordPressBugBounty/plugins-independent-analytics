@@ -3,9 +3,9 @@ Contributors: bensibley, andrewmead
 Tags: analytics, wordpress analytics, google analytics, analytics dashboard, statistics
 Donate link: https://independentwp.com
 Requires at least: 5.9
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.3.33
-Stable tag: 2.10.3
+Stable tag: 2.10.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -178,6 +178,13 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.10.4 - April 7th, 2025 =
+
+* **Fix:** views column didn't show views for blog home
+* **Fix:** added dark mode support for quick stats
+* **Fix:** CSV downloads weren't displaying special characters properly
+* **Fix:** fixed issue that could cause a critical error when tracking views for non-standard pages
 
 = 2.10.3 - February 25th, 2025 =
 

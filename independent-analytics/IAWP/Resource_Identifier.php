@@ -62,13 +62,23 @@ class Resource_Identifier
             $meta_key = 'virtual_page_id';
             $meta_value = self::get_virtual_page_id();
         } elseif (\is_singular()) {
-            $type = 'singular';
-            $meta_key = 'singular_id';
-            $meta_value = \get_queried_object_id();
+            $singular_id = \get_queried_object_id();
+            if (\get_post($singular_id)) {
+                $type = 'singular';
+                $meta_key = 'singular_id';
+                $meta_value = $singular_id;
+            } else {
+                return null;
+            }
         } elseif (\is_author()) {
-            $type = 'author_archive';
-            $meta_key = 'author_id';
-            $meta_value = \get_queried_object_id();
+            $author_id = \get_queried_object_id();
+            if (\get_user_by('id', $author_id)) {
+                $type = 'author_archive';
+                $meta_key = 'author_id';
+                $meta_value = $author_id;
+            } else {
+                return null;
+            }
         } elseif (\is_date()) {
             $type = 'date_archive';
             $meta_key = 'date_archive';
@@ -77,10 +87,33 @@ class Resource_Identifier
             $type = 'post_type_archive';
             $meta_key = 'post_type';
             $meta_value = \get_queried_object()->name;
-        } elseif (\is_category() || \is_tag() || \is_tax()) {
+        } elseif (\is_category()) {
+            $category_id = \get_queried_object_id();
+            $category_name = \get_the_category_by_ID($category_id);
+            if (\is_wp_error($category_name)) {
+                return null;
+            }
             $type = 'term_archive';
             $meta_key = 'term_id';
-            $meta_value = \get_queried_object_id();
+            $meta_value = $category_id;
+        } elseif (\is_tag()) {
+            $tag_id = \get_queried_object_id();
+            $tag = \get_tag($tag_id);
+            if ($tag === null || \is_wp_error($tag)) {
+                return null;
+            }
+            $type = 'term_archive';
+            $meta_key = 'term_id';
+            $meta_value = $tag_id;
+        } elseif (\is_tax()) {
+            $term_id = \get_queried_object_id();
+            $term = \get_term($term_id);
+            if ($term === null || \is_wp_error($term)) {
+                return null;
+            }
+            $type = 'term_archive';
+            $meta_key = 'term_id';
+            $meta_value = $term_id;
         } elseif (\is_search()) {
             $type = 'search';
             $meta_key = 'search_query';
@@ -146,7 +179,7 @@ class Resource_Identifier
             return 'sc_upsell_' . $post->sc_id;
         }
         // TODO - What's the pro slug?
-        if (\is_plugin_active('clickwhale/clickwhale.php') && \property_exists($post, 'linkpage') && \is_array($post->linkpage)) {
+        if (\is_plugin_active('clickwhale/clickwhale.php') && \is_object($post) && \property_exists($post, 'linkpage') && \is_array($post->linkpage)) {
             return 'clickwhale_link_page_' . $post->linkpage['id'];
         }
         return null;
