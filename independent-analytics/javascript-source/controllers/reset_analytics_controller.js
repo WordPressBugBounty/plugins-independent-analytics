@@ -56,6 +56,7 @@ export default class extends Controller {
             this.submitTarget.classList.add('sent')
             setTimeout(() => {
                 MicroModal.close("reset-analytics-modal")
+                this.submitTarget.classList.remove('sent')
             }, 1000)
         })
     }

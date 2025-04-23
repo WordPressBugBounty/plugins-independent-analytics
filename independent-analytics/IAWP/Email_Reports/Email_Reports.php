@@ -101,6 +101,14 @@ class Email_Reports
         $from = \IAWPSCOPED\iawp()->get_option('iawp_email_report_from_address', \get_option('admin_email'));
         $reply_to = \IAWPSCOPED\iawp()->get_option('iawp_email_report_reply_to_address', \get_option('admin_email'));
         $body = $this->get_email_body();
+        if (\count($to) > 1) {
+            for ($i = 0; $i < \count($to); $i++) {
+                if ($i == 0) {
+                    continue;
+                }
+                $headers[] = 'Bcc: ' . $to[$i];
+            }
+        }
         $headers[] = 'From: ' . \get_bloginfo('name') . ' <' . \esc_attr($from) . '>';
         $headers[] = 'Reply-To: ' . \esc_attr($reply_to);
         $headers[] = 'Content-Type: text/html; charset=UTF-8';
@@ -108,7 +116,7 @@ class Email_Reports
         \add_filter('haet_mail_use_template', function () {
             return \false;
         });
-        return \wp_mail($to, $this->subject_line($is_test_email), $body, $headers);
+        return \wp_mail($to[0], $this->subject_line($is_test_email), $body, $headers);
     }
     public function get_email_body($colors = '')
     {

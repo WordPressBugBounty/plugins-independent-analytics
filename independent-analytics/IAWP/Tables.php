@@ -49,6 +49,18 @@ class Tables
     {
         return self::prefix('form_submissions');
     }
+    public static function countries() : string
+    {
+        return self::prefix('countries');
+    }
+    public static function device_browsers() : string
+    {
+        return self::prefix('device_browsers');
+    }
+    public static function device_types() : string
+    {
+        return self::prefix('device_types');
+    }
     private static function prefix(string $name)
     {
         global $wpdb;

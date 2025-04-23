@@ -4,11 +4,12 @@ namespace IAWP\AJAX;
 
 use DateTime;
 use IAWP\Chart;
-use IAWP\Chart_Geo;
 use IAWP\Date_Range\Date_Range;
 use IAWP\Date_Range\Exact_Date_Range;
 use IAWP\Date_Range\Relative_Date_Range;
 use IAWP\Env;
+use IAWP\Map;
+use IAWP\Map_Data;
 use IAWP\Quick_Stats;
 use IAWP\Statistics\Intervals\Intervals;
 use IAWP\Statistics\Statistics;
@@ -69,7 +70,8 @@ class Filter extends \IAWP\AJAX\AJAX
         }
         $total_number_of_rows = $statistics->total_number_of_rows();
         if ($is_geo_table) {
-            $chart = new Chart_Geo($rows, $date_range->label());
+            $map_data = new Map_Data($rows);
+            $chart = new Map($map_data->get_country_data(), $date_range->label());
             $rows = \array_slice($rows, 0, $number_of_rows);
         } else {
             $chart = new Chart($statistics);

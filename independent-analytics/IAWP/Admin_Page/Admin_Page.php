@@ -11,13 +11,18 @@ use IAWP\Report_Finder;
 abstract class Admin_Page
 {
     protected abstract function render_page();
-    public function render($show_sidebar = \true) : void
+    /**
+     * @param bool $show_report_sidebar Some admin pages, such as the settings page, don't show the report sidebar
+     *
+     * @return void
+     */
+    public function render(bool $show_report_sidebar = \true) : void
     {
         if (!Capability_Manager::can_view()) {
             return;
         }
         if (Migrations::is_migrating()) {
-            echo \IAWPSCOPED\iawp_blade()->run('interrupt.migration-is-running');
+            echo \IAWPSCOPED\iawp_render('interrupt.migration-is-running');
             return;
         }
         $options = Dashboard_Options::getInstance();
@@ -31,8 +36,8 @@ abstract class Admin_Page
         echo $options->is_sidebar_collapsed() ? 'collapsed' : '';
         ?>">
                 <?php 
-        if ($show_sidebar) {
-            echo \IAWPSCOPED\iawp_blade()->run('partials.sidebar', ['favorite_report' => Report_Finder::get_favorite(), 'report_finder' => new Report_Finder(), 'is_white_labeled' => Capability_Manager::show_white_labeled_ui(), 'can_edit_settings' => Capability_Manager::can_edit(), 'is_dark_mode' => \get_option('iawp_dark_mode')]);
+        if ($show_report_sidebar) {
+            echo \IAWPSCOPED\iawp_render('partials.sidebar', ['report_finder' => Report_Finder::new(), 'is_white_labeled' => Capability_Manager::show_white_labeled_ui(), 'can_edit_settings' => Capability_Manager::can_edit(), 'is_dark_mode' => \get_option('iawp_dark_mode')]);
         }
         ?>
                 <div class="iawp-layout-main">

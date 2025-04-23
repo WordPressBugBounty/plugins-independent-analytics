@@ -6,7 +6,7 @@ import color from 'color'
 Chart.register(...registerables);
 
 export default class extends Controller {
-    static targets = ['primaryMetricSelect', 'secondaryMetricSelect', 'adaptiveWidthSelect'];
+    static targets = ['canvas', 'primaryMetricSelect', 'secondaryMetricSelect', 'adaptiveWidthSelect'];
 
     static values = {
         labels: Array,
@@ -16,7 +16,14 @@ export default class extends Controller {
             type: String,
             default: 'USD'
         },
-        isPreview: Boolean,
+        isPreview: {
+            type: Boolean,
+            default: false,
+        },
+        disableDarkMode: {
+            type: Boolean,
+            default: false,
+        },
         primaryChartMetricId: String,
         primaryChartMetricName: String,
         secondaryChartMetricId: String,
@@ -64,6 +71,26 @@ export default class extends Controller {
         format: 'percent'
     }]
 
+
+    connect() {
+        if (!this.isPreviewValue) {
+            this.updateMetricSelectWidth(this.primaryMetricSelectTarget)
+            // Only show the secondary metric select if there is a second metric to select
+            if (this.hasMultipleDatasetsValue === 1) {
+                this.updateMetricSelectWidth(this.secondaryMetricSelectTarget)
+            }
+        }
+        this.createChart()
+        this.updateChart()
+    }
+
+    disconnect() {
+        if(this.chart) {
+            this.chart.destroy()
+            this.chart = null
+        }
+    }
+   
     getLocale() {
         // Validate the locale
         try {
@@ -167,17 +194,6 @@ export default class extends Controller {
         return JSON.stringify(group) === JSON.stringify(otherGroup)
     }
 
-    connect() {
-        if (!this.isPreviewValue) {
-            this.updateMetricSelectWidth(this.primaryMetricSelectTarget)
-            // Only show the secondary metric select if there is a second metric to select
-            if(this.hasMultipleDatasetsValue === 1) {
-                this.updateMetricSelectWidth(this.secondaryMetricSelectTarget)
-            }
-        }
-        this.createChart()
-        this.updateChart()
-    }
 
     changePrimaryMetric(e) {
         const element = e.target
@@ -228,19 +244,19 @@ export default class extends Controller {
     }
 
     updateChart() {
-        const primaryDataset = window.iawp_chart.data.datasets[0]
+        const primaryDataset = this.chart.data.datasets[0]
 
         primaryDataset.id = this.primaryChartMetricIdValue
         primaryDataset.data = this.dataValue[this.primaryChartMetricIdValue]
         primaryDataset.label = this.primaryChartMetricNameValue
 
         const isEmptyPrimaryDataset = primaryDataset.data.every((value) => value === 0)
-        window.iawp_chart.options.scales['y'].suggestedMax = isEmptyPrimaryDataset ? 10 : null
-        window.iawp_chart.options.scales['y'].beginAtZero = primaryDataset.id !== 'bounce_rate'
+        this.chart.options.scales['y'].suggestedMax = isEmptyPrimaryDataset ? 10 : null
+        this.chart.options.scales['y'].beginAtZero = primaryDataset.id !== 'bounce_rate'
 
         // Always start by removing the secondary dataset
-        if (window.iawp_chart.data.datasets.length > 1) {
-            window.iawp_chart.data.datasets.pop()
+        if (this.chart.data.datasets.length > 1) {
+            this.chart.data.datasets.pop()
         }
 
         if (this.hasSecondaryMetric()) {
@@ -249,16 +265,16 @@ export default class extends Controller {
             const data = this.dataValue[id]
             const axisId = this.hasSharedAxis(this.primaryChartMetricIdValue, id) ? 'y' : 'defaultRight'
 
-            window.iawp_chart.data.datasets.push(
+            this.chart.data.datasets.push(
                 this.makeDataset(id, name, data, axisId, 'rgba(246,157,10)')
             )
 
             const isEmptySecondaryDataset = data.every((value) => value === 0)
-            window.iawp_chart.options.scales['defaultRight'].suggestedMax = isEmptySecondaryDataset ? 10 : null
-            window.iawp_chart.options.scales['defaultRight'].beginAtZero = id !== 'bounce_rate'
+            this.chart.options.scales['defaultRight'].suggestedMax = isEmptySecondaryDataset ? 10 : null
+            this.chart.options.scales['defaultRight'].beginAtZero = id !== 'bounce_rate'
         }
 
-        window.iawp_chart.update();
+        this.chart.update();
     }
 
     makeDataset(id, name, data, axisId, colorValue, isPrimary = false) {
@@ -279,12 +295,11 @@ export default class extends Controller {
     }
 
     shouldUseDarkMode() {
-        return document.body.classList.contains('iawp-dark-mode') && !this.isPreviewValue
+        return document.body.classList.contains('iawp-dark-mode') && !this.disableDarkModeValue
     }
 
     createChart() {
         Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
-        const element = document.getElementById('independent-analytics-chart');
         const labels = this.labelsValue
 
         const primaryMetricDataset = this.makeDataset(
@@ -305,6 +320,17 @@ export default class extends Controller {
 
         const options = {
             locale: this.getLocale(),
+            maintainAspectRatio: this.isPreviewValue ? false : true,
+            aspectRatio: 3,
+            onResize(chart, { width }) {
+                if(document.documentElement.clientWidth <= 782 && chart.options.aspectRatio === 3) {
+                    chart.options.aspectRatio = 1.5
+                    chart.update()
+                } else if(document.documentElement.clientWidth > 782 && chart.options.aspectRatio === 1.5) {
+                    chart.options.aspectRatio = 3
+                    chart.update()
+                }
+            },
             interaction: {
                 intersect: false,
                 mode: 'index'
@@ -420,6 +446,8 @@ export default class extends Controller {
             ],
         };
 
-        window.iawp_chart = new Chart(element, config);
+        if(!this.chart) {
+            this.chart = new Chart(this.canvasTarget, config);
+        }
     }
 }

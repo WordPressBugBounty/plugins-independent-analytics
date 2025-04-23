@@ -1,3 +1,24 @@
+<div id="report-title-bar" class="report-title-bar">
+    <div class="primary-report-title-container">
+        <h1 class="report-title">Real-Time</h1>
+    </div>
+
+    <div class="buttons">
+        <div>
+            <button id="favorite-report-button"
+                    data-controller="set-favorite-report"
+                    data-set-favorite-report-type-value="real-time"
+                    data-action="set-favorite-report#setFavoriteReport"
+                    class="iawp-button favorite {{$env->is_favorite('real-time') ? 'active' : '' }}"
+            >
+                <span class="dashicons dashicons-star-filled"></span>
+                {{ __('Make default', 'independent-analytics') }}
+            </button>
+        </div>
+    </div>
+</div>
+
+
 <div id="real-time-dashboard" class="real-time-dashboard refreshed"
      data-controller="real-time"
      data-real-time-chart-data-value="<?php echo esc_attr(json_encode($chart_data)) ?>"

@@ -11,6 +11,10 @@ class Page_Post_Type_Archive extends \IAWP\Models\Page
         $this->post_type = $row->post_type;
         parent::__construct($row);
     }
+    public function post_type() : string
+    {
+        return $this->post_type;
+    }
     protected function resource_key() : string
     {
         return 'post_type';

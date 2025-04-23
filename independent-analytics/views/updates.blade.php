@@ -8,6 +8,24 @@
         </div>
         <div class="entry">
             <div class="video-container">
+                <iframe src="https://www.youtube-nocookie.com/embed/Saubzot9UoM?si=V_QgHULGXxtkNElj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <div class="text">
+                <div class="title-container">
+                    <h2 class="title">Version 2.11 - Build the Ultimate Dashboard with the Overview Report!</h2>
+                    <span class="date">April 21st, 2025</span>
+                </div>
+                <div class="description-container">
+                    <p>Version 2.11.0 adds a new Overview report feature to Independent Analytics Pro. Choose from 10
+                        customizable modules to build the perfect analytics dashboard for your website.</p>
+                    <p>You can review the <a
+                            href="https://independentwp.com/changelog/version-2-11-0/"
+                            target="_blank">full changelog here</a>.</p>
+                </div>
+            </div>
+        </div>
+        <div class="entry">
+            <div class="video-container">
                 <iframe src="https://www.youtube-nocookie.com/embed/bYS3ckJxE8o?si=Fvqcos0IunjY28y6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <div class="text">
@@ -42,29 +60,6 @@
                             href="https://independentwp.com/changelog/version-2-9/"
                             target="_blank">full changelog here</a>.
                         </p>
-                </div>
-            </div>
-        </div>
-        <div class="entry">
-            <div class="video-container">
-                <iframe
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen frameborder="0" referrerpolicy="strict-origin-when-cross-origin"
-                    src="https://www.youtube-nocookie.com/embed/zt9tY5-ARvI?si=dgidwmO4UKkLxcWq"
-                    title="YouTube video player"></iframe>
-            </div>
-            <div class="text">
-                <div class="title-container">
-                    <h2 class="title">Version 2.8 - SureCart Integration is Here!</h2>
-                    <span class="date">September 4th, 2024</span>
-                </div>
-                <div class="description-container">
-                    <p>Version 2.8.0 adds SureCart analytics for Independent Analytics Pro users. It also includes a
-                        brand new date picker and the option to choose which WooCommerce order statuses to include in
-                        the analytics.</p>
-                    <p>You can review the <a
-                            href="https://independentwp.com/changelog/version-2-8/"
-                            target="_blank">full changelog here</a>.</p>
                 </div>
             </div>
         </div>

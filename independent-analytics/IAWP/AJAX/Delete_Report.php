@@ -4,7 +4,6 @@ namespace IAWP\AJAX;
 
 use IAWP\Illuminate_Builder;
 use IAWP\Query;
-use IAWP\Report;
 use IAWP\Report_Finder;
 /** @internal */
 class Delete_Report extends \IAWP\AJAX\AJAX
@@ -33,9 +32,8 @@ class Delete_Report extends \IAWP\AJAX\AJAX
         if (\is_null($existing_report)) {
             \wp_send_json_error();
         }
-        $report = new Report((object) ['type' => $existing_report->type]);
-        $report_finder = new Report_Finder();
-        $reports = $report_finder->by_type($existing_report->type);
+        $report_finder = Report_Finder::new();
+        $reports = $report_finder->get_saved_reports_for_type($existing_report->type);
         $report_index = 0;
         foreach ($reports as $index => $report) {
             if ($report->id() === $existing_report->report_id) {

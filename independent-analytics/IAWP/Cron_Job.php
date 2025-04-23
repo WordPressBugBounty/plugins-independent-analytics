@@ -2,6 +2,7 @@
 
 namespace IAWP;
 
+use IAWPSCOPED\Carbon\CarbonImmutable;
 /** @internal */
 abstract class Cron_Job
 {
@@ -26,9 +27,20 @@ abstract class Cron_Job
     public function schedule()
     {
         $scheduled_at_timestamp = \wp_next_scheduled($this->name);
-        if (!\is_int($scheduled_at_timestamp)) {
-            \wp_schedule_event(\time() + 2, $this->interval, $this->name);
+        if ($scheduled_at_timestamp === \false) {
+            \wp_schedule_event($this->timestamp_for_next_interval($this->interval), $this->interval, $this->name);
         }
+    }
+    public function timestamp_for_next_interval(string $interval_id) : ?int
+    {
+        // Run hourly intervals on the hour
+        if ($this->interval === 'hourly') {
+            $now = CarbonImmutable::now()->startOfSecond();
+            $next_hour = $now->addHour()->startOfHour();
+            $seconds_until_next_hour = $next_hour->diffInSeconds($now);
+            return \time() + $seconds_until_next_hour;
+        }
+        return \time() + \wp_get_schedules()[$interval_id]['interval'];
     }
     public function should_execute_handler() : bool
     {
@@ -37,9 +49,9 @@ abstract class Cron_Job
     public static function register_custom_intervals() : void
     {
         \add_filter('cron_schedules', function ($schedules) {
-            $schedules['monthly'] = ['interval' => \MONTH_IN_SECONDS, 'display' => \esc_html__('Once a Month', 'independent-analytics')];
-            $schedules['five_minutes'] = ['interval' => 300, 'display' => \esc_html__('Every 5 minutes', 'independent-analytics')];
-            $schedules['every_minute'] = ['interval' => 60, 'display' => \esc_html__('Every minute', 'independent-analytics')];
+            $schedules['monthly'] = ['interval' => \MONTH_IN_SECONDS, 'display' => 'Once a Month'];
+            $schedules['five_minutes'] = ['interval' => 300, 'display' => 'Every 5 minutes'];
+            $schedules['every_minute'] = ['interval' => 60, 'display' => 'Every minute'];
             return $schedules;
         });
     }

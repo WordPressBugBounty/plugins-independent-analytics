@@ -4,8 +4,8 @@ Tags: analytics, wordpress analytics, google analytics, analytics dashboard, sta
 Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.8
-Requires PHP: 7.3.33
-Stable tag: 2.10.4
+Requires PHP: 7.4
+Stable tag: 2.11.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,8 +28,8 @@ A simple WordPress analytics plugin that is GDPR compliant, lightning fast, and 
 * GDPR compliant
 
 > <strong>Independent Analytics Pro</strong><br />
-> Gain even more valuable insights with the Independent Analytics Pro plugin, which includes UTM campaign tracking, click tracking, real-time analytics, eCommerce sales tracking (WooCommerce & SureCart support), form submission tracking, and HTML email reports. 
-> [Click here to get Independent Analytics Pro &rarr;](https://independentwp.com/pricing/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt&utm_content=Intro)
+> Gain even more valuable insights with the Independent Analytics Pro plugin, which includes UTM campaign tracking, click tracking, real-time analytics, eCommerce sales tracking (WooCommerce & SureCart support), form submission tracking, HTML email reports, and a customizable Overview report. 
+> [Click here to get Independent Analytics Pro &rarr;](https://independentwp.com/pro/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt&utm_content=Intro)
 
 **The ONLY analytics tool with full WordPress integration**
 
@@ -107,14 +107,15 @@ Our WordPress statistics plugin is more robust than a simple hit counter and inc
 * **[Click tracking](https://independentwp.com/features/click-tracking/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) (Pro)** - track clicks on any link without touching code.
 * **[Real-time analytics](https://independentwp.com/features/real-time/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) (Pro)** - see how many visitors are currently on your site.
 * **[eCommerce analytics](https://independentwp.com/features/woocommerce-analytics/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) (Pro)** - integration with WooCommerce & SureCart lets you find your most profitable campaigns, landing pages, and referrers.
-* **[Form tracking](https://independentwp.com/features/form-tracking/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) (Pro)** - integration with 17 top form plugins lets you track submissions automatically and discover where your leads are coming from.
+* **[Form tracking](https://independentwp.com/features/form-tracking/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) (Pro)** - integration with 20+ top form plugins lets you track submissions automatically and discover where your leads are coming from.
 * **[HTML email reports](https://independentwp.com/features/email-reports/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) (Pro)** - schedule a beautiful daily, weekly, or monthly email report for yourself and your clients.
+* **[Overview report](https://independentwp.com/features/overview-report/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt) (Pro)** - find all your data in one place with the customizable Overview report.
 
 **[Explore every feature with screenshots here &rarr;](https://independentwp.com/features/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt)**
 
 > <strong>Independent Analytics Pro</strong><br />
-> Gain even more valuable insights with the Independent Analytics Pro plugin, which includes UTM campaign tracking, real-time analytics, eCommerce sales tracking (WooCommerce & SureCart support), form submission tracking, and HTML email reports. 
-> [Click here to get Independent Analytics Pro &rarr;](https://independentwp.com/pricing/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt&utm_content=Outro)
+> Gain even more valuable insights with the Independent Analytics Pro plugin, which includes UTM campaign tracking, real-time analytics, eCommerce sales tracking (WooCommerce & SureCart support), form submission tracking, HTML email reports, and a customizable Overview report. 
+> [Click here to get Independent Analytics Pro &rarr;](https://independentwp.com/pro/?utm_source=WordPress.org&utm_medium=Referral&utm_campaign=ReadMe.txt&utm_content=Outro)
 
 **About Us**
 
@@ -178,6 +179,17 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.11.0 - April 21st, 2025 =
+
+* **Feature:** added the new Overview report to Independent Analytics Pro!
+* **Update:** browser and flag icons now visible in PDF downloads
+* **Update:** increase minimum required PHP version from 7.33 to 7.4
+* **Fix:** contact form link didn’t work on sites with a white-labeled license key
+* **Fix:** admin bar stats not showing number of views correctly if 1,000 or higher
+* **Fix:** charts were too small on mobile devices
+* **Fix:** charts could disappear if a saved report had a filter removed
+* **Fix:** Views column in Pages menu wasn’t showing stats for the WooCommerce shop page
 
 = 2.10.4 - April 7th, 2025 =
 
@@ -754,51 +766,4 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 * **Fix:** the table layout was broken when more than 8 columns were displayed at once
 * **Fix:** the date picker wasn't showing up when filtering pages by publication date
 
-= 1.15 - November 22nd, 2022 =
-
-* **Feature:** Real-time analytics added to Independent Analytics PRO
-* **Feature:** Views Growth and Visitors Growth columns added
-* **Feature:** added option to white-label the analytics page for non-admin users
-* **Feature:** support for wildcard addresses added to IP blocking 
-* **Update:** recognizing more referrers by name, such as Brave search
-* **Fix:** data table wasn't loading for sites that don't have the intl PHP module installed
-* **Fix:** geodata chart had incorrect data after applying a filter
-* **Fix:** calendar previous month button could be clicked even when the calendar was closed
-
-= 1.14 - November 1st, 2022 =
-
-* **Update:** added percentage of total views visitors to each table row
-* **Update:** added Dutch translation
-* **Fix:** initial sorting incorrect for some environments
-
-= 1.13 - October 27th, 2022 =
-
-* **Feature:** Report URLs - you can now copy the dashboard URL to reuse the same settings later (saves the filters, columns, date, and sorting)
-* **Feature:** IP blocking - block any IP address from being recorded in your analytics
-* **Feature:** User permissions - allow other user roles on your site to view the analytics
-* **Update:** the date range you select now persists between reports
-* **Update:** more social media and search engine sites are recognized in the Referrer dashboard
-* **Update:** added sidebar link to our new feature request board. Please submit and vote on features there to help guide development: https://feedback.independentwp.com/boards/feature-requests
-* **Fix:** layout issue with the PDF Poster plugin
-* **Fix:** view counter not showing on all custom post types
-* **Fix:** fatal PHP error on WordPress versions prior to 5.9
-
-= 1.12 - September 28th, 2022 =
-
-* **Update:** Independent Analytics Pro now available!
-* **Update:** improved caching for even faster dashboard performance
-
-= 1.11 - September 6th, 2022 =
-
-* **Update:** huge performance improvement for the analytics Dashboard
-* **Update:** added pagination to the data table
-
-= 1.10.1 - August 31st, 2022 =
-
-* **Fix:** compatibility fix for the dashboard widget and WPForms plugin
-
-= 1.10 - August 29th, 2022 =
-
-* **Feature:** added dashboard widget with quick stats and views chart
-* **Feature:** added view counter to display your page/post views on the front-end of your site
-* **Feature:** added new Learn menu with search bar and links to tutorials
+**Changelog truncated here due to 50,000 character limit.**

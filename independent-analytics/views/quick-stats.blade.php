@@ -16,7 +16,7 @@
     @endif
 
     {{-- Quick stats --}}
-    <div class="iawp-stats">
+    <div class="iawp-stats total-of-{{ esc_attr($total_stats) }}">
         @foreach($statistics as $statistic)
             @if($is_dashboard_widget && !$statistic->is_visible_in_dashboard_widget())
                 @continue
@@ -25,33 +25,19 @@
             @if(!$statistic->is_group_plugin_enabled())
                 @continue
             @endif
-
-            <div class="iawp-stat {{ $statistic->id() }} {{ $statistic->is_visible() ? 'visible' : ''}}"
-                 data-id="{{ $statistic->id() }}" data-quick-stats-target="quickStat">
-                <div class="metric">
-                    <span class="metric-name">{{ $statistic->name() }}</span>
-                    @if(!is_null($statistic->icon()))
-                        <span class="plugin-label">{!! iawp_icon($statistic->icon()) !!}</span>
-                    @endif
-                </div>
-                <div class="values">
-                    <span class="count"
-                          test-value="{{ esc_attr(strip_tags($statistic->formatted_value())) }}">
-                        {!! wp_kses($statistic->formatted_value(), ['span' => []]) !!}
-                        @if($statistic->formatted_unfiltered_value())
-                            <span class="unfiltered"> / {!! wp_kses($statistic->formatted_unfiltered_value(), ['span' => []]) !!}</span>
-                        @endif
-                    </span>
-                </div>
-                <span class="growth">
-                    <span class="percentage {{ esc_attr($statistic->growth_html_class()) }}"
-                          test-value="{{ esc_attr($statistic->growth()) }}">
-                        <span class="dashicons dashicons-arrow-up-alt growth-arrow"></span>
-                            {{ $statistic->formatted_growth() }}
-                        </span>
-                    <span class="period-label">{{ __('vs. previous period', 'independent-analytics') }}</span>
-                </span>
-            </div>
+            {!!
+                iawp_blade()->run('quick-stat', [
+                    'id'     => $statistic->id(),
+                    'name'   => $statistic->name(),
+                    'formatted_value' => $statistic->formatted_value(),
+                    'formatted_unfiltered_value' => $statistic->formatted_unfiltered_value(),
+                    'growth' => $statistic->growth(),
+                    'formatted_growth' => $statistic->formatted_growth(),
+                    'growth_html_class' => $statistic->growth_html_class(),
+                    'icon'   => $statistic->icon(),
+                    'is_visible' => $statistic->is_visible()
+                ])
+            !!}
         @endforeach
     </div>
 </div>

@@ -4,6 +4,7 @@ namespace IAWP;
 
 use IAWP\Date_Range\Relative_Date_Range;
 use IAWP\Statistics\Intervals\Intervals;
+use IAWP\Utils\Number_Formatter;
 use IAWP\Utils\Security;
 /** @internal */
 class MainWP
@@ -37,7 +38,7 @@ class MainWP
             $visitors_over_time = \array_map(function ($data_point) {
                 return $data_point[1];
             }, $visitors->statistic_over_time());
-            $information['iawp_analytics'] = ['analytics_dashboard_url' => \IAWPSCOPED\iawp_dashboard_url(), 'labels' => $labels, 'views_over_time' => $views_over_time, 'visitors_over_time' => $visitors_over_time, 'views' => $views->value(), 'visitors' => $visitors->value()];
+            $information['iawp_analytics'] = ['analytics_dashboard_url' => \IAWPSCOPED\iawp_dashboard_url(), 'labels' => $labels, 'views_over_time' => $views_over_time, 'visitors_over_time' => $visitors_over_time, 'views' => Number_Formatter::integer($views->value()), 'visitors' => Number_Formatter::integer($visitors->value())];
         } catch (\Throwable $e) {
             // Do nothing
         }

@@ -21,13 +21,13 @@ class Set_Favorite_Report extends \IAWP\AJAX\AJAX
     {
         $id = $this->get_field('id');
         $type = $this->get_field('type');
-        if (!\is_null(Report_Finder::by_id($id))) {
+        if (Report_Finder::new()->fetch_report_by_id($id) !== null) {
             \delete_user_meta(\get_current_user_id(), 'iawp_favorite_report_id');
             \delete_user_meta(\get_current_user_id(), 'iawp_favorite_report_type');
             \update_user_meta(\get_current_user_id(), 'iawp_favorite_report_id', $id);
             \wp_send_json_success([]);
         }
-        if (Report::is_valid_report_type($type)) {
+        if (Report_Finder::new()->get_base_report_for_type($type) !== null) {
             \delete_user_meta(\get_current_user_id(), 'iawp_favorite_report_id');
             \delete_user_meta(\get_current_user_id(), 'iawp_favorite_report_type');
             \update_user_meta(\get_current_user_id(), 'iawp_favorite_report_type', $type);

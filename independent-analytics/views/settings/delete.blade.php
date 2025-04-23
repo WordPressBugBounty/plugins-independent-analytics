@@ -1,4 +1,4 @@
-<div data-controller="reset-analytics delete-data" class="export-settings settings-container">
+<div data-controller="reset-analytics delete-data reset-overview" class="export-settings settings-container">
     <div class="heading">
         <h2><?php esc_html_e('Danger zone', 'independent-analytics'); ?></h2>
         <a class="tutorial-link" href="https://independentwp.com/knowledgebase/data/delete-all-data/" target="_blank">
@@ -6,6 +6,12 @@
         </a>
     </div>
     <div class="button-group">
+        @if($is_pro)
+            <button id="reset-overview" data-action="click->reset-overview#open"
+                    class="iawp-button red">
+                    <?php esc_html_e('Reset overview report', 'independent-analytics'); ?>
+            </button>
+        @endif
         <button id="reset-analytics-button" data-action="click->reset-analytics#open"
                 class="iawp-button red">
             <?php esc_html_e('Reset analytics', 'independent-analytics'); ?>
@@ -14,6 +20,26 @@
                 class="iawp-button red">
             <?php esc_html_e('Delete all data & deactivate plugin', 'independent-analytics'); ?>
         </button>
+    </div>
+    <div id="reset-overview-modal" aria-hidden="true" class="mm micromodal-slide">
+        <div tabindex="-1" class="mm__overlay" data-action="click->reset-overview#close">
+            <div role="dialog" aria-modal="true" aria-labelledby="reset-overview-modal-title"
+                 class="mm__container">
+                <h1><?php esc_html_e('Reset overview report', 'independent-analytics'); ?></h1>
+                <p>
+                    <?php esc_html_e('You are about to reset your modules on the overview report. All modules will be deleted and the default modules will be restored. This does not impact your analytics data.', 'independent-analytics'); ?>
+                </p>
+                <p><?php printf(esc_html__('Type "%s" in the input below to confirm.', 'independent-analytics'), 'Reset overview report'); ?></p>
+                <form data-action="submit->reset-overview#submit">
+                    <input type="text" autofocus data-reset-overview-target="input"
+                           data-action="input->reset-overview#updateConfirmation" class="block-input">
+                    <button type="submit" class="iawp-button red"
+                            data-reset-overview-target="submit"><?php esc_html_e('Reset overview report', 'independent-analytics'); ?></button>
+                    <button type="button" class="iawp-button ghost-purple"
+                            data-micromodal-close><?php esc_html_e('Cancel', 'independent-analytics'); ?></button>
+                </form>
+            </div>
+        </div>
     </div>
     <div id="reset-analytics-modal" aria-hidden="true" class="mm micromodal-slide">
         <div tabindex="-1" class="mm__overlay" data-action="click->reset-analytics#close">

@@ -50,7 +50,10 @@ abstract class Table
      */
     protected abstract function local_columns() : array;
     protected abstract function table_name() : string;
-    public function visible_column_ids()
+    /**
+     * @return string[]
+     */
+    public function visible_column_ids() : array
     {
         $visible_columns = [];
         foreach ($this->get_columns() as $column) {
@@ -282,28 +285,37 @@ abstract class Table
                     // Fix apostrophes for Excel
                     $value = \str_replace("’", "'", $value);
                 }
-                // Todo - This logic is similar to the rendering logic for table cells. This should
-                //  all be handled via the column class itself.
-                if (\is_null($value)) {
-                    $csv_row[] = '-';
-                } elseif ($column_id === 'date') {
-                    $csv_row[] = \date(WordPress_Site_Date_Format_Pattern::for_php(), \strtotime($value));
-                } elseif ($column_id === 'average_session_duration' || $column_id === 'average_view_duration') {
-                    $csv_row[] = Number_Formatter::second_to_minute_timestamp($value);
-                } elseif ($column_id === 'views_per_session') {
-                    $csv_row[] = Number_Formatter::decimal($value, 2);
-                } elseif ($column_id === 'wc_gross_sales' || $column_id === 'wc_refunded_amount' || $column_id === 'wc_net_sales' || $column_id === 'wc_average_order_volume') {
-                    $csv_row[] = Currency::format($value);
-                } elseif ($column_id === 'wc_earnings_per_visitor') {
-                    $csv_row[] = Currency::format($value);
-                } else {
-                    $csv_row[] = $value;
-                }
+                $csv_row[] = $this->formatted_csv_cell_content($column, $value);
             }
             $csv_rows[] = $csv_row;
         }
         $csv = new CSV($csv_header, $csv_rows);
         return $csv;
+    }
+    public function formatted_csv_cell_content(Column $column, $value) : string
+    {
+        $column_id = $column->id();
+        // Todo - This logic is similar to the rendering logic for table cells. This should
+        //  all be handled via the column class itself.
+        if (\is_null($value)) {
+            return '-';
+        } elseif (\in_array($column_id, ['views', 'visitors', 'sessions', 'clicks', 'form_submissions']) || Str::startsWith($column_id, 'form_submissions_for_')) {
+            return Number_Formatter::integer($value);
+        } elseif (\in_array($column_id, ['bounce_route', 'views_growth', 'visitors_growth', 'form_conversion_rate']) || Str::startsWith($column_id, 'form_conversion_rate_for_')) {
+            return Number_Formatter::percent($value);
+        } elseif ($column_id === 'date') {
+            return \date(WordPress_Site_Date_Format_Pattern::for_php(), \strtotime($value));
+        } elseif ($column_id === 'average_session_duration' || $column_id === 'average_view_duration') {
+            return Number_Formatter::second_to_minute_timestamp($value);
+        } elseif ($column_id === 'views_per_session') {
+            return Number_Formatter::decimal($value, 2);
+        } elseif ($column_id === 'wc_gross_sales' || $column_id === 'wc_refunded_amount' || $column_id === 'wc_net_sales' || $column_id === 'wc_average_order_volume') {
+            return Currency::format($value);
+        } elseif ($column_id === 'wc_earnings_per_visitor') {
+            return Currency::format($value);
+        } else {
+            return $value;
+        }
     }
     /**
      * @param array[] $filters Raw filter associative arrays
@@ -387,42 +399,15 @@ abstract class Table
         }
         return \IAWPSCOPED\iawp_blade()->run('tables.table', ['table' => $this, 'table_name' => $this->table_name(), 'all_columns' => $this->get_columns(), 'visible_column_count' => $this->visible_column_count(), 'number_of_shown_rows' => \count($rows), 'rows' => $rows, 'render_skeleton' => \false, 'page_size' => \IAWPSCOPED\iawp()->pagination_page_size(), 'sort_column' => $sort_column, 'sort_direction' => $sort_direction, 'has_campaigns' => Campaign_Builder::has_campaigns()]);
     }
-    protected function get_woocommerce_columns() : array
-    {
-        return [new Column(['id' => 'wc_orders', 'name' => \__('Orders', 'independent-analytics'), 'plugin_group' => 'ecommerce', 'type' => 'int']), new Column(['id' => 'wc_gross_sales', 'name' => \__('Gross Sales', 'independent-analytics'), 'plugin_group' => 'ecommerce', 'type' => 'int']), new Column(['id' => 'wc_refunds', 'name' => \__('Refunds', 'independent-analytics'), 'plugin_group' => 'ecommerce', 'type' => 'int']), new Column(['id' => 'wc_refunded_amount', 'name' => \__('Refunded Amount', 'independent-analytics'), 'plugin_group' => 'ecommerce', 'type' => 'int']), new Column(['id' => 'wc_net_sales', 'name' => \__('Total Sales', 'independent-analytics'), 'plugin_group' => 'ecommerce', 'type' => 'int']), new Column(['id' => 'wc_conversion_rate', 'name' => \__('Conversion Rate', 'independent-analytics'), 'plugin_group' => 'ecommerce', 'type' => 'int']), new Column(['id' => 'wc_earnings_per_visitor', 'name' => \__('Earnings Per Visitor', 'independent-analytics'), 'plugin_group' => 'ecommerce', 'type' => 'int']), new Column(['id' => 'wc_average_order_volume', 'name' => \__('Average Order Volume', 'independent-analytics'), 'plugin_group' => 'ecommerce', 'type' => 'int'])];
-    }
-    protected function get_form_columns() : array
-    {
-        $columns = [new Column(['id' => 'form_submissions', 'name' => \__('Submissions', 'independent-analytics'), 'plugin_group' => 'forms', 'type' => 'int']), new Column(['id' => 'form_conversion_rate', 'name' => \__('Conversion Rate', 'independent-analytics'), 'plugin_group' => 'forms', 'type' => 'int'])];
-        foreach (Form::get_forms() as $form) {
-            $columns[] = new Column(['id' => $form->submissions_column(), 'name' => $form->title() . ' ' . \__('Submissions', 'independent-analytics'), 'plugin_group' => 'forms', 'is_subgroup_plugin_active' => $form->is_plugin_active(), 'plugin_group_header' => $form->plugin_name(), 'type' => 'int']);
-            $columns[] = new Column(['id' => $form->conversion_rate_column(), 'name' => $form->title() . ' ' . \__('Conversion Rate', 'independent-analytics'), 'plugin_group' => 'forms', 'is_subgroup_plugin_active' => $form->is_plugin_active(), 'plugin_group_header' => $form->plugin_name(), 'type' => 'int']);
-        }
-        return $columns;
-    }
-    private function include_column_in_csv(Column $column, bool $is_dashboard_export) : bool
-    {
-        if (!$column->is_visible() && $is_dashboard_export) {
-            return \false;
-        }
-        if (!$column->exportable() && !$is_dashboard_export) {
-            return \false;
-        }
-        if (!$column->is_group_plugin_enabled()) {
-            return \false;
-        }
-        return \true;
-    }
     /**
      * @return Column[]
      */
-    private function get_columns($show_disabled_columns = \false) : array
+    public function get_columns($show_disabled_columns = \false) : array
     {
         $columns_for_group = \array_filter($this->local_columns(), function (Column $column) {
             return $column->is_enabled() && $column->is_enabled_for_group($this->group) && $column->is_subgroup_plugin_enabled();
         });
-        if ($show_disabled_columns === \true) {
-        } else {
+        if (\false === $show_disabled_columns) {
             $columns_for_group = \array_filter($columns_for_group, function (Column $column) {
                 return $column->is_group_plugin_enabled();
             });
@@ -444,6 +429,32 @@ abstract class Table
             }
             return $column;
         }, $columns_for_group);
+    }
+    protected function get_woocommerce_columns() : array
+    {
+        return [new Column(['id' => 'wc_orders', 'name' => \__('Orders', 'independent-analytics'), 'plugin_group' => 'ecommerce', 'type' => 'int', 'aggregatable' => \true]), new Column(['id' => 'wc_gross_sales', 'name' => \__('Gross Sales', 'independent-analytics'), 'plugin_group' => 'ecommerce', 'type' => 'int', 'aggregatable' => \true]), new Column(['id' => 'wc_refunds', 'name' => \__('Refunds', 'independent-analytics'), 'plugin_group' => 'ecommerce', 'type' => 'int', 'aggregatable' => \true]), new Column(['id' => 'wc_refunded_amount', 'name' => \__('Refunded Amount', 'independent-analytics'), 'plugin_group' => 'ecommerce', 'type' => 'int', 'aggregatable' => \true]), new Column(['id' => 'wc_net_sales', 'name' => \__('Total Sales', 'independent-analytics'), 'plugin_group' => 'ecommerce', 'type' => 'int', 'aggregatable' => \true]), new Column(['id' => 'wc_conversion_rate', 'name' => \__('Conversion Rate', 'independent-analytics'), 'plugin_group' => 'ecommerce', 'type' => 'int']), new Column(['id' => 'wc_earnings_per_visitor', 'name' => \__('Earnings Per Visitor', 'independent-analytics'), 'plugin_group' => 'ecommerce', 'type' => 'int']), new Column(['id' => 'wc_average_order_volume', 'name' => \__('Average Order Volume', 'independent-analytics'), 'plugin_group' => 'ecommerce', 'type' => 'int'])];
+    }
+    protected function get_form_columns() : array
+    {
+        $columns = [new Column(['id' => 'form_submissions', 'name' => \__('Submissions', 'independent-analytics'), 'plugin_group' => 'forms', 'type' => 'int', 'aggregatable' => \true]), new Column(['id' => 'form_conversion_rate', 'name' => \__('Conversion Rate', 'independent-analytics'), 'plugin_group' => 'forms', 'type' => 'int'])];
+        foreach (Form::get_forms() as $form) {
+            $columns[] = new Column(['id' => $form->submissions_column(), 'name' => $form->title() . ' ' . \__('Submissions', 'independent-analytics'), 'plugin_group' => 'forms', 'is_subgroup_plugin_active' => $form->is_plugin_active(), 'plugin_group_header' => $form->plugin_name(), 'type' => 'int', 'aggregatable' => \true]);
+            $columns[] = new Column(['id' => $form->conversion_rate_column(), 'name' => $form->title() . ' ' . \__('Conversion Rate', 'independent-analytics'), 'plugin_group' => 'forms', 'is_subgroup_plugin_active' => $form->is_plugin_active(), 'plugin_group_header' => $form->plugin_name(), 'type' => 'int']);
+        }
+        return $columns;
+    }
+    private function include_column_in_csv(Column $column, bool $is_dashboard_export) : bool
+    {
+        if (!$column->is_visible() && $is_dashboard_export) {
+            return \false;
+        }
+        if (!$column->exportable() && !$is_dashboard_export) {
+            return \false;
+        }
+        if (!$column->is_group_plugin_enabled()) {
+            return \false;
+        }
+        return \true;
     }
     /**
      * Get the number of visible columns

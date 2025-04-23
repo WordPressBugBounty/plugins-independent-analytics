@@ -25,7 +25,7 @@ class Create_Report extends \IAWP\AJAX\AJAX
      */
     protected function action_callback() : void
     {
-        $report = Report_Finder::create_report(['name' => 'New Report', 'type' => $this->get_field('type')]);
+        $report = Report_Finder::new()->insert_report(['name' => 'New Report', 'type' => $this->get_field('type')]);
         \wp_send_json_success(['url' => $report->url()]);
     }
 }

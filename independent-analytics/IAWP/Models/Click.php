@@ -13,7 +13,7 @@ class Click
     {
         $this->row = $row;
         $this->link_name = $row->link_name;
-        $this->link_target = $row->link_target;
+        $this->link_target = $row->link_target ?? '';
         $this->link_clicks = \intval($row->link_clicks);
     }
     public function link_name() : string

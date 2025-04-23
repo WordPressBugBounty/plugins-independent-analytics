@@ -4,10 +4,12 @@ namespace IAWP\Admin_Page;
 
 use IAWP\Capability_Manager;
 use IAWP\Chart;
-use IAWP\Chart_Geo;
 use IAWP\Dashboard_Options;
 use IAWP\Database;
 use IAWP\Env;
+use IAWP\Map;
+use IAWP\Map_Data;
+use IAWP\Overview\Overview;
 use IAWP\Plugin_Conflict_Detector;
 use IAWP\Quick_Stats;
 use IAWP\Real_Time;
@@ -29,7 +31,7 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         $options = Dashboard_Options::getInstance();
         $date_rage = $options->get_date_range();
         $tab = (new Env())->get_tab();
-        $report = (new Report_Finder())->current();
+        $report = Report_Finder::new()->fetch_current_report();
         $is_showing_skeleton_ui = $report instanceof Report && $report->has_filters();
         if ($tab === 'views') {
             $table = new Table_Pages();
@@ -52,7 +54,8 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
             $stats = new Quick_Stats($statistics, \false, $is_showing_skeleton_ui);
             $table_data_class = $table->group()->rows_class();
             $geo_data = new $table_data_class($date_rage);
-            $chart = new Chart_Geo($geo_data->rows(), null, $is_showing_skeleton_ui);
+            $map_data = new Map_Data($geo_data->rows());
+            $chart = new Map($map_data->get_country_data(), null, $is_showing_skeleton_ui);
             $this->interface($table, $stats, $chart);
         } elseif ($tab === 'campaigns') {
             $table = new Table_Campaigns();
@@ -77,6 +80,9 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
             $this->interface($table, $stats, $chart);
         } elseif ($tab === 'real-time') {
             (new Real_Time())->render_real_time_analytics();
+        } elseif ($tab === 'overview') {
+            echo (new Overview())->get_report_html();
+            $this->notices();
         }
     }
     private function interface(Table $table, $stats, $chart)
@@ -127,7 +133,7 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         >
             <div id="report-header-container" class="report-header-container">
                 <?php 
-        echo \IAWPSCOPED\iawp_blade()->run('partials.report-header', ['report' => (new Report_Finder())->current(), 'can_edit' => Capability_Manager::can_edit()]);
+        echo \IAWPSCOPED\iawp_blade()->run('partials.report-header', ['report' => Report_Finder::new()->fetch_current_report(), 'can_edit' => Capability_Manager::can_edit()]);
         ?>
                 <?php 
         $table->output_report_toolbar();
@@ -153,12 +159,15 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
             echo \esc_html_x('Geolocation data powered by', 'Following text is a noun: DB-IP', 'independent-analytics') . ' ' . '<a href="https://db-ip.com" target="_blank">DB-IP</a>.';
             echo '</div>';
         }
-        ?>
-        <div class="iawp-notices"><?php 
+        $this->notices();
+    }
+    private function notices()
+    {
+        ?><div class="iawp-notices"><?php 
         if (Capability_Manager::can_edit()) {
             $plugin_conflict_detector = new Plugin_Conflict_Detector();
             if ($plugin_conflict_detector->has_conflict()) {
-                echo \IAWPSCOPED\iawp_blade()->run('notices.notice', ['notice_text' => $plugin_conflict_detector->get_error(), 'button_text' => \false, 'id' => 'plugin-conflict', 'notice' => 'iawp-error', 'url' => 'https://independentwp.com/knowledgebase/tracking/secure-rest-api/']);
+                echo \IAWPSCOPED\iawp_blade()->run('notices.notice', ['notice_text' => $plugin_conflict_detector->get_error(), 'button_text' => \false, 'id' => 'plugin-conflict', 'notice' => 'iawp-error', 'plugin' => $plugin_conflict_detector->get_plugin(), 'url' => 'https://independentwp.com/knowledgebase/tracking/secure-rest-api/']);
             } elseif (\IAWPSCOPED\iawp_is_pro() && \is_plugin_active('better-wp-security/better-wp-security.php')) {
                 $settings = \get_option('itsec-storage');
                 if (\array_key_exists('system-tweaks', $settings)) {

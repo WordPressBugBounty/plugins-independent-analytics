@@ -4,6 +4,7 @@ namespace IAWP\AJAX;
 
 use IAWP\Capability_Manager;
 use IAWP\Migrations;
+use IAWP\Utils\Security;
 use IAWP\Utils\Server;
 /** @internal */
 abstract class AJAX
@@ -128,6 +129,17 @@ abstract class AJAX
         } else {
             return null;
         }
+    }
+    protected function get_array_field($field) : ?array
+    {
+        if (!\array_key_exists($field, $_POST)) {
+            return null;
+        }
+        $value = $_POST[$field];
+        if (!\is_array($value)) {
+            return null;
+        }
+        return Security::array($value);
     }
     // This is the recommended polyfill: https://wiki.php.net/rfc/is_list
     private function array_is_list(array $array) : bool

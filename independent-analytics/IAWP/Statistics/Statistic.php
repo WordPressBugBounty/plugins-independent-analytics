@@ -33,7 +33,7 @@ class Statistic implements Plugin_Group_Option
         $this->statistic = $attributes['statistic'] ?? 0;
         $this->previous_period_statistic = $attributes['previous_period_statistic'] ?? 0;
         $this->unfiltered_statistic = $attributes['unfiltered_statistic'] ?? null;
-        $this->statistic_over_time = $attributes['statistic_over_time'];
+        $this->statistic_over_time = $attributes['statistic_over_time'] ?? [];
         $this->is_visible_in_dashboard_widget = $attributes['is_visible_in_dashboard_widget'] ?? \false;
         $this->format = $attributes['format'] ?? null;
         $this->is_growth_good = $attributes['is_growth_good'] ?? \true;

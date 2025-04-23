@@ -85,6 +85,11 @@ class Visitor
     {
         return $this->id;
     }
+    public function is_first_session() : bool
+    {
+        $sessions_table = Query::get_table_name(Query::SESSIONS);
+        return Illuminate_Builder::new()->select('session_id')->from($sessions_table, 'sessions')->where('visitor_id', '=', $this->id)->doesntExist();
+    }
     /**
      * @param string $ip
      * @param string $user_agent

@@ -323,6 +323,21 @@ class Submission_Listener
             } catch (\Throwable $e) {
             }
         }, 10, 1);
+        \add_action('et_pb_contact_form_submit', function ($values, $error, $form_info) {
+            try {
+                $submission = new \IAWP\Form_Submissions\Submission(24, \intval(1), Security::string(\__('Divi Contact Form', 'independent-analytics')));
+                $submission->record_submission();
+            } catch (\Throwable $e) {
+            }
+        }, 10, 3);
+        // MailPoet
+        \add_action('mailpoet_subscription_before_subscribe', function ($data, $segmentIds, $form) {
+            try {
+                $submission = new \IAWP\Form_Submissions\Submission(25, \intval($form->getId()), Security::string($form->getName()));
+                $submission->record_submission();
+            } catch (\Throwable $e) {
+            }
+        }, 10, 3);
         // // Template
         // add_action('iawp_some_form_callback', function () {
         //     try {

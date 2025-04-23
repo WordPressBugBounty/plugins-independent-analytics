@@ -4,7 +4,7 @@ namespace IAWP\AJAX;
 
 use IAWP\Illuminate_Builder;
 use IAWP\Query;
-use IAWP\Report;
+use IAWP\Report_Finder;
 use IAWP\Report_Options_Parser;
 /** @internal */
 class Copy_Report extends \IAWP\AJAX\AJAX
@@ -38,8 +38,7 @@ class Copy_Report extends \IAWP\AJAX\AJAX
         if (\count($report_options_parser->get_options_for_updating()) > 0) {
             Illuminate_Builder::new()->from($reports_table)->where('report_id', '=', $new_report_id)->update($report_options_parser->get_options_for_updating());
         }
-        $row = Illuminate_Builder::new()->from($reports_table)->where('report_id', '=', $new_report_id)->first();
-        $report = new Report($row);
+        $report = Report_Finder::new()->fetch_report_by_id($new_report_id);
         \wp_send_json_success(['url' => $report->url()]);
     }
     private function get_existing_report_options() : ?array

@@ -19,6 +19,41 @@ class Env
     {
         return \IAWPSCOPED\iawp_is_pro();
     }
+    /**
+     * @param string|int $id An int for a saved report. A string for a default-report.
+     *
+     * @return bool
+     */
+    public function is_favorite($id = null) : bool
+    {
+        if (\is_int($id)) {
+            $raw_favorite_id = \get_user_meta(\get_current_user_id(), 'iawp_favorite_report_id', \true);
+            $favorite_id = \filter_var($raw_favorite_id, \FILTER_VALIDATE_INT);
+            return $favorite_id === $id;
+        } elseif (\is_string($id)) {
+            $raw_favorite_type = \get_user_meta(\get_current_user_id(), 'iawp_favorite_report_type', \true);
+            $favorite_type = \filter_var($raw_favorite_type, \FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            return $favorite_type === $id;
+        } else {
+            return \false;
+        }
+    }
+    /**
+     * @param string|int $id An int for a saved report. A string for a default-report.
+     *
+     * @return bool
+     */
+    public function is_currently_viewed($id = null) : bool
+    {
+        if (\is_int($id)) {
+            $report_id = \array_key_exists('report', $_GET) ? \sanitize_text_field($_GET['report']) : null;
+            return $id === \intval($report_id);
+        } elseif (\is_string($id)) {
+            return $id === self::get_tab();
+        } else {
+            return \false;
+        }
+    }
     public function is_white_labeled() : bool
     {
         return \IAWP\Capability_Manager::show_white_labeled_ui();
@@ -44,25 +79,26 @@ class Env
         if (self::get_page() !== 'independent-analytics') {
             return null;
         }
+        $default_tab = 'views';
+        $valid_tabs = ['views', 'referrers', 'geo', 'devices'];
         if (\IAWPSCOPED\iawp_is_pro()) {
-            $valid_tabs = ['views', 'referrers', 'geo', 'devices', 'campaigns', 'clicks', 'real-time'];
-        } else {
-            $valid_tabs = ['views', 'referrers', 'geo', 'devices'];
+            $default_tab = 'overview';
+            $valid_tabs = \array_merge($valid_tabs, ['campaigns', 'clicks', 'real-time', 'overview']);
         }
-        $default_tab = $valid_tabs[0];
         $tab = \array_key_exists('tab', $_GET) ? \stripslashes(\sanitize_text_field($_GET['tab'])) : \false;
-        $is_valid = \array_search($tab, $valid_tabs) != \false;
-        if (!$tab || !$is_valid) {
-            $tab = $default_tab;
+        $is_valid = \in_array($tab, $valid_tabs);
+        if ($is_valid) {
+            return $tab;
+        } else {
+            return $default_tab;
         }
-        return $tab;
     }
     public static function get_table(?string $table_type = null) : string
     {
-        if (\array_key_exists('tab', $_GET)) {
+        if (null === $table_type && \array_key_exists('tab', $_GET)) {
             $table_type = \stripslashes(\sanitize_text_field($_GET['tab']));
         }
-        if (\array_key_exists('table_type', $_POST)) {
+        if (null === $table_type && \array_key_exists('table_type', $_POST)) {
             $table_type = \stripslashes(\sanitize_text_field($_POST['table_type']));
         }
         switch ($table_type) {

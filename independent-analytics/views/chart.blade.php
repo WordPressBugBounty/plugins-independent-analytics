@@ -65,6 +65,6 @@
                 </select>
             @endif
         </div>
-        <canvas id="independent-analytics-chart" width="800" height="@if($chart->is_preview()) 400 @else 200 @endif"></canvas>
+        <canvas id="independent-analytics-chart" data-chart-target="canvas"></canvas>
     </div>
 </div>

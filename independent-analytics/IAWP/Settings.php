@@ -41,9 +41,9 @@ class Settings
         if (\IAWPSCOPED\iawp()->is_woocommerce_support_enabled()) {
             echo \IAWPSCOPED\iawp_blade()->run('settings.woocommerce', ['statuses' => new WooCommerce_Status_Manager()]);
         }
-        echo \IAWPSCOPED\iawp_blade()->run('settings.export-reports', ['report_finder' => new \IAWP\Report_Finder()]);
+        echo \IAWPSCOPED\iawp_blade()->run('settings.export-reports', ['report_finder' => \IAWP\Report_Finder::new()]);
         echo \IAWPSCOPED\iawp_blade()->run('settings.pruner', ['pruner' => new Pruning_Scheduler()]);
-        echo \IAWPSCOPED\iawp_blade()->run('settings.delete', ['site_name' => \get_bloginfo('name'), 'site_url' => \site_url()]);
+        echo \IAWPSCOPED\iawp_blade()->run('settings.delete', ['site_name' => \get_bloginfo('name'), 'site_url' => \site_url(), 'is_pro' => \IAWPSCOPED\iawp_is_pro()]);
     }
     public function register_settings()
     {

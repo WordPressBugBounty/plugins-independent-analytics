@@ -17,6 +17,7 @@ class Form
     private $title;
     private $plugin_id;
     private static $forms = null;
+    private static $is_plugin_active_cache = [];
     private static $plugins = [
         ['id' => 1, 'name' => 'Fluent Forms', 'plugin_slugs' => ['fluentform/fluentform.php']],
         ['id' => 2, 'name' => 'WPForms', 'plugin_slugs' => ['wpforms-lite/wpforms.php', 'wpforms/wpforms.php']],
@@ -45,6 +46,8 @@ class Form
         // ],
         ['id' => 22, 'name' => 'SureForms', 'plugin_slugs' => ['sureforms/sureforms.php']],
         ['id' => 23, 'name' => 'Kali Forms', 'plugin_slugs' => ['kali-forms/kali-forms.php']],
+        ['id' => 24, 'name' => 'Divi', 'theme' => 'Divi'],
+        ['id' => 25, 'name' => 'MailPoet', 'plugin_slugs' => ['mailpoet/mailpoet.php']],
     ];
     /**
      * @var array A key/value pair (plugin_id/bool) of plugin IDs
@@ -156,22 +159,31 @@ class Form
     }
     private static function static_is_plugin_active(int $plugin_id) : bool
     {
+        if (\array_key_exists($plugin_id, self::$is_plugin_active_cache)) {
+            return self::$is_plugin_active_cache[$plugin_id];
+        }
         $plugin = \IAWP\Form_Submissions\Form::find_plugin_by_id($plugin_id);
         if (!\array_key_exists('plugin_slugs', $plugin) && !\array_key_exists('theme', $plugin)) {
-            return self::has_any_tracked_submissions($plugin_id);
+            if (self::has_any_tracked_submissions($plugin_id)) {
+                self::$is_plugin_active_cache[$plugin_id] = \true;
+                return \true;
+            }
         }
         if (\array_key_exists('theme', $plugin)) {
-            if (\get_template() === $plugin['theme']) {
+            if (\strtolower(\get_template()) === \strtolower($plugin['theme'])) {
+                self::$is_plugin_active_cache[$plugin_id] = \true;
                 return \true;
             }
         }
         if (\array_key_exists('plugin_slugs', $plugin)) {
             foreach ($plugin['plugin_slugs'] as $slug) {
                 if (\is_plugin_active($slug)) {
+                    self::$is_plugin_active_cache[$plugin_id] = \true;
                     return \true;
                 }
             }
         }
+        self::$is_plugin_active_cache[$plugin_id] = \false;
         return \false;
     }
     private static function find_plugin_by_id(int $id) : ?array

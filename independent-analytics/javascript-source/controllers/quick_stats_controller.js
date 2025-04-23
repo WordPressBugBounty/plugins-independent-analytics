@@ -14,14 +14,15 @@ export default class extends Controller {
     updateTableUI = (e) => {
         const quickStatIds = e.detail.optionIds
         const quickStatCount = quickStatIds.length
+        const stats = this.element.getElementsByClassName('iawp-stats')[0];
 
-        this.element.classList.forEach((className) => {
+        stats.classList.forEach((className) => {
             if (className.startsWith("total-of-")) {
-                this.element.classList.remove(className)
+                stats.classList.remove(className)
             }
         })
 
-        this.element.classList.add('total-of-' + quickStatCount.toString())
+        stats.classList.add('total-of-' + quickStatCount.toString())
 
         this.quickStatTargets.forEach((stat) => {
             const isPresent = quickStatIds.includes(stat.dataset.id)

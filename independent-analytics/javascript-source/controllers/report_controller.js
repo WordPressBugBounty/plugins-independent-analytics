@@ -1,6 +1,7 @@
 import {Controller} from "@hotwired/stimulus"
 import {downloadCSV} from '../download'
 import html2pdf from 'html2pdf.js';
+import {Chart} from 'chart.js'
 
 class Report_Controller extends Controller {
     /**
@@ -388,45 +389,70 @@ class Report_Controller extends Controller {
         this.exportPDFTarget.setAttribute('disabled', 'disabled')
 
         setTimeout(() => {
-            const element = document.getElementById('wpwrap').cloneNode(true)
-            const options = {
-                filename: this.getFileName('pdf'),
-                jsPDF: {
-                    unit: 'in',
-                    format: 'letter',
-                    orientation: 'landscape'
-                },
-            }
-            let base64Image = null
-            const chartImageWidth = 1080
-            const chartImageHeight = chartImageWidth * .25
+            const charts = Object.values(Chart.instances)
+            const mapElements = window.mapInstances || []
 
-            if (window.iawp_chart) {
-                window.iawp_chart.resize(chartImageWidth, chartImageHeight)
-                base64Image = window.iawp_chart.toBase64Image('image/png', 1);
-                window.iawp_chart.resize()
-            }
+            // Assign a temporary unique id to every chart
+            charts.forEach((chart) => {
+                chart.canvas.dataset.chartExportId = Math.random()
+            })
 
-            if (window.iawp_geo_chart) {
-                base64Image = window.iawp_geo_chart.getImageURI()
-            }
+            // Assign a temporary unique id to every map
+            mapElements.forEach((map) => {
+                map.container.dataset.chartExportId = Math.random()
+            })
 
-            if (base64Image) {
+            const clonedPage = document.getElementById('wpwrap').cloneNode(true)
+
+            // Set the width to the PDFs page width
+            clonedPage.style.width = 1056 + 'px'
+
+            charts.forEach((chart) => {
+                // Get an image of the chart
+                const base64Image = chart.toBase64Image('image/png', 1);
+
+                // Generate an image element to inline
                 const imageElement = document.createElement('img')
                 imageElement.src = base64Image
-                imageElement.style.width = chartImageWidth + "px"
-                imageElement.style.height = chartImageHeight + "px"
+                imageElement.classList.add('chart-converted-to-image')
 
-                element.querySelector('#independent-analytics-chart').replaceWith(imageElement)
-            }
+                // Swap the chart for the image
+                const chartExportId = chart.canvas.dataset.chartExportId
+                clonedPage.querySelector(`[data-chart-export-id='${chartExportId}']`).replaceWith(imageElement)
+
+                // Remove the temporary export id
+                delete chart.canvas.dataset.chartExportId
+            })
+
+            mapElements.forEach((map) => {
+                // Get an image of the chart
+                const base64Image = map.getImageURI()
+
+                // Generate an image element to inline
+                const imageElement = document.createElement('img')
+                imageElement.src = base64Image
+                imageElement.classList.add('chart-converted-to-image')
+
+                // Swap the chart for the image
+                const chartExportId = map.container.dataset.chartExportId
+                clonedPage.querySelector(`[data-chart-export-id='${chartExportId}']`).replaceWith(imageElement)
+
+                // Remove the temporary export id
+                delete map.container.dataset.chartExportId
+            })
 
             // Prevent stimulus controllers from firing
-            element.querySelectorAll('[data-controller]').forEach((element) => {
+            clonedPage.querySelectorAll('[data-controller]').forEach((element) => {
                 element.removeAttribute('data-controller')
             })
 
+            // Remove module picker
+            clonedPage.querySelectorAll('.module-picker').forEach((element) => {
+                element.remove()
+            })
+
             // Preserve selected values in clone by manually adding "selected" to options
-            element.querySelectorAll('select').forEach((element) => {
+            clonedPage.querySelectorAll('select').forEach((element) => {
                 if (!element.id) {
                     return
                 }
@@ -438,7 +464,15 @@ class Report_Controller extends Controller {
                 })
             })
 
-            html2pdf().set(options).from(element).toContainer().save().then(() => {
+            const options = {
+                filename: this.getFileName('pdf'),
+                jsPDF: {
+                    unit: 'in',
+                    format: 'letter',
+                    orientation: 'landscape',
+                },
+            }
+            html2pdf().set(options).from(clonedPage).toContainer().save().then(() => {
                 this.exportPDFTarget.classList.add('sent')
                 this.exportPDFTarget.classList.remove('sending')
                 this.exportPDFTarget.removeAttribute('disabled')

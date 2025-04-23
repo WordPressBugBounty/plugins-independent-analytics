@@ -25,6 +25,18 @@
     </div>
     <div class="external-resources iawp-container">
         <div class="inner">
+            <div class="ai-assistant resource">
+                <div class="icon-container">
+                    <span class="dashicons dashicons-superhero"></span>
+                    <a class="overlay-link" href="https://independentwp.com/ai-assistant/">AI Assistant</a>
+                </div>
+                <div class="text">
+                    <h2>AI Assistant</h2>
+                    <p>Our AI Assistant is trained on our knowledge base and can quickly answer most questions.</p>
+                    <a class="link-purple" target="_blank" href="https://independentwp.com/ai-assistant/">Ask Question</a>
+                </div>
+                <a class="overlay-link" target="_blank" href="https://independentwp.com/ai-assistant/">AI Assistant</a>
+            </div>
             <div class="contact resource">
                 <div class="icon-container">
                     <span class="dashicons dashicons-email-alt"></span>
@@ -33,9 +45,10 @@
                 <div class="text">
                     <h2>Contact Form</h2>
                     <p>Submit the contact form to get help, report a bug, or ask a pre-sale question.</p>
-                    <a class="link-purple" href="<?php echo admin_url('admin.php?page=independent-analytics-contact'); ?>">Contact Us</a>
+                    <?php $url = $white_labeled ? 'https://independentwp.com/contact/' : admin_url('admin.php?page=independent-analytics-contact'); ?>
+                    <a class="link-purple" href="<?php echo esc_attr($url); ?>">Contact Us</a>
                 </div>
-                <a class="overlay-link" href="<?php echo admin_url('admin.php?page=independent-analytics-contact'); ?>">Contact Us</a>
+                <a class="overlay-link" href="<?php echo esc_attr($url); ?>">Contact Us</a>
             </div>
             <div class="forum resource">
                 <div class="icon-container">

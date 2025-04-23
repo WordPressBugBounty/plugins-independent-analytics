@@ -26,14 +26,17 @@ class Export_Reports extends \IAWP\AJAX\AJAX
     protected function action_callback() : void
     {
         $ids = $this->get_field('ids');
+        $reports = [];
         if (\count($ids) === 0) {
             \wp_send_json_error([], 400);
         }
-        $report_finder = new Report_Finder();
-        $reports = $report_finder->by_ids($ids);
-        $reports_array = \array_map(function ($report) {
-            return $report->to_array();
-        }, $reports);
-        \wp_send_json_success(['json' => \json_encode(['plugin_version' => '2.10.4', 'database_version' => '42', 'export_version' => '1', 'reports' => $reports_array])]);
+        foreach ($ids as $id) {
+            $report = Report_Finder::new()->fetch_report_by_id($id);
+            if (null === $report) {
+                continue;
+            }
+            $reports[] = $report->to_array();
+        }
+        \wp_send_json_success(['json' => \json_encode(['plugin_version' => '2.11.0', 'database_version' => '43', 'export_version' => '1', 'reports' => $reports])]);
     }
 }

@@ -26,13 +26,13 @@ class Quick_Stats
         $visible_quick_stats_count = \count(\array_filter($statistics, function (Statistic $statistic) : bool {
             return $statistic->is_visible() && $statistic->is_group_plugin_enabled();
         }));
-        $quick_stats_html_class = "quick-stats total-of-{$visible_quick_stats_count}";
+        $quick_stats_html_class = "quick-stats";
         if ($this->statistics->has_filters()) {
             $quick_stats_html_class .= ' filtered';
         }
         if ($this->is_showing_skeleton_ui) {
             $quick_stats_html_class .= ' skeleton-ui';
         }
-        return \IAWPSCOPED\iawp_blade()->run('quick-stats', ['is_dashboard_widget' => $this->is_dashboard_widget, 'quick_stats_html_class' => $quick_stats_html_class, 'statistics' => $statistics, 'plugin_groups' => \IAWP\Plugin_Group::get_plugin_groups()]);
+        return \IAWPSCOPED\iawp_blade()->run('quick-stats', ['is_dashboard_widget' => $this->is_dashboard_widget, 'quick_stats_html_class' => $quick_stats_html_class, 'statistics' => $statistics, 'plugin_groups' => \IAWP\Plugin_Group::get_plugin_groups(), 'total_stats' => $visible_quick_stats_count]);
     }
 }

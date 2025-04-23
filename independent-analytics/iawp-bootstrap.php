@@ -3,6 +3,7 @@
 namespace IAWPSCOPED;
 
 use IAWP\Click_Tracking\Click_Processing_Job;
+use IAWP\Click_Tracking\Config_File_Manager;
 use IAWP\Custom_WordPress_Columns\Views_Column;
 use IAWP\Dashboard_Options;
 use IAWP\Data_Pruning\Pruning_Scheduler;
@@ -16,6 +17,8 @@ use IAWP\Independent_Analytics;
 use IAWP\Interrupt;
 use IAWP\MainWP;
 use IAWP\Migrations;
+use IAWP\Overview\Module_Refresh_Job;
+use IAWP\Overview\Modules\Module;
 use IAWP\Patch;
 use IAWP\Public_API\Analytics;
 use IAWP\Public_API\Singular_Analytics;
@@ -23,8 +26,8 @@ use IAWP\Utils\BladeOne;
 use IAWP\WP_Option_Cache_Bust;
 \define( 'IAWP_DIRECTORY', \rtrim( \plugin_dir_path( __FILE__ ), \DIRECTORY_SEPARATOR ) );
 \define( 'IAWP_URL', \rtrim( \plugin_dir_url( __FILE__ ), '/' ) );
-\define( 'IAWP_VERSION', '2.10.4' );
-\define( 'IAWP_DATABASE_VERSION', '42' );
+\define( 'IAWP_VERSION', '2.11.0' );
+\define( 'IAWP_DATABASE_VERSION', '43' );
 \define( 'IAWP_LANGUAGES_DIRECTORY', \dirname( \plugin_basename( __FILE__ ) ) . '/languages' );
 \define( 'IAWP_PLUGIN_FILE', __DIR__ . '/iawp.php' );
 if ( \file_exists( \IAWPSCOPED\iawp_path_to( 'vendor/scoper-autoload.php' ) ) ) {
@@ -153,6 +156,16 @@ function iawp_blade() {
 }
 
 /** @internal */
+function iawp_render(  string $view, array $variables = []  ) : string {
+    if ( !\file_exists( \IAWPSCOPED\iawp_temp_path_to( 'template-cache' ) ) ) {
+        \wp_mkdir_p( \IAWPSCOPED\iawp_temp_path_to( 'template-cache' ) );
+    }
+    $blade = BladeOne::create();
+    $blade->share( 'env', new Env() );
+    return $blade->run( $view, $variables );
+}
+
+/** @internal */
 function iawp_icon(  string $icon  ) : string {
     try {
         return \IAWPSCOPED\iawp_blade()->run( 'icons.plugins.' . $icon );
@@ -248,6 +261,8 @@ WP_Option_Cache_Bust::register( 'iawp_is_migrating' );
 WP_Option_Cache_Bust::register( 'iawp_is_database_downloading' );
 WP_Option_Cache_Bust::register( 'iawp_db_version' );
 WP_Option_Cache_Bust::register( 'iawp_geo_database_version' );
+WP_Option_Cache_Bust::register( 'iawp_overview_modules' );
+WP_Option_Cache_Bust::register( 'iawp_default_modules_added' );
 /** @internal */
 function iawp() {
     return Independent_Analytics::getInstance();
@@ -285,6 +300,7 @@ function iawp() {
     if ( \IAWPSCOPED\iawp_is_pro() ) {
         \IAWPSCOPED\iawp()->email_reports->unschedule();
         ( new Click_Processing_Job() )->unschedule();
+        ( new Module_Refresh_Job() )->unschedule();
         ( new SureCart_Event_Sync_Job() )->unschedule();
     }
     \wp_delete_file( \trailingslashit( \WPMU_PLUGIN_DIR ) . 'iawp-performance-boost.php' );
@@ -296,9 +312,10 @@ function iawp() {
     \do_action( 'iawp_click_processing' );
 } );
 \add_action( 'init', function () {
-    \IAWP\Click_Tracking\Config_File_Manager::ensure();
+    Config_File_Manager::ensure();
     if ( \IAWPSCOPED\iawp_is_pro() ) {
         ( new Click_Processing_Job() )->schedule();
+        ( new Module_Refresh_Job() )->schedule();
     }
     if ( \IAWPSCOPED\iawp()->is_surecart_support_enabled() ) {
         ( new SureCart_Event_Sync_Job() )->schedule();
@@ -313,7 +330,7 @@ function iawp() {
     Migrations\Migrations::handle_migration_29_error();
     Patch::patch_2_6_2_incorrect_email_report_schedule();
     Patch::patch_2_8_7_potential_duplicates();
-    \IAWP\Click_Tracking\Config_File_Manager::ensure();
+    Config_File_Manager::ensure();
     $options = Dashboard_Options::getInstance();
     $options->maybe_redirect();
     new Migrations\Migration_Job();
@@ -325,6 +342,11 @@ function iawp() {
         Migrations\Migration_Job::maybe_dispatch();
     }
     Geo_Database_Background_Job::maybe_dispatch();
+    if ( \get_option( 'iawp_should_refresh_modules', \false ) === '1' ) {
+        \delete_option( 'iawp_should_refresh_modules' );
+        Module::queue_full_module_refresh();
+    }
 } );
+new \IAWP\Overview\Sync_Module_Background_Job();
 Views_Column::initialize();
 MainWP::initialize();

@@ -159,7 +159,7 @@ class Dashboard_Options
             return;
         }
         if (empty($_GET['report']) && empty($_GET['tab'])) {
-            $favorite_report = \IAWP\Report_Finder::get_favorite();
+            $favorite_report = \IAWP\Report_Finder::new()->get_favorited_report();
             if (\is_null($favorite_report)) {
                 return;
             }

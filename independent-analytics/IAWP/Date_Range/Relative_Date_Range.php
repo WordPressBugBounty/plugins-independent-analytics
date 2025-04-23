@@ -192,13 +192,31 @@ class Relative_Date_Range extends \IAWP\Date_Range\Date_Range
         return self::VALID_RELATIVE_RANGE_IDS;
     }
     /**
-     * @param string $relative_range_id
+     * Get a range by its id.
+     *
+     * @param ?string $range_id
+     *
+     * @return ?Relative_Date_Range
+     */
+    public static function range_by_id(?string $range_id = null) : ?\IAWP\Date_Range\Relative_Date_Range
+    {
+        if ($range_id === null) {
+            return null;
+        }
+        if (self::is_valid_range($range_id)) {
+            return new self($range_id);
+        } else {
+            return null;
+        }
+    }
+    /**
+     * @param string $range_id
      *
      * @return bool
      */
-    public static function is_valid_range(string $relative_range_id) : bool
+    public static function is_valid_range(string $range_id) : bool
     {
-        if (\in_array($relative_range_id, self::VALID_RELATIVE_RANGE_IDS)) {
+        if (\in_array($range_id, self::VALID_RELATIVE_RANGE_IDS)) {
             return \true;
         }
         return \false;

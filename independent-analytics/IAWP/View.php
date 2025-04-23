@@ -5,6 +5,7 @@ namespace IAWP;
 use IAWP\Custom_WordPress_Columns\Views_Column;
 use IAWP\Models\Page;
 use IAWP\Models\Page_Home;
+use IAWP\Models\Page_Post_Type_Archive;
 use IAWP\Models\Page_Singular;
 use IAWP\Models\Visitor;
 use IAWP\Utils\Device;
@@ -54,7 +55,7 @@ class View
     public function create_session() : int
     {
         $sessions_table = \IAWP\Query::get_table_name(\IAWP\Query::SESSIONS);
-        return \IAWP\Illuminate_Builder::new()->from($sessions_table)->insertGetId(['visitor_id' => $this->visitor->id(), 'referrer_id' => $this->fetch_or_create_referrer(), 'country_id' => $this->fetch_or_create_country(), 'city_id' => $this->fetch_or_create_city(), 'campaign_id' => $this->get_campaign(), 'device_type_id' => Device::getInstance()->type_id(), 'device_os_id' => Device::getInstance()->os_id(), 'device_browser_id' => Device::getInstance()->browser_id(), 'created_at' => $this->viewed_at()]);
+        return \IAWP\Illuminate_Builder::new()->from($sessions_table)->insertGetId(['visitor_id' => $this->visitor->id(), 'referrer_id' => $this->fetch_or_create_referrer(), 'country_id' => $this->fetch_or_create_country(), 'city_id' => $this->fetch_or_create_city(), 'campaign_id' => $this->get_campaign(), 'device_type_id' => Device::getInstance()->type_id(), 'device_os_id' => Device::getInstance()->os_id(), 'device_browser_id' => Device::getInstance()->browser_id(), 'is_first_session' => $this->visitor->is_first_session(), 'created_at' => $this->viewed_at()]);
     }
     public function fetch_or_create_country() : ?int
     {
@@ -303,6 +304,8 @@ class View
             $this->set_views_postmeta_for_singular($resource);
         } elseif ($resource instanceof Page_Home) {
             $this->set_views_postmeta_for_home($resource);
+        } elseif ($resource instanceof Page_Post_Type_Archive && $resource->post_type() === 'product') {
+            $this->set_views_postmeta_for_shop_page($resource);
         }
     }
     private function set_views_postmeta_for_singular(Page_Singular $resource) : void
@@ -334,5 +337,21 @@ class View
             $join->on('resources.id', '=', 'views.resource_id');
         })->where('resource', '=', 'home')->value('views');
         \update_post_meta($blog_page_id, Views_Column::$meta_key, $total_views);
+    }
+    private function set_views_postmeta_for_shop_page(Page_Post_Type_Archive $resource) : void
+    {
+        try {
+            $shop_id = wc_get_page_id('shop');
+            if ($shop_id === -1) {
+                return;
+            }
+            $views_table = \IAWP\Query::get_table_name(\IAWP\Query::VIEWS);
+            $resources_table = \IAWP\Query::get_table_name(\IAWP\Query::RESOURCES);
+            $total_views = \IAWP\Illuminate_Builder::new()->selectRaw('COUNT(*) AS views')->from("{$resources_table} as resources")->join("{$views_table} AS views", function (JoinClause $join) {
+                $join->on('resources.id', '=', 'views.resource_id');
+            })->where('resource', '=', 'post_type_archive')->where('post_type', '=', 'product')->value('views');
+            \update_post_meta($shop_id, Views_Column::$meta_key, $total_views);
+        } catch (\Throwable $e) {
+        }
     }
 }
