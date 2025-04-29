@@ -3,7 +3,6 @@
 namespace IAWP\Overview;
 
 use IAWP\Cron_Job;
-use IAWP\Overview\Modules\Module;
 /** @internal */
 class Module_Refresh_Job extends Cron_Job
 {

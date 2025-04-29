@@ -12,6 +12,7 @@
 @section('content')
     @if($is_loaded)
         <div data-controller="pie-chart"
+             class="module-chart module-pie-chart"
              data-pie-chart-data-value="{{ json_encode($dataset) }}"
              data-pie-chart-locale-value="{{ esc_attr(get_bloginfo('language')) }}"
         >

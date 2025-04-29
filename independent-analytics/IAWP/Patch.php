@@ -31,6 +31,7 @@ class Patch
             \delete_option('iawp_migration_error');
             \delete_option('iawp_migration_error_query');
             \update_option('iawp_is_migrating', '0', \true);
+            \delete_option('iawp_migration_started_at');
         }
     }
 }

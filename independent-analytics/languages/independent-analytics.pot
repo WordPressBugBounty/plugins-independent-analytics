@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Independent Analytics 2.11.0\n"
+"Project-Id-Version: Independent Analytics 2.11.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/independent-analytics-production\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-04-18T18:26:24+00:00\n"
+"POT-Creation-Date: 2025-04-29T13:03:43+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: independent-analytics\n"
@@ -87,6 +87,14 @@ msgstr ""
 msgid "You do not have permission to view this page."
 msgstr ""
 
+#: IAWP/AJAX/Migration_Status.php:31
+msgid "Unknown"
+msgstr ""
+
+#: IAWP/AJAX/Migration_Status.php:34
+msgid "Unable to parse timestamp"
+msgstr ""
+
 #: IAWP/Capability_Manager.php:13
 msgid "View analytics for authored content"
 msgstr ""
@@ -123,8 +131,8 @@ msgstr ""
 msgid "Protocol"
 msgstr ""
 
-#: IAWP/Custom_WordPress_Columns/Views_Column.php:34
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Custom_WordPress_Columns/Views_Column.php:35
+#: IAWP/Independent_Analytics.php:281
 #: IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
 #: IAWP/Report.php:105
 #: IAWP/Statistics/Statistics.php:202
@@ -140,8 +148,8 @@ msgid "Views"
 msgstr ""
 
 #: IAWP/Dashboard_Widget.php:24
-#: IAWP/Independent_Analytics.php:162
 #: IAWP/Independent_Analytics.php:163
+#: IAWP/Independent_Analytics.php:164
 #: IAWP/Interrupt.php:19
 #: IAWP/Interrupt.php:20
 msgid "Analytics"
@@ -271,20 +279,20 @@ msgstr ""
 msgid "Next email scheduled for %s at %s."
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:129
-#: IAWP/Settings.php:362
+#: IAWP/Email_Reports/Email_Reports.php:123
+#: IAWP/Settings.php:370
 msgid "This email was generated and delivered by %s"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:154
+#: IAWP/Email_Reports/Email_Reports.php:148
 msgid "[Test]"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:156
+#: IAWP/Email_Reports/Email_Reports.php:150
 msgid "Analytics Report for"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:171
+#: IAWP/Email_Reports/Email_Reports.php:165
 #: IAWP/Real_Time.php:62
 #: IAWP/Report.php:37
 #: IAWP/Report_Finder.php:104
@@ -292,7 +300,7 @@ msgstr ""
 msgid "Pages"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:174
+#: IAWP/Email_Reports/Email_Reports.php:168
 #: IAWP/Real_Time.php:63
 #: IAWP/Report.php:37
 #: IAWP/Report_Finder.php:106
@@ -300,12 +308,12 @@ msgstr ""
 msgid "Referrers"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:177
+#: IAWP/Email_Reports/Email_Reports.php:171
 #: IAWP/Real_Time.php:64
 msgid "Countries"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:180
+#: IAWP/Email_Reports/Email_Reports.php:174
 #: IAWP/Overview/Modules/Module.php:424
 #: IAWP/Report.php:37
 #: IAWP/Report_Finder.php:110
@@ -313,7 +321,7 @@ msgstr ""
 msgid "Devices"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:183
+#: IAWP/Email_Reports/Email_Reports.php:177
 #: IAWP/Report.php:37
 #: IAWP/Report_Finder.php:112
 #: views/partials/sidebar.blade.php:131
@@ -321,22 +329,22 @@ msgstr ""
 msgid "Campaigns"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:186
+#: IAWP/Email_Reports/Email_Reports.php:180
 #: IAWP/Plugin_Group.php:97
 msgid "Forms"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:189
+#: IAWP/Email_Reports/Email_Reports.php:183
 #: IAWP/Tables/Table_Clicks.php:24
 #: views/click-tracking/menu.blade.php:24
 msgid "Link Patterns"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:192
+#: IAWP/Email_Reports/Email_Reports.php:186
 msgid "Landing Pages"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:195
+#: IAWP/Email_Reports/Email_Reports.php:189
 msgid "Exit Pages"
 msgstr ""
 
@@ -515,49 +523,49 @@ msgstr ""
 msgid "Divi Contact Form"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:101
+#: IAWP/Independent_Analytics.php:102
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:108
+#: IAWP/Independent_Analytics.php:109
 msgid "Knowledge Base"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:147
+#: IAWP/Independent_Analytics.php:148
 msgid "Success"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:168
+#: IAWP/Independent_Analytics.php:169
 msgid "Settings"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:174
+#: IAWP/Independent_Analytics.php:175
 msgid "Campaign Builder"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:179
+#: IAWP/Independent_Analytics.php:180
 #: views/click-tracking/menu.blade.php:4
 msgid "Click Tracking"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:186
+#: IAWP/Independent_Analytics.php:187
 msgid "Help & Support"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:192
-#: IAWP/Independent_Analytics.php:194
+#: IAWP/Independent_Analytics.php:193
+#: IAWP/Independent_Analytics.php:195
 msgid "Changelog"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:193
+#: IAWP/Independent_Analytics.php:194
 msgid "New"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:200
+#: IAWP/Independent_Analytics.php:201
 msgid "Upgrade to Pro &rarr;"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 #: IAWP/Report.php:105
 #: IAWP/Statistics/Statistics.php:202
 #: IAWP/Tables/Table_Campaigns.php:25
@@ -568,7 +576,7 @@ msgstr ""
 msgid "Visitors"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 #: IAWP/Overview/Modules/New_Sessions_Module.php:34
 #: IAWP/Report.php:105
 #: IAWP/Statistics/Statistics.php:202
@@ -577,92 +585,92 @@ msgstr ""
 #: IAWP/Tables/Table_Geo.php:28
 #: IAWP/Tables/Table_Pages.php:28
 #: IAWP/Tables/Table_Referrers.php:26
-#: views/overview/modules/busiest-day-of-week.blade.php:19
-#: views/overview/modules/busiest-time-of-day.blade.php:19
+#: views/overview/modules/busiest-day-of-week.blade.php:20
+#: views/overview/modules/busiest-time-of-day.blade.php:20
 msgid "Sessions"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 msgid "Apply Exact Dates"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 msgid "Apply Relative Dates"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 msgid "Copied"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 msgid "Exporting Pages..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 msgid "Export Pages"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 msgid "Exporting Referrers..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 msgid "Export Referrers"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 msgid "Exporting Geolocations..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 msgid "Export Geolocations"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 msgid "Exporting Devices..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 msgid "Export Devices"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 msgid "Exporting Campaigns..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 msgid "Export Campaigns"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 msgid "Exporting Clicks"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 msgid "Export Clicks"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 msgid "This report archive is invalid. Please export your reports and try again."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 #: views/partials/sidebar.blade.php:38
 msgid "Open menu"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 msgid "Close menu"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:280
+#: IAWP/Independent_Analytics.php:281
 #: IAWP/Overview/Form_Field.php:91
 #: views/chart.blade.php:40
 #: views/chart.blade.php:43
 msgid "No Comparison"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:300
+#: IAWP/Independent_Analytics.php:301
 #: IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
 msgid "Analytics Dashboard"
 msgstr ""
@@ -1327,46 +1335,50 @@ msgstr ""
 msgid "Exclude these pages"
 msgstr ""
 
-#: IAWP/Settings.php:120
-#: IAWP/Settings.php:171
-#: IAWP/View_Counter.php:59
-#: IAWP/View_Counter.php:78
+#: IAWP/Settings.php:122
+msgid "Minimum views required"
+msgstr ""
+
+#: IAWP/Settings.php:124
+#: IAWP/Settings.php:179
+#: IAWP/View_Counter.php:51
+#: IAWP/View_Counter.php:70
 msgid "Views:"
 msgstr ""
 
-#: IAWP/Settings.php:123
+#: IAWP/Settings.php:127
 msgid "Edit the label"
 msgstr ""
 
-#: IAWP/Settings.php:127
+#: IAWP/Settings.php:131
 msgid "Display the label"
 msgstr ""
 
-#: IAWP/Settings.php:131
+#: IAWP/Settings.php:135
 msgid "Display the icon"
 msgstr ""
 
-#: IAWP/Settings.php:134
+#: IAWP/Settings.php:138
 msgid "Make the view counter private?"
 msgstr ""
 
-#: IAWP/Settings.php:137
+#: IAWP/Settings.php:141
 msgid "Allow manual adjustment?"
 msgstr ""
 
-#: IAWP/Settings.php:153
+#: IAWP/Settings.php:157
 msgid "Uncheck all boxes to only show view count manually. See shortcode documentation below for details."
 msgstr ""
 
-#: IAWP/Settings.php:192
+#: IAWP/Settings.php:200
 msgid "Block IP Addresses"
 msgstr ""
 
-#: IAWP/Settings.php:199
+#: IAWP/Settings.php:207
 msgid "Scheduled Email Reports"
 msgstr ""
 
-#: IAWP/Settings.php:211
+#: IAWP/Settings.php:219
 msgid "Block by User Role"
 msgstr ""
 
@@ -1614,11 +1626,11 @@ msgstr ""
 msgid "Invalid characters in subdirectory."
 msgstr ""
 
-#: IAWP/View_Counter.php:87
+#: IAWP/View_Counter.php:88
 msgid "View Counter Adjustment"
 msgstr ""
 
-#: IAWP/View_Counter.php:93
+#: IAWP/View_Counter.php:94
 msgid "Increase count by:"
 msgstr ""
 
@@ -1772,31 +1784,35 @@ msgstr ""
 msgid "Follow Tutorial"
 msgstr ""
 
-#: views/interrupt/migration-error.blade.php:7
+#: views/interrupt/migration-error.blade.php:8
 msgid "Data Migration Failed"
 msgstr ""
 
-#: views/interrupt/migration-error.blade.php:8
+#: views/interrupt/migration-error.blade.php:9
 msgid "Please send the info below to %s and we will help to resolve this error ASAP. We're sorry for the inconvenience."
 msgstr ""
 
-#: views/interrupt/migration-error.blade.php:9
-msgid "Plugin version:"
-msgstr ""
-
 #: views/interrupt/migration-error.blade.php:10
-msgid "Migration:"
+msgid "Migration started at:"
 msgstr ""
 
 #: views/interrupt/migration-error.blade.php:11
-msgid "Step:"
+msgid "Plugin version:"
 msgstr ""
 
 #: views/interrupt/migration-error.blade.php:12
-msgid "Error message:"
+msgid "Migration:"
+msgstr ""
+
+#: views/interrupt/migration-error.blade.php:13
+msgid "Step:"
 msgstr ""
 
 #: views/interrupt/migration-error.blade.php:14
+msgid "Error message:"
+msgstr ""
+
+#: views/interrupt/migration-error.blade.php:16
 msgid "Failed query:"
 msgstr ""
 
@@ -2478,6 +2494,10 @@ msgstr ""
 msgid "Only logged-in visitors will see it."
 msgstr ""
 
+#: views/settings/view-counter/threshold.blade.php:3
+msgid "Hide the view counter unless it has this many views or more."
+msgstr ""
+
 #: views/settings/view-counter/views-to-count.blade.php:3
 msgid "All-time"
 msgstr ""
@@ -2696,14 +2716,14 @@ msgstr ""
 msgid "Choose a module"
 msgstr ""
 
-#: views/overview/modules/busiest-day-of-week.blade.php:27
-#: views/overview/modules/busiest-time-of-day.blade.php:27
-#: views/overview/modules/line-chart.blade.php:30
-#: views/overview/modules/map.blade.php:27
+#: views/overview/modules/busiest-day-of-week.blade.php:28
+#: views/overview/modules/busiest-time-of-day.blade.php:28
+#: views/overview/modules/line-chart.blade.php:31
+#: views/overview/modules/map.blade.php:26
 #: views/overview/modules/new-sessions.blade.php:24
-#: views/overview/modules/pie-chart.blade.php:23
-#: views/overview/modules/recent-conversions.blade.php:68
-#: views/overview/modules/recent-views.blade.php:71
+#: views/overview/modules/pie-chart.blade.php:24
+#: views/overview/modules/recent-conversions.blade.php:70
+#: views/overview/modules/recent-views.blade.php:73
 msgid "Loading data..."
 msgstr ""
 

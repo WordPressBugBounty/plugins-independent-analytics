@@ -2,7 +2,6 @@
 
 namespace IAWP\AJAX;
 
-use IAWP\Report;
 use IAWP\Report_Finder;
 /** @internal */
 class Set_Favorite_Report extends \IAWP\AJAX\AJAX

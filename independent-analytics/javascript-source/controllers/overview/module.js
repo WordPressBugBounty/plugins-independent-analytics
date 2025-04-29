@@ -78,7 +78,7 @@ export default class extends Controller {
 
         module.classList.toggle('full-width', shouldBeFullWidth)
 
-        if (module.querySelector('.recent-views') || module.querySelector('.recent-conversions')) {
+        if ((module.querySelector('.recent-views') || module.querySelector('.recent-conversions')) && module.querySelector('.module-pagination')) {
             module.querySelector(".current-page").textContent = "1"
             module.querySelector(".current").classList.remove('current')
             module.querySelector(".module-page").classList.add('current')

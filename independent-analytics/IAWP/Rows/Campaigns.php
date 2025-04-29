@@ -7,7 +7,6 @@ use IAWP\Illuminate_Builder;
 use IAWP\Models\Campaign;
 use IAWP\Query;
 use IAWP\Query_Taps;
-use IAWP\Tables;
 use IAWPSCOPED\Illuminate\Database\Query\Builder;
 use IAWPSCOPED\Illuminate\Database\Query\JoinClause;
 /** @internal */

@@ -18,7 +18,7 @@
                         'growth' => $quick_stat['growth'],
                         'formatted_growth' => $quick_stat['formatted_growth'],
                         'growth_html_class' => $quick_stat['growth_html_class'],
-                        'icon'   => $quick_stat['icon'],
+                        'icon'   => $quick_stat['icon'] ?? null,
                         'is_visible' => true
                     ])
                 !!}
@@ -31,7 +31,7 @@
                     iawp_blade()->run('quick-stat-loading', [
                         'id'     => $quick_stat['id'],
                         'name'   => $quick_stat['name'],
-                        'icon'   => $quick_stat['icon']
+                        'icon'   => $quick_stat['icon'] ?? null
                     ])
                 !!}
             @endforeach

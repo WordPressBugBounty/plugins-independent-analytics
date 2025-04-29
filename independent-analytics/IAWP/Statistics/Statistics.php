@@ -316,7 +316,7 @@ abstract class Statistics
         $original_end = (clone $this->date_range->end())->setTimezone(Timezone::site_timezone());
         $end = $this->chart_interval->calculate_start_of_interval_for($original_end);
         $end->add(new DateInterval('PT1S'));
-        $is_problematic_timezone = \in_array(Timezone::site_timezone()->getName(), ['Asia/Beirut', 'America/Santiago', 'America/Havana', 'America/Asuncion']);
+        $is_problematic_timezone = \in_array(Timezone::site_timezone()->getName(), ['Asia/Beirut', 'America/Santiago', 'America/Havana', 'America/Asuncion', 'Atlantic/Azores']);
         // Imagine a scenario where the offset for the start date is -4 and the offset for the
         // end date is -3. In that case, the DatePeriod is actually going to have its end date
         // short an hour, causing a date we care about to be chopped off the end. This code makes

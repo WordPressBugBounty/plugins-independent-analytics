@@ -3,7 +3,6 @@
 namespace IAWP\Rows;
 
 use IAWP\Illuminate_Builder;
-use IAWP\Models\Click;
 use IAWP\Models\Form;
 use IAWPSCOPED\Illuminate\Database\Query\Builder;
 /** @internal */

@@ -40,9 +40,9 @@ class Database_Manager
     {
         global $wpdb;
         $prefix = $wpdb->prefix;
-        $rows = $wpdb->get_results($wpdb->prepare("SELECT table_name FROM information_schema.tables WHERE TABLE_SCHEMA = %s AND table_name LIKE %s", $wpdb->dbname, $prefix . 'independent_analytics_%'));
+        $rows = $wpdb->get_results($wpdb->prepare("SELECT table_name AS name FROM information_schema.tables WHERE TABLE_SCHEMA = %s AND table_name LIKE %s", $wpdb->dbname, $prefix . 'independent_analytics_%'));
         foreach ($rows as $row) {
-            $wpdb->query('DROP TABLE ' . $row->table_name);
+            $wpdb->query('DROP TABLE ' . $row->name);
         }
     }
     private function delete_all_post_meta() : void

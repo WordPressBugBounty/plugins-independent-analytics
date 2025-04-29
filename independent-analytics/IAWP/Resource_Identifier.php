@@ -144,17 +144,25 @@ class Resource_Identifier
             return null;
         }
         $screen = \get_current_screen();
-        // Check if the current screen is post editing page
-        if (!\is_null($screen) && $screen->base === 'post') {
-            $singular_id = \get_the_ID();
-            if (\is_int($singular_id)) {
-                $singular_id = \strval($singular_id);
-            } else {
-                return null;
-            }
-            return new self('singular', 'singular_id', $singular_id);
+        $is_post_editing_screen = !\is_null($screen) && $screen->base === 'post';
+        if (!$is_post_editing_screen) {
+            return null;
         }
-        return null;
+        // Check if the current screen is post editing page
+        $singular_id = \get_the_ID();
+        if (\is_int($singular_id)) {
+            $singular_id = \strval($singular_id);
+        } else {
+            return null;
+        }
+        // Add an exception for the WooCommerce shop page
+        if (\IAWPSCOPED\iawp()->is_woocommerce_support_enabled()) {
+            $shop_id = \strval(wc_get_page_id('shop'));
+            if ($shop_id === $singular_id) {
+                return new self('post_type_archive', 'post_type', 'product');
+            }
+        }
+        return new self('singular', 'singular_id', $singular_id);
     }
     public static function for_post_id(int $post_id) : ?self
     {

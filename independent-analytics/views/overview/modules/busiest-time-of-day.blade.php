@@ -8,6 +8,7 @@
 @section('content')
     @if(is_array($dataset))
         <div data-controller="chart"
+             class="module-chart"
              data-chart-labels-value="{{ json_encode($module->get_labels($dataset)) }}"
              data-chart-data-value="{{ json_encode([
                 'sessions' => $module->get_sessions($dataset),

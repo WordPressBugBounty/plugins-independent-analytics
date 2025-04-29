@@ -17,9 +17,18 @@ abstract class Step_Migration
         if (\version_compare($current_db_version, \strval($this->database_version()), '>=')) {
             return \true;
         }
-        $completed = $this->run_queries();
+        \update_option('iawp_migration_started_at', \time(), \true);
+        try {
+            $completed = $this->run_queries();
+        } catch (\Throwable $error) {
+            $completed = \false;
+            \update_option('iawp_migration_error_original_error_message', 'Unable to generate migration queries: ' . $error->getMessage(), \true);
+            \update_option('iawp_migration_error', 'Unable to generate migration queries.', \true);
+            \update_option('iawp_migration_error_query', $error->getMessage(), \true);
+        }
         if ($completed) {
             \update_option('iawp_db_version', $this->database_version(), \true);
+            \delete_option('iawp_migration_auto_fixed');
         }
         return $completed;
     }

@@ -16,6 +16,7 @@ use IAWP\Geo_Database_Background_Job;
 use IAWP\Independent_Analytics;
 use IAWP\Interrupt;
 use IAWP\MainWP;
+use IAWP\Migration_Fixer_Job;
 use IAWP\Migrations;
 use IAWP\Overview\Module_Refresh_Job;
 use IAWP\Overview\Modules\Module;
@@ -26,7 +27,7 @@ use IAWP\Utils\BladeOne;
 use IAWP\WP_Option_Cache_Bust;
 \define( 'IAWP_DIRECTORY', \rtrim( \plugin_dir_path( __FILE__ ), \DIRECTORY_SEPARATOR ) );
 \define( 'IAWP_URL', \rtrim( \plugin_dir_url( __FILE__ ), '/' ) );
-\define( 'IAWP_VERSION', '2.11.0' );
+\define( 'IAWP_VERSION', '2.11.1' );
 \define( 'IAWP_DATABASE_VERSION', '43' );
 \define( 'IAWP_LANGUAGES_DIRECTORY', \dirname( \plugin_basename( __FILE__ ) ) . '/languages' );
 \define( 'IAWP_PLUGIN_FILE', __DIR__ . '/iawp.php' );
@@ -258,6 +259,8 @@ if ( \get_option( 'iawp_missing_tables' ) === '1' ) {
 }
 // These can be updated in background jobs. Always get the actual value from the database.
 WP_Option_Cache_Bust::register( 'iawp_is_migrating' );
+WP_Option_Cache_Bust::register( 'iawp_should_refresh_modules' );
+WP_Option_Cache_Bust::register( 'iawp_migration_started_at' );
 WP_Option_Cache_Bust::register( 'iawp_is_database_downloading' );
 WP_Option_Cache_Bust::register( 'iawp_db_version' );
 WP_Option_Cache_Bust::register( 'iawp_geo_database_version' );
@@ -302,6 +305,7 @@ function iawp() {
         ( new Click_Processing_Job() )->unschedule();
         ( new Module_Refresh_Job() )->unschedule();
         ( new SureCart_Event_Sync_Job() )->unschedule();
+        ( new Migration_Fixer_Job() )->unschedule();
     }
     \wp_delete_file( \trailingslashit( \WPMU_PLUGIN_DIR ) . 'iawp-performance-boost.php' );
     \delete_option( 'iawp_must_use_directory_not_writable' );
@@ -316,6 +320,7 @@ function iawp() {
     if ( \IAWPSCOPED\iawp_is_pro() ) {
         ( new Click_Processing_Job() )->schedule();
         ( new Module_Refresh_Job() )->schedule();
+        ( new Migration_Fixer_Job() )->schedule();
     }
     if ( \IAWPSCOPED\iawp()->is_surecart_support_enabled() ) {
         ( new SureCart_Event_Sync_Job() )->schedule();
@@ -342,8 +347,8 @@ function iawp() {
         Migrations\Migration_Job::maybe_dispatch();
     }
     Geo_Database_Background_Job::maybe_dispatch();
-    if ( \get_option( 'iawp_should_refresh_modules', \false ) === '1' ) {
-        \delete_option( 'iawp_should_refresh_modules' );
+    if ( \get_option( 'iawp_should_refresh_modules', '0' ) === '1' ) {
+        \update_option( 'iawp_should_refresh_modules', '0', \true );
         Module::queue_full_module_refresh();
     }
 } );

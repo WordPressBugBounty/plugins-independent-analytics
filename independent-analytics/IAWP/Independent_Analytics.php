@@ -65,6 +65,7 @@ class Independent_Analytics
         (new SureCart_Event_Sync_Job())->register_handler();
         (new Click_Processing_Job())->register_handler();
         (new Module_Refresh_Job())->register_handler();
+        (new \IAWP\Migration_Fixer_Job())->register_handler();
         if (\IAWPSCOPED\iawp_is_pro()) {
             $this->email_reports = new Email_Reports();
             new \IAWP\Campaign_Builder();

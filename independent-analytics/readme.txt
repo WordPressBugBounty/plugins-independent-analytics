@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.11.0
+Stable tag: 2.11.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -179,6 +179,15 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.11.1 - April 29th, 2025 =
+
+* **Feature:** added option to only show view counter if page exceeds a required number of views
+* **Update:** added back-end feature to automatically retry failed database migrations
+* **Fix:** chart data wasn't rendering for Azores timezone when DST was present in date range
+* **Fix:** view counts for WooCommerce shop pages were not showing in the Admin toolbar
+* **Fix:** authors and contributors can no longer see view counts for other user's posts in the Posts menu
+* **Fix:** option to delete all data was leaving tables behind
 
 = 2.11.0 - April 21st, 2025 =
 

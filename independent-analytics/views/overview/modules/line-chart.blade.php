@@ -8,6 +8,7 @@
 @section('content')
     @if($is_loaded)
         <div data-controller="chart"
+             class="module-chart"
              data-chart-labels-value="{{ json_encode($dataset['labels']) }}"
              data-chart-data-value="{{ json_encode([
                  $dataset['primary_dataset_id'] => $dataset['primary_dataset'],

@@ -22,8 +22,18 @@ class View_Counter
         if (!$this->passes_checks()) {
             return $content;
         }
+        $resource = $this->get_resource();
+        if (\is_null($resource)) {
+            return $content;
+        }
+        $view_count = $this->get_view_count($resource, null);
+        // Checking here instead of passes_checks() so we don't have to always make a DB request for every page
+        if ($view_count < \IAWPSCOPED\iawp()->get_option('iawp_view_counter_threshold', 0)) {
+            return $content;
+        }
+        $view_count = Number_Formatter::decimal($view_count);
+        $counter = $this->get_counter_html($view_count);
         $position = \IAWPSCOPED\iawp()->get_option('iawp_view_counter_position', 'after');
-        $counter = $this->get_counter_html();
         if ($position == 'before' || $position == 'both') {
             $content = $counter . $content;
         }
@@ -32,26 +42,8 @@ class View_Counter
         }
         return $content;
     }
-    public function get_counter_html($label = null, $icon = null, $range = null)
+    public function get_counter_html($view_count = 0, $label = null, $icon = null)
     {
-        $current_resource = \IAWP\Resource_Identifier::for_resource_being_viewed();
-        // It's critical to check because this function is called erroneously by Gutenberg in the editor
-        if (\is_null($current_resource)) {
-            return;
-        }
-        // Get stats for individual posts in the loop if shortcode added to each post
-        global $post;
-        if ($post->ID != $current_resource->meta_value() && \is_main_query() && \in_the_loop()) {
-            $current_resource = \IAWP\Resource_Identifier::for_post_id($post->ID);
-        }
-        if (\is_null($range)) {
-            $range = \IAWPSCOPED\iawp()->get_option('iawp_view_counter_views_to_count', 'total');
-        }
-        $view_count = $this->get_view_count($current_resource, $range);
-        if (\IAWPSCOPED\iawp()->get_option('iawp_view_counter_manual_adjustment', \false)) {
-            $view_count += \intval(\get_post_meta($current_resource->meta_value(), 'iawp_view_counter_adjustment', \true));
-        }
-        $view_count = Number_Formatter::decimal($view_count);
         if (\is_null($label)) {
             if (!\get_option('iawp_view_counter_label_show', \true)) {
                 $label = '';
@@ -75,8 +67,17 @@ class View_Counter
     }
     public function shortcode($atts)
     {
-        $a = \shortcode_atts(['label' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_label', \esc_html__('Views:', 'independent-analytics')), 'icon' => \true, 'range' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_views_to_count', 'total')], $atts);
-        return $this->get_counter_html($a['label'], $a['icon'], $a['range']);
+        $attributes = \shortcode_atts(['label' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_label', \esc_html__('Views:', 'independent-analytics')), 'icon' => \true, 'range' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_views_to_count', 'total')], $atts);
+        $resource = $this->get_resource($attributes['range']);
+        if (\is_null($resource)) {
+            return;
+        }
+        $view_count = $this->get_view_count($resource, $attributes['range']);
+        if ($view_count < \IAWPSCOPED\iawp()->get_option('iawp_view_counter_threshold', 0)) {
+            return;
+        }
+        $view_count = Number_Formatter::decimal($view_count);
+        return $this->get_counter_html($view_count, $attributes['label'], $attributes['icon']);
     }
     public function maybe_add_meta_box() : void
     {
@@ -107,6 +108,20 @@ class View_Counter
             \update_post_meta($post_id, 'iawp_view_counter_adjustment', \absint($_POST['iawp_view_counter_adjustment']));
         }
     }
+    private function get_resource($range = null) : ?\IAWP\Resource_Identifier
+    {
+        $current_resource = \IAWP\Resource_Identifier::for_resource_being_viewed();
+        // It's critical to check because this function is called erroneously by Gutenberg in the editor
+        if (\is_null($current_resource)) {
+            return null;
+        }
+        // Get stats for individual posts in the loop if shortcode added to each post
+        global $post;
+        if ($post->ID != $current_resource->meta_value() && \is_main_query() && \in_the_loop()) {
+            $current_resource = \IAWP\Resource_Identifier::for_post_id($post->ID);
+        }
+        return $current_resource;
+    }
     private function passes_checks() : bool
     {
         if (!\is_singular() || !\is_main_query()) {
@@ -130,8 +145,12 @@ class View_Counter
         }
         return \true;
     }
-    private function get_view_count(\IAWP\Resource_Identifier $resource, string $relative_range_id) : int
+    private function get_view_count(\IAWP\Resource_Identifier $resource, ?string $relative_range_id) : int
     {
+        // The shortcode has a parameter for users to enter a custom date range
+        if (\is_null($relative_range_id)) {
+            $relative_range_id = \IAWPSCOPED\iawp()->get_option('iawp_view_counter_views_to_count', 'total');
+        }
         $relative_range_id = \strtoupper($relative_range_id);
         if ($relative_range_id === 'TOTAL' || !\in_array($relative_range_id, Relative_Date_Range::range_ids())) {
             $relative_range_id = 'ALL_TIME';
@@ -145,6 +164,10 @@ class View_Counter
             $query->where($resource->meta_key(), '=', $resource->meta_value());
         })->whereBetween('viewed_at', [$relative_range->iso_start(), $relative_range->iso_end()])->groupBy('resources.id');
         $views = $query->value('views');
-        return \is_null($views) ? 0 : $views;
+        $views = \is_null($views) ? 0 : $views;
+        if (\IAWPSCOPED\iawp()->get_option('iawp_view_counter_manual_adjustment', \false)) {
+            $views += \intval(\get_post_meta($resource->meta_value(), 'iawp_view_counter_adjustment', \true));
+        }
+        return $views;
     }
 }

@@ -116,6 +116,10 @@ class Settings
         $args = ['type' => 'string', 'default' => '', 'sanitize_callback' => [$this, 'sanitize_view_counter_exclude']];
         \register_setting('iawp_view_counter_settings', 'iawp_view_counter_exclude', $args);
         \add_settings_field('iawp_view_counter_exclude', \esc_html__('Exclude these pages', 'independent-analytics'), [$this, 'view_counter_exclude_callback'], 'independent-analytics-view-counter-settings', 'iawp-view-counter-settings-section', ['class' => 'exclude']);
+        // Minimum threshold
+        $args = ['type' => 'int', 'default' => 0, 'sanitize_callback' => 'absint'];
+        \register_setting('iawp_view_counter_settings', 'iawp_view_counter_threshold', $args);
+        \add_settings_field('iawp_view_counter_threshold', \esc_html__('Minimum views required', 'independent-analytics'), [$this, 'view_counter_threshold_callback'], 'independent-analytics-view-counter-settings', 'iawp-view-counter-settings-section', ['class' => 'threshold']);
         // Label
         $default = \function_exists('IAWPSCOPED\\pll__') ? pll__('Views:', 'independent-analytics') : \__('Views:', 'independent-analytics');
         $args = ['type' => 'string', 'default' => $default, 'sanitize_callback' => 'sanitize_text_field'];
@@ -165,6 +169,10 @@ class Settings
     public function view_counter_exclude_callback()
     {
         echo \IAWPSCOPED\iawp_blade()->run('settings.view-counter.exclude', ['exclude' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_exclude', '')]);
+    }
+    public function view_counter_threshold_callback()
+    {
+        echo \IAWPSCOPED\iawp_blade()->run('settings.view-counter.threshold', ['threshold' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_threshold', 0)]);
     }
     public function view_counter_label_callback()
     {

@@ -6,26 +6,24 @@
 @extends('overview.modules.layout')
 
 @section('content')
-    <div class="map-module {{ $is_loaded ? "is-loaded" : "is-loading" }}">
-        @if($is_loaded)
-            <div class="chart-container">
-                <div class="chart-inner">
-                    <div id="independent-analytics-chart"
-                         data-controller="map"
-                         data-map-data-value="<?php echo esc_attr(json_encode($dataset)) ?>"
-                         data-map-dark-mode-value="<?php echo esc_attr(iawp()->get_option('iawp_dark_mode', '0')) ?>"
-                         data-map-flags-url-value="<?php echo esc_url(iawp_url_to('/img/flags')) ?>"
-                         data-map-locale-value="{{ esc_attr(get_bloginfo('language')) }}"
-                    >
-                        <div data-map-target="chart"></div>
-                    </div>
+    @if($is_loaded)
+        <div class="chart-container">
+            <div class="chart-inner">
+                <div id="independent-analytics-chart"
+                     data-controller="map"
+                     data-map-data-value="<?php echo esc_attr(json_encode($dataset)) ?>"
+                     data-map-dark-mode-value="<?php echo esc_attr(iawp()->get_option('iawp_dark_mode', '0')) ?>"
+                     data-map-flags-url-value="<?php echo esc_url(iawp_url_to('/img/flags')) ?>"
+                     data-map-locale-value="{{ esc_attr(get_bloginfo('language')) }}"
+                >
+                    <div data-map-target="chart"></div>
                 </div>
             </div>
-        @else
-            <div class="loading-message">
-                <img src="<?php echo esc_url(iawp_url_to('img/loading.svg')) ?>" />
-                <p>{{ esc_html__('Loading data...', 'independent-analytics') }}</p>
-            </div>
-        @endif
-    </div>
+        </div>
+    @else
+        <div class="loading-message">
+            <img src="<?php echo esc_url(iawp_url_to('img/loading.svg')) ?>" />
+            <p>{{ esc_html__('Loading data...', 'independent-analytics') }}</p>
+        </div>
+    @endif
 @endsection

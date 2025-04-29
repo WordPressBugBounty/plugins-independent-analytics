@@ -2,6 +2,7 @@
 
 namespace IAWP\Custom_WordPress_Columns;
 
+use IAWP\Capability_Manager;
 use IAWP\Utils\Number_Formatter;
 /** @internal */
 class Views_Column
@@ -37,9 +38,17 @@ class Views_Column
     }
     public static function echo_cell_content($column_id, $post_id) : void
     {
-        if ($column_id === self::$meta_key) {
+        // Do nothing for columns other than the views column
+        if ($column_id !== self::$meta_key) {
+            return;
+        }
+        $author_id = \intval(\get_post_field('post_author', $post_id));
+        $is_your_post = \get_current_user_id() === $author_id;
+        if (Capability_Manager::can_view_all_analytics() || $is_your_post) {
             $total_views = \intval(\get_post_meta($post_id, self::$meta_key, \true));
             echo Number_Formatter::decimal($total_views);
+        } else {
+            echo '-';
         }
     }
     public static function enable_sorting(array $columns) : array
