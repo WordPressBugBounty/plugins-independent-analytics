@@ -3,14 +3,19 @@
 namespace IAWP;
 
 use IAWP\Custom_WordPress_Columns\Views_Column;
-use IAWP\Migrations\Migrations;
+use IAWPSCOPED\Illuminate\Support\Collection;
 /** @internal */
 class Database_Manager
 {
     public function reset_analytics() : void
     {
-        \delete_option('iawp_db_version');
-        Migrations::create_or_migrate();
+        // Empty all analytics tables while preserving config tables
+        $this->get_tables()->where('type', 'analytics')->each(function ($table) {
+            global $wpdb;
+            $wpdb->query('TRUNCATE ' . $table['name']);
+        });
+        // Recreate the saved reports
+        \IAWP\Report_Finder::insert_default_reports();
         $this->delete_all_post_meta();
     }
     public function delete_all_data() : void
@@ -38,12 +43,20 @@ class Database_Manager
     }
     private function delete_all_iawp_tables() : void
     {
+        $this->get_tables()->each(function ($table) {
+            global $wpdb;
+            $wpdb->query('DROP TABLE ' . $table['name']);
+        });
+    }
+    private function get_tables() : Collection
+    {
         global $wpdb;
-        $prefix = $wpdb->prefix;
-        $rows = $wpdb->get_results($wpdb->prepare("SELECT table_name AS name FROM information_schema.tables WHERE TABLE_SCHEMA = %s AND table_name LIKE %s", $wpdb->dbname, $prefix . 'independent_analytics_%'));
-        foreach ($rows as $row) {
-            $wpdb->query('DROP TABLE ' . $row->name);
-        }
+        $rows = $wpdb->get_results($wpdb->prepare("SELECT table_name AS name FROM information_schema.tables WHERE TABLE_SCHEMA = %s AND table_name LIKE %s", $wpdb->dbname, $wpdb->prefix . 'independent_analytics_%'));
+        $config_tables = [$wpdb->prefix . 'independent_analytics_campaign_urls', $wpdb->prefix . 'independent_analytics_link_rules'];
+        $tables = Collection::make($rows)->map(function ($row) use($config_tables) {
+            return ['name' => $row->name, 'type' => \in_array($row->name, $config_tables) ? 'config' : 'analytics'];
+        });
+        return $tables;
     }
     private function delete_all_post_meta() : void
     {

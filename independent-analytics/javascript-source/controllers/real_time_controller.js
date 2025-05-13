@@ -3,6 +3,7 @@ import {Chart, registerables} from 'chart.js'
 import Isotope from "isotope-layout"
 import htmlLegendPlugin from "../chart_plugins/html_legend_plugin";
 import corsairPlugin from "../chart_plugins/corsair_plugin";
+import {isDarkMode} from "../utils/appearance";
 
 Chart.register(...registerables);
 Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
@@ -239,7 +240,7 @@ export default class extends Controller {
                         beginAtZero: true,
                         suggestedMax: 5,
                         ticks: {
-                            color: document.body.classList.contains('iawp-dark-mode') ? '#ffffff' : '#6D6A73',
+                            color: isDarkMode() ? '#ffffff' : '#6D6A73',
                             precision: 0
                         }
                     },
@@ -252,7 +253,7 @@ export default class extends Controller {
                             drawOnChartArea: false,
                         },
                         ticks: {
-                            color: document.body.classList.contains('iawp-dark-mode') ? '#ffffff' : '#6D6A73',
+                            color: isDarkMode() ? '#ffffff' : '#6D6A73',
                             beginAtZero: true,
                             callback: function (value, index, values) {
                                 return labelsShort[index];

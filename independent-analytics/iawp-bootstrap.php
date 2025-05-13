@@ -13,6 +13,7 @@ use IAWP\Ecommerce\SureCart_Event_Sync_Job;
 use IAWP\Ecommerce\SureCart_Store;
 use IAWP\Env;
 use IAWP\Geo_Database_Background_Job;
+use IAWP\Geo_Database_Manager;
 use IAWP\Independent_Analytics;
 use IAWP\Interrupt;
 use IAWP\MainWP;
@@ -20,14 +21,16 @@ use IAWP\Migration_Fixer_Job;
 use IAWP\Migrations;
 use IAWP\Overview\Module_Refresh_Job;
 use IAWP\Overview\Modules\Module;
+use IAWP\Overview\Sync_Module_Background_Job;
 use IAWP\Patch;
 use IAWP\Public_API\Analytics;
 use IAWP\Public_API\Singular_Analytics;
+use IAWP\Public_API\Top_Posts;
 use IAWP\Utils\BladeOne;
 use IAWP\WP_Option_Cache_Bust;
 \define( 'IAWP_DIRECTORY', \rtrim( \plugin_dir_path( __FILE__ ), \DIRECTORY_SEPARATOR ) );
 \define( 'IAWP_URL', \rtrim( \plugin_dir_url( __FILE__ ), '/' ) );
-\define( 'IAWP_VERSION', '2.11.1' );
+\define( 'IAWP_VERSION', '2.11.2' );
 \define( 'IAWP_DATABASE_VERSION', '43' );
 \define( 'IAWP_LANGUAGES_DIRECTORY', \dirname( \plugin_basename( __FILE__ ) ) . '/languages' );
 \define( 'IAWP_PLUGIN_FILE', __DIR__ . '/iawp.php' );
@@ -209,6 +212,26 @@ function iawp_singular_analytics(  $singular_id, \DateTime $from, \DateTime $to 
 }
 
 /**
+ * iawp_top_posts();
+ *
+ * Retrieves top posts with customizable options.
+ *
+ * @param array{
+ *     post_type: string,          // Default: 'post'
+ *     limit: int,                 // Default: 10
+ *     from: \DateTimeInterface,   // Default: 30 days ago
+ *     to: \DateTimeInterface,     // Default: today
+ *     sort_by: string,            // Default: 'views' - supports 'views', 'visitors', or 'sessions'
+ * } $options
+ *
+ * @return array
+ * @internal
+ */
+function iawp_top_posts(  array $options = []  ) : array {
+    return ( new Top_Posts($options) )->get();
+}
+
+/**
  * iawp_analytics(new DateTime('-3 days'), new DateTime());
  *
  * @param DateTime $from
@@ -281,7 +304,7 @@ function iawp() {
         // If there is a database, run migration in a background process
         Migrations\Migration_Job::maybe_dispatch();
     }
-    Geo_Database_Background_Job::maybe_dispatch();
+    ( new Geo_Database_Manager() )->check_database_situation();
     \update_option( 'iawp_need_clear_cache', \true, \true );
     if ( \get_option( 'iawp_show_gsg' ) == '' ) {
         \update_option( 'iawp_show_gsg', '1', \true );
@@ -346,12 +369,13 @@ function iawp() {
         // If there is a database, run migration in a background process
         Migrations\Migration_Job::maybe_dispatch();
     }
-    Geo_Database_Background_Job::maybe_dispatch();
+    ( new Geo_Database_Manager() )->check_database_situation();
     if ( \get_option( 'iawp_should_refresh_modules', '0' ) === '1' ) {
         \update_option( 'iawp_should_refresh_modules', '0', \true );
         Module::queue_full_module_refresh();
     }
 } );
-new \IAWP\Overview\Sync_Module_Background_Job();
+new Sync_Module_Background_Job();
+new Geo_Database_Background_Job();
 Views_Column::initialize();
 MainWP::initialize();

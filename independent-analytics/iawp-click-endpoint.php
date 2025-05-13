@@ -164,6 +164,7 @@ $click_data_file = get_click_data_file();
 $data            = [
     'href'          => $body['href'],
     'classes'       => $body['classes'],
+    'ids'           => $body['ids'],
     'payload'       => json_encode($body['payload']),
     'signature'     => $body['signature'],
     'visitor_token' => get_visitor_token($cache),

@@ -47,7 +47,7 @@
                     <div class="modal-inner">
                         <div class="title-small">
                             <?php esc_html_e('Download report', 'independent-analytics'); ?>
-                            <span data-report-target="spinner" class="dashicons dashicons-update spin hidden"></span>
+                            <span data-report-target="spinner" class="dashicons dashicons-update iawp-spin hidden"></span>
                         </div>
                         <button data-controller="export-overview"
                                 data-action="export-overview#export"

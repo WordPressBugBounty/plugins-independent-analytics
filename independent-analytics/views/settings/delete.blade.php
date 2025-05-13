@@ -47,7 +47,7 @@
                  class="mm__container">
                 <h1><?php esc_html_e('Reset analytics', 'independent-analytics'); ?></h1>
                 <p>
-                    <?php esc_html_e('You are about to reset your analytics. This will delete all of the data and return all stats to zero.', 'independent-analytics'); ?>
+                    <?php esc_html_e('You are about to reset your analytics. This will delete all analytics data and reset all stats to zero. All saved reports will be reset.', 'independent-analytics'); ?>
                 </p>
                 <p><?php printf(esc_html__('Type "%s" in the input below to confirm.', 'independent-analytics'), 'Reset analytics'); ?></p>
                 <form data-action="submit->reset-analytics#submit">

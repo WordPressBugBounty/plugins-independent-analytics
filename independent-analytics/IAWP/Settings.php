@@ -49,27 +49,29 @@ class Settings
     {
         \add_settings_section('iawp-settings-section', \esc_html__('Basic Settings', 'independent-analytics'), function () {
         }, 'independent-analytics-settings');
-        $args = ['type' => 'boolean', 'default' => \false, 'sanitize_callback' => 'rest_sanitize_boolean'];
-        \register_setting('iawp_settings', 'iawp_dark_mode', $args);
-        \add_settings_field('iawp_dark_mode', \esc_html__('Dark mode', 'independent-analytics'), [$this, 'dark_mode_callback'], 'independent-analytics-settings', 'iawp-settings-section', ['class' => 'dark-mode']);
-        \register_setting('iawp_settings', 'iawp_track_authenticated_users', $args);
+        \register_setting('iawp_settings', 'iawp_appearance', ['type' => 'string', 'default' => \IAWP\Appearance::get_default_appearance(), 'sanitize_callback' => function ($input) {
+            return \array_key_exists($input, \IAWP\Appearance::options()) ? $input : \IAWP\Appearance::get_appearance();
+        }]);
+        \add_settings_field('iawp_appearance', \esc_html__('Color scheme', 'independent-analytics'), [$this, 'appearance_callback'], 'independent-analytics-settings', 'iawp-settings-section', ['class' => 'appearance']);
+        $boolean_options = ['type' => 'boolean', 'default' => \false, 'sanitize_callback' => 'rest_sanitize_boolean'];
+        \register_setting('iawp_settings', 'iawp_track_authenticated_users', $boolean_options);
         \add_settings_field('iawp_track_authenticated_users', \esc_html__('Track logged in users', 'independent-analytics'), [$this, 'track_authenticated_users_callback'], 'independent-analytics-settings', 'iawp-settings-section', ['class' => 'logged-in']);
-        \register_setting('iawp_settings', 'iawp_disable_admin_toolbar_analytics', $args);
+        \register_setting('iawp_settings', 'iawp_disable_admin_toolbar_analytics', $boolean_options);
         \add_settings_field('iawp_disable_admin_toolbar_analytics', \esc_html__('Admin toolbar stats', 'independent-analytics'), [$this, 'disable_admin_toolbar_analytics_callback'], 'independent-analytics-settings', 'iawp-settings-section');
-        \register_setting('iawp_settings', 'iawp_disable_widget', $args);
+        \register_setting('iawp_settings', 'iawp_disable_widget', $boolean_options);
         \add_settings_field('iawp_disable_widget', \esc_html__('Dashboard widget', 'independent-analytics'), [$this, 'disable_widget_callback'], 'independent-analytics-settings', 'iawp-settings-section');
-        \register_setting('iawp_settings', 'iawp_disable_views_column', $args);
+        \register_setting('iawp_settings', 'iawp_disable_views_column', $boolean_options);
         \add_settings_field('iawp_disable_views_column', \esc_html__('Views column', 'independent-analytics'), [$this, 'disable_views_column_callback'], 'independent-analytics-settings', 'iawp-settings-section');
-        $args = ['type' => 'integer', 'default' => 0, 'sanitize_callback' => 'absint'];
-        \register_setting('iawp_settings', 'iawp_dow', $args);
+        $boolean_options = ['type' => 'integer', 'default' => 0, 'sanitize_callback' => 'absint'];
+        \register_setting('iawp_settings', 'iawp_dow', $boolean_options);
         \add_settings_field('iawp_dow', \esc_html__('First day of week', 'independent-analytics'), [$this, 'starting_dow_callback'], 'independent-analytics-settings', 'iawp-settings-section', ['class' => 'dow']);
-        $args = ['type' => 'boolean', 'default' => \false, 'sanitize_callback' => 'rest_sanitize_boolean'];
-        \register_setting('iawp_settings', 'iawp_refresh_salt', $args);
+        $boolean_options = ['type' => 'boolean', 'default' => \false, 'sanitize_callback' => 'rest_sanitize_boolean'];
+        \register_setting('iawp_settings', 'iawp_refresh_salt', $boolean_options);
         \add_settings_field('iawp_refresh_salt', \esc_html__('Salt refresh rate', 'independent-analytics'), [$this, 'refresh_salt_callback'], 'independent-analytics-settings', 'iawp-settings-section', ['class' => 'salt']);
     }
-    public function dark_mode_callback()
+    public function appearance_callback()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('settings.dark-mode', ['dark_mode' => \IAWPSCOPED\iawp()->get_option('iawp_dark_mode', \false)]);
+        echo \IAWPSCOPED\iawp_blade()->run('settings.appearance', ['appearance' => \IAWP\Appearance::get_appearance(), 'options' => \IAWP\Appearance::options()]);
     }
     public function track_authenticated_users_callback()
     {

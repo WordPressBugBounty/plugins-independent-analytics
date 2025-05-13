@@ -37,7 +37,7 @@ abstract class Admin_Page
         ?>">
                 <?php 
         if ($show_report_sidebar) {
-            echo \IAWPSCOPED\iawp_render('partials.sidebar', ['report_finder' => Report_Finder::new(), 'is_white_labeled' => Capability_Manager::show_white_labeled_ui(), 'can_edit_settings' => Capability_Manager::can_edit(), 'is_dark_mode' => \get_option('iawp_dark_mode')]);
+            echo \IAWPSCOPED\iawp_render('partials.sidebar', ['report_finder' => Report_Finder::new(), 'is_white_labeled' => Capability_Manager::show_white_labeled_ui(), 'can_edit_settings' => Capability_Manager::can_edit()]);
         }
         ?>
                 <div class="iawp-layout-main">

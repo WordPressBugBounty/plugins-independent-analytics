@@ -1,10 +1,10 @@
 import {Controller} from "@hotwired/stimulus"
+import {isDarkMode} from "../utils/appearance";
 
 export default class extends Controller {
     static targets = ["chart"]
     static values = {
         data: Array,
-        darkMode: Boolean,
         flagsUrl: String,
         locale: String
     }
@@ -66,15 +66,15 @@ export default class extends Controller {
                 isHtml: true,
                 showTitle: false
             },
-            backgroundColor: this.darkModeValue ? '#373040' : '#FFFFFF',
-            datalessRegionColor: this.darkModeValue ? '#695C7A' : undefined,
+            backgroundColor: isDarkMode() ? '#373040' : '#FFFFFF',
+            datalessRegionColor: isDarkMode() ? '#695C7A' : undefined,
             colorAxis: {
-                colors: this.darkModeValue ? ['#AC9CC9', '#9E66FF'] : ['#C4ABED', '#5223A0']
+                colors: isDarkMode() ? ['#AC9CC9', '#9E66FF'] : ['#C4ABED', '#5223A0']
             },
             legend: {
                 numberFormat: `${iawpText.views}: #`,
                 textStyle: {
-                    color: this.darkModeValue ? '#FFFFFF' : '#000000',
+                    color: isDarkMode() ? '#FFFFFF' : '#000000',
                     strokeWidth: 0
                 }
             },

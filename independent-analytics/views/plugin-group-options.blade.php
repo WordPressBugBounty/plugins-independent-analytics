@@ -52,7 +52,7 @@ $plugin_groups = array_filter($plugin_groups, function ($plugin_group) use ($opt
     >
         <div class="top title-small">
             <?php esc_html_e('Choose Stats to Display', 'independent-analytics'); ?>
-            <span data-plugin-group-options-target="spinner" class="dashicons dashicons-update spin hidden"></span>
+            <span data-plugin-group-options-target="spinner" class="dashicons dashicons-update iawp-spin hidden"></span>
         </div>
         <div class="inner">
             <div id="stats-toggle-sidebar" class="sidebar">

@@ -2,9 +2,7 @@
 
 namespace IAWP;
 
-use DateInterval;
-use DateTime;
-use IAWP\Utils\Timezone;
+use IAWPSCOPED\Carbon\CarbonImmutable;
 use Throwable;
 use ZipArchive;
 /** @internal */
@@ -15,57 +13,86 @@ class Geo_Database_Manager
     private $zip_download_url = 'https://assets.independentwp.com/iawp-geo-db-7.mmdb.zip';
     private $raw_download_url = 'https://assets.independentwp.com/iawp-geo-db-7.mmdb';
     private $database_checksum = 'e26ab675eccee3de08e4cd2aceb5a217';
-    public function download() : void
+    public function check_database_situation() : void
     {
-        if (!$this->should_download()) {
-            return;
-        }
-        \update_option('iawp_is_database_downloading', '1', \true);
-        $this->download_zip_database_and_extract();
-        if (!$this->is_existing_database_valid()) {
-            $this->download_raw_database();
+        if ($this->is_geo_tracking_enabled()) {
+            if ($this->has_attempt_interval_elapsed() && !$this->is_downloading() && !$this->is_database_valid()) {
+                // Set the options timestamp so the background job doesn't fire multiple times
+                $this->record_attempt();
+                // Dispatch job
+                $background_job = new \IAWP\Geo_Database_Background_Job();
+                $background_job->dispatch();
+            }
         } else {
+            if ($this->is_database_valid()) {
+                $this->delete_database();
+            }
         }
-        \update_option('iawp_is_database_downloading', '0', \true);
-        $this->record_attempt();
     }
-    public function should_download() : bool
+    public function is_geo_tracking_enabled() : bool
     {
-        if (!$this->has_attempt_interval_elapsed()) {
-            return \false;
-        }
-        if (\get_option('iawp_is_database_downloading', '0') === '1') {
-            return \false;
-        }
-        if ($this->is_existing_database_valid()) {
-            $this->record_attempt();
+        // Have they disabled geo tracking in wp-config.php?
+        if (\defined('IAWP_DISABLE_GEO_TRACKING') && \IAWP_DISABLE_GEO_TRACKING === \true) {
             return \false;
         }
         return \true;
     }
-    public function delete() : void
+    public function download_database() : void
     {
+        \update_option('iawp_is_database_downloading', '1', \true);
+        $this->record_attempt();
+        $success = $this->download_zip_database_and_extract();
+        if (!$success) {
+            $this->download_raw_database();
+        }
+        \update_option('iawp_is_database_downloading', '0', \true);
+    }
+    public function is_downloading() : bool
+    {
+        return \get_option('iawp_is_database_downloading', '0') === '1';
+    }
+    public function delete_database() : void
+    {
+        \wp_delete_file(self::path_to_database_zip());
         \wp_delete_file(self::path_to_database());
     }
-    private function download_zip_database_and_extract() : void
+    public function record_attempt() : void
     {
-        \wp_remote_get($this->zip_download_url, ['stream' => \true, 'filename' => $this->path_to_database_zip(), 'timeout' => 60]);
+        \update_option('iawp_geo_database_download_last_attempted_at', \time(), \true);
+    }
+    private function download_zip_database_and_extract() : bool
+    {
+        $response = \wp_remote_get($this->zip_download_url, ['stream' => \true, 'filename' => self::path_to_database_zip(), 'timeout' => 60]);
+        if (\is_wp_error($response)) {
+            if (\file_exists(self::path_to_database_zip())) {
+                \unlink(self::path_to_database_zip());
+            }
+            return \false;
+        }
         try {
             $zip = new ZipArchive();
-            if ($zip->open($this->path_to_database_zip()) === \true) {
+            if ($zip->open(self::path_to_database_zip()) === \true) {
                 $zip->extractTo(\IAWPSCOPED\iawp_upload_path_to('', \true));
                 $zip->close();
             }
         } catch (Throwable $e) {
             // It's ok to fail
         }
-        \wp_delete_file($this->path_to_database_zip());
+        \wp_delete_file(self::path_to_database_zip());
+        return $this->is_database_valid();
     }
-    private function download_raw_database() : void
+    private function download_raw_database() : bool
     {
-        \wp_remote_get($this->raw_download_url, ['stream' => \true, 'filename' => self::path_to_database(), 'timeout' => 60]);
+        $response = \wp_remote_get($this->raw_download_url, ['stream' => \true, 'filename' => self::path_to_database(), 'timeout' => 60]);
+        if (\is_wp_error($response)) {
+            if (\file_exists(self::path_to_database())) {
+                \unlink(self::path_to_database());
+            }
+            return \false;
+        }
+        return $this->is_database_valid();
     }
-    private function is_existing_database_valid() : bool
+    private function is_database_valid() : bool
     {
         if (!\file_exists(self::path_to_database())) {
             return \false;
@@ -79,40 +106,30 @@ class Geo_Database_Manager
     private function has_attempt_interval_elapsed() : bool
     {
         $last_attempted_at = $this->last_attempted_at();
-        $interval = new DateInterval('PT30M');
         if (\is_null($last_attempted_at)) {
             return \true;
         }
-        $is_past_interval_time = $last_attempted_at->add($interval) < new DateTime('now', Timezone::utc_timezone());
-        if ($is_past_interval_time) {
-            return \true;
-        }
-        return \false;
+        $has_been_thirty_minutes = $last_attempted_at->addMinutes(1)->isPast();
+        return $has_been_thirty_minutes;
     }
-    private function last_attempted_at() : ?DateTime
+    private function last_attempted_at() : ?CarbonImmutable
     {
-        $option_value = \get_option('iawp_geo_database_download_last_attempted_at', \false);
-        if (!$option_value) {
+        $timestamp = \get_option('iawp_geo_database_download_last_attempted_at', \false);
+        if (!$timestamp || !\ctype_digit($timestamp)) {
             return null;
         }
         try {
-            return new DateTime($option_value, Timezone::utc_timezone());
+            return CarbonImmutable::createFromTimestamp($timestamp);
         } catch (Throwable $e) {
             return null;
         }
     }
-    private function record_attempt() : void
-    {
-        $now = new DateTime('now', Timezone::utc_timezone());
-        $value = $now->format('Y-m-d\\TH:i:s');
-        \update_option('iawp_geo_database_download_last_attempted_at', $value, \true);
-    }
-    private function path_to_database_zip() : string
-    {
-        return \IAWPSCOPED\iawp_upload_path_to('iawp-geo-db.zip', \true);
-    }
     public static function path_to_database() : string
     {
         return \IAWPSCOPED\iawp_upload_path_to('iawp-geo-db.mmdb', \true);
+    }
+    private static function path_to_database_zip() : string
+    {
+        return \IAWPSCOPED\iawp_upload_path_to('iawp-geo-db.zip', \true);
     }
 }

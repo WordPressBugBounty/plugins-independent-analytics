@@ -13,12 +13,14 @@ class Link_Rule_Finder
     private $protocol;
     private $href;
     private $classes;
+    private $idd;
     private static $database_records = null;
-    public function __construct(?string $protocol, ?string $href, string $classes)
+    public function __construct(?string $protocol, ?string $href, string $classes, string $ids)
     {
         $this->protocol = $protocol;
         $this->href = $href;
         $this->classes = $classes;
+        $this->ids = $ids;
     }
     public function links() : ?Collection
     {
@@ -33,6 +35,8 @@ class Link_Rule_Finder
         switch ($link_rule->type()) {
             case 'class':
                 return $this->is_matching_class($link_rule);
+            case 'id':
+                return $this->is_matching_id($link_rule);
             case 'domain':
                 return $this->is_matching_domain($link_rule);
             case 'extension':
@@ -53,6 +57,15 @@ class Link_Rule_Finder
             return \false;
         }
         return Collection::make(\explode(' ', $this->classes))->contains(function ($value, $key) use($link_rule) {
+            return $link_rule->value() === $value;
+        });
+    }
+    private function is_matching_id($link_rule) : bool
+    {
+        if ($this->ids === "") {
+            return \false;
+        }
+        return Collection::make(\explode(' ', $this->ids))->contains(function ($value, $key) use($link_rule) {
             return $link_rule->value() === $value;
         });
     }
@@ -115,9 +128,9 @@ class Link_Rule_Finder
         }
         return $link_url->get_domain() !== $site_url->get_domain();
     }
-    public static function new(?string $protocol, ?string $href, string $classes) : self
+    public static function new(?string $protocol, ?string $href, string $classes, ?string $id) : self
     {
-        return new self($protocol, $href, $classes);
+        return new self($protocol, $href, $classes, $id);
     }
     public static function link_rules() : Collection
     {

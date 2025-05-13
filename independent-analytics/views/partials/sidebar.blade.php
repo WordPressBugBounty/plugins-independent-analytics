@@ -9,7 +9,7 @@
         @if(!$is_white_labeled)
             <div class="logo">
                 <img class="full-logo"
-                     src="{{$is_dark_mode ? iawp_url_to('img/logo-white.png') : iawp_url_to('img/logo.png')}}"
+                     src="{{ iawp_url_to('img/logo.png') }}"
                      data-testid="logo"/>
                 <img class="favicon" src="{{iawp_url_to('img/favicon.png')}}"
                      data-testid="favicon"/>
@@ -19,7 +19,7 @@
             <div class="pro-ad">
                 <a href="https://independentwp.com/pro/?utm_source=User+Dashboard&utm_medium=WP+Admin&utm_campaign=Upgrade+to+Pro&utm_content=Sidebar"
                    target="_blank">
-                    <span class="upgrade-text">{{ __('Upgrade to Pro (45% off)', 'independent-analytics') }}</span>
+                    <span class="upgrade-text">{{ __('Upgrade to Pro', 'independent-analytics') }}</span>
                     <span class="dashicons dashicons-arrow-right-alt"></span>
                 </a>
             </div>

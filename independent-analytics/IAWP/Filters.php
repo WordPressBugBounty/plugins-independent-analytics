@@ -41,7 +41,7 @@ class Filters
                     <?php 
         \esc_html_e('Filters', 'independent-analytics');
         ?>
-                    <span data-filters-target="spinner" class="dashicons dashicons-update spin hidden"></span>
+                    <span data-filters-target="spinner" class="dashicons dashicons-update iawp-spin hidden"></span>
                 </div>
                 <div id="filters" data-filters-target="filters" class="filters" data-filters="[]">
                 </div>

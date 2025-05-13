@@ -21,14 +21,6 @@ class Geo_Database_Background_Job extends WP_Async_Request
     protected function handle() : void
     {
         $downloader = new \IAWP\Geo_Database_Manager();
-        $downloader->download();
-    }
-    public static function maybe_dispatch() : void
-    {
-        $geo_database = new \IAWP\Geo_Database_Manager();
-        if ($geo_database->should_download()) {
-            $background_job = new self();
-            $background_job->dispatch();
-        }
+        $downloader->download_database();
     }
 }

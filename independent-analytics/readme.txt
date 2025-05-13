@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.11.1
+Stable tag: 2.11.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -179,6 +179,19 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.11.2 - May 12th, 2025 =
+
+* **Feature:** added a new API function called iawp_top_posts() for getting the most popular posts
+* **Enhancement:** added recognition for X, Bluesky, Threads, and Mastodon as Social referrers
+* **Enhancement:** traffic from Facebook Ads is now tracked separately from organic Facebook visitors
+* **Enhancement:** light/dark mode can now be set to your system default
+* **Enhancement:** added option to disable geotracking and exclude iawp-geo-db.mmdb from the site
+* **Fix:** auto-retry mechanism used when mmdb file isn't downloaded and extracted
+* **Fix:** fixed style conflict with other plugins affecting spinner icons
+* **Fix:** hid the scrollbar in the date picker
+* **Fix:** fixed fatal error with missing WP Cerber options
+* **Fix:** fixed incompatibility with SG Speed Optimizer plugin's Javascript minification setting
 
 = 2.11.1 - April 29th, 2025 =
 

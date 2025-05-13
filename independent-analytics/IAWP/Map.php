@@ -26,7 +26,6 @@ class Map
         } else {
             $country_data = $this->country_data;
         }
-        $dark_mode = \IAWPSCOPED\iawp()->get_option('iawp_dark_mode', '0');
         \ob_start();
         ?>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -41,9 +40,6 @@ class Map
                      data-controller="map"
                      data-map-data-value="<?php 
         echo \esc_attr(\json_encode($country_data));
-        ?>"
-                     data-map-dark-mode-value="<?php 
-        echo \esc_attr($dark_mode);
         ?>"
                      data-map-flags-url-value="<?php 
         echo \IAWPSCOPED\iawp_url_to('/img/flags');

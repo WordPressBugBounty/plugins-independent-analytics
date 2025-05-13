@@ -85,6 +85,9 @@ class Geoposition
             $reader = new Reader(\IAWP\Geo_Database_Manager::path_to_database());
             $geo = $reader->get($ip);
             $reader->close();
+            if (\is_null($geo)) {
+                return [];
+            }
             return $geo;
         } catch (\Throwable $e) {
             return [];

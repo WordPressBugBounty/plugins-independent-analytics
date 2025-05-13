@@ -217,7 +217,7 @@ abstract class Table
                             <?php 
         \esc_html_e('Choose a format', 'independent-analytics');
         ?>
-                            <span data-report-target="spinner" class="dashicons dashicons-update spin hidden"></span>
+                            <span data-report-target="spinner" class="dashicons dashicons-update iawp-spin hidden"></span>
                         </div>
                         <div class="download-button-container">
                             <button id="download-csv" class="iawp-button" data-report-target="exportReportTable" data-action="report#exportReportTable">

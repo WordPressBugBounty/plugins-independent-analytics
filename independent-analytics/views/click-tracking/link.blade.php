@@ -32,6 +32,9 @@
                         @if ($type == 'class')
                             <span class="value-prefix">.</span>
                         @endif
+                        @if ($type == 'id')
+                            <span class="value-prefix">#</span>
+                        @endif
                         @if ($type == 'subdirectory')
                             <span class="value-prefix">/</span>
                         @endif
@@ -60,6 +63,12 @@
                 <button class="copy-class" data-controller="clipboard" data-action="clipboard#copy"
                     data-clipboard-text-value="{{ esc_attr($link['value']) }}">
                     <span class="dashicons dashicons-clipboard"></span>
+                </button>
+            @elseif ($link['type'] == 'id')
+                {{ '#' . esc_html($link['value']) }}
+                <button class="copy-class" data-controller="clipboard" data-action="clipboard#copy"
+                        data-clipboard-text-value="{{ esc_attr($link['value']) }}">
+                <span class="dashicons dashicons-clipboard"></span>
                 </button>
             @elseif ($link['type'] == 'extension')
                 {{ '.' . esc_html($link['value']) }}

@@ -18,7 +18,7 @@ class Click_Tracking
     }
     public static function types() : array
     {
-        return ['class' => \__('Class', 'independent-analytics'), 'extension' => \__('Extension', 'independent-analytics'), 'domain' => \__('Domain', 'independent-analytics'), 'external' => \__('External', 'independent-analytics'), 'subdirectory' => \__('Subdirectory', 'independent-analytics'), 'protocol' => \__('Protocol', 'independent-analytics')];
+        return ['class' => \__('Class', 'independent-analytics'), 'id' => \__('ID', 'independent-analytics'), 'extension' => \__('Extension', 'independent-analytics'), 'domain' => \__('Domain', 'independent-analytics'), 'external' => \__('External', 'independent-analytics'), 'subdirectory' => \__('Subdirectory', 'independent-analytics'), 'protocol' => \__('Protocol', 'independent-analytics')];
     }
     public static function extensions()
     {

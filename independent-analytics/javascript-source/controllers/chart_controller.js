@@ -2,6 +2,7 @@ import {Controller} from "@hotwired/stimulus"
 import corsairPlugin from '../chart_plugins/corsair_plugin'
 import {Chart, registerables} from 'chart.js'
 import color from 'color'
+import {isDarkMode} from "../utils/appearance";
 
 Chart.register(...registerables);
 
@@ -295,7 +296,7 @@ export default class extends Controller {
     }
 
     shouldUseDarkMode() {
-        return document.body.classList.contains('iawp-dark-mode') && !this.disableDarkModeValue
+        return isDarkMode() && !this.disableDarkModeValue
     }
 
     createChart() {

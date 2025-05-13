@@ -2,6 +2,7 @@
 
 namespace IAWP;
 
+use IAWP\Utils\String_Util;
 /** @internal */
 class Plugin_Conflict_Detector
 {
@@ -127,10 +128,12 @@ class Plugin_Conflict_Detector
             if ($settings === \false) {
                 $settings = \get_option('cerber-hardening');
             }
-            if (\array_key_exists('norest', $settings)) {
-                if ($settings['norest'] === '1') {
-                    if (!\in_array('iawp', $settings['restwhite'])) {
-                        return ['plugin' => 'wp-cerber', 'error' => \__('The "WP Cerber" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Cerber > Dashboard > Hardening menu and add "iawp" to your allowed namespaces. This will keep the REST API locked down while allowing requests for Independent Analytics.', 'independent-analytics')];
+            if ($settings !== \false) {
+                if (\array_key_exists('norest', $settings)) {
+                    if ($settings['norest'] === '1') {
+                        if (\is_array($settings['restwhite']) && !\in_array('iawp', $settings['restwhite']) || \is_string($settings['restwhite']) && !String_Util::str_contains($settings['restwhite'], 'iawp')) {
+                            return ['plugin' => 'wp-cerber', 'error' => \__('The "WP Cerber" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Cerber > Dashboard > Hardening menu and add "iawp" to your allowed namespaces. This will keep the REST API locked down while allowing requests for Independent Analytics.', 'independent-analytics')];
+                        }
                     }
                 }
             }

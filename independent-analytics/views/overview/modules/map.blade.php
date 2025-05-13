@@ -12,7 +12,6 @@
                 <div id="independent-analytics-chart"
                      data-controller="map"
                      data-map-data-value="<?php echo esc_attr(json_encode($dataset)) ?>"
-                     data-map-dark-mode-value="<?php echo esc_attr(iawp()->get_option('iawp_dark_mode', '0')) ?>"
                      data-map-flags-url-value="<?php echo esc_url(iawp_url_to('/img/flags')) ?>"
                      data-map-locale-value="{{ esc_attr(get_bloginfo('language')) }}"
                 >

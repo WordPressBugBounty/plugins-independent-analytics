@@ -13,7 +13,7 @@ export default class extends Controller {
         }
 
         this.element.querySelector('span').classList.remove('dashicons-plus-alt2')
-        this.element.querySelector('span').classList.add('dashicons-update', 'spin')
+        this.element.querySelector('span').classList.add('dashicons-update', 'iawp-spin')
         this.isLoading = true
         const data = {
             ...iawpActions.create_report,

@@ -10,6 +10,7 @@ use IAWP\Utils\Request;
 use IAWP\Utils\Salt;
 use IAWP\Utils\Security;
 use IAWP\Utils\URL;
+use IAWPSCOPED\Illuminate\Support\Str;
 /** @internal */
 class REST_API
 {
@@ -66,6 +67,8 @@ class REST_API
         $link_rules_json = \json_encode($link_rules);
         ?>
         <script>
+            // Do not change this comment line otherwise Speed Optimizer won't be able to detect this script
+
             (function () {
                 const calculateParentDistance = (child, parent) => {
                     let count = 0;
@@ -84,10 +87,13 @@ class REST_API
 
                     return count; // Number of layers between element and parent
                 }
-                const isMatchingClass = (linkRule, href, classes) => {
+                const isMatchingClass = (linkRule, href, classes, ids) => {
                     return classes.includes(linkRule.value)
                 }
-                const isMatchingDomain = (linkRule, href, classes) => {
+                const isMatchingId = (linkRule, href, classes, ids) => {
+                    return ids.includes(linkRule.value)
+                }
+                const isMatchingDomain = (linkRule, href, classes, ids) => {
                     if(!URL.canParse(href)) {
                         return false
                     }
@@ -96,7 +102,7 @@ class REST_API
 
                     return linkRule.value === url.host
                 }
-                const isMatchingExtension = (linkRule, href, classes) => {
+                const isMatchingExtension = (linkRule, href, classes, ids) => {
                     if(!URL.canParse(href)) {
                         return false
                     }
@@ -105,7 +111,7 @@ class REST_API
 
                     return url.pathname.endsWith('.' + linkRule.value)
                 }
-                const isMatchingSubdirectory = (linkRule, href, classes) => {
+                const isMatchingSubdirectory = (linkRule, href, classes, ids) => {
                     if(!URL.canParse(href)) {
                         return false
                     }
@@ -114,7 +120,7 @@ class REST_API
 
                     return url.pathname.startsWith('/' + linkRule.value + '/')
                 }
-                const isMatchingProtocol = (linkRule, href, classes) => {
+                const isMatchingProtocol = (linkRule, href, classes, ids) => {
                     if(!URL.canParse(href)) {
                         return false
                     }
@@ -123,7 +129,7 @@ class REST_API
 
                     return url.protocol === linkRule.value + ':'
                 }
-                const isMatchingExternal = (linkRule, href, classes) => {
+                const isMatchingExternal = (linkRule, href, classes, ids) => {
                     if(!URL.canParse(href) || !URL.canParse(document.location.href)) {
                         return false
                     }
@@ -136,20 +142,22 @@ class REST_API
                     // but the PHP rules will filter those events out.
                     return matchingProtocols.includes(linkUrl.protocol) && siteUrl.host !== linkUrl.host
                 }
-                const isMatch = (linkRule, href, classes) => {
+                const isMatch = (linkRule, href, classes, ids) => {
                     switch (linkRule.type) {
                         case 'class':
-                            return isMatchingClass(linkRule, href, classes)
+                            return isMatchingClass(linkRule, href, classes, ids)
+                        case 'id':
+                            return isMatchingId(linkRule, href, classes, ids)
                         case 'domain':
-                            return isMatchingDomain(linkRule, href, classes)
+                            return isMatchingDomain(linkRule, href, classes, ids)
                         case 'extension':
-                            return isMatchingExtension(linkRule, href, classes)
+                            return isMatchingExtension(linkRule, href, classes, ids)
                         case 'subdirectory':
-                            return isMatchingSubdirectory(linkRule, href, classes)
+                            return isMatchingSubdirectory(linkRule, href, classes, ids)
                         case 'protocol':
-                            return isMatchingProtocol(linkRule, href, classes)
+                            return isMatchingProtocol(linkRule, href, classes, ids)
                         case 'external':
-                            return isMatchingExternal(linkRule, href, classes)
+                            return isMatchingExternal(linkRule, href, classes, ids)
                         default:
                             return false;
                     }
@@ -157,6 +165,7 @@ class REST_API
                 const track = (element) => {
                     const href = element.href ?? null
                     const classes = Array.from(element.classList)
+                    const ids = [element.id]
                     const linkRules = <?php 
         echo $link_rules_json;
         ?>
@@ -164,6 +173,27 @@ class REST_API
                     if(linkRules.length === 0) {
                         return
                     }
+
+                    // For link rules that target an id, we need to allow that id to appear
+                    // in any ancestor up to the 7th ancestor. This loop looks for those matches
+                    // and counts them.
+                    linkRules.forEach((linkRule) => {
+                        if(linkRule.type !== 'id') {
+                            return;
+                        }
+
+                        const matchingAncestor = element.closest('#' + linkRule.value)
+
+                        if(!matchingAncestor || matchingAncestor.matches('html, body')) {
+                            return;
+                        }
+
+                        const depth = calculateParentDistance(element, matchingAncestor)
+
+                        if(depth < 7) {
+                            ids.push(linkRule.value)
+                        }
+                    });
 
                     // For link rules that target a class, we need to allow that class to appear
                     // in any ancestor up to the 7th ancestor. This loop looks for those matches
@@ -187,7 +217,7 @@ class REST_API
                     });
 
                     const hasMatch = linkRules.some((linkRule) => {
-                        return isMatch(linkRule, href, classes)
+                        return isMatch(linkRule, href, classes, ids)
                     })
 
                     if(!hasMatch) {
@@ -200,6 +230,7 @@ class REST_API
                     const body = {
                         href: href,
                         classes: classes.join(' '),
+                        ids: ids.join(' '),
                         ...<?php 
         echo \json_encode($data);
         ?>
@@ -399,15 +430,18 @@ class REST_API
     {
         $referrer_url = $request['referrer_url'];
         $url = new URL($referrer_url ?? '');
-        if (!\is_null($this->decode_or_nullify($request['gclid'])) && $url->get_domain() !== 'googleads.g.doubleclick.net') {
+        if (\is_string($this->decode_or_nullify($request['gclid'])) && $url->get_domain() !== 'googleads.g.doubleclick.net') {
             $referrer_url = 'https://googleads.iawp';
+        }
+        if (\is_string($this->decode_or_nullify($request['fbclid'])) && ($url->get_domain() === 'facebook.com' || Str::endsWith($url->get_domain(), '.facebook.com'))) {
+            $referrer_url = 'https://facebookads.iawp';
         }
         if (\is_null($referrer_url)) {
             return null;
         }
         return $referrer_url;
     }
-    private function decode_or_nullify($string)
+    private function decode_or_nullify($string) : ?string
     {
         if (!isset($string)) {
             return null;

@@ -13,6 +13,7 @@ class Click
     private $value;
     private $href;
     private $classes;
+    private $ids;
     private $resource_id;
     private $visitor_id;
     private $created_at;
@@ -22,6 +23,7 @@ class Click
         $this->value = $this->extract_target_value_from_href($record['href']);
         $this->href = $record['href'];
         $this->classes = $record['classes'];
+        $this->ids = $record['ids'];
         $this->resource_id = $record['resource_id'];
         $this->visitor_id = $record['visitor_id'];
         $this->created_at = $record['created_at'];
@@ -33,7 +35,7 @@ class Click
      */
     public function track() : void
     {
-        $link_rules = \IAWP\Click_Tracking\Link_Rule_Finder::new($this->protocol, $this->href, $this->classes)->links();
+        $link_rules = \IAWP\Click_Tracking\Link_Rule_Finder::new($this->protocol, $this->href, $this->classes, $this->ids)->links();
         if ($link_rules->isEmpty()) {
             return;
         }

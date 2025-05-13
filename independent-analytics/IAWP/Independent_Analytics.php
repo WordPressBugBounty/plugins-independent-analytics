@@ -91,6 +91,8 @@ class Independent_Analytics
         \add_filter('cmplz_whitelisted_script_tags', [$this, 'whitelist_script_tag_for_complianz']);
         \add_filter('plugin_action_links_independent-analytics/iawp.php', [$this, 'add_upgrade_link_in_plugins_menu'], 999);
         \add_filter('plugin_row_meta', [$this, 'add_docs_link_in_plugins_menu'], 10, 2);
+        \add_action('admin_footer', [$this, 'attach_system_appearance_script'], 99, 0);
+        \add_filter('sgo_javascript_combine_excluded_inline_content', [$this, 'exclude_tracking_script_from_speed_optimizer'], 10, 1);
     }
     public function add_upgrade_link_in_plugins_menu($links)
     {
@@ -110,10 +112,58 @@ class Independent_Analytics
         }
         return $plugin_meta;
     }
+    /**
+     * Attach some JavaScript to manage the color scheme for admin pages.
+     *
+     * @return void
+     */
+    public function attach_system_appearance_script() : void
+    {
+        ?>
+        <script>
+            ;(() => {
+                try {
+                    const isLightMode = document.body.classList.contains('iawp-light-mode')
+                    const isDarkMode = document.body.classList.contains('iawp-dark-mode')
+                    const isSystem = !isLightMode && !isDarkMode
+
+                    // Stop if they're not using the systems color scheme
+                    if(!isSystem) {
+                        return
+                    }
+
+                    // Switch to dark mode if dark is the system color scheme preference
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        document.body.classList.add('iawp-dark-mode')
+                    }
+
+                    // Watching for changes is a nice idea, but it's more complicated than just
+                    // adding or removing a class from the body. There are elements like
+                    // charts that cannot adapt without a rendered. Holding off on this.
+
+                    // window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+                    //     if(event.matches) {
+                    //         document.body.classList.remove('iawp-light-mode')
+                    //         document.body.classList.add('iawp-dark-mode')
+                    //     } else {
+                    //         document.body.classList.remove('iawp-dark-mode')
+                    //         document.body.classList.add('iawp-light-mode')
+                    //     }
+                    // });
+                } catch (error) {
+
+                }
+            })();
+
+        </script>
+        <?php 
+    }
     public function add_body_class($classes)
     {
-        if (\get_option('iawp_dark_mode')) {
-            $classes .= ' iawp-dark-mode ';
+        if (\IAWP\Appearance::is_light()) {
+            $classes .= 'iawp-light-mode';
+        } elseif (\IAWP\Appearance::is_dark()) {
+            $classes .= 'iawp-dark-mode';
         }
         $page = \IAWP\Env::get_page();
         if (\is_string($page)) {
@@ -404,6 +454,11 @@ class Independent_Analytics
         }
         $whitelist[] = 'iawp-click-endpoint.php';
         return $whitelist;
+    }
+    public function exclude_tracking_script_from_speed_optimizer($exclude_list)
+    {
+        $exclude_list[] = '// Do not change this comment line otherwise Speed Optimizer won\'t be able to detect this script';
+        return $exclude_list;
     }
     // This whitelists our plugin with the "Complianz" plugin
     public function whitelist_script_tag_for_complianz($scripts)

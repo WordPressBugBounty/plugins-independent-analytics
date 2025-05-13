@@ -2,6 +2,7 @@ import {Controller} from "@hotwired/stimulus"
 import corsairPlugin from '../chart_plugins/corsair_plugin'
 import {Chart, registerables} from 'chart.js'
 import color from 'color'
+import {isDarkMode} from "../utils/appearance";
 
 Chart.register(...registerables)
 
@@ -41,12 +42,12 @@ export default class extends Controller {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                borderColor:  this.shouldUseDarkMode() ? '#363040' : '#ffffff' ,
+                borderColor:  isDarkMode() ? '#363040' : '#ffffff' ,
                 plugins: {
                     legend: {
                         position: 'left',
                         labels: {
-                            color: this.shouldUseDarkMode() ? '#ffffff' : '#6D6A73',
+                            color: isDarkMode() ? '#ffffff' : '#6D6A73',
                         }
                     },
                     tooltip: {
@@ -80,10 +81,6 @@ export default class extends Controller {
         if(!this.chart) {
             this.chart = new Chart(this.canvasTarget, config)
         }
-    }
-
-    shouldUseDarkMode() {
-        return document.body.classList.contains('iawp-dark-mode')
     }
 
     formatPercent(value, total) {

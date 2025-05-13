@@ -16,7 +16,7 @@
             <p>
                 <strong><?php esc_html_e("This page will automatically refresh when the update's finished.", 'independent-analytics'); ?></strong>
             </p>
-            <p><span class="dashicons dashicons-update spin"></span></p>
+            <p><span class="dashicons dashicons-update iawp-spin"></span></p>
         </div>
         <div id="iawp-migration-error" class="iawp-migration-error"></div>
     </div>
