@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.11.2
+Stable tag: 2.11.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -179,6 +179,10 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.11.3 - May 13th, 2025 =
+
+* **Fix:** fixed fatal error with id link rules
 
 = 2.11.2 - May 12th, 2025 =
 

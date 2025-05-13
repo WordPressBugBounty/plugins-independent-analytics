@@ -13,7 +13,7 @@ class Link_Rule_Finder
     private $protocol;
     private $href;
     private $classes;
-    private $idd;
+    private $ids;
     private static $database_records = null;
     public function __construct(?string $protocol, ?string $href, string $classes, string $ids)
     {
