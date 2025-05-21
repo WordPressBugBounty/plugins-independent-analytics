@@ -40,7 +40,7 @@ class Click_Processing_Job extends Cron_Job
         }
         while (($json = \fgets($job_handle)) !== \false) {
             $event = \json_decode($json, \true);
-            $event['href'] = Security::string($event['href']);
+            $event['href'] = \sanitize_url($event['href']);
             $event['classes'] = Security::string($event['classes']);
             $event['ids'] = Security::string($event['ids']);
             if (\is_null($event)) {

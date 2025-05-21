@@ -21,12 +21,12 @@ class CSV
         $delimiter = ',';
         $enclosure = '"';
         $escape_character = '\\';
-        $f = \fopen('php://memory', 'r+');
-        \fputcsv($f, $this->header, $delimiter, $enclosure, $escape_character);
+        $temporary_file = \fopen('php://memory', 'r+');
+        \fputcsv($temporary_file, $this->header, $delimiter, $enclosure, $escape_character);
         foreach ($this->rows as $row) {
-            \fputcsv($f, $row, $delimiter, $enclosure, $escape_character);
+            \fputcsv($temporary_file, $row, $delimiter, $enclosure, $escape_character);
         }
-        \rewind($f);
-        return \wp_kses(\stream_get_contents($f), 'strip');
+        \rewind($temporary_file);
+        return \stream_get_contents($temporary_file);
     }
 }

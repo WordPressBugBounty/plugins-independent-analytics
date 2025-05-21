@@ -32,8 +32,10 @@ class Export_Report_Table extends \IAWP\AJAX\AJAX
         $rows_class = $table->group()->rows_class();
         $rows_query = new $rows_class($date_range, null, $filters, $sort_configuration);
         $rows = $rows_query->rows();
-        $csv = $table->csv($rows, \true);
-        \wp_send_json_success(['csv' => $csv->to_string()]);
+        $csv = $table->csv($rows, \true)->to_string();
+        $csv = \wp_kses($csv, 'strip');
+        $csv = \str_replace('&amp;', '&', $csv);
+        \wp_send_json_success(['csv' => $csv]);
     }
     /**
      * Get the date range for the filter request

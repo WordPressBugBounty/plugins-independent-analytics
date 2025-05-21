@@ -160,7 +160,7 @@ abstract class Table
         } elseif ($column_id === 'link_target') {
             $value = $row->{$column_id}();
             if (\is_string($value) && URL::new($value)->is_valid_url()) {
-                return '<a href="' . Security::string($value) . '" target="_blank" class="external-link">' . Security::string($value) . '<span class="dashicons dashicons-external"></span></a>';
+                return '<a href="' . \esc_url($value) . '" target="_blank" class="external-link">' . \esc_url(\urldecode($value)) . '<span class="dashicons dashicons-external"></span></a>';
             }
             return $value;
         } else {

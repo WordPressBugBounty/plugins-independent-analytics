@@ -251,14 +251,17 @@ class View
     private function fetch_or_create_referrer() : int
     {
         $url = new URL($this->referrer_url);
+        $domain = $url->get_domain() ?? $this->referrer_url;
+        $known_referrer = \IAWP\Known_Referrers::get_group_for($domain);
+        // Is the referrer one of a special set of predefined known referrers?
+        if ($known_referrer) {
+            return $this->fetch_referrer(['domain' => $known_referrer['domain'], 'type' => $known_referrer['type'], 'referrer' => $known_referrer['name']]);
+        }
+        // Is the referrer invalid or for the current site?
         if (!$url->is_valid_url() || $this->is_internal_referrer($this->referrer_url)) {
             return $this->fetch_referrer(['domain' => '', 'type' => 'Direct', 'referrer' => 'Direct']);
-        } elseif (!\is_null(\IAWP\Known_Referrers::get_group_for($url->get_domain()))) {
-            $group = \IAWP\Known_Referrers::get_group_for($url->get_domain());
-            return $this->fetch_referrer(['domain' => $group['domain'], 'type' => $group['type'], 'referrer' => $group['name']]);
-        } else {
-            return $this->fetch_referrer(['domain' => $url->get_domain(), 'type' => 'Referrer', 'referrer' => $this->strip_www($url->get_domain())]);
         }
+        return $this->fetch_referrer(['domain' => $url->get_domain(), 'type' => 'Referrer', 'referrer' => $this->strip_www($url->get_domain())]);
     }
     private function strip_www(string $string) : string
     {

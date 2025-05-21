@@ -1,3 +1,6 @@
+<?php if (!isset($plugin)) {
+    $plugin = '';
+} ?>
 <div class="iawp-notice <?php echo esc_attr($notice) . ' ' . esc_attr($plugin); ?>" data-testid="{{ esc_attr($id) }}">
     <div class="iawp-icon">
         <span class="dashicons dashicons-warning"></span>

@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Independent Analytics 2.11.3\n"
+"Project-Id-Version: Independent Analytics 2.11.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/independent-analytics-production\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-05-13T19:35:04+00:00\n"
+"POT-Creation-Date: 2025-05-20T17:27:53+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: independent-analytics\n"
@@ -36,15 +36,15 @@ msgctxt "Following text is a noun: DB-IP"
 msgid "Geolocation data powered by"
 msgstr ""
 
-#: IAWP/Admin_Page/Analytics_Page.php:176
+#: IAWP/Admin_Page/Analytics_Page.php:178
 msgid "The \"Solid Security\" plugin is disabling PHP execution in the plugins folder, and this is preventing click tracking from working. Please visit the Security > Settings page, click on the Advanced section, click on System Tweaks Settings, uncheck the \"Disable PHP Plugins\" option, and then save."
 msgstr ""
 
-#: IAWP/Admin_Page/Analytics_Page.php:182
+#: IAWP/Admin_Page/Analytics_Page.php:184
 msgid "Please clear your cache to ensure tracking works properly."
 msgstr ""
 
-#: IAWP/Admin_Page/Analytics_Page.php:182
+#: IAWP/Admin_Page/Analytics_Page.php:184
 msgid "I've cleared the cache"
 msgstr ""
 
@@ -1026,11 +1026,15 @@ msgstr ""
 msgid "The \"Admin and Site Enhancements\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the Tools > Enhancements menu, click on the \"Disable Components\" section, and deselect the \"Disable REST API\" setting to allow Independent Analytics to track your visitors."
 msgstr ""
 
-#: IAWP/Plugin_Conflict_Detector.php:184
+#: IAWP/Plugin_Conflict_Detector.php:187
+msgid "The \"Admin and Site Enhancements Pro\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the Tools > Enhancements menu, click on the \"Disable Components\" section, and then click the \"Expand\" link under \"Disable REST API.\" You can then enter \"iawp/search\" into the textarea to whitelist the route used by Independent Analytics."
+msgstr ""
+
+#: IAWP/Plugin_Conflict_Detector.php:194
 msgid "A setting in the \"Autoptimize\" plugin is preventing Independent Analytics from tracking visitors. Please visit the Settings > Autoptimize menu and uncheck the \"Also aggregate inline JS\" option."
 msgstr ""
 
-#: IAWP/Plugin_Conflict_Detector.php:189
+#: IAWP/Plugin_Conflict_Detector.php:199
 msgid "The Patchstack Security plugin has disabled the REST API, which Independent Analytics needs to record visitors. Please login to the Patchstack app, navigate to the Hardening menu for this site, and turn off the \"Restrict WP REST API access\" option."
 msgstr ""
 
@@ -1900,7 +1904,7 @@ msgstr ""
 msgid "Your site needs the PDO PHP module enabled for Independent Analytics to run. You can ask your web host to enable this for you, or follow our guide to enable it yourself:"
 msgstr ""
 
-#: views/notices/notice.blade.php:6
+#: views/notices/notice.blade.php:9
 msgid "Learn More"
 msgstr ""
 

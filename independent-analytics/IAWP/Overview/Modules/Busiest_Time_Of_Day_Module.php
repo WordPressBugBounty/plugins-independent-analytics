@@ -32,7 +32,7 @@ class Busiest_Time_Of_Day_Module extends \IAWP\Overview\Modules\Module
     {
         $hours = \range(0, 23);
         return \array_map(function ($hour) {
-            $time = CarbonImmutable::createFromTime($hour, 0, 0);
+            $time = CarbonImmutable::createFromTime($hour, 0, 0, Timezone::site_timezone());
             $format = 'g a';
             if (\IAWPSCOPED\iawp()->prefers_24_hour_clock()) {
                 $format = 'G';
@@ -46,7 +46,7 @@ class Busiest_Time_Of_Day_Module extends \IAWP\Overview\Modules\Module
         $dataset_collection = Collection::make($dataset);
         return \array_map(function ($hour) use($dataset_collection) {
             $matching_row = $dataset_collection->first(function ($row) use($hour) {
-                $time = CarbonImmutable::createFromTime($row['hour'], 0, 0)->setTimezone(Timezone::site_timezone());
+                $time = CarbonImmutable::createFromTime($row['hour'], 0, 0, Timezone::site_timezone())->setTimezone(Timezone::site_timezone());
                 return $time->hour === $hour;
             });
             if ($matching_row === null) {

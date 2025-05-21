@@ -171,11 +171,21 @@ class Plugin_Conflict_Detector
                 }
             }
         }
-        if (\is_plugin_active('admin-site-enhancements/admin-site-enhancements.php') || \is_plugin_active('admin-site-enhancements-pro/admin-site-enhancements.php')) {
+        if (\is_plugin_active('admin-site-enhancements/admin-site-enhancements.php')) {
             $settings = \get_option('admin_site_enhancements');
             if (\array_key_exists('disable_rest_api', $settings)) {
                 if ($settings['disable_rest_api']) {
                     return ['plugin' => 'admin-site-enhancements', 'error' => \__('The "Admin and Site Enhancements" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the Tools > Enhancements menu, click on the "Disable Components" section, and deselect the "Disable REST API" setting to allow Independent Analytics to track your visitors.', 'independent-analytics')];
+                }
+            }
+        }
+        if (\is_plugin_active('admin-site-enhancements-pro/admin-site-enhancements.php')) {
+            $settings = \get_option('admin_site_enhancements');
+            if (\is_array($settings) && \array_key_exists('disable_rest_api', $settings)) {
+                if ($settings['disable_rest_api']) {
+                    if (\is_string($settings['disable_rest_api_excluded_routes']) && !String_Util::str_contains($settings['disable_rest_api_excluded_routes'], 'iawp/search')) {
+                        return ['plugin' => 'admin-site-enhancements', 'error' => \__('The "Admin and Site Enhancements Pro" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the Tools > Enhancements menu, click on the "Disable Components" section, and then click the "Expand" link under "Disable REST API." You can then enter "iawp/search" into the textarea to whitelist the route used by Independent Analytics.', 'independent-analytics')];
+                    }
                 }
             }
         }
