@@ -16,7 +16,7 @@ class Sync_Module_Background_Job extends WP_Async_Request
             $module = Module::get_saved_module($id);
             // Unable to find a module to sync
             if ($module === null) {
-                return;
+                continue;
             }
             $module->refresh_dataset();
         }
