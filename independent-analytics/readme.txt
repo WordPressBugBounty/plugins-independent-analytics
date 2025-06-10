@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.11.5
+Stable tag: 2.11.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -180,7 +180,13 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 
 == Changelog ==
 
-= 2.11.5 - JUne 4th, 2025 =
+= 2.11.6 - June 10th, 2025 =
+
+* **Fix:** Fixed a MySQL deadlock issue that could occur when bulk updating posts
+* **Fix:** Click tracking rules are now cached to speed up page loads
+* **Fix:** Backup solution for failing Overview data requests
+
+= 2.11.5 - June 4th, 2025 =
 
 * **Feature:** add support for analytics in MainWP Pro Reports
 * **Fix:** prevent view counter from showing up in widgets

@@ -68,6 +68,7 @@ if (!function_exists('hrtime')) { function hrtime() { return \IAWPSCOPED\hrtime(
 if (!function_exists('iawp')) { function iawp() { return \IAWPSCOPED\iawp(...func_get_args()); } }
 if (!function_exists('iawp_analytics')) { function iawp_analytics() { return \IAWPSCOPED\iawp_analytics(...func_get_args()); } }
 if (!function_exists('iawp_blade')) { function iawp_blade() { return \IAWPSCOPED\iawp_blade(...func_get_args()); } }
+if (!function_exists('iawp_custom_log')) { function iawp_custom_log() { return \IAWPSCOPED\iawp_custom_log(...func_get_args()); } }
 if (!function_exists('iawp_dashboard_url')) { function iawp_dashboard_url() { return \IAWPSCOPED\iawp_dashboard_url(...func_get_args()); } }
 if (!function_exists('iawp_db_version')) { function iawp_db_version() { return \IAWPSCOPED\iawp_db_version(...func_get_args()); } }
 if (!function_exists('iawp_icon')) { function iawp_icon() { return \IAWPSCOPED\iawp_icon(...func_get_args()); } }

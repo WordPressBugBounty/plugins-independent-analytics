@@ -30,7 +30,7 @@ use IAWP\Utils\BladeOne;
 use IAWP\WP_Option_Cache_Bust;
 \define( 'IAWP_DIRECTORY', \rtrim( \plugin_dir_path( __FILE__ ), \DIRECTORY_SEPARATOR ) );
 \define( 'IAWP_URL', \rtrim( \plugin_dir_url( __FILE__ ), '/' ) );
-\define( 'IAWP_VERSION', '2.11.5' );
+\define( 'IAWP_VERSION', '2.11.6' );
 \define( 'IAWP_DATABASE_VERSION', '43' );
 \define( 'IAWP_LANGUAGES_DIRECTORY', \dirname( \plugin_basename( __FILE__ ) ) . '/languages' );
 \define( 'IAWP_PLUGIN_FILE', __DIR__ . '/iawp.php' );
@@ -194,6 +194,18 @@ function iawp_intify(  $value  ) {
         return \intval( $value );
     }
     return $value;
+}
+
+/** @internal */
+function iawp_custom_log(  $line  ) {
+    try {
+        $filePath = \IAWPSCOPED\iawp_path_to( 'public-custom-log.txt' );
+        // Normalize line endings
+        $line = \rtrim( $line, "\r\n" );
+        // Append the line
+        \file_put_contents( $filePath, $line . \PHP_EOL, \FILE_APPEND );
+    } catch ( \Throwable $e ) {
+    }
 }
 
 /**

@@ -18,7 +18,7 @@ class Geo_Database_Background_Job extends WP_Async_Request
      *
      * @return void
      */
-    protected function handle() : void
+    protected function handle(array $data) : void
     {
         $downloader = new \IAWP\Geo_Database_Manager();
         $downloader->download_database();

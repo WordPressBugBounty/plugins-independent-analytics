@@ -10,7 +10,13 @@ class Track_Resource_Changes
 {
     public function __construct()
     {
-        \add_action('wp_after_insert_post', [$this, 'handle_updated_post'], 10, 3);
+        \add_action('wp_after_insert_post', function ($post_id, $post, $is_update) {
+            try {
+                $this->handle_updated_post($post_id, $post, $is_update);
+            } catch (\Throwable $e) {
+                // Do nothing
+            }
+        }, 10, 3);
         \add_action('profile_update', [$this, 'handle_updated_author']);
     }
     public function handle_updated_post($post_id, $post, $is_update)
@@ -28,6 +34,11 @@ class Track_Resource_Changes
         }
         $post = \get_post($post_id);
         if (\is_null($post) || $post->post_status === 'trash' || $post->post_status === 'auto-draft') {
+            return;
+        }
+        // Ignore gutenberg requests updating meta boxes
+        // https://github.com/WordPress/gutenberg/issues/15094
+        if (!empty($_REQUEST['meta-box-loader'])) {
             return;
         }
         $row = (object) ['resource' => 'singular', 'singular_id' => $post_id];

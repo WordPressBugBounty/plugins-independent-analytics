@@ -18,7 +18,7 @@ class Migration_Job extends WP_Async_Request
      *
      * @return void
      */
-    protected function handle() : void
+    protected function handle(array $data) : void
     {
         \IAWP\Migrations\Migrations::create_or_migrate();
     }

@@ -49,10 +49,10 @@ class Edit_Link extends \IAWP\AJAX\AJAX
         if (\is_int($link_id)) {
             $link_rule = Click_Tracking\Link_Rule::find($link_id);
             if ($link_rule->type() !== $link_properties['type'] || $link_rule->value() !== $link_properties['value']) {
-                \delete_option('iawp_click_tracking_cache_cleared');
+                Click_Tracking\Link_Rule_Finder::require_cleared_cache();
             }
         } else {
-            \delete_option('iawp_click_tracking_cache_cleared');
+            Click_Tracking\Link_Rule_Finder::require_cleared_cache();
         }
         if ($link_rule) {
             Illuminate_Builder::new()->from(Tables::link_rules())->where('link_rule_id', '=', $link_id)->update($link_properties);

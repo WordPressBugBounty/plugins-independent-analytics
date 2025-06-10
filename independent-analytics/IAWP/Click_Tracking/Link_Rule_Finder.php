@@ -140,13 +140,29 @@ class Link_Rule_Finder
     {
         return self::get_database_records()->filter(function ($link_rule) {
             return $link_rule->is_active();
-        });
+        })->values();
     }
     public static function inactive_link_rules() : Collection
     {
         return self::get_database_records()->filter(function ($link_rule) {
             return !$link_rule->is_active();
-        });
+        })->values();
+    }
+    public static function cached_link_rules() : array
+    {
+        $cached_rules = \get_option('iawp_link_rules', \false);
+        if (!\is_array($cached_rules)) {
+            $link_rules = \IAWP\Click_Tracking\Link_Rule_Finder::active_link_rules()->map(function (\IAWP\Click_Tracking\Link_Rule $link_rule) {
+                return ['type' => $link_rule->type(), 'value' => $link_rule->value()];
+            });
+            \update_option('iawp_link_rules', $link_rules->all());
+        }
+        return \get_option('iawp_link_rules');
+    }
+    public static function require_cleared_cache()
+    {
+        \delete_option('iawp_click_tracking_cache_cleared');
+        \delete_option('iawp_link_rules');
     }
     private static function get_database_records() : Collection
     {

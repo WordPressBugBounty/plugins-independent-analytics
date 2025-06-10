@@ -58,7 +58,7 @@ abstract class WP_Async_Request
      * Override this method to perform any actions required
      * during the async request.
      */
-    protected abstract function handle();
+    protected abstract function handle(array $data);
     /**
      * Set data used during the request
      *
@@ -78,6 +78,12 @@ abstract class WP_Async_Request
      */
     public function dispatch() : bool
     {
+        $optionDisableAsyncRequest = \get_option('iawp_disable_async_request', \false) === '1';
+        $constantDisableAsyncRequest = \defined('IAWP_DISABLE_ASYNC_REQUEST') && \IAWP_DISABLE_ASYNC_REQUEST === \true;
+        if ($optionDisableAsyncRequest || $constantDisableAsyncRequest) {
+            $this->handle($this->data);
+            return \true;
+        }
         $url = \add_query_arg($this->get_query_args(), $this->get_query_url());
         $args = $this->get_post_args();
         $response = \wp_remote_post(\esc_url_raw($url), $args);
@@ -93,7 +99,7 @@ abstract class WP_Async_Request
         // Don't lock up other requests while processing
         \session_write_close();
         \check_ajax_referer($this->identifier, 'nonce');
-        $this->handle();
+        $this->handle($_POST);
         \wp_die();
     }
     /**

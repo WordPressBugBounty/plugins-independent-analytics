@@ -27,7 +27,7 @@ class Archive_Link extends \IAWP\AJAX\AJAX
         if (\is_null($link_rule)) {
             \wp_send_json_error([]);
         }
-        \delete_option('iawp_click_tracking_cache_cleared');
+        Click_Tracking\Link_Rule_Finder::require_cleared_cache();
         $link_rule->toggle_active();
         Illuminate_Builder::new()->from(Tables::link_rules())->where('is_active', '=', $link_rule->is_active() ? 1 : 0)->increment('position');
         Illuminate_Builder::new()->from(Tables::link_rules())->where('link_rule_id', '=', $link_rule->id())->update(['position' => 0]);

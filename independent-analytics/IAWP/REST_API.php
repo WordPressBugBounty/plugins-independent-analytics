@@ -59,12 +59,7 @@ class REST_API
         $data['signature'] = \md5(Salt::request_payload_salt() . \json_encode($data['payload']));
         $track_view_url = \get_rest_url(null, '/iawp/search');
         $track_click_url = \IAWPSCOPED\iawp_url_to('/iawp-click-endpoint.php');
-        $link_rules = Link_Rule_Finder::link_rules()->filter(function (Link_Rule $link_rule) {
-            return $link_rule->is_active();
-        })->map(function (Link_Rule $link_rule) {
-            return ['type' => $link_rule->type(), 'value' => $link_rule->value()];
-        })->values();
-        $link_rules_json = \json_encode($link_rules);
+        $link_rules_json = \json_encode(Link_Rule_Finder::cached_link_rules());
         ?>
         <script>
             // Do not change this comment line otherwise Speed Optimizer won't be able to detect this script

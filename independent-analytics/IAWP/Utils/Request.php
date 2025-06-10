@@ -40,7 +40,7 @@ class Request
         if (\defined('IAWP_TEST_IP')) {
             return \IAWP_TEST_IP;
         }
-        $headers = ['HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR', 'HTTP_CF_CONNECTING_IP', 'HTTP_CLIENT_IP', 'HTTP_INCAP_CLIENT_IP', 'HTTP_CF_CONNECTING_IP'];
+        $headers = self::ip_headers();
         if (\is_string(self::custom_ip_header())) {
             \array_unshift($headers, self::custom_ip_header());
         }
@@ -110,5 +110,12 @@ class Request
         } else {
             return null;
         }
+    }
+    /**
+     * @return string[]
+     */
+    public static function ip_headers() : array
+    {
+        return ['HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR', 'HTTP_CF_CONNECTING_IP', 'HTTP_CLIENT_IP', 'HTTP_INCAP_CLIENT_IP', 'HTTP_CF_CONNECTING_IP'];
     }
 }

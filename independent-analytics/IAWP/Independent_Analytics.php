@@ -5,6 +5,7 @@ namespace IAWP;
 use IAWP\Admin_Page\Analytics_Page;
 use IAWP\Admin_Page\Campaign_Builder_Page;
 use IAWP\Admin_Page\Click_Tracking_Page;
+use IAWP\Admin_Page\Debug_Page;
 use IAWP\Admin_Page\Settings_Page;
 use IAWP\Admin_Page\Support_Page;
 use IAWP\Admin_Page\Updates_Page;
@@ -249,6 +250,12 @@ class Independent_Analytics
         }
         if (\IAWPSCOPED\iawp_is_free() && \IAWP\Capability_Manager::show_branded_ui()) {
             \add_submenu_page('independent-analytics', \esc_html__('Upgrade to Pro &rarr;', 'independent-analytics'), '<span style="color: #F69D0A;">' . \esc_html__('Upgrade to Pro &rarr;', 'independent-analytics') . '</span>', \IAWP\Capability_Manager::menu_page_capability_string(), \esc_url('https://independentwp.com/pro/?utm_source=User+Dashboard&utm_medium=WP+Admin&utm_campaign=Upgrade+to+Pro&utm_content=Sidebar'));
+        }
+        if (\IAWP\Capability_Manager::can_edit()) {
+            \add_submenu_page('options.php', \__('Independent Analytics Debug'), \__('Independent Analytics Debug'), \IAWP\Capability_Manager::menu_page_capability_string(), 'independent-analytics-debug', function () {
+                $debug_page = new Debug_Page();
+                $debug_page->render(\false);
+            });
         }
     }
     // The menu link is removed in the SDK setup, but this makes it completely inaccessible
