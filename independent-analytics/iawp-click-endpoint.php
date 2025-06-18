@@ -18,6 +18,11 @@ class Cache
         return $this->attributes['is_pro'] === true;
     }
 
+    public function avoid_temporary_directory(): bool
+    {
+        return $this->attributes['avoid_temporary_directory'] === true;
+    }
+
     public function get_upload_directory(): string
     {
         return trim($this->attributes['upload_directory']);
@@ -117,16 +122,18 @@ function trailing_slash(string $path): string
  *
  * @return string
  */
-function get_click_data_file(): string
+function get_click_data_file(Cache $cache): string
 {
-    $text_file = trailing_slash(sys_get_temp_dir()) . "iawp-click-data.txt";
+    if (!$cache->avoid_temporary_directory()) {
+        $text_file = trailing_slash(sys_get_temp_dir()) . "iawp-click-data.txt";
 
-    if (is_file($text_file) && is_readable($text_file) && is_writable($text_file)) {
-        return $text_file;
-    }
+        if (is_file($text_file) && is_readable($text_file) && is_writable($text_file)) {
+            return $text_file;
+        }
 
-    if (file_put_contents($text_file, "") !== false && file_get_contents($text_file) !== false) {
-        return $text_file;
+        if (file_put_contents($text_file, "") !== false && file_get_contents($text_file) !== false) {
+            return $text_file;
+        }
     }
 
     $php_file = trailing_slash(__DIR__) . "iawp-click-data.php";
@@ -160,7 +167,7 @@ if (is_null($body)) {
     exit;
 }
 
-$click_data_file = get_click_data_file();
+$click_data_file = get_click_data_file($cache);
 $data            = [
     'href'          => $body['href'],
     'classes'       => $body['classes'],

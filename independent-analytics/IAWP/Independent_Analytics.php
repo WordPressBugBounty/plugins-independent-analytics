@@ -6,6 +6,7 @@ use IAWP\Admin_Page\Analytics_Page;
 use IAWP\Admin_Page\Campaign_Builder_Page;
 use IAWP\Admin_Page\Click_Tracking_Page;
 use IAWP\Admin_Page\Debug_Page;
+use IAWP\Admin_Page\Integrations_Pages;
 use IAWP\Admin_Page\Settings_Page;
 use IAWP\Admin_Page\Support_Page;
 use IAWP\Admin_Page\Updates_Page;
@@ -238,6 +239,12 @@ class Independent_Analytics
             \add_submenu_page('independent-analytics', \esc_html__('Help & Support', 'independent-analytics'), \esc_html__('Help & Support', 'independent-analytics'), \IAWP\Capability_Manager::menu_page_capability_string(), 'independent-analytics-support-center', function () {
                 $support_page = new Support_Page();
                 $support_page->render(\false);
+            });
+        }
+        if (\IAWP\Capability_Manager::show_branded_ui()) {
+            \add_submenu_page('independent-analytics', \esc_html__('Integrations', 'independent-analytics'), \esc_html__('Integrations', 'independent-analytics'), \IAWP\Capability_Manager::menu_page_capability_string(), 'independent-analytics-integrations', function () {
+                $integrations_page = new Integrations_Pages();
+                $integrations_page->render(\false);
             });
         }
         if (\IAWP\Capability_Manager::show_branded_ui()) {

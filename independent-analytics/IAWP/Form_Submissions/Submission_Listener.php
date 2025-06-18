@@ -10,7 +10,7 @@ class Submission_Listener
     public function __construct()
     {
         // Fluent forms
-        \add_action('fluentform/submission_inserted', function ($entryId, $formData, $form) {
+        \add_action('fluentform/before_insert_submission', function ($entryId, $formData, $form) {
             try {
                 $submission = new \IAWP\Form_Submissions\Submission(1, \intval($form->id), Security::string($form->title));
                 $submission->record_submission();

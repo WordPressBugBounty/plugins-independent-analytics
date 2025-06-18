@@ -29,7 +29,7 @@ class Config_File_Manager
         if (\is_file(self::config_file_path())) {
             return;
         }
-        $data = ['is_pro' => \IAWPSCOPED\iawp_is_pro(), 'visitor_token_salt' => Salt::visitor_token_salt()];
+        $data = ['is_pro' => \IAWPSCOPED\iawp_is_pro(), 'visitor_token_salt' => Salt::visitor_token_salt(), 'avoid_temporary_directory' => \defined('IAWP_AVOID_TEMPORARY_DIRECTORY') ? \IAWP_AVOID_TEMPORARY_DIRECTORY : \false];
         if (\is_string(Request::custom_ip_header())) {
             $data['custom_ip_header'] = Request::custom_ip_header();
         }

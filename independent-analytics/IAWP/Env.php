@@ -68,7 +68,7 @@ class Env
             return null;
         }
         $page = $_GET['page'] ?? null;
-        $valid_pages = ['independent-analytics', 'independent-analytics-settings', 'independent-analytics-campaign-builder', 'independent-analytics-click-tracking', 'independent-analytics-support-center', 'independent-analytics-updates', 'independent-analytics-debug'];
+        $valid_pages = ['independent-analytics', 'independent-analytics-settings', 'independent-analytics-campaign-builder', 'independent-analytics-click-tracking', 'independent-analytics-support-center', 'independent-analytics-integrations', 'independent-analytics-updates', 'independent-analytics-debug'];
         if (\in_array($page, $valid_pages)) {
             return $page;
         }

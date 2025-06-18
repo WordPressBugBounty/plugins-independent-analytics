@@ -1,11 +1,11 @@
 === Independent Analytics - Google Analytics Alternative for WordPress ===
-Contributors: bensibley, andrewmead
+Contributors: bensibley, andrewmead, freemius
 Tags: analytics, wordpress analytics, google analytics, analytics dashboard, statistics
 Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.11.6
+Stable tag: 2.11.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -179,6 +179,10 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.11.7 - June 18th, 2025 =
+
+* **Feature:** Added an Integrations menu for third-party WordPress plugins
 
 = 2.11.6 - June 10th, 2025 =
 
@@ -737,77 +741,5 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 * **Fix:** hidden columns reappeared after refreshing the page
 * **Fix:** the update notice sometimes persisted due to aggressive caching
 * **Fix:** a second session was recorded if a visitor refreshed the page on their first page view
-
-= 1.21.0 - April 17th, 2023 =
-
-* **Update:** major performance improvements for the Referrers menu
-* **Update:** Google Docs added as a recognized referrer
-
-= 1.20.0 - March 30th, 2023 =
-
-* **Feature:** added new Comments column to Pages dashboard
-* **Fix:** some text not marked for translation properly
-* **Update:** removed decimal places from Visitors Growth and Views Growth to improve readability
-
-= 1.19.1 - March 13th, 2023 =
-
-* **Fix:** views counter was not showing view count for WordPress sites using a custom table prefix
-* **Fix:** reposition sessions column to show after views column
-
-= 1.19.0 - March 13th, 2023 =
-
-* **Feature:** added the new Sessions metric
-* **Update:** updated geolocation database for improved accuracy
-* **Fix:** the REST API notice was showing for private sites even if the API wasn't blocked
-* **Fix:** support for Polylang added so the view counter label can be translated to multiple languages
-
-= 1.18 - March 1st, 2023 =
-
-* **PRO feature:** 3 new WooCommerce metrics: conversion rate, earnings per visitor, average order volume
-* **PRO feature:** added WooCommerce orders and sales to the quick stats and graphs
-* **Update:** added integration for Coming Soon & Maintenance Mode by Colorlib
-* **Update:** updated Danish translation
-* **PRO fix:** Top Ten section in PDF report sorting by visitors but showing views
-* **Fix:** view counter shortcode wasn't working on archives (categories, tags, etc.)
-
-= 1.17.4 - February 20th, 2023 =
-
-* **Fix:** filtering geographic data didn't also filter the map
-* **Fix:** geographic map wasn't rendering for some hosting
-* **Fix:** database connections failed without a defined character set
-* **Fix:** fixed an issue that caused the "Delete all data" button to fail
-
-= 1.17.3 - February 14th, 2023 =
-
-* **Fix:** migration bug fix for 1.17
-
-= 1.17.2 - February 14th, 2023 =
-
-* **Fix:** migration bug fix for 1.17
-
-= 1.17.1 - January 31th, 2023 =
-
-* **Fix:** migration bug fix for 1.17
-
-= 1.17 - January 30th, 2023 =
-
-* **Pro Feature:** Woocommerce integration: see how much revenue you're earning from each traffic source, geolocation, and campaign
-* **Pro Feature:** Email reports: schedule an automated monthly email with a performance review of the site
-* **Feature:** Ignore user by role: track logged-in subscribers while ignoring admins, editors, and other user roles
-* **Update:** PDF Viewer plugin integration: views on PDFs are now recorded
-* **Fix:** numerous compatibility improvements for a wider range of hosting environments
-* **Fix:** the first click on the "Visitors" column would sort in the same direction
-* **Fix:** added warning for the All In One Intranet plugin blocking the REST API
-
-= 1.16 - December 12th, 2022 =
-
-* **Update:** the table is now sorted by Visitors by default instead of Views
-* **Update:** Views Growth & Visitors Growth are both hidden by default and can be displayed via the Edit Columns button
-* **Update:** a notice was added to remind users to clear their cache after activating Independent Analytics
-* **Update:** a notice was added to let users know when the REST API is blocked because this prevents Independent Analytics from tracking data
-* **Update:** updated the Danish translation
-* **Fix:** the starting day of the week setting wasn't saving
-* **Fix:** the table layout was broken when more than 8 columns were displayed at once
-* **Fix:** the date picker wasn't showing up when filtering pages by publication date
 
 **Changelog truncated here due to 50,000 character limit.**
