@@ -37,6 +37,6 @@ class Export_Reports extends \IAWP\AJAX\AJAX
             }
             $reports[] = $report->to_array();
         }
-        \wp_send_json_success(['json' => \json_encode(['plugin_version' => '2.11.7', 'database_version' => '43', 'export_version' => '1', 'reports' => $reports])]);
+        \wp_send_json_success(['json' => \json_encode(['plugin_version' => '2.11.8', 'database_version' => '43', 'export_version' => '1', 'reports' => $reports])]);
     }
 }

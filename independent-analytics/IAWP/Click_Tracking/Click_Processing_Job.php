@@ -58,9 +58,12 @@ class Click_Processing_Job extends Cron_Job
     }
     private function get_click_data_file() : ?string
     {
-        $text_file = Str::finish(\sys_get_temp_dir(), \DIRECTORY_SEPARATOR) . "iawp-click-data.txt";
-        if (\is_file($text_file) && \is_readable($text_file) && \is_writable($text_file)) {
-            return $text_file;
+        $avoid_temporary_directory = \defined('IAWP_AVOID_TEMPORARY_DIRECTORY') ? \IAWP_AVOID_TEMPORARY_DIRECTORY === \true : \false;
+        if (!$avoid_temporary_directory) {
+            $text_file = Str::finish(\sys_get_temp_dir(), \DIRECTORY_SEPARATOR) . "iawp-click-data.txt";
+            if (\is_file($text_file) && \is_readable($text_file) && \is_writable($text_file)) {
+                return $text_file;
+            }
         }
         $php_file = \IAWPSCOPED\iawp_path_to('iawp-click-data.php');
         if (\is_file($php_file)) {
