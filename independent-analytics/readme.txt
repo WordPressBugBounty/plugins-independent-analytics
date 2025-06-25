@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.11.8
+Stable tag: 2.11.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -179,6 +179,12 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.11.9 - June 25th, 2025 =
+
+* **Feature:** Added support for analytics data programmatically added in MainWP Pro Report email body
+* **Fix:** Minor UX improvements for the Integrations menu
+* **Fix:** Fixed CSV text encodings to improve support for Excel
 
 = 2.11.8 - June 19th, 2025 =
 

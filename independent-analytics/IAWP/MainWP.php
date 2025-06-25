@@ -57,8 +57,11 @@ class MainWP
             $to = CarbonImmutable::parse($options['date_to'], Timezone::site_timezone());
             $analytics = \IAWPSCOPED\iawp_analytics($from->toDate(), $to->toDate());
             $data['other_tokens_data']['body']['[iawp.views]'] = Number_Formatter::integer($analytics->views);
+            $data['other_tokens_data']['header']['[iawp.views]'] = Number_Formatter::integer($analytics->views);
             $data['other_tokens_data']['body']['[iawp.visitors]'] = Number_Formatter::integer($analytics->visitors);
+            $data['other_tokens_data']['header']['[iawp.visitors]'] = Number_Formatter::integer($analytics->visitors);
             $data['other_tokens_data']['body']['[iawp.sessions]'] = Number_Formatter::integer($analytics->sessions);
+            $data['other_tokens_data']['header']['[iawp.sessions]'] = Number_Formatter::integer($analytics->sessions);
         } catch (\Throwable $e) {
         }
         return $data;

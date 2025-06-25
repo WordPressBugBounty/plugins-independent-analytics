@@ -217,7 +217,7 @@ class View
         if (\is_null($session)) {
             return $this->create_session();
         }
-        $is_same_referrer = $this->fetch_or_create_referrer() === $session->referrer_id;
+        $is_same_referrer = $this->fetch_or_create_referrer() === \intval($session->referrer_id);
         $is_same_resource = \intval($this->fetch_resource()->id) === $this->fetch_last_viewed_resource();
         $same_as_previous_view = $is_same_referrer && $is_same_resource;
         // The goal here is to prevent opening multiple tabs to the site from creating multiple sessions

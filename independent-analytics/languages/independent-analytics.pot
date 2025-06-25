@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Independent Analytics 2.11.8\n"
+"Project-Id-Version: Independent Analytics 2.11.9\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/independent-analytics-production\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-06-19T13:45:17+00:00\n"
+"POT-Creation-Date: 2025-06-25T15:26:39+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: independent-analytics\n"
@@ -536,7 +536,7 @@ msgstr ""
 msgid "Event"
 msgstr ""
 
-#: IAWP/Form_Submissions/Submission_Listener.php:328
+#: IAWP/Form_Submissions/Submission_Listener.php:308
 msgid "Divi Contact Form"
 msgstr ""
 
@@ -1634,6 +1634,18 @@ msgstr ""
 
 #: IAWP/Utils/Link_Validator.php:12
 msgid "Class cannot contain special characters besides \"-\" and \"_\"."
+msgstr ""
+
+#: IAWP/Utils/Link_Validator.php:12
+msgid "Id cannot start with a number or special character."
+msgstr ""
+
+#: IAWP/Utils/Link_Validator.php:12
+msgid "Id cannot contain spaces."
+msgstr ""
+
+#: IAWP/Utils/Link_Validator.php:12
+msgid "Id cannot contain special characters besides \"-\" and \"_\"."
 msgstr ""
 
 #: IAWP/Utils/Link_Validator.php:12

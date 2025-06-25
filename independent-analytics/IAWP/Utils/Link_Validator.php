@@ -9,7 +9,7 @@ class Link_Validator
 {
     public static function error_messages()
     {
-        return ['empty-name' => \__('Name cannot be empty.', 'independent-analytics'), 'empty-value' => \__('Value cannot be empty.', 'independent-analytics'), 'invalid-type' => \__('Invalid type.', 'independent-analytics'), 'class-number' => \__('Class cannot start with a number or special character.', 'independent-analytics'), 'class-space' => \__('Class cannot contain spaces.', 'independent-analytics'), 'class-characters' => \__('Class cannot contain special characters besides "-" and "_".', 'independent-analytics'), 'invalid-extension' => \__('Invalid Extension.', 'independent-analytics'), 'invalid-protocol' => \__('Invalid Protocol.', 'independent-analytics'), 'invalid-domain' => \__('Invalid domain.', 'independent-analytics'), 'invalid-subdirectory' => \__('Invalid characters in subdirectory.', 'independent-analytics')];
+        return ['empty-name' => \__('Name cannot be empty.', 'independent-analytics'), 'empty-value' => \__('Value cannot be empty.', 'independent-analytics'), 'invalid-type' => \__('Invalid type.', 'independent-analytics'), 'class-number' => \__('Class cannot start with a number or special character.', 'independent-analytics'), 'class-space' => \__('Class cannot contain spaces.', 'independent-analytics'), 'class-characters' => \__('Class cannot contain special characters besides "-" and "_".', 'independent-analytics'), 'id-number' => \__('Id cannot start with a number or special character.', 'independent-analytics'), 'id-space' => \__('Id cannot contain spaces.', 'independent-analytics'), 'id-characters' => \__('Id cannot contain special characters besides "-" and "_".', 'independent-analytics'), 'invalid-extension' => \__('Invalid Extension.', 'independent-analytics'), 'invalid-protocol' => \__('Invalid Protocol.', 'independent-analytics'), 'invalid-domain' => \__('Invalid domain.', 'independent-analytics'), 'invalid-subdirectory' => \__('Invalid characters in subdirectory.', 'independent-analytics')];
     }
     public static function validate(string $property, string $value, string $type)
     {
@@ -36,6 +36,14 @@ class Link_Validator
                     return 'class-space';
                 } elseif (\preg_match('/[^a-zA-Z0-9_-]/', $value)) {
                     return 'class-characters';
+                }
+            } elseif ($type == 'id') {
+                if (!\preg_match('/[a-zA-Z]/', \substr($value, 0, 1))) {
+                    return 'id-number';
+                } elseif (\preg_match('/\\s/', $value)) {
+                    return 'id-space';
+                } elseif (\preg_match('/[^a-zA-Z0-9_-]/', $value)) {
+                    return 'id-characters';
                 }
             } elseif ($type == 'extension') {
                 if (!\in_array($value, Click_Tracking::extensions())) {

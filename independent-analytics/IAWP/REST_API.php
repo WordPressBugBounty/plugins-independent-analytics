@@ -2,7 +2,6 @@
 
 namespace IAWP;
 
-use IAWP\Click_Tracking\Link_Rule;
 use IAWP\Click_Tracking\Link_Rule_Finder;
 use IAWP\Models\Visitor;
 use IAWP\Utils\Device;
@@ -43,6 +42,10 @@ class REST_API
         }
         // Don't track post or page previews
         if (\is_preview()) {
+            return;
+        }
+        // Don't track the Thrive Leads form builder
+        if (\array_key_exists('tve', $_GET)) {
             return;
         }
         $payload = [];
