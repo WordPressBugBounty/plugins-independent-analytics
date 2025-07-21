@@ -29,7 +29,8 @@ class Campaign_Builder
         $campaign_error = null;
         $term = \strlen($term) > 0 ? $term : null;
         $content = \strlen($content) > 0 ? $content : null;
-        $url = new URL(\site_url() . $path);
+        $path = String_Util::str_starts_with($path, '/') ? \substr($path, 1) : $path;
+        $url = new URL(\trailingslashit(\site_url()) . $path);
         if (!$url->is_valid_url()) {
             $has_errors = \true;
             $path_error = 'path invalid';

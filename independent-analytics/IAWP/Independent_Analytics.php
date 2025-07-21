@@ -163,9 +163,9 @@ class Independent_Analytics
     public function add_body_class($classes)
     {
         if (\IAWP\Appearance::is_light()) {
-            $classes .= 'iawp-light-mode';
+            $classes .= ' iawp-light-mode';
         } elseif (\IAWP\Appearance::is_dark()) {
-            $classes .= 'iawp-dark-mode';
+            $classes .= ' iawp-dark-mode';
         }
         $page = \IAWP\Env::get_page();
         if (\is_string($page)) {

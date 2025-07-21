@@ -109,8 +109,7 @@ class Geo_Database_Manager
         if (\is_null($last_attempted_at)) {
             return \true;
         }
-        $has_been_thirty_minutes = $last_attempted_at->addMinutes(1)->isPast();
-        return $has_been_thirty_minutes;
+        return $last_attempted_at->addDay()->isPast();
     }
     private function last_attempted_at() : ?CarbonImmutable
     {

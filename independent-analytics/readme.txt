@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.11.9
+Stable tag: 2.11.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -179,6 +179,12 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.11.10 - July 18th, 2025 =
+
+* **Fix:** Fix issue switching between light and dark mode
+* **Fix:** Reduce geo database verification from every 30 minutes to once a day
+* **Fix:** Fix rare PDO deadlock issue
 
 = 2.11.9 - June 25th, 2025 =
 
