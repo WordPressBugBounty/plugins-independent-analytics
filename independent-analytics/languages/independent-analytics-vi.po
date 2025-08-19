@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Independent Analytics &#8211; Google Analytics Alternative for WordPress - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-09-10 03:19:44+0000\n"
+"PO-Revision-Date: 2025-03-01 13:02:37+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,251 +11,602 @@ msgstr ""
 "Language: vi_VN\n"
 "Project-Id-Version: Plugins - Independent Analytics &#8211; Google Analytics Alternative for WordPress - Stable (latest release)\n"
 
-#: IAWP/Admin_Page/Analytics_Page.php:164
-msgid "The \"Solid Security\" plugin is disabling PHP execution in the plugins folder, and this is preventing click tracking from working. Please visit the Security > Settings page, click on the Advanced section, click on System Tweaks Settings, uncheck the \"Disable PHP Plugins\" option, and then save."
+#: IAWP/Independent_Analytics.php:245
+msgid "Integrations"
 msgstr ""
+
+#: IAWP/Plugin_Conflict_Detector.php:187
+msgid "The \"Admin and Site Enhancements Pro\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the Tools > Enhancements menu, click on the \"Disable Components\" section, and then click the \"Expand\" link under \"Disable REST API.\" You can then enter \"iawp/search\" into the textarea to whitelist the route used by Independent Analytics."
+msgstr ""
+
+#: views/settings/delete.blade.php:50
+msgid "You are about to reset your analytics. This will delete all analytics data and reset all stats to zero. All saved reports will be reset."
+msgstr ""
+
+#: IAWP/Settings.php:55
+msgid "Color scheme"
+msgstr ""
+
+#: IAWP/Click_Tracking.php:21
+msgid "ID"
+msgstr ""
+
+#: IAWP/Appearance.php:32
+msgid "System"
+msgstr ""
+
+#: IAWP/Appearance.php:32
+msgid "Dark"
+msgstr ""
+
+#: IAWP/Appearance.php:32
+msgid "Light"
+msgstr ""
+
+#: views/settings/view-counter/threshold.blade.php:3
+msgid "Hide the view counter unless it has this many views or more."
+msgstr ""
+
+#: views/interrupt/migration-error.blade.php:10
+msgid "Migration started at:"
+msgstr ""
+
+#: IAWP/Settings.php:124
+msgid "Minimum views required"
+msgstr ""
+
+#: IAWP/AJAX/Migration_Status.php:34
+msgid "Unable to parse timestamp"
+msgstr ""
+
+#: IAWP/AJAX/Migration_Status.php:31
+msgid "Unknown"
+msgstr ""
+
+#: views/overview/overview.blade.php:19
+msgid "Refresh"
+msgstr ""
+
+#: views/overview/overview.blade.php:18
+msgid "Refreshing..."
+msgstr ""
+
+#: views/overview/modules/new-sessions.blade.php:9
+#: views/overview/modules/pie-chart.blade.php:9
+#: views/overview/modules/recent-conversions.blade.php:8
+#: views/overview/modules/recent-views.blade.php:10
+#: views/overview/modules/top-ten.blade.php:9
+msgid "No data found in this date range."
+msgstr ""
+
+#: views/overview/modules/busiest-day-of-week.blade.php:28
+#: views/overview/modules/busiest-time-of-day.blade.php:28
+#: views/overview/modules/line-chart.blade.php:31
+#: views/overview/modules/map.blade.php:25
+#: views/overview/modules/new-sessions.blade.php:24
+#: views/overview/modules/pie-chart.blade.php:24
+#: views/overview/modules/recent-conversions.blade.php:70
+#: views/overview/modules/recent-views.blade.php:73
+msgid "Loading data..."
+msgstr ""
+
+#: views/overview/module-picker.blade.php:18
+msgid "Choose a module"
+msgstr ""
+
+#: views/overview/module-editor.blade.php:15
+msgid "Change Module Type"
+msgstr ""
+
+#: views/settings/delete.blade.php:30
+msgid "You are about to reset your modules on the overview report. All modules will be deleted and the default modules will be restored. This does not impact your analytics data."
+msgstr ""
+
+#: views/settings/delete.blade.php:12 views/settings/delete.blade.php:28
+#: views/settings/delete.blade.php:37
+msgid "Reset overview report"
+msgstr ""
+
+#: views/partials/sidebar.blade.php:163
+msgid "Get Overview"
+msgstr ""
+
+#: views/partials/sidebar.blade.php:55
+msgid "Open overview"
+msgstr ""
+
+#: views/overview/overview.blade.php:49 views/overview/overview.blade.php:50
+msgid "Download report"
+msgstr ""
+
+#: views/overview/overview.blade.php:39 views/overview/overview.blade.php:40
+msgid "Reorder Modules"
+msgstr ""
+
+#: views/overview/overview.blade.php:38
+#: views/overview/module-editor.blade.php:43
+#: views/overview/module-picker.blade.php:12
+#: views/overview/overview.blade.php:39
+msgid "Add Module"
+msgstr ""
+
+#: IAWP/Report.php:37
+msgid "Geo"
+msgstr ""
+
+#: IAWP/Report.php:37 IAWP/Report_Finder.php:116
+#: views/partials/sidebar.blade.php:52 views/partials/sidebar.blade.php:160
+#: views/overview/overview.blade.php:12
+msgid "Overview"
+msgstr ""
+
+#: IAWP/Plugin_Conflict_Detector.php:199
+msgid "The Patchstack Security plugin has disabled the REST API, which Independent Analytics needs to record visitors. Please login to the Patchstack app, navigate to the Hardening menu for this site, and turn off the \"Restrict WP REST API access\" option."
+msgstr ""
+
+#: IAWP/Plugin_Conflict_Detector.php:194
+msgid "A setting in the \"Autoptimize\" plugin is preventing Independent Analytics from tracking visitors. Please visit the Settings > Autoptimize menu and uncheck the \"Also aggregate inline JS\" option."
+msgstr ""
+
+#: IAWP/Overview/Modules/Top_Ten_Module.php:18
+msgid "Top 10 List"
+msgstr ""
+
+#: IAWP/Overview/Modules/Recent_Conversions_Module.php:80
+msgid "Form"
+msgstr ""
+
+#: IAWP/Overview/Modules/Recent_Conversions_Module.php:78
+msgid "Order"
+msgstr ""
+
+#: IAWP/Overview/Modules/Recent_Conversions_Module.php:55
+#: IAWP/Overview/Modules/Recent_Views_Module.php:41
+msgid "Unknown Browser"
+msgstr ""
+
+#: IAWP/Overview/Modules/Recent_Conversions_Module.php:55
+#: IAWP/Overview/Modules/Recent_Views_Module.php:41
+msgid "Unknown Device Type"
+msgstr ""
+
+#: IAWP/Overview/Modules/Recent_Conversions_Module.php:55
+#: IAWP/Overview/Modules/Recent_Views_Module.php:41
+msgid "Unknown Country"
+msgstr ""
+
+#: IAWP/Overview/Modules/Recent_Conversions_Module.php:25
+#: IAWP/Overview/Modules/Recent_Views_Module.php:24
+msgid "Most Recent"
+msgstr ""
+
+#: IAWP/Overview/Modules/Quick_Stats_Module.php:22
+msgid "Quick Stats"
+msgstr ""
+
+#: IAWP/Overview/Modules/Pie_Chart_Module.php:48
+msgid "Other"
+msgstr ""
+
+#: IAWP/Overview/Modules/Pie_Chart_Module.php:18
+msgid "Pie Chart"
+msgstr ""
+
+#: IAWP/Overview/Modules/New_Sessions_Module.php:34
+msgid "Returning Sessions"
+msgstr ""
+
+#: IAWP/Overview/Modules/New_Sessions_Module.php:34
+msgid "New Sessions"
+msgstr ""
+
+#: IAWP/Overview/Modules/Module.php:424
+msgid "Top Traffic Sources"
+msgstr ""
+
+#: IAWP/Overview/Modules/Module.php:424
+#: IAWP/Overview/Modules/Recent_Conversions_Module.php:21
+msgid "Recent Conversions"
+msgstr ""
+
+#: IAWP/Overview/Modules/Module.php:424
+#: IAWP/Overview/Modules/Recent_Views_Module.php:20
+msgid "Recent Views"
+msgstr ""
+
+#: IAWP/Overview/Modules/Module.php:424
+msgid "Site Metrics"
+msgstr ""
+
+#: IAWP/Overview/Modules/Module.php:424
+#: IAWP/Overview/Modules/New_Sessions_Module.php:19
+msgid "New vs. Returning Sessions"
+msgstr ""
+
+#: IAWP/Overview/Modules/Module.php:424
+msgid "Geographic Traffic"
+msgstr ""
+
+#: IAWP/Overview/Modules/Module.php:424
+msgid "Top 10 Pages"
+msgstr ""
+
+#: IAWP/Overview/Modules/Module.php:424
+msgid "Site Traffic"
+msgstr ""
+
+#: IAWP/Overview/Modules/Module.php:320
+msgctxt "The placeholder is a time of day"
+msgid "Last updated at %s."
+msgstr ""
+
+#: IAWP/Overview/Modules/Module.php:168
+msgid "Last %s Days"
+msgstr ""
+
+#: IAWP/Overview/Modules/Map_Module.php:18
+msgid "World Map"
+msgstr ""
+
+#: IAWP/Overview/Modules/Line_Chart_Module.php:20
+msgid "Line Chart"
+msgstr ""
+
+#: IAWP/Overview/Modules/Busiest_Time_Of_Day_Module.php:40
+msgid "Hour"
+msgstr ""
+
+#: IAWP/Overview/Modules/Busiest_Time_Of_Day_Module.php:19
+#: IAWP/Overview/Modules/Module.php:424
+msgid "Busiest Time of Day"
+msgstr ""
+
+#: IAWP/Overview/Modules/Busiest_Day_Of_Week_Module.php:20
+#: IAWP/Overview/Modules/Module.php:424
+msgid "Busiest Day of Week"
+msgstr ""
+
+#: IAWP/Overview/Form_Field.php:29
+msgid "Conversions"
+msgstr ""
+
+#: IAWP/Overview/Form_Field.php:29
+msgid "Statistics"
+msgstr ""
+
+#: IAWP/Overview/Form_Field.php:29
+msgid "Secondary Metric"
+msgstr ""
+
+#: IAWP/Overview/Form_Field.php:29
+msgid "Primary Metric"
+msgstr ""
+
+#: IAWP/Overview/Form_Field.php:29
+msgid "Date Range"
+msgstr ""
+
+#: IAWP/Overview/Form_Field.php:29
+msgid "Sort Direction"
+msgstr ""
+
+#: IAWP/Overview/Form_Field.php:29
+msgid "Sort By"
+msgstr ""
+
+#: IAWP/Overview/Form_Field.php:29
+msgid "Geo Report"
+msgstr ""
+
+#: IAWP/Overview/Form_Field.php:29
+msgid "Report"
+msgstr ""
+
+#: IAWP/Form_Submissions/Submission_Listener.php:328
+msgid "Divi Contact Form"
+msgstr ""
+
+#: views/settings/email-reports.blade.php:105
+msgid "Any replies to the email report will be delivered to this email address."
+msgstr "Bất kỳ phản hồi nào đối với báo cáo email sẽ được gửi đến địa chỉ email này."
+
+#: views/settings/block-ips.blade.php:13
+msgid "Block this IP"
+msgstr "Chặn địa chỉ IP này"
+
+#: views/click-tracking/menu.blade.php:96
+msgid "No archived link patterns found"
+msgstr "Không tìm thấy mẫu liên kết lưu trữ"
+
+#: views/click-tracking/menu.blade.php:52
+msgid "No link patterns found"
+msgstr "Không tìm thấy mẫu liên kết"
+
+#: views/click-tracking/menu.blade.php:12
+msgid "Ok"
+msgstr "Ok"
+
+#: views/click-tracking/menu.blade.php:11
+msgid "Please empty your cache to ensure your newest changes are tracked properly."
+msgstr "Vui lòng xóa bộ nhớ cache của bạn để đảm bảo rằng những thay đổi mới nhất của bạn được theo dõi đúng cách."
+
+#: views/settings/email-reports.blade.php:108
+msgid "Email footer text"
+msgstr "Văn bản chân trang email"
+
+#: views/settings/email-reports.blade.php:99
+msgid "Reply To email address"
+msgstr "Trả lời đến địa chỉ email"
+
+#: IAWP/Tables/Table_Clicks.php:23
+msgid "Links"
+msgstr "Liên kết"
+
+#: IAWP/Tables/Table.php:235
+msgid "Download Daily Metrics CSV"
+msgstr "Tải về CSV thống kê hàng ngày"
+
+#: IAWP/Tables/Table.php:227
+msgid "Download Table CSV"
+msgstr "Tải về bảng CSV"
+
+#: IAWP/Independent_Analytics.php:200
+msgid "Success"
+msgstr "Thành công"
+
+#: IAWP/Click_Tracking.php:21
+msgid "External"
+msgstr "Bên ngoài"
+
+#: IAWP/Admin_Page/Analytics_Page.php:178
+msgid "The \"Solid Security\" plugin is disabling PHP execution in the plugins folder, and this is preventing click tracking from working. Please visit the Security > Settings page, click on the Advanced section, click on System Tweaks Settings, uncheck the \"Disable PHP Plugins\" option, and then save."
+msgstr "Plugin \"Solid Security\" đang tắt việc thực thi PHP trong thư mục plugin, và điều này đang ngăn chặn việc theo dõi click hoạt động. Vui lòng truy cập vào trang Cài đặt > Bảo mật, click vào phần Nâng cao, click vào Cài đặt Tinh chỉnh Hệ thống, bỏ chọn tuỳ chọn \"Tắt PHP Plugins\", và sau đó lưu lại."
 
 #: views/settings/email-reports.blade.php:96
 msgid "The email address should come from this domain or your emails may not be delivered."
-msgstr ""
+msgstr "Địa chỉ email phải đến từ miền này hoặc email của bạn có thể không được gửi đi."
 
 #: views/notices/getting-started.blade.php:4
 msgid "Learn how to use all the features in Independent Analytics."
-msgstr ""
+msgstr "Học cách sử dụng tất cả các tính năng trong phân tích độc lập."
 
 #: views/notices/getting-started.blade.php:3
 msgid "Getting Started Video Tutorial"
-msgstr ""
+msgstr "Video hướng dẫn bắt đầu"
 
 #: views/date-picker/date-picker.blade.php:22
 msgid "End date"
-msgstr ""
+msgstr "Ngày kết thúc"
 
 #: views/date-picker/date-picker.blade.php:11
 msgid "Start date"
-msgstr ""
+msgstr "Ngày bắt đầu"
 
 #: views/click-tracking/menu.blade.php:105
 msgid "Yes"
-msgstr ""
+msgstr "Có"
 
 #: views/click-tracking/menu.blade.php:104
 msgid "Deleting this link pattern will remove its stats from the Clicks report permanently."
-msgstr ""
+msgstr "Gỡ bỏ mẫu liên kết này sẽ xoá thống kê của nó khỏi báo cáo lượt nhấp vĩnh viễn."
 
 #: views/click-tracking/menu.blade.php:103
 msgid "Are you sure?"
-msgstr ""
+msgstr "Bạn có chắc không?"
 
 #: views/click-tracking/menu.blade.php:77
 msgid "Show Archived Links"
-msgstr ""
+msgstr "Hiển thị liên kết lưu trữ"
 
 #: views/click-tracking/menu.blade.php:77
 msgid "Hide Archived Links"
-msgstr ""
+msgstr "Ẩn các liên kết lưu trữ"
 
 #: views/click-tracking/menu.blade.php:74
 msgid "Archived link patterns are no longer tracked, but their data remains in the Clicks report. Deleting an archived link pattern will remove it from this list and remove its data from the Clicks report permanently."
-msgstr ""
+msgstr "Các mẫu liên kết đã lưu trữ không còn được theo dõi, nhưng dữ liệu của chúng vẫn còn trong báo cáo Click. Gỡ bỏ một mẫu liên kết đã lưu trữ sẽ xoá nó khỏi danh sách này và xoá dữ liệu của nó khỏi báo cáo lượt nhấp một cách vĩnh viễn."
 
 #: views/click-tracking/menu.blade.php:70
 msgid "Archived Link Patterns"
-msgstr ""
+msgstr "Mẫu liên kết lưu trữ"
 
 #: views/click-tracking/menu.blade.php:35
 #: views/click-tracking/menu.blade.php:82
 msgid "Value"
-msgstr ""
+msgstr "Giá trị"
 
 #: views/click-tracking/menu.blade.php:33
 #: views/click-tracking/menu.blade.php:80
+#: views/overview/module-editor.blade.php:24
 msgid "Name"
-msgstr ""
+msgstr "Tên"
 
 #: views/click-tracking/menu.blade.php:30
 msgid "Add Link Pattern"
-msgstr ""
+msgstr "Thêm liên kết mẫu"
 
 #: views/click-tracking/menu.blade.php:26
 msgid "Links matching the patterns below are being actively monitored for clicks."
-msgstr ""
+msgstr "Các liên kết phù hợp với các mẫu dưới đây đang được theo dõi tích cực để tìm kiếm lượt nhấp."
 
+#: IAWP/Email_Reports/Email_Reports.php:183 IAWP/Tables/Table_Clicks.php:24
 #: views/click-tracking/menu.blade.php:24
 msgid "Link Patterns"
-msgstr ""
+msgstr "Liên kết mẫu khối"
 
 #: views/click-tracking/menu.blade.php:5
 msgid "View Clicks Report"
-msgstr ""
+msgstr "Xem báo cáo lượt nhấp"
 
-#: views/click-tracking/link.blade.php:98
+#: views/click-tracking/link.blade.php:114
 #: views/click-tracking/menu.blade.php:83
 msgid "Resume Tracking"
-msgstr ""
+msgstr "Theo dõi hồ sơ"
 
-#: views/click-tracking/link.blade.php:85
+#: views/click-tracking/link.blade.php:101
 #: views/click-tracking/menu.blade.php:36
 msgid "Edit"
-msgstr ""
+msgstr "Sửa"
 
 #: views/tables/rows.blade.php:40
 msgid "Edit your tracked links"
-msgstr ""
+msgstr "Sửa các liên kết bạn đã theo dõi"
 
 #: views/tables/rows.blade.php:34
 msgid "No click data found"
-msgstr ""
+msgstr "Không tìm thấy dữ liệu lượt nhấp"
 
-#: views/settings/export-reports.blade.php:10
+#: views/settings/export-reports.blade.php:15
 msgid "Export any of your report settings, so they can be duplicated on another website running Independent Analytics."
-msgstr ""
+msgstr "Xuất bất kỳ cài đặt báo cáo nào của bạn, để chúng có thể được sao chép trên một trang web khác đang chạy Independent Analytics."
 
-#: views/settings/export-reports.blade.php:5
+#: views/settings/export-reports.blade.php:6
 msgid "Export Report Settings"
-msgstr ""
+msgstr "Cài đặt xuất báo cáo"
 
 #: views/settings/email-reports.blade.php:90
 msgid "From email address"
-msgstr ""
+msgstr "Địa chỉ email"
 
-#: views/partials/sidebar.blade.php:170
+#: views/partials/sidebar.blade.php:193
 msgid "Get click tracking"
-msgstr ""
+msgstr "Nhận theo dõi lượt nhấp"
 
 #: IAWP/Utils/Link_Validator.php:12
 msgid "Invalid characters in subdirectory."
-msgstr ""
+msgstr "Kí tự không hợp lệ trong thư mục con."
 
 #: IAWP/Utils/Link_Validator.php:12
 msgid "Invalid domain."
-msgstr ""
+msgstr "Tên miền không hợp lệ."
 
 #: IAWP/Utils/Link_Validator.php:12
 msgid "Invalid Protocol."
-msgstr ""
+msgstr "Không hợp lệ giao thức."
 
 #: IAWP/Utils/Link_Validator.php:12
 msgid "Invalid Extension."
-msgstr ""
+msgstr "Phần mở rộng không hợp lệ."
 
 #: IAWP/Utils/Link_Validator.php:12
 msgid "Class cannot contain special characters besides \"-\" and \"_\"."
-msgstr ""
+msgstr "Lớp không thể chứa các ký tự đặc biệt ngoài \"-\" và \"_\"."
 
 #: IAWP/Utils/Link_Validator.php:12
 msgid "Class cannot contain spaces."
-msgstr ""
+msgstr "Class không thể chứa khoảng trắng."
 
 #: IAWP/Utils/Link_Validator.php:12
 msgid "Class cannot start with a number or special character."
-msgstr ""
+msgstr "Class không thể bắt đầu bằng một số hoặc ký tự đặc biệt."
 
 #: IAWP/Utils/Link_Validator.php:12
 msgid "Invalid type."
-msgstr ""
+msgstr "Loại không hợp lệ."
 
 #: IAWP/Utils/Link_Validator.php:12
 msgid "Value cannot be empty."
-msgstr ""
+msgstr "Giá trị không thể để trống."
 
 #: IAWP/Utils/Link_Validator.php:12
 msgid "Name cannot be empty."
-msgstr ""
+msgstr "Tên không được để trống."
 
-#: IAWP/Tables/Table_Clicks.php:27
+#: IAWP/Tables/Table_Clicks.php:29
 msgid "Target"
-msgstr ""
+msgstr "Mục tiêu"
 
-#: IAWP/Tables/Table_Clicks.php:22
+#: IAWP/Overview/Modules/Recent_Conversions_Module.php:82
 msgid "Click"
-msgstr ""
+msgstr "Nhấp chuột"
 
-#: IAWP/Rows/Filter.php:148 IAWP/Tables/Table_Clicks.php:27
+#: IAWP/Rows/Filter.php:148 IAWP/Tables/Table_Clicks.php:29
 msgid "Link Pattern"
-msgstr ""
+msgstr "Liên kết mẫu khối"
 
-#: IAWP/Report_Finder.php:13 IAWP/Report_Finder.php:199
-#: IAWP/Statistics/Click_Statistics.php:23 IAWP/Statistics/Statistics.php:154
-#: IAWP/Tables/Table_Campaigns.php:25 IAWP/Tables/Table_Clicks.php:27
+#: IAWP/Overview/Form_Field.php:92 IAWP/Report.php:37 IAWP/Report.php:105
+#: IAWP/Report.php:114 IAWP/Report_Finder.php:114
+#: IAWP/Statistics/Click_Statistics.php:23 IAWP/Statistics/Statistics.php:206
+#: IAWP/Tables/Table_Campaigns.php:25 IAWP/Tables/Table_Clicks.php:29
 #: IAWP/Tables/Table_Devices.php:34 IAWP/Tables/Table_Geo.php:28
 #: IAWP/Tables/Table_Pages.php:28 IAWP/Tables/Table_Referrers.php:26
-#: views/partials/sidebar.blade.php:135 views/partials/sidebar.blade.php:167
+#: views/email/email.blade.php:119 views/partials/sidebar.blade.php:144
+#: views/partials/sidebar.blade.php:190
 msgid "Clicks"
-msgstr ""
+msgstr "Lượt nhấp"
 
 #: IAWP/Migrations/Migration_38.php:59
 msgid "Phone numbers"
-msgstr ""
+msgstr "Số điện thoại"
 
 #: IAWP/Migrations/Migration_38.php:55
 msgid "Emails"
-msgstr ""
+msgstr "Email"
 
 #: IAWP/Migrations/Migration_38.php:51
 msgid "Zips"
-msgstr ""
+msgstr "Mã Zip"
 
 #: IAWP/Migrations/Migration_38.php:47
 msgid "PDFs"
-msgstr ""
+msgstr "PDF"
 
-#: IAWP/Independent_Analytics.php:242 views/settings/export-data.blade.php:20
+#: IAWP/Independent_Analytics.php:345
 msgid "Export Clicks"
-msgstr ""
+msgstr "Xuất lượt nhấp"
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:345
 msgid "Exporting Clicks"
-msgstr ""
+msgstr "Xuất lượt nhấp"
 
-#: IAWP/Independent_Analytics.php:141 views/click-tracking/menu.blade.php:4
+#: IAWP/Independent_Analytics.php:232 views/click-tracking/menu.blade.php:4
 msgid "Click Tracking"
-msgstr ""
-
-#: IAWP/Cron_Job.php:42
-msgid "Every minute"
-msgstr ""
+msgstr "Theo dõi lượt nhấp"
 
 #: IAWP/Click_Tracking.php:21
 msgid "Protocol"
-msgstr ""
+msgstr "Giao thức"
 
 #: IAWP/Click_Tracking.php:21
 msgid "Subdirectory"
-msgstr ""
+msgstr "Thư mục con"
 
 #: IAWP/Click_Tracking.php:21
 msgid "Domain"
-msgstr ""
+msgstr "Tên miền"
 
 #: IAWP/Click_Tracking.php:21
 msgid "Extension"
-msgstr ""
+msgstr "Tiện ích mở rộng"
 
 #: IAWP/Click_Tracking.php:21
 msgid "Class"
-msgstr ""
+msgstr "Class"
 
 #: IAWP/Admin_Page/Click_Tracking_Page.php:15
 msgid "You do not have permission to edit the click tracking settings."
-msgstr ""
+msgstr "Bạn không có quyền sửa cài đặt theo dõi lượt nhấp."
 
-#: IAWP/Admin_Page/Analytics_Page.php:175
-#: IAWP/Admin_Page/Analytics_Page.php:182
+#: IAWP/Admin_Page/Analytics_Page.php:187
+#: IAWP/Admin_Page/Analytics_Page.php:194
 msgid "Dismiss"
-msgstr ""
+msgstr "Bỏ qua"
 
-#: IAWP/Admin_Page/Analytics_Page.php:182
+#: IAWP/Admin_Page/Analytics_Page.php:194
 msgid "Click data syncs every 60 seconds. Please allow for this delay when testing clicks on new links."
-msgstr ""
+msgstr "Dữ liệu lượt nhấp được đồng bộ mỗi 60 giây. Vui lòng chờ đợi khoảng thời gian này khi thử nghiệm lượt nhấp vào các liên kết mới."
 
-#: IAWP/Admin_Page/Analytics_Page.php:175
+#: IAWP/Admin_Page/Analytics_Page.php:187
 msgid "We recommend you enable tracking for logged-in visitors."
-msgstr ""
+msgstr "Chúng tôi khuyên bạn bật theo dõi cho những khách truy cập đã đăng nhập."
 
-#: IAWP/Admin_Page/Analytics_Page.php:175
+#: IAWP/Admin_Page/Analytics_Page.php:187
 msgctxt "Variable is the name of a plugin"
 msgid "%s compatibility:"
+msgstr "%s tương thích:"
+
+#: IAWP/Independent_Analytics.php:262
+msgid "Independent Analytics Debug"
 msgstr ""
 
 #: views/settings/woocommerce.blade.php:46
@@ -275,11 +626,12 @@ msgstr "Trạng thái đơn hàng WooCommerce"
 msgid "First view recorded"
 msgstr "Lượt xem đầu tiên được ghi lại"
 
-#: IAWP/Statistics/Statistics.php:154 IAWP/Tables/Table.php:375
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:206
+#: IAWP/Tables/Table.php:435
 msgid "Total Sales"
 msgstr "Tổng doanh thu"
 
-#: IAWP/Plugin_Group.php:107
+#: IAWP/Plugin_Group.php:113
 msgid "eCommerce"
 msgstr "Thương mại điện tử"
 
@@ -304,10 +656,6 @@ msgstr ""
 "Tất cả dữ liệu từ trước %1$s sẽ bị xóa ngay lập tức. Điều này sẽ xóa %2$s trong số %3$s phiên theo dõi của bạn. \n"
 "\n"
 " Quá trình này sẽ lặp lại hàng ngày vào lúc nửa đêm."
-
-#: IAWP/Cron_Job.php:41
-msgid "Every 5 minutes"
-msgstr "Cứ sau 5 phút"
 
 #: views/interrupt/database-prefix-too-long.blade.php:13
 msgid "Please click the button below to follow a brief tutorial that will show you how to easily change your database prefix."
@@ -334,7 +682,8 @@ msgstr "Điều này sẽ xoá tất cả dữ liệu cũ hơn khoảng thời g
 msgid "Enable automatic data deletion"
 msgstr "Bật xóa dữ liệu tự động"
 
-#: views/settings/pruner.blade.php:33 views/settings/pruner.blade.php:34
+#: views/settings/pruner.blade.php:33 views/overview/module-editor.blade.php:41
+#: views/settings/pruner.blade.php:34
 msgid "Saving..."
 msgstr "Đang lưu..."
 
@@ -350,11 +699,11 @@ msgstr "Thao tác này sẽ ẩn cột \"Lượt xem\" xuất hiện trong menu 
 msgid "Disable the \"Views\" column in the post menus"
 msgstr "Tắt cột \"Lượt xem\" trong các menu bài viết"
 
-#: views/settings/block-ips.blade.php:50
+#: views/settings/block-ips.blade.php:54
 msgid "No ignored IPs"
 msgstr "Không có địa chỉ IP nào bị bỏ qua"
 
-#: views/settings/block-ips.blade.php:38
+#: views/settings/block-ips.blade.php:42
 msgid "Ignored IPs"
 msgstr "Các địa chỉ IP bị bỏ qua"
 
@@ -380,12 +729,12 @@ msgstr "Vai trò người dùng bị bỏ qua"
 
 #: views/settings/block-by-role.blade.php:35
 #: views/settings/block-by-role.blade.php:50
-#: views/settings/block-ips.blade.php:31 views/settings/block-ips.blade.php:46
+#: views/settings/block-ips.blade.php:35 views/settings/block-ips.blade.php:50
 msgid "Remove"
 msgstr "Gỡ bỏ"
 
 #: views/settings/block-by-role.blade.php:26
-#: views/settings/block-ips.blade.php:22
+#: views/settings/block-ips.blade.php:26
 msgid "Add"
 msgstr "Thêm"
 
@@ -397,44 +746,45 @@ msgstr "Các vai trò người dùng bị bỏ qua vẫn có thể truy cập tr
 msgid "Ignore User Roles"
 msgstr "Bỏ qua vai trò người dùng"
 
+#: IAWP/Independent_Analytics.php:345 IAWP/Overview/Form_Field.php:91
 #: views/chart.blade.php:40 views/chart.blade.php:43
 msgid "No Comparison"
 msgstr "Không so sánh"
 
-#: IAWP/Settings.php:129
+#: IAWP/Settings.php:133
 msgid "Display the label"
 msgstr "Hiển thị nhãn"
 
-#: IAWP/Migrations/Migration_17.php:33
+#: IAWP/Report_Finder.php:198
 msgctxt "short for operating system"
 msgid "OS"
 msgstr "Hệ điều hành"
 
-#: IAWP/Migrations/Migration_17.php:31
+#: IAWP/Report_Finder.php:196
 msgid "European Countries"
 msgstr "Các quốc gia châu Âu"
 
-#: IAWP/Migrations/Migration_17.php:28
+#: IAWP/Report_Finder.php:193
 msgid "Fastest-Growing Referrers"
 msgstr "Nguồn tốt nhất"
 
-#: IAWP/Migrations/Migration_17.php:27
+#: IAWP/Report_Finder.php:192
 msgid "Social Media Traffic"
 msgstr "Mạng xã hội"
 
-#: IAWP/Migrations/Migration_17.php:26
+#: IAWP/Report_Finder.php:191
 msgid "Search Engine Traffic"
 msgstr "Công cụ tìm kiếm"
 
-#: IAWP/Migrations/Migration_17.php:24
+#: IAWP/Report_Finder.php:189
 msgid "Fastest-Growing Pages"
 msgstr "Trang phát triển tốt nhất"
 
-#: IAWP/Migrations/Migration_17.php:23
+#: IAWP/Report_Finder.php:188
 msgid "Top Landing Pages"
 msgstr "Trang đích hàng đầu"
 
-#: IAWP/Migrations/Migration_17.php:22
+#: IAWP/Report_Finder.php:187
 msgid "Blog Posts"
 msgstr "Bài viết blog"
 
@@ -478,8 +828,8 @@ msgstr "90 ngày qua"
 msgid "Last 60 days"
 msgstr "60 ngày qua"
 
-#: views/settings/export-reports.blade.php:30
-#: views/settings/export-reports.blade.php:32
+#: views/settings/export-reports.blade.php:42
+#: views/settings/export-reports.blade.php:44
 msgid "No reports found"
 msgstr "Không tìm thấy báo cáo nào"
 
@@ -487,7 +837,7 @@ msgstr "Không tìm thấy báo cáo nào"
 msgid "You have unsaved changes"
 msgstr "Bạn có các thay đổi chưa lưu"
 
-#: IAWP/Plugin_Group.php:112
+#: IAWP/Plugin_Group.php:118
 msgctxt "Plugin name e.g. WPForms submissions"
 msgid "Upgrade to Independent Analytics Pro to track %s submissions."
 msgstr "Nâng cấp lên Independent Analytics Pro để theo dõi %s lượt gửi."
@@ -500,11 +850,11 @@ msgstr "Sự kiện"
 msgid "Appointment"
 msgstr "Lịch hẹn"
 
-#: IAWP/Email_Reports/Email_Reports.php:171
+#: IAWP/Email_Reports/Email_Reports.php:189
 msgid "Exit Pages"
 msgstr "Thoát trang"
 
-#: IAWP/Email_Reports/Email_Reports.php:168
+#: IAWP/Email_Reports/Email_Reports.php:186
 msgid "Landing Pages"
 msgstr "Trang đích"
 
@@ -529,7 +879,8 @@ msgstr "Tìm hiểu thêm"
 msgid "You can also customize the icon display, label, and date range used by the shortcode."
 msgstr "Bạn cũng có thể tùy chỉnh hiển thị biểu tượng, nhãn và phạm vi ngày được sử dụng bởi mã ngắn."
 
-#: IAWP/Tables/Table.php:379 IAWP/Tables/Table.php:381
+#: IAWP/Tables/Table.php:439 IAWP/Tables/Table.php:441
+#: views/email/email.blade.php:121
 msgid "Submissions"
 msgstr "Form đăng ký"
 
@@ -541,21 +892,22 @@ msgstr "Tỷ lệ chuyển đổi cho"
 msgid "Submissions for"
 msgstr "Form đăng ký cho"
 
-#: IAWP/Statistics/Statistics.php:162
+#: IAWP/Report.php:111 IAWP/Statistics/Statistics.php:214
 msgctxt "Title of the contact form"
 msgid "%s Conversion Rate"
 msgstr "Tỷ lệ chuyển đổi %s"
 
-#: IAWP/Statistics/Statistics.php:161
+#: IAWP/Report.php:110 IAWP/Statistics/Statistics.php:213
 msgctxt "Title of the contact form"
 msgid "%s Submissions"
 msgstr "%s Form đăng ký"
 
-#: IAWP/Statistics/Statistics.php:154
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:206
 msgid "Form Conversion Rate"
 msgstr "Tỷ lệ chuyển đổi Form"
 
-#: IAWP/Statistics/Statistics.php:154
+#: IAWP/Overview/Form_Field.php:92 IAWP/Report.php:105
+#: IAWP/Statistics/Statistics.php:206
 msgid "Form Submissions"
 msgstr "Gửi Form đăng ký"
 
@@ -567,11 +919,11 @@ msgstr "Form của bạn sẽ hiển thị ở đây sau khi quá trình gửi �
 msgid "Activate a supported form plugin to display these stats."
 msgstr "Kích hoạt plugin Form được hỗ trợ để hiển thị các số liệu thống kê này."
 
-#: IAWP/Plugin_Group.php:114
+#: IAWP/Plugin_Group.php:120
 msgid "Upgrade to Independent Analytics Pro to track form submissions."
 msgstr "Nâng cấp lên Independent Analytics Pro để theo dõi việc gửi form."
 
-#: IAWP/Plugin_Group.php:97
+#: IAWP/Email_Reports/Email_Reports.php:180 IAWP/Plugin_Group.php:97
 msgid "Forms"
 msgstr "Forms"
 
@@ -587,7 +939,7 @@ msgstr "Nâng cấp lên Independent Analytics Pro để nhận thống kê thư
 msgid "General"
 msgstr "Tổng quan"
 
-#: IAWP/Independent_Analytics.php:155
+#: IAWP/Independent_Analytics.php:252
 msgid "New"
 msgstr "Mới"
 
@@ -608,11 +960,12 @@ msgstr "Lượt xem hàng giờ"
 msgid "Week of"
 msgstr "Tuần của"
 
-#: IAWP/Email_Reports/Email_Reports.php:138
+#: IAWP/Email_Reports/Email_Reports.php:150
 msgid "Analytics Report for"
 msgstr "Báo cáo phân tích cho"
 
-#: views/settings/email-reports.blade.php:134
+#: views/settings/email-reports.blade.php:153
+#: views/settings/email-reports.blade.php:154
 msgid "Preview email"
 msgstr "Xem trước email"
 
@@ -636,39 +989,35 @@ msgstr "Khoảng thời gian gửi"
 msgid "Views column"
 msgstr "Cột lượt xem"
 
-#: IAWP/Email_Reports/Email_Reports.php:74
+#: IAWP/Email_Reports/Email_Reports.php:72
 msgid "Next email scheduled for %s at %s."
 msgstr "Email tiếp theo được lên lịch cho %s vào lúc %s."
 
-#: IAWP/Email_Reports/Email_Reports.php:69
+#: IAWP/Email_Reports/Email_Reports.php:67
 msgid "There is no email scheduled."
 msgstr "Không có email nào được lên lịch."
 
-#: views/settings/export-reports.blade.php:48
-#: views/settings/export-reports.blade.php:50
+#: views/settings/export-reports.blade.php:72
+#: views/settings/export-reports.blade.php:74
 msgid "Import Reports"
 msgstr "Nhập báo cáo"
 
-#: views/settings/export-reports.blade.php:38
-#: views/settings/export-reports.blade.php:40
+#: views/settings/export-reports.blade.php:52
+#: views/settings/export-reports.blade.php:54
 msgid "Export Reports"
 msgstr "Xuất báo cáo"
 
-#: views/settings/export-reports.blade.php:13
+#: views/settings/export-reports.blade.php:23
 msgid "Select all reports"
 msgstr "Chọn tất cả các báo cáo"
 
-#: views/partials/sidebar.blade.php:30
+#: views/partials/sidebar.blade.php:33
 msgid "Expand sidebar"
 msgstr "Mở rộng thanh bên"
 
-#: views/partials/sidebar.blade.php:28
+#: views/partials/sidebar.blade.php:31
 msgid "Collapse sidebar"
 msgstr "Thu gọn thanh bên"
-
-#: views/partials/sidebar.blade.php:20
-msgid "Upgrade to Pro (45% off)"
-msgstr "Nâng cấp lên Pro (giảm 45%)"
 
 #: views/partials/report-header.blade.php:114
 msgid "Delete report"
@@ -683,6 +1032,7 @@ msgid "Confirm"
 msgstr "Xác nhận"
 
 #: views/partials/report-header.blade.php:95
+#: views/overview/overview.blade.php:31 views/real-time.blade.php:15
 msgid "Make default"
 msgstr "Đặt làm mặc định"
 
@@ -704,7 +1054,8 @@ msgstr "Lưu thành"
 
 #: views/partials/report-header.blade.php:54 views/settings/pruner.blade.php:32
 #: views/settings/pruner.blade.php:37 views/settings/woocommerce.blade.php:38
-#: views/click-tracking/link.blade.php:88 views/settings/pruner.blade.php:33
+#: views/click-tracking/link.blade.php:104
+#: views/overview/module-editor.blade.php:43 views/settings/pruner.blade.php:33
 #: views/settings/pruner.blade.php:38 views/settings/woocommerce.blade.php:40
 msgid "Save"
 msgstr "Lưu"
@@ -754,7 +1105,7 @@ msgstr "Xem tất cả cập nhật"
 msgid "Newest Updates"
 msgstr "Cập nhật mới nhất"
 
-#: IAWP/Tables/Table.php:69 views/tables/table-toolbar.blade.php:4
+#: IAWP/Tables/Table.php:72 views/tables/table-toolbar.blade.php:4
 msgid "Toggle Columns"
 msgstr "Tùy chọn bật/tắt cột"
 
@@ -802,18 +1153,10 @@ msgstr "Điều này cải thiện quyền riêng tư của dữ liệu nhưng p
 msgid "Refresh the visitor salt every day"
 msgstr "Làm mới muối cho khách hàng mỗi ngày"
 
-#: views/settings/export-reports.blade.php:43
-#: views/settings/export-reports.blade.php:45
+#: views/settings/export-reports.blade.php:62
+#: views/settings/export-reports.blade.php:64
 msgid "Import Custom Reports"
 msgstr "Nhập báo cáo tùy chỉnh"
-
-#: views/settings/export-data.blade.php:8
-msgid "Export all historical data to CSV."
-msgstr "Xuất tất cả dữ liệu lịch sử sang CSV."
-
-#: views/settings/export-data.blade.php:3
-msgid "Export Data to CSV"
-msgstr "Xuất dữ liệu sang CSV"
 
 #: views/settings/email-reports.blade.php:83
 msgid "Footer background"
@@ -839,24 +1182,20 @@ msgstr "Điều này sẽ ẩn tiện ích bảng tổng quan xuất hiện tron
 msgid "Disable dashboard widget"
 msgstr "Vô hiệu hóa tiện ích bảng tổng quan"
 
-#: views/settings/delete.blade.php:47
+#: views/settings/delete.blade.php:73
 msgid "The plugin will be deactivated immediately after all data is deleted."
 msgstr "Plugin sẽ bị vô hiệu hóa ngay lập tức sau khi tất cả dữ liệu bị xóa."
 
-#: views/settings/delete.blade.php:44
+#: views/settings/delete.blade.php:70
 msgid "You are about to delete all data associated with Independent Analytics. This includes all analytics data and settings."
 msgstr "Bạn sắp xóa tất cả dữ liệu được liên kết với Independent Analytics. Điều này bao gồm tất cả dữ liệu phân tích và cài đặt."
 
-#: views/settings/delete.blade.php:24
-msgid "You are about to reset your analytics. This will delete all of the data and return all stats to zero."
-msgstr "Bạn sắp đặt lại số liệu phân tích của mình. Thao tác này sẽ xóa tất cả dữ liệu và đưa tất cả số liệu thống kê về 0."
-
-#: views/settings/delete.blade.php:15
+#: views/settings/delete.blade.php:21
 msgid "Delete all data & deactivate plugin"
 msgstr "Xóa tất cả dữ liệu và tắt plugin"
 
-#: views/settings/delete.blade.php:11 views/settings/delete.blade.php:22
-#: views/settings/delete.blade.php:31
+#: views/settings/delete.blade.php:17 views/settings/delete.blade.php:48
+#: views/settings/delete.blade.php:57
 msgid "Reset analytics"
 msgstr "Đặt lại phân tích"
 
@@ -868,15 +1207,15 @@ msgstr "Địa chỉ IP của bạn không bị bỏ qua:"
 msgid "Your IP address is ignored:"
 msgstr "Địa chỉ IP của bạn bị bỏ qua:"
 
-#: views/partials/sidebar.blade.php:181
+#: IAWP/Report.php:37 views/partials/sidebar.blade.php:205
 msgid "Real-Time"
 msgstr "Thời gian thực"
 
-#: views/partials/sidebar.blade.php:156
+#: views/partials/sidebar.blade.php:178
 msgid "Get Campaigns"
 msgstr "Nhận chiến dịch"
 
-#: views/partials/sidebar.blade.php:51
+#: views/partials/sidebar.blade.php:69
 msgid "Open Real-time analytics"
 msgstr "Mở phân tích thời gian thực"
 
@@ -921,31 +1260,31 @@ msgstr "Trang web của bạn thiếu các đặc quyền cơ sở dữ liệu c
 msgid "Missing Database Permissions"
 msgstr "Thiếu quyền cơ sở dữ liệu"
 
-#: views/interrupt/migration-error.blade.php:14
+#: views/interrupt/migration-error.blade.php:16
 msgid "Failed query:"
 msgstr "Truy vấn không thành công:"
 
-#: views/interrupt/migration-error.blade.php:12
+#: views/interrupt/migration-error.blade.php:14
 msgid "Error message:"
 msgstr "Thông báo lỗi:"
 
-#: views/interrupt/migration-error.blade.php:11
+#: views/interrupt/migration-error.blade.php:13
 msgid "Step:"
 msgstr "Bước:"
 
-#: views/interrupt/migration-error.blade.php:10
+#: views/interrupt/migration-error.blade.php:12
 msgid "Migration:"
 msgstr "Di chuyển:"
 
-#: views/interrupt/migration-error.blade.php:9
+#: views/interrupt/migration-error.blade.php:11
 msgid "Plugin version:"
 msgstr "Phiên bản plugin:"
 
-#: views/interrupt/migration-error.blade.php:8
+#: views/interrupt/migration-error.blade.php:9
 msgid "Please send the info below to %s and we will help to resolve this error ASAP. We're sorry for the inconvenience."
 msgstr "Vui lòng gửi thông tin bên dưới tới %s và chúng tôi sẽ giúp giải quyết lỗi này càng sớm càng tốt. Chúng tôi xin lỗi vì sự bất tiện này."
 
-#: views/interrupt/migration-error.blade.php:7
+#: views/interrupt/migration-error.blade.php:8
 msgid "Data Migration Failed"
 msgstr "Di chuyển dữ liệu không thành công"
 
@@ -981,11 +1320,11 @@ msgstr "Nguồn Traffic:"
 msgid "Order Referrer"
 msgstr "Người giới thiệu đơn hàng"
 
-#: IAWP/View_Counter.php:93
+#: IAWP/View_Counter.php:94
 msgid "Increase count by:"
 msgstr "Tăng số lượng bằng cách:"
 
-#: IAWP/View_Counter.php:87
+#: IAWP/View_Counter.php:88
 msgid "View Counter Adjustment"
 msgstr "Xem điều chỉnh bộ đếm"
 
@@ -993,35 +1332,32 @@ msgstr "Xem điều chỉnh bộ đếm"
 msgid "Exit Rate"
 msgstr "Tỷ lệ thoát"
 
-#: IAWP/Tables/Table_Pages.php:28 views/email/email.blade.php:121
+#: IAWP/Tables/Table_Pages.php:28 views/email/email.blade.php:125
 msgid "Exits"
 msgstr "Thoát"
 
-#: IAWP/Tables/Table_Pages.php:28 views/email/email.blade.php:119
+#: IAWP/Tables/Table_Pages.php:28 views/email/email.blade.php:123
 msgid "Entrances"
 msgstr "Lối vào"
 
-#: IAWP/Tables/Table.php:235
+#: IAWP/Tables/Table.php:245 views/overview/overview.blade.php:56
 msgid "Download PDF"
 msgstr "Tải xuống PDF"
 
-#: IAWP/Tables/Table.php:227
-msgid "Download CSV"
-msgstr "Tải về CSV"
-
-#: IAWP/Tables/Table.php:219
+#: IAWP/Tables/Table.php:218
 msgid "Choose a format"
 msgstr "Chọn một định dạng"
 
-#: IAWP/Tables/Table.php:212
+#: IAWP/Tables/Table.php:211 views/overview/overview.blade.php:44
+#: views/overview/overview.blade.php:45
 msgid "Download Report"
 msgstr "Tải xuống báo cáo"
 
-#: IAWP/Settings.php:139
+#: IAWP/Settings.php:143
 msgid "Allow manual adjustment?"
 msgstr "Cho phép điều chỉnh thủ công?"
 
-#: IAWP/Settings.php:136
+#: IAWP/Settings.php:140
 msgid "Make the view counter private?"
 msgstr "Đặt đếm lượt xem ở chế độ riêng tư?"
 
@@ -1037,27 +1373,27 @@ msgstr "Tốc độ làm mới muối"
 msgid "Dashboard widget"
 msgstr "Tiện ích bảng tổng quan"
 
-#: IAWP/Statistics/Statistics.php:150
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:202
 msgid "Average Session Duration"
 msgstr "Thời lượng phiên trung bình"
 
-#: IAWP/Plugin_Conflict_Detector.php:145
+#: IAWP/Plugin_Conflict_Detector.php:178
 msgid "The \"Admin and Site Enhancements\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the Tools > Enhancements menu, click on the \"Disable Components\" section, and deselect the \"Disable REST API\" setting to allow Independent Analytics to track your visitors."
 msgstr "Plugin \"Admin and Site Enhancements (ASE)\" đang chặn API REST mà Independent Analytics cần ghi lại lượt xem. Vui lòng truy cập menu Công cụ > Tối ưu Quản trị (ASE), nhấp vào phần \"Tắt các thành phần\" và bỏ chọn cài đặt \"Tắt REST API\" để cho phép Independent Analytics theo dõi khách truy cập của bạn."
 
-#: IAWP/Plugin_Conflict_Detector.php:136
+#: IAWP/Plugin_Conflict_Detector.php:169
 msgid "The \"WP Hide\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Hide > Rewrite URLs menu and switch the \"Block any JSON REST calls\" option to \"No.\""
 msgstr "Plugin \"WP Hide\" đang chặn API REST mà Independent Analytics cần ghi lại lượt xem. Vui lòng truy cập menu WP Hide > Rewrite URLs và chuyển tùy chọn \"Block any JSON REST calls\" thành \"No.\""
 
-#: IAWP/Plugin_Conflict_Detector.php:131
+#: IAWP/Plugin_Conflict_Detector.php:164
 msgid "The \"WP Hide\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Hide > Rewrite URLs menu and switch the \"Disable JSON REST V2 service\" option to \"No.\""
 msgstr "Plugin \"WP Hide\" đang chặn API REST mà Independent Analytics cần ghi lại lượt xem. Vui lòng truy cập menu WP Hide > Rewrite URLs và chuyển tùy chọn \"Disable JSON REST V2 service\" thành \"NO.\""
 
-#: IAWP/Plugin_Conflict_Detector.php:119
+#: IAWP/Plugin_Conflict_Detector.php:152
 msgid "The \"Shield Security\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the Shield Security > Config > Lockdown menu and add \"iawp\" to your allowed namespaces. This will keep the REST API locked down while allowing requests for Independent Analytics."
 msgstr "Plugin \"Shield Security\" đang chặn API REST mà Independent Analytics cần để ghi lại lượt xem. Vui lòng truy cập menu Shield Security > Config > Lockdown và thêm \"iawp\" vào vùng tên được phép của bạn. Điều này sẽ khóa API REST trong khi vẫn cho phép yêu cầu Independent Analytics."
 
-#: IAWP/Plugin_Conflict_Detector.php:103
+#: IAWP/Plugin_Conflict_Detector.php:135
 msgid "The \"WP Cerber\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Cerber > Dashboard > Hardening menu and add \"iawp\" to your allowed namespaces. This will keep the REST API locked down while allowing requests for Independent Analytics."
 msgstr "Plugin \"WP Cerber\" đang chặn API REST mà Independent Analytics cần để ghi lại lượt xem. Vui lòng truy cập menu WP Cerber > Dashboard > Hardening và thêm \"iawp\" vào vùng tên được phép của bạn. Điều này sẽ khóa API REST trong khi vẫn cho phép yêu cầu Independent Analytics."
 
@@ -1069,23 +1405,23 @@ msgstr "Thanh toán thành công"
 msgid "All Time:"
 msgstr "Từ đầu đến nay:"
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:345
 msgid "Close menu"
 msgstr "Đóng menu"
 
-#: IAWP/Independent_Analytics.php:242 views/partials/sidebar.blade.php:35
+#: IAWP/Independent_Analytics.php:345 views/partials/sidebar.blade.php:38
 msgid "Open menu"
 msgstr "Mở menu"
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:345
 msgid "This report archive is invalid. Please export your reports and try again."
 msgstr "Bản lưu trữ báo cáo này không hợp lệ. Vui lòng xuất báo cáo của bạn và thử lại."
 
-#: IAWP/Independent_Analytics.php:154 IAWP/Independent_Analytics.php:156
+#: IAWP/Independent_Analytics.php:251 IAWP/Independent_Analytics.php:253
 msgid "Changelog"
 msgstr "Nhật ký thay đổi"
 
-#: IAWP/Independent_Analytics.php:148
+#: IAWP/Independent_Analytics.php:239
 msgid "Help & Support"
 msgstr "Trợ giúp & Hỗ trợ"
 
@@ -1121,15 +1457,16 @@ msgstr "90 ngày qua"
 msgid "Last 60 Days"
 msgstr "60 ngày qua"
 
+#: IAWP/Admin_Page/Integrations_Pages.php:16
 #: IAWP/Admin_Page/Support_Page.php:14 IAWP/Admin_Page/Updates_Page.php:15
 msgid "You do not have permission to view this page."
 msgstr "Bạn không có quyền xem trang này."
 
-#: IAWP/Admin_Page/Analytics_Page.php:178
+#: IAWP/Admin_Page/Analytics_Page.php:190
 msgid "There is no issue at this time, but you will need to enable the missing permissions before updating the plugin to a newer version to ensure an error is avoided. Please click this link to read our tutorial:"
 msgstr "Hiện tại không có vấn đề gì nhưng bạn sẽ cần kích hoạt các quyền còn thiếu trước khi cập nhật plugin lên phiên bản mới hơn để đảm bảo tránh được lỗi. Vui lòng nhấp vào liên kết này để đọc hướng dẫn của chúng tôi:"
 
-#: IAWP/Admin_Page/Analytics_Page.php:178
+#: IAWP/Admin_Page/Analytics_Page.php:190
 msgid "Your site is missing the following critical database permissions:"
 msgstr "Trang web của bạn thiếu các quyền cơ sở dữ liệu quan trọng sau:"
 
@@ -1168,12 +1505,11 @@ msgstr "Tùy chỉnh màu sắc"
 #: views/settings/block-by-role.blade.php:5
 #: views/settings/block-ips.blade.php:5 views/settings/capabilities.blade.php:5
 #: views/settings/delete.blade.php:5 views/settings/email-reports.blade.php:5
-#: views/settings/export-data.blade.php:5
-#: views/settings/export-reports.blade.php:7
-#: views/settings/export-reports.blade.php:45 views/settings/pruner.blade.php:9
+#: views/settings/export-reports.blade.php:11
+#: views/settings/export-reports.blade.php:67 views/settings/pruner.blade.php:9
 #: views/settings/view-counter.blade.php:3
 #: views/settings/woocommerce.blade.php:9 views/click-tracking/menu.blade.php:6
-#: views/settings/export-reports.blade.php:47
+#: views/settings/export-reports.blade.php:69
 msgid "Read Tutorial"
 msgstr "Đọc hướng dẫn"
 
@@ -1202,7 +1538,7 @@ msgstr "Hệ điều hành"
 msgid "Type"
 msgstr "Loại"
 
-#: IAWP/Migrations/Migration_17.php:32
+#: IAWP/Report_Finder.php:197
 msgid "Browsers"
 msgstr "Trình duyệt"
 
@@ -1218,37 +1554,38 @@ msgstr "OS"
 msgid "Device Type"
 msgstr "Loại thiết bị"
 
-#: IAWP/Real_Time.php:64
+#: IAWP/Real_Time.php:65
 msgid "Device Types"
 msgstr "Loại thiết bị"
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:345
 msgid "Exporting Devices..."
 msgstr "Đang xuất thiết bị..."
 
-#: IAWP/Independent_Analytics.php:242 views/settings/export-data.blade.php:17
+#: IAWP/Independent_Analytics.php:345
 msgid "Export Devices"
 msgstr "Xuất thiết bị"
 
-#: IAWP/Email_Reports/Email_Reports.php:162 IAWP/Report_Finder.php:13
-#: IAWP/Report_Finder.php:195 views/partials/sidebar.blade.php:105
+#: IAWP/Email_Reports/Email_Reports.php:174
+#: IAWP/Overview/Modules/Module.php:424 IAWP/Report.php:37
+#: IAWP/Report_Finder.php:110 views/partials/sidebar.blade.php:118
 msgid "Devices"
 msgstr "Thiết bị"
 
-#: views/campaign-builder.blade.php:215 views/click-tracking/link.blade.php:103
+#: views/campaign-builder.blade.php:215 views/click-tracking/link.blade.php:119
 #: views/click-tracking/menu.blade.php:84
 msgid "Delete"
 msgstr "Xoá"
 
-#: IAWP/Migrations/Migration_17.php:30
+#: IAWP/Report_Finder.php:195
 msgid "Cities"
 msgstr "Thành phố"
 
-#: IAWP/Plugin_Conflict_Detector.php:90
+#: IAWP/Plugin_Conflict_Detector.php:121
 msgid "The \"NinjaFirewall\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the NinjaFirewall > Firewall Policies menu and uncheck the \"Block any access to the API\" checkbox to allow Independent Analytics to track your visitors."
 msgstr "Plugin \"NinjaFirewall\" đang chặn API REST mà Independent Analytics cần để ghi lại lượt xem. Vui lòng truy cập menu NinjaFirewall > Firewall Policies và bỏ chọn hộp kiểm \"Block any access to the API\" để cho phép Independent Analytics theo dõi khách truy cập của bạn."
 
-#: views/email/email.blade.php:128
+#: IAWP/Email_Reports/Email_Reports.php:123 IAWP/Settings.php:372
 msgid "This email was generated and delivered by %s"
 msgstr "Email này được tạo và gửi bởi %s"
 
@@ -1287,9 +1624,9 @@ msgstr "Hàng giờ"
 msgid "Daily"
 msgstr "Hàng ngày"
 
-#: IAWP/Statistics/Statistics.php:152 IAWP/Tables/Table_Campaigns.php:25
-#: IAWP/Tables/Table_Devices.php:34 IAWP/Tables/Table_Geo.php:28
-#: IAWP/Tables/Table_Referrers.php:26
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:204
+#: IAWP/Tables/Table_Campaigns.php:25 IAWP/Tables/Table_Devices.php:34
+#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Referrers.php:26
 msgid "Views Per Session"
 msgstr "Lượt xem mỗi phiên"
 
@@ -1305,9 +1642,10 @@ msgstr "Vô hiệu hóa số liệu thống kê thanh công cụ quản trị"
 msgid "Admin toolbar stats"
 msgstr "Thống kê thanh công cụ quản trị"
 
-#: IAWP/Statistics/Statistics.php:150 IAWP/Tables/Table_Campaigns.php:25
-#: IAWP/Tables/Table_Devices.php:34 IAWP/Tables/Table_Geo.php:28
-#: IAWP/Tables/Table_Pages.php:28 IAWP/Tables/Table_Referrers.php:26
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:202
+#: IAWP/Tables/Table_Campaigns.php:25 IAWP/Tables/Table_Devices.php:34
+#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Pages.php:28
+#: IAWP/Tables/Table_Referrers.php:26
 msgid "Bounce Rate"
 msgstr "Tỷ lệ thoát"
 
@@ -1327,11 +1665,11 @@ msgstr "Hôm nay:"
 msgid "Date"
 msgstr "Ngày"
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:345
 msgid "Apply Relative Dates"
 msgstr "Áp dụng ngày tương đối"
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:345
 msgid "Apply Exact Dates"
 msgstr "Áp dụng ngày chính xác"
 
@@ -1344,35 +1682,35 @@ msgstr "Thời lượng xem"
 msgid "Session Duration"
 msgstr "Thời lượng phiên"
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:345
 msgid "Exporting Geolocations..."
 msgstr "Đang xuất vị trí địa lý..."
 
-#: IAWP/Plugin_Conflict_Detector.php:83
+#: IAWP/Plugin_Conflict_Detector.php:114
 msgid "The \"WordPress REST API Authentication\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the miniOrange API Authentication > Protected REST APIs menu and uncheck the \"/iawp/search\" box to allow Independent Analytics to track your visitors."
 msgstr "Plugin \"Xác thực API REST của WordPress\" đang chặn API REST mà phân tích độc lập cần ghi lại lượt xem. Vui lòng truy cập menu Xác thực API miniOrange > API REST được bảo vệ và bỏ chọn hộp \"/iawp/search\" để cho phép Independent Analytics theo dõi khách truy cập của bạn."
 
-#: IAWP/Plugin_Conflict_Detector.php:76
+#: IAWP/Plugin_Conflict_Detector.php:107
 msgid "The \"WP Hardening\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Hardening > Security Fixers menu and turn off the \"Disable WP API JSON\" option, so Independent Analytics can track your visitors."
 msgstr "Plugin \"WP Hardening\" đang chặn API REST mà Independent Analytics cần ghi lại lượt xem. Vui lòng truy cập menu TWP Hardening > Security Fixers và tắt tùy chọn \"Disable WP API JSON\" để  Independent Analytics có thể theo dõi khách truy cập của bạn."
 
-#: IAWP/Independent_Analytics.php:242 views/settings/export-data.blade.php:19
+#: IAWP/Independent_Analytics.php:345
 msgid "Export Campaigns"
 msgstr "Xuất chiến dịch"
 
-#: IAWP/Independent_Analytics.php:242 views/settings/export-data.blade.php:15
+#: IAWP/Independent_Analytics.php:345
 msgid "Export Geolocations"
 msgstr "Xuất vị trí địa lý"
 
-#: IAWP/Independent_Analytics.php:242 views/settings/export-data.blade.php:13
+#: IAWP/Independent_Analytics.php:345
 msgid "Export Referrers"
 msgstr "Xuất nguồn traffic"
 
-#: IAWP/Independent_Analytics.php:242 views/settings/export-data.blade.php:11
+#: IAWP/Independent_Analytics.php:345
 msgid "Export Pages"
 msgstr "Xuất trang"
 
-#: IAWP/Models/Page_Post_Type_Archive.php:33
+#: IAWP/Models/Page_Post_Type_Archive.php:37
 msgid "Shop"
 msgstr "Cửa hàng"
 
@@ -1380,47 +1718,53 @@ msgstr "Cửa hàng"
 msgid "Comments"
 msgstr "Bình luận"
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:345
 msgid "Exporting Campaigns..."
 msgstr "Đang xuất chiến dịch..."
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:345
 msgid "Exporting Pages..."
 msgstr "Đang xuất trang..."
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:345
 msgid "Exporting Referrers..."
 msgstr "Đang xuất các nguồn traffic..."
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:345
 msgid "Copied"
 msgstr "Đã sao chép"
 
-#: IAWP/Email_Reports/Email_Reports.php:136
+#: IAWP/Email_Reports/Email_Reports.php:148
 msgid "[Test]"
 msgstr "[Kiểm tra]"
 
-#: IAWP/Chart_Geo.php:94 IAWP/Statistics/Statistics.php:150
-#: IAWP/Tables/Table_Campaigns.php:25 IAWP/Tables/Table_Devices.php:34
-#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Pages.php:28
-#: IAWP/Tables/Table_Referrers.php:26
+#: IAWP/Independent_Analytics.php:345
+#: IAWP/Overview/Modules/New_Sessions_Module.php:34 IAWP/Report.php:105
+#: IAWP/Statistics/Statistics.php:202 IAWP/Tables/Table_Campaigns.php:25
+#: IAWP/Tables/Table_Devices.php:34 IAWP/Tables/Table_Geo.php:28
+#: IAWP/Tables/Table_Pages.php:28 IAWP/Tables/Table_Referrers.php:26
+#: views/overview/modules/busiest-day-of-week.blade.php:20
+#: views/overview/modules/busiest-time-of-day.blade.php:20
 msgid "Sessions"
 msgstr "Phiên"
 
-#: IAWP/Independent_Analytics.php:136
+#: IAWP/Independent_Analytics.php:227
 msgid "Campaign Builder"
 msgstr "Trình tạo chiến dịch"
 
-#: IAWP/Statistics/Statistics.php:154 IAWP/Tables/Table.php:375
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:206
+#: IAWP/Tables/Table.php:435
 msgid "Average Order Volume"
 msgstr "Lượng đặt hàng trung bình"
 
-#: IAWP/Statistics/Statistics.php:154 IAWP/Tables/Table.php:375
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:206
+#: IAWP/Tables/Table.php:435
 msgid "Earnings Per Visitor"
 msgstr "Thu nhập trên mỗi khách truy cập"
 
-#: IAWP/Statistics/Statistics.php:154 IAWP/Tables/Table.php:375
-#: IAWP/Tables/Table.php:379 IAWP/Tables/Table.php:382
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:206
+#: IAWP/Tables/Table.php:435 IAWP/Tables/Table.php:439
+#: IAWP/Tables/Table.php:442
 msgid "Conversion Rate"
 msgstr "Tỷ lệ chuyển đổi"
 
@@ -1428,32 +1772,40 @@ msgstr "Tỷ lệ chuyển đổi"
 msgid "Newer database version found"
 msgstr "Đã tìm thấy phiên bản cơ sở dữ liệu mới hơn"
 
-#: views/settings/email-reports.blade.php:135
+#: views/settings/email-reports.blade.php:154
+#: views/settings/email-reports.blade.php:155
 msgid "Send test email"
 msgstr "Gửi email thử nghiệm"
 
-#: views/settings/email-reports.blade.php:133
+#: views/settings/email-reports.blade.php:152
+#: views/settings/email-reports.blade.php:153
 msgid "Save settings"
 msgstr "Lưu cài đặt"
 
-#: views/settings/email-reports.blade.php:119
+#: views/settings/email-reports.blade.php:138
+#: views/settings/email-reports.blade.php:139
 msgid "Sending to these addresses"
 msgstr "Gửi đến những địa chỉ này"
 
-#: views/settings/email-reports.blade.php:116
+#: views/settings/email-reports.blade.php:135
+#: views/settings/email-reports.blade.php:136
 msgid "This email already exists"
 msgstr "Email này đã tồn tại"
 
-#: views/settings/email-reports.blade.php:112
-#: views/settings/email-reports.blade.php:127
+#: views/settings/email-reports.blade.php:131
+#: views/settings/email-reports.blade.php:146
+#: views/settings/email-reports.blade.php:132
+#: views/settings/email-reports.blade.php:147
 msgid "Remove email"
 msgstr "Xóa email"
 
-#: views/settings/email-reports.blade.php:103
+#: views/settings/email-reports.blade.php:122
+#: views/settings/email-reports.blade.php:123
 msgid "Add email"
 msgstr "Thêm email"
 
-#: views/settings/email-reports.blade.php:99
+#: views/settings/email-reports.blade.php:118
+#: views/settings/email-reports.blade.php:119
 msgid "Add new email addresses"
 msgstr "Thêm địa chỉ email mới"
 
@@ -1497,67 +1849,67 @@ msgstr ""
 msgid "Update running"
 msgstr "Cập nhật đang chạy"
 
-#: IAWP/Statistics/Statistics.php:154 IAWP/Tables/Table.php:375
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:206
+#: IAWP/Tables/Table.php:435
 msgid "Refunded Amount"
 msgstr "Số tiền được hoàn lại"
 
-#: IAWP/Statistics/Statistics.php:154 IAWP/Tables/Table.php:375
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:206
+#: IAWP/Tables/Table.php:435
 msgid "Refunds"
 msgstr "Hoàn tiền"
 
-#: IAWP/Statistics/Statistics.php:154 IAWP/Tables/Table.php:375
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:206
+#: IAWP/Tables/Table.php:435
 msgid "Gross Sales"
 msgstr "Tổng doanh thu"
 
-#: IAWP/Statistics/Statistics.php:154 IAWP/Tables/Table.php:375
+#: IAWP/Overview/Form_Field.php:92 IAWP/Report.php:105
+#: IAWP/Statistics/Statistics.php:206 IAWP/Tables/Table.php:435
 msgid "Orders"
 msgstr "Đơn hàng"
 
-#: IAWP/Settings.php:211
+#: IAWP/Settings.php:221
 msgid "Block by User Role"
 msgstr "Chặn theo vai trò người dùng"
 
-#: IAWP/Settings.php:201
+#: IAWP/Settings.php:209
 msgid "Scheduled Email Reports"
 msgstr "Báo cáo email theo lịch trình"
 
-#: IAWP/Plugin_Conflict_Detector.php:70
+#: IAWP/Plugin_Conflict_Detector.php:101
 msgid "The \"All-In-One Intranet\" plugin needs to be deactivated because it is disabling the REST API, which Independent Analytics uses to record visits. You may want to try the \"My Private Site\" plugin instead."
 msgstr "Cần phải tắt plugin \"All-In-One Intranet\" vì nó đang vô hiệu hóa API REST mà Independent Analytics sử dụng để ghi lại lượt truy cập. Thay vào đó, bạn có thể thử plugin \"My Private Site\"."
 
-#: IAWP/Cron_Job.php:40
-msgid "Once a Month"
-msgstr "Mỗi tháng một lần"
-
-#: views/notices/notice.blade.php:6
+#: views/notices/notice.blade.php:9
 msgid "Learn More"
 msgstr "Tìm hiểu thêm"
 
-#: IAWP/Admin_Page/Analytics_Page.php:170
+#: IAWP/Admin_Page/Analytics_Page.php:184
 msgid "I've cleared the cache"
 msgstr "Tôi đã xóa bộ nhớ đệm"
 
-#: IAWP/Admin_Page/Analytics_Page.php:170
+#: IAWP/Admin_Page/Analytics_Page.php:184
 msgid "Please clear your cache to ensure tracking works properly."
 msgstr "Vui lòng xóa bộ nhớ đệm của bạn để đảm bảo tính năng theo dõi hoạt động bình thường."
 
-#: IAWP/Plugin_Conflict_Detector.php:67
+#: IAWP/Plugin_Conflict_Detector.php:98
 msgid "The \"WPO Tweaks & Optimizations\" plugin needs to be deactivated because it is disabling the REST API, which Independent Analytics uses to record visits."
 msgstr "Cần phải tắt plugin \"WPO Tweaks & Optimizations\" vì nó đang vô hiệu hóa API REST mà Independent Analytics sử dụng để ghi lại lượt truy cập."
 
-#: IAWP/Plugin_Conflict_Detector.php:62
+#: IAWP/Plugin_Conflict_Detector.php:93
 msgid "The \"Disable XML-RPC-API\" plugin is blocking REST API requests, which Independent Analytics needs to record views. Please visit the Security Settings menu and turn off the \"Disable JSON REST API\" option, so Independent Analytics can track your visitors."
 msgstr "Plugin \"Disable XML-RPC-API\" đang chặn các yêu cầu API REST mà Independent Analytics cần ghi lại lượt xem. Vui lòng truy cập menu Cài đặt bảo mật và tắt tùy chọn \"Disable JSON REST API\" để Independent Analytics có thể theo dõi khách truy cập của bạn."
 
-#: IAWP/Plugin_Conflict_Detector.php:53
+#: IAWP/Plugin_Conflict_Detector.php:84
 msgid "The \"Disable REST API\" plugin is blocking REST API requests for unauthenticated users, which Independent Analytics needs to record views. Please enable the /iawp/search route, so Independent Analytics can track your visitors."
 msgstr "Plugin \"Disable REST API\" đang chặn các yêu cầu API REST đối với người dùng chưa được xác thực mà Independent Analytics cần ghi lại lượt xem. Vui lòng bật lộ trình /iawp/search để Independent Analytics có thể theo dõi khách truy cập của bạn."
 
-#: IAWP/Plugin_Conflict_Detector.php:44
+#: IAWP/Plugin_Conflict_Detector.php:75
 msgid "The \"All In One WP Security\" plugin is blocking REST API requests, which Independent Analytics needs to record views. Please disable this setting via the WP Security > Miscellaneous menu."
 msgstr "Plugin \"All In One WP Security\" đang chặn các yêu cầu API REST mà Independent Analytics cần ghi lại lượt xem. Vui lòng tắt cài đặt này thông qua menu WP Security > Miscellaneous."
 
-#: IAWP/Plugin_Conflict_Detector.php:38
+#: IAWP/Plugin_Conflict_Detector.php:69
 msgid "The \"Disable WP REST API\" plugin needs to be deactivated because Independent Analytics uses the REST API to record visits."
 msgstr "Cần phải tắt plugin \"Disable WP REST API\" vì Independent Analytics sử dụng API REST để ghi lại lượt truy cập."
 
@@ -1565,19 +1917,19 @@ msgstr "Cần phải tắt plugin \"Disable WP REST API\" vì Independent Analyt
 msgid "White-label for non-admins"
 msgstr "Nhãn trắng dành cho người không phải quản trị viên"
 
-#: views/real_time.blade.php:89
+#: views/real-time.blade.php:110 views/real-time.blade.php:111
 msgid "No results in the last 5 minutes."
 msgstr "Không có kết quả trong 5 phút qua."
 
-#: views/real_time.blade.php:53
+#: views/real-time.blade.php:74 views/real-time.blade.php:75
 msgid "The Last 30 Minutes"
 msgstr "30 phút cuối cùng"
 
-#: views/real_time.blade.php:42
+#: views/real-time.blade.php:63 views/real-time.blade.php:64
 msgid "The Last 5 Minutes"
 msgstr "5 phút cuối cùng"
 
-#: views/real_time.blade.php:24
+#: views/real-time.blade.php:45 views/real-time.blade.php:46
 msgid "Active Visitors is the number of people who have viewed a page within the last 5 minutes."
 msgstr "Khách truy cập đang hoạt động là số người đã xem một trang trong vòng 5 phút qua."
 
@@ -1593,31 +1945,31 @@ msgstr "Tăng trưởng khách truy cập"
 msgid "Views Growth"
 msgstr "Tăng trưởng lượt xem"
 
-#: IAWP/Real_Time.php:64
+#: IAWP/Real_Time.php:65
 msgid "Active Campaigns"
 msgstr "Các chiến dịch đang hoạt động"
 
-#: IAWP/Real_Time.php:64
+#: IAWP/Real_Time.php:65
 msgid "Active Countries"
 msgstr "Các quốc gia hoạt động"
 
-#: IAWP/Real_Time.php:64
+#: IAWP/Real_Time.php:65
 msgid "Active Referrers"
 msgstr "Nguồn traffic hoạt động"
 
-#: IAWP/Real_Time.php:64
+#: IAWP/Real_Time.php:65
 msgid "Active Pages"
 msgstr "Trang hoạt động"
 
-#: IAWP/Email_Reports/Email_Reports.php:159 IAWP/Real_Time.php:63
+#: IAWP/Email_Reports/Email_Reports.php:171 IAWP/Real_Time.php:64
 msgid "Countries"
 msgstr "Quốc gia"
 
-#: IAWP/Real_Time.php:76
+#: IAWP/Real_Time.php:77
 msgid "Active Visitors"
 msgstr "Các khách truy cập đang hoạt động"
 
-#: IAWP/Real_Time.php:76
+#: IAWP/Real_Time.php:77
 msgid "Active Visitor"
 msgstr "Khách truy cập đang hoạt động"
 
@@ -1649,11 +2001,11 @@ msgstr "phút"
 msgid "now"
 msgstr "bây giờ"
 
-#: views/partials/sidebar.blade.php:184
+#: views/partials/sidebar.blade.php:208
 msgid "Get Real-time analytics"
 msgstr "Nhận phân tích thời gian thực"
 
-#: views/partials/sidebar.blade.php:48
+#: IAWP/Report_Finder.php:118 views/partials/sidebar.blade.php:66
 msgid "Real-time"
 msgstr "Thời gian thực"
 
@@ -1662,25 +2014,21 @@ msgstr "Thời gian thực"
 msgid "PRO"
 msgstr "PRO"
 
-#: IAWP/Email_Reports/Email_Reports.php:165 IAWP/Report_Finder.php:13
-#: IAWP/Report_Finder.php:197 views/partials/sidebar.blade.php:120
-#: views/partials/sidebar.blade.php:153
+#: IAWP/Email_Reports/Email_Reports.php:177 IAWP/Report.php:37
+#: IAWP/Report_Finder.php:112 views/partials/sidebar.blade.php:131
+#: views/partials/sidebar.blade.php:175
 msgid "Campaigns"
 msgstr "Chiến dịch"
 
-#: IAWP/Email_Reports/Email_Reports.php:153 IAWP/Real_Time.php:61
-#: IAWP/Report_Finder.php:13 IAWP/Report_Finder.php:189
-#: views/partials/sidebar.blade.php:63
+#: IAWP/Email_Reports/Email_Reports.php:165 IAWP/Real_Time.php:62
+#: IAWP/Report.php:37 IAWP/Report_Finder.php:104
+#: views/partials/sidebar.blade.php:82
 msgid "Pages"
 msgstr "Trang"
 
 #: views/settings/track-authenticated-users.blade.php:4
 msgid "Track logged-in users"
 msgstr "Theo dõi người dùng đã đăng nhập"
-
-#: views/settings/dark-mode.blade.php:3
-msgid "Enable dark mode theme"
-msgstr "Bật giao diện chế độ tối"
 
 #: views/settings/capabilities.blade.php:39
 msgid "Save Permissions"
@@ -1703,30 +2051,32 @@ msgid "User Permissions"
 msgstr "Quyền người dùng"
 
 #: views/settings/block-by-role.blade.php:59
-#: views/settings/block-ips.blade.php:55
-#: views/settings/email-reports.blade.php:136
+#: views/settings/block-ips.blade.php:59
+#: views/settings/email-reports.blade.php:155
+#: views/settings/email-reports.blade.php:156
 msgid "Unsaved changes"
 msgstr "Những thay đổi chưa được lưu"
 
-#: views/settings/block-ips.blade.php:54
+#: views/settings/block-ips.blade.php:58
 msgid "Save IP Addresses"
 msgstr "Lưu địa chỉ IP"
 
-#: views/settings/block-ips.blade.php:35
+#: views/settings/block-ips.blade.php:39
 msgid "This IP is already blocked"
 msgstr "IP này đã bị chặn"
 
 #: views/settings/block-by-role.blade.php:38
-#: views/settings/block-ips.blade.php:34
-#: views/settings/email-reports.blade.php:115
+#: views/settings/block-ips.blade.php:38
+#: views/settings/email-reports.blade.php:134
+#: views/settings/email-reports.blade.php:135
 msgid "Input is empty"
 msgstr "Đầu vào trống"
 
-#: IAWP/Settings.php:194
+#: IAWP/Settings.php:202
 msgid "Block IP Addresses"
 msgstr "Chặn địa chỉ IP"
 
-#: IAWP/Settings.php:52
+#: IAWP/Settings.php:50
 msgid "Basic Settings"
 msgstr "Cài đặt cơ bản"
 
@@ -1745,6 +2095,10 @@ msgstr "Tạo chiến dịch đầu tiên của bạn"
 #: views/tables/rows.blade.php:20
 msgid "No campaign data found"
 msgstr "Không tìm thấy dữ liệu chiến dịch"
+
+#: IAWP/Independent_Analytics.php:106 views/partials/sidebar.blade.php:22
+msgid "Upgrade to Pro"
+msgstr "Nâng cấp lên Pro"
 
 #: views/campaign-builder.blade.php:194
 msgctxt "Created five minutes ago"
@@ -1856,7 +2210,7 @@ msgstr "Nguồn"
 msgid "Landing Page"
 msgstr "Trang đích"
 
-#: IAWP/Independent_Analytics.php:162
+#: IAWP/Independent_Analytics.php:259
 msgid "Upgrade to Pro &rarr;"
 msgstr "Nâng cấp lên Pro &rarr;"
 
@@ -1896,20 +2250,20 @@ msgstr "Nhập ID của bất kỳ trang nào bạn muốn loại trừ, phân t
 msgid "You can output the view counter in a custom location using the shortcode:"
 msgstr "Bạn có thể xuất bộ đếm lượt xem ở một vị trí tùy chỉnh bằng mã ngắn:"
 
-#: IAWP/Settings.php:122 IAWP/Settings.php:173 IAWP/View_Counter.php:59
-#: IAWP/View_Counter.php:78
+#: IAWP/Settings.php:126 IAWP/Settings.php:181 IAWP/View_Counter.php:51
+#: IAWP/View_Counter.php:70
 msgid "Views:"
 msgstr "Lượt xem:"
 
-#: IAWP/Settings.php:155
+#: IAWP/Settings.php:159
 msgid "Uncheck all boxes to only show view count manually. See shortcode documentation below for details."
 msgstr "Bỏ chọn tất cả các hộp để chỉ hiển thị số lượt xem theo cách thủ công. Xem tài liệu mã ngắn bên dưới để biết chi tiết."
 
-#: IAWP/Settings.php:133
+#: IAWP/Settings.php:137
 msgid "Display the icon"
 msgstr "Hiển thị biểu tượng"
 
-#: IAWP/Settings.php:125
+#: IAWP/Settings.php:129
 msgid "Edit the label"
 msgstr "Sửa nhãn"
 
@@ -1967,19 +2321,19 @@ msgstr "Tuần trước"
 msgid "This Week"
 msgstr "Tuần này"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:66
-#: IAWP/Migrations/Migration_17.php:29
+#: IAWP/Date_Range/Relative_Date_Range.php:66 IAWP/Report_Finder.php:194
 #: views/settings/view-counter/views-to-count.blade.php:8
 msgid "Last 7 Days"
 msgstr "7 ngày qua"
 
 #: IAWP/Date_Range/Relative_Date_Range.php:59
+#: IAWP/Overview/Modules/Recent_Conversions_Module.php:46
+#: IAWP/Overview/Modules/Recent_Views_Module.php:37
 #: views/settings/view-counter/views-to-count.blade.php:5
 msgid "Yesterday"
 msgstr "Hôm qua"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:53
-#: IAWP/Migrations/Migration_17.php:25
+#: IAWP/Date_Range/Relative_Date_Range.php:53 IAWP/Report_Finder.php:190
 #: views/settings/view-counter/views-to-count.blade.php:4
 msgid "Today"
 msgstr "Hôm nay"
@@ -1992,7 +2346,7 @@ msgstr "Thành phố"
 msgid "Subdivision"
 msgstr "Phân khu"
 
-#: IAWP/Real_Time.php:63 IAWP/Tables/Table_Geo.php:22
+#: IAWP/Real_Time.php:64 IAWP/Tables/Table_Geo.php:22
 #: IAWP/Tables/Table_Geo.php:28
 msgid "Country"
 msgstr "Quốc gia"
@@ -2001,13 +2355,12 @@ msgstr "Quốc gia"
 msgid "Continent"
 msgstr "Lục địa"
 
-#: IAWP/Admin_Page/Analytics_Page.php:150
+#: IAWP/Admin_Page/Analytics_Page.php:159
 msgctxt "Following text is a noun: DB-IP"
 msgid "Geolocation data powered by"
 msgstr "Dữ liệu vị trí được cung cấp bởi"
 
-#: IAWP/Report_Finder.php:13 IAWP/Report_Finder.php:193
-#: views/partials/sidebar.blade.php:91
+#: IAWP/Report_Finder.php:108 views/partials/sidebar.blade.php:106
 msgid "Geographic"
 msgstr "Địa lý"
 
@@ -2023,22 +2376,26 @@ msgstr "Không tìm thấy nguồn traffic"
 msgid "No views found"
 msgstr "Không tìm thấy lượt xem nào"
 
-#: views/quick-stats.blade.php:54
+#: views/quick-stat.blade.php:26
 msgid "vs. previous period"
 msgstr "so với kỳ trước"
 
 #: views/date-picker/date-picker.blade.php:45
-#: views/settings/delete.blade.php:33 views/settings/delete.blade.php:56
-#: views/settings/pruner.blade.php:73 views/click-tracking/link.blade.php:89
-#: views/click-tracking/menu.blade.php:106 views/settings/pruner.blade.php:74
+#: views/settings/delete.blade.php:39 views/settings/delete.blade.php:59
+#: views/settings/delete.blade.php:82 views/settings/pruner.blade.php:73
+#: views/click-tracking/link.blade.php:105
+#: views/click-tracking/menu.blade.php:106
+#: views/overview/module-editor.blade.php:16
+#: views/overview/module-picker.blade.php:19 views/settings/pruner.blade.php:74
 msgid "Cancel"
 msgstr "Hủy bỏ"
 
-#: views/settings/delete.blade.php:26 views/settings/delete.blade.php:49
+#: views/settings/delete.blade.php:32 views/settings/delete.blade.php:52
+#: views/settings/delete.blade.php:75
 msgid "Type \"%s\" in the input below to confirm."
 msgstr "Nhập \"%s\" vào phần nhập bên dưới để xác nhận."
 
-#: views/settings/delete.blade.php:42 views/settings/delete.blade.php:54
+#: views/settings/delete.blade.php:68 views/settings/delete.blade.php:80
 msgid "Delete all data"
 msgstr "Xoá tất cả dữ liệu"
 
@@ -2050,10 +2407,10 @@ msgstr "Khu vực nguy hiểm"
 msgid "First day of week"
 msgstr "Ngày đầu tuần"
 
-#: IAWP/Chart_Geo.php:89 IAWP/Statistics/Statistics.php:150
-#: IAWP/Tables/Table_Campaigns.php:25 IAWP/Tables/Table_Devices.php:34
-#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Pages.php:28
-#: IAWP/Tables/Table_Referrers.php:26
+#: IAWP/Independent_Analytics.php:345 IAWP/Report.php:105
+#: IAWP/Statistics/Statistics.php:202 IAWP/Tables/Table_Campaigns.php:25
+#: IAWP/Tables/Table_Devices.php:34 IAWP/Tables/Table_Geo.php:28
+#: IAWP/Tables/Table_Pages.php:28 IAWP/Tables/Table_Referrers.php:26
 msgid "Visitors"
 msgstr "Khách truy cập"
 
@@ -2061,7 +2418,7 @@ msgstr "Khách truy cập"
 msgid "Last 30 Days"
 msgstr "30 ngày qua"
 
-#: IAWP/Independent_Analytics.php:262 IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
+#: IAWP/Independent_Analytics.php:365 IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
 msgid "Analytics Dashboard"
 msgstr "Bảng phân tích"
 
@@ -2097,7 +2454,7 @@ msgstr "Thứ Hai"
 msgid "Sunday"
 msgstr "Chủ nhật"
 
-#: IAWP/Tables/Table.php:100
+#: IAWP/Tables/Table.php:103
 msgid "(deleted)"
 msgstr "(đã xóa)"
 
@@ -2133,10 +2490,6 @@ msgstr "Lưu cài đặt"
 msgid "Track logged in users"
 msgstr "Theo dõi người dùng đã đăng nhập"
 
-#: IAWP/Settings.php:56
-msgid "Dark mode"
-msgstr "Chế độ tối"
-
 #: IAWP/Models/Page_Search.php:32
 msgid "Search:"
 msgstr "Tìm kiếm:"
@@ -2158,8 +2511,8 @@ msgid "Date Archive (Year)"
 msgstr "Ngày lưu trữ (năm)"
 
 #: IAWP/Models/Page_Author_Archive.php:32
-#: IAWP/Models/Page_Post_Type_Archive.php:39
-#: views/click-tracking/link.blade.php:95
+#: IAWP/Models/Page_Post_Type_Archive.php:43
+#: views/click-tracking/link.blade.php:111
 #: views/click-tracking/menu.blade.php:37
 msgid "Archive"
 msgstr "Lưu trữ"
@@ -2238,7 +2591,7 @@ msgid "Attachment"
 msgstr "Đính kèm"
 
 #: IAWP/Filter_Lists/Page_Type_Filter_List.php:13
-#: IAWP/Models/Page_Virtual.php:63 IAWP/Real_Time.php:61
+#: IAWP/Models/Page_Virtual.php:63 IAWP/Real_Time.php:62
 #: IAWP/Tables/Table_Pages.php:23
 msgid "Page"
 msgstr "Trang"
@@ -2251,7 +2604,7 @@ msgstr "Bài viết"
 msgid "Direct"
 msgstr "Trực tiếp"
 
-#: IAWP/Filter_Lists/Referrer_Type_Filter_List.php:11 IAWP/Real_Time.php:62
+#: IAWP/Filter_Lists/Referrer_Type_Filter_List.php:11 IAWP/Real_Time.php:63
 #: IAWP/Tables/Table_Referrers.php:21 IAWP/Tables/Table_Referrers.php:26
 msgid "Referrer"
 msgstr "Nguồn Traffic"
@@ -2289,27 +2642,32 @@ msgstr "Áp dụng"
 msgid "+ Add another condition"
 msgstr "+ Thêm điều kiện khác"
 
-#: IAWP/Independent_Analytics.php:130
+#: IAWP/Independent_Analytics.php:221
 msgid "Settings"
 msgstr "Cài đặt"
 
-#: IAWP/Email_Reports/Email_Reports.php:156 IAWP/Real_Time.php:62
-#: IAWP/Report_Finder.php:13 IAWP/Report_Finder.php:191
-#: views/partials/sidebar.blade.php:77
+#: IAWP/Email_Reports/Email_Reports.php:168 IAWP/Real_Time.php:63
+#: IAWP/Report.php:37 IAWP/Report_Finder.php:106
+#: views/partials/sidebar.blade.php:94
 msgid "Referrers"
 msgstr "Nguồn Traffic"
 
-#: IAWP/Chart_Geo.php:84 IAWP/Custom_WordPress_Columns/Views_Column.php:34
-#: IAWP/Independent_Analytics.php:242 IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
-#: IAWP/Statistics/Statistics.php:150 IAWP/Tables/Table_Campaigns.php:25
-#: IAWP/Tables/Table_Devices.php:34 IAWP/Tables/Table_Geo.php:28
-#: IAWP/Tables/Table_Pages.php:28 IAWP/Tables/Table_Referrers.php:26
-#: views/email/email.blade.php:123 views/real_time.blade.php:67
+#: IAWP/Custom_WordPress_Columns/Views_Column.php:35
+#: IAWP/Independent_Analytics.php:345 IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:202
+#: IAWP/Tables/Table_Campaigns.php:25 IAWP/Tables/Table_Devices.php:34
+#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Pages.php:28
+#: IAWP/Tables/Table_Referrers.php:26 views/email/email.blade.php:127
+#: views/real-time.blade.php:88 views/real-time.blade.php:89
 msgid "Views"
 msgstr "Lượt xem"
 
-#: IAWP/Dashboard_Widget.php:24 IAWP/Independent_Analytics.php:124
-#: IAWP/Independent_Analytics.php:125 IAWP/Interrupt.php:19
+#: IAWP/Independent_Analytics.php:113
+msgid "Knowledge Base"
+msgstr "Tài liệu hướng dẫn"
+
+#: IAWP/Dashboard_Widget.php:24 IAWP/Independent_Analytics.php:215
+#: IAWP/Independent_Analytics.php:216 IAWP/Interrupt.php:19
 #: IAWP/Interrupt.php:20
 msgid "Analytics"
 msgstr "Phân tích"

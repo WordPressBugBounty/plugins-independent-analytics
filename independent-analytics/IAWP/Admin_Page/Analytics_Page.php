@@ -7,6 +7,7 @@ use IAWP\Chart;
 use IAWP\Dashboard_Options;
 use IAWP\Database;
 use IAWP\Env;
+use IAWP\Examiner\Header;
 use IAWP\Map;
 use IAWP\Map_Data;
 use IAWP\Overview\Overview;
@@ -16,13 +17,10 @@ use IAWP\Real_Time;
 use IAWP\Report;
 use IAWP\Report_Finder;
 use IAWP\Tables\Table;
-use IAWP\Tables\Table_Campaigns;
-use IAWP\Tables\Table_Clicks;
-use IAWP\Tables\Table_Devices;
-use IAWP\Tables\Table_Geo;
-use IAWP\Tables\Table_Pages;
-use IAWP\Tables\Table_Referrers;
+use IAWP\Utils\Request;
 use IAWP\Utils\Security;
+use IAWPSCOPED\Illuminate\Support\Arr;
+use IAWPSCOPED\Illuminate\Support\Collection;
 /** @internal */
 class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
 {
@@ -33,66 +31,78 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         $tab = (new Env())->get_tab();
         $report = Report_Finder::new()->fetch_current_report();
         $is_showing_skeleton_ui = $report instanceof Report && $report->has_filters();
-        if ($tab === 'views') {
-            $table = new Table_Pages();
-            $statistics_class = $table->group()->statistics_class();
-            $statistics = new $statistics_class($date_rage, null, $options->chart_interval());
-            $stats = new Quick_Stats($statistics, \false, $is_showing_skeleton_ui);
-            $chart = new Chart($statistics, \false, $is_showing_skeleton_ui);
-            $this->interface($table, $stats, $chart);
-        } elseif ($tab === 'referrers') {
-            $table = new Table_Referrers();
-            $statistics_class = $table->group()->statistics_class();
-            $statistics = new $statistics_class($date_rage, null, $options->chart_interval());
-            $stats = new Quick_Stats($statistics, \false, $is_showing_skeleton_ui);
-            $chart = new Chart($statistics, \false, $is_showing_skeleton_ui);
-            $this->interface($table, $stats, $chart);
-        } elseif ($tab === 'geo') {
-            $table = new Table_Geo($options->group());
-            $statistics_class = $table->group()->statistics_class();
-            $statistics = new $statistics_class($date_rage, null, $options->chart_interval());
-            $stats = new Quick_Stats($statistics, \false, $is_showing_skeleton_ui);
+        // Real-time is its own thing
+        if ($tab === 'real-time') {
+            $real_time = new Real_Time();
+            $real_time->render_real_time_analytics();
+            return;
+        }
+        // Overview is its own thing
+        if ($tab === 'overview') {
+            $overview = new Overview();
+            echo $overview->get_report_html();
+            $this->notices();
+            return;
+        }
+        $table_class = Env::get_table($tab);
+        $table = new $table_class($options->group());
+        $sort_configuration = $table->sanitize_sort_parameters($options->sort_column(), $options->sort_direction());
+        $hide_unfiltered_statistics = \false;
+        $rows = null;
+        $examiner_model = null;
+        if ($options->is_examiner()) {
+            $rows_class = $table->group()->rows_class();
+            $rows = new $rows_class($options->get_date_range(), null, null, $sort_configuration);
+            $id = Request::query_int('examiner');
+            $rows->limit_to($id);
+            $examiner_model = $rows->rows()[0];
+            $hide_unfiltered_statistics = \true;
+        }
+        $statistics_class = $table->group()->statistics_class();
+        $statistics = new $statistics_class($date_rage, $rows, $options->chart_interval());
+        $stats = new Quick_Stats($statistics, \false, $is_showing_skeleton_ui, $hide_unfiltered_statistics);
+        // Never show the map when loading the geo examiner. It'll only ever show a single country anyway.
+        if ($tab === 'geo' && !$options->is_examiner()) {
             $table_data_class = $table->group()->rows_class();
             $geo_data = new $table_data_class($date_rage);
             $map_data = new Map_Data($geo_data->rows());
             $chart = new Map($map_data->get_country_data(), null, $is_showing_skeleton_ui);
-            $this->interface($table, $stats, $chart);
-        } elseif ($tab === 'campaigns') {
-            $table = new Table_Campaigns();
-            $statistics_class = $table->group()->statistics_class();
-            $statistics = new $statistics_class($date_rage, null, $options->chart_interval());
-            $stats = new Quick_Stats($statistics, \false, $is_showing_skeleton_ui);
+        } else {
             $chart = new Chart($statistics, \false, $is_showing_skeleton_ui);
-            $this->interface($table, $stats, $chart);
-        } elseif ($tab === 'clicks') {
-            $table = new Table_Clicks($options->group());
-            $statistics_class = $table->group()->statistics_class();
-            $statistics = new $statistics_class($date_rage, null, $options->chart_interval());
-            $stats = new Quick_Stats($statistics, \false, $is_showing_skeleton_ui);
-            $chart = new Chart($statistics, \false, $is_showing_skeleton_ui);
-            $this->interface($table, $stats, $chart);
-        } elseif ($tab === 'devices') {
-            $table = new Table_Devices($options->group());
-            $statistics_class = $table->group()->statistics_class();
-            $statistics = new $statistics_class($date_rage, null, $options->chart_interval());
-            $stats = new Quick_Stats($statistics, \false, $is_showing_skeleton_ui);
-            $chart = new Chart($statistics, \false, $is_showing_skeleton_ui);
-            $this->interface($table, $stats, $chart);
-        } elseif ($tab === 'real-time') {
-            (new Real_Time())->render_real_time_analytics();
-        } elseif ($tab === 'overview') {
-            echo (new Overview())->get_report_html();
-            $this->notices();
         }
+        $this->interface($table, $stats, $chart, $examiner_model);
     }
-    private function interface(Table $table, $stats, $chart)
+    private function interface(Table $table, $stats, $chart, $examiner_model = null)
     {
         $options = Dashboard_Options::getInstance();
         $sort_configuration = $table->sanitize_sort_parameters($options->sort_column(), $options->sort_direction());
+        $header = \IAWPSCOPED\iawp_blade()->run('partials.report-header', ['report' => Report_Finder::new()->fetch_current_report(), 'can_edit' => Capability_Manager::can_edit()]);
+        $examiner_tabs = '';
+        if ($examiner_model) {
+            $header = Header::html($table, $examiner_model);
+            $available_tabs = Collection::make($this->tables())->filter(function (array $table) use($examiner_model) {
+                return $table['table_type'] !== $examiner_model->table_type();
+            })->values()->all();
+            $current = Arr::first($available_tabs);
+            $examiner_tabs = \IAWPSCOPED\iawp_blade()->run('examiner.table-tabs', ['tables' => $available_tabs, 'active' => $current['table_type']]);
+            $table_class = Env::get_table($current['table_type']);
+            $table = new $table_class();
+        }
+        if ($options->is_examiner()) {
+            ?>
+            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+            <?php 
+        }
         ?>
         <div data-controller="report"
+             data-report-is-examiner-value="<?php 
+        echo $options->is_examiner() ? '1' : '0';
+        ?>"
              data-report-name-value="<?php 
         echo Security::string($options->report_name());
+        ?>"
+             data-report-report-name-value="<?php 
+        echo Security::string($table->group()->singular());
         ?>"
              data-report-relative-range-id-value="<?php 
         echo Security::attr($options->relative_range_id());
@@ -104,7 +114,7 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         echo Security::attr($options->end());
         ?>"
              data-report-group-value="<?php 
-        echo Security::attr($options->group());
+        echo Security::attr($table->group()->id());
         ?>"
              data-report-filters-value="<?php 
         echo \esc_attr(Security::json_encode($options->filters()));
@@ -133,7 +143,7 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         >
             <div id="report-header-container" class="report-header-container">
                 <?php 
-        echo \IAWPSCOPED\iawp_blade()->run('partials.report-header', ['report' => Report_Finder::new()->fetch_current_report(), 'can_edit' => Capability_Manager::can_edit()]);
+        echo $header;
         ?>
                 <?php 
         $table->output_report_toolbar();
@@ -147,12 +157,31 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         echo $chart->get_html();
         ?>
             <?php 
+        echo $examiner_tabs;
+        ?>
+            <?php 
         echo $table->get_table_toolbar_markup();
         ?>
             <?php 
         echo $table->get_table_markup($sort_configuration->column(), $sort_configuration->direction());
         ?>
         </div>
+        <?php 
+        if (!$options->is_examiner()) {
+            ?>
+            <div id="iawp-examiner-modal" aria-hidden="true" class="mm micromodal-slide" data-controller="examiner">
+                <div tabindex="-1" class="mm__overlay mm__overlay--full-screen" data-action="click->examiner#close:self" >
+                    <div role="dialog" aria-modal="true" class="mm__container examiner examiner--loading">
+                        <div data-examiner-target="content" class="examiner-content"></div>
+                        <?php 
+            echo \IAWPSCOPED\iawp_blade()->run('examiner.skeleton');
+            ?>
+                    </div>
+                </div>
+            </div>
+        <?php 
+        }
+        ?>
         <?php 
         if (Env::get_tab() === 'geo') {
             echo '<div class="geo-ip-attribution">';
@@ -200,5 +229,9 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         if (\get_option('iawp_show_gsg') === '1' && !\get_option('iawp_need_clear_cache') && !$show_logged_in_tracking_notice && !$plugin_conflict_detector->has_conflict() && (Env::get_tab() !== 'clicks' || Env::get_tab() === 'clicks' && \get_option('iawp_clicks_sync_notice'))) {
             echo \IAWPSCOPED\iawp_blade()->run('notices.getting-started');
         }
+    }
+    private function tables() : array
+    {
+        return [['table_type' => 'views', 'name' => \__('Pages', 'independent-analytics')], ['table_type' => 'referrers', 'name' => \__('Referrers', 'independent-analytics')], ['table_type' => 'geo', 'name' => \__('Geographic', 'independent-analytics')], ['table_type' => 'devices', 'name' => \__('Devices', 'independent-analytics')], ['table_type' => 'campaigns', 'name' => \__('Campaigns', 'independent-analytics')], ['table_type' => 'clicks', 'name' => \__('Clicks', 'independent-analytics')]];
     }
 }

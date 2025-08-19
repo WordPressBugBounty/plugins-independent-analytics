@@ -27,7 +27,7 @@
             <span class="<?php echo esc_attr($class); ?>" 
                 data-date="<?php echo esc_attr($day->format('Y-m-d')); ?>"
                 data-display-date="<?php echo esc_attr(iawp()->date_i18n($user_format, $day)); ?>"
-                aria-label="{{ esc_attr($day->format('F j'))}}">
+                aria-label="<?php echo esc_attr($day->format('F j')); ?>">
                     <?php echo esc_html($day->format('j')); ?>
                     <?php if ($day->format('Y-m-d') == $first_data) : ?>
                         <span class="first-data-note"><?php esc_html_e('First view recorded', 'independent-analytics'); ?></span>

@@ -1,7 +1,7 @@
 <?php if (!isset($plugin)) {
     $plugin = '';
 } ?>
-<div class="iawp-notice <?php echo esc_attr($notice) . ' ' . esc_attr($plugin); ?>" data-testid="{{ esc_attr($id) }}">
+<div class="iawp-notice <?php echo esc_attr($notice) . ' ' . esc_attr($plugin); ?>" data-testid="<?php echo esc_attr($id); ?>">
     <div class="iawp-icon">
         <span class="dashicons dashicons-warning"></span>
     </div>
@@ -10,7 +10,7 @@
     </div>
     <?php if ($button_text) : ?>
         <div>
-            <button class="iawp-button white dismiss-notice" data-notice-id="{{ esc_attr($id) }}"><?php echo esc_html($button_text); ?></button>
+            <button class="iawp-button white dismiss-notice" data-notice-id="<?php echo esc_attr($id); ?>"><?php echo esc_html($button_text); ?></button>
         </div>
     <?php endif; ?>
 </div>

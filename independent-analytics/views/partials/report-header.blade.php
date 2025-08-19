@@ -1,23 +1,23 @@
 @php /** @var \IAWP\Report $report */ @endphp
 @php /** @var bool $can_edit */ @endphp
 
-<div id="report-title-bar" class="report-title-bar">
-    @if($report->is_saved_report())
-        <div data-controller="{{ $can_edit ? "rename-report" : "" }}"
-             data-rename-report-id-value="{{$report->id()}}"
-             data-rename-report-name-value="{{$report->name()}}"
+<div id="report-title-bar" class="report-title-bar"><?php
+    if ($report->is_saved_report()) : ?>
+        <div data-controller="<?php echo $can_edit ? "rename-report" : ""; ?>"
+             data-rename-report-id-value="<?php echo esc_attr($report->id()); ?>"
+             data-rename-report-name-value="<?php echo esc_attr($report->name()); ?>"
              class="modal-parent small rename-report">
-            <a id="rename-link" class="rename-link {{ !$can_edit ? 'no-edit' : '' }}" href="#"
+            <a id="rename-link" class="rename-link <?php echo !$can_edit ? 'no-edit' : ''; ?>" href="#"
                data-action="click->rename-report#toggleModal"
                data-rename-report-target="modalButton"
-               title="{{$report->name()}}">
-                <h1 data-name-for-report-id="{{$report->id()}}"
-                    class="report-title">{{$report->name()}}</h1>
-                @if($can_edit)
-                    <span class="dashicons dashicons-edit"></span>
-                @endif
-            </a>
-            @if($can_edit)
+               title="<?php echo esc_attr($report->name()); ?>">
+                <h1 data-name-for-report-id="<?php echo esc_attr($report->id()); ?>"
+                    class="report-title"><?php echo esc_html($report->name()); ?></h1><?php 
+                if ($can_edit) : ?>
+                    <span class="dashicons dashicons-edit"></span><?php
+                endif; ?>
+            </a><?php
+            if ($can_edit) : ?>
                 <div class="iawp-modal small" data-rename-report-target="modal">
                     <div class="modal-inner">
                         <div class="title-small">
@@ -32,18 +32,18 @@
                             </button>
                         </form>
                     </div>
-                </div>
-            @endif
-        </div>
-    @else
+                </div><?php
+            endif; ?>
+        </div><?php 
+    else : ?>
         <div class="primary-report-title-container">
-            <h1 class="report-title">{{$report->name()}}</h1>
-        </div>
-    @endif
-    @if($can_edit)
-        <div class="buttons">
-            @if($report->is_saved_report())
-                <div data-controller="save-report" data-save-report-id-value="{{$report->id()}}"
+            <h1 class="report-title"><?php echo esc_html($report->name()); ?></h1>
+        </div><?php
+    endif; 
+    if ($can_edit) : ?>
+        <div class="buttons"><?php
+            if ($report->is_saved_report()) : ?>
+                <div data-controller="save-report" data-save-report-id-value="<?php echo esc_html($report->id()); ?>"
                      class="save-report">
                     <p data-save-report-target="warning" style="display: none;"
                        class="unsaved-warning"><span class="dashicons dashicons-warning"></span>
@@ -52,15 +52,15 @@
                             data-save-report-target="button"
                             data-action="save-report#save"
                             class="save-report-button iawp-button"><?php esc_html_e('Save', 'independent-analytics'); ?></button>
-                </div>
-            @endif
+                </div><?php
+            endif; ?>
 
-            <div data-controller="copy-report"
-                 @if($report->is_saved_report())
-                     data-copy-report-id-value="{{$report->id()}}"
-                 @else
-                     data-copy-report-type-value="{{$report->type()}}"
-                 @endif
+            <div data-controller="copy-report" <?php
+                 if($report->is_saved_report()) : ?>
+                     data-copy-report-id-value="<?php echo esc_attr($report->id()); ?>" <?php
+                 else : ?>
+                     data-copy-report-type-value="<?php echo esc_attr($report->type()); ?>" <?php
+                 endif; ?>
                  class="modal-parent small copy-report"
             >
                 <button id="save-as-report-button"
@@ -86,17 +86,17 @@
             <div>
                 <button id="favorite-report-button"
                         data-controller="set-favorite-report"
-                        data-set-favorite-report-id-value="{{$report->is_saved_report() ? $report->id() : ''}}"
-                        data-set-favorite-report-type-value="{{$report->is_saved_report() ? '' : $report->type()}}"
+                        data-set-favorite-report-id-value="<?php echo esc_attr($report->is_saved_report() ? $report->id() : ''); ?>"
+                        data-set-favorite-report-type-value="<?php echo esc_attr($report->is_saved_report() ? '' : $report->type()); ?>"
                         data-action="set-favorite-report#setFavoriteReport"
-                        class="iawp-button favorite {{$report->is_favorite() ? 'active' : '' }}"
+                        class="iawp-button favorite <?php echo $report->is_favorite() ? 'active' : ''; ?>"
                 >
                     <span class="dashicons dashicons-star-filled"></span>
                     <?php esc_html_e('Make default', 'independent-analytics'); ?>
                 </button>
-            </div>  
-            @if($report->is_saved_report())
-                <div data-controller="delete-report" data-delete-report-id-value="{{$report->id()}}"
+            </div><?php
+            if ($report->is_saved_report()) : ?>
+                <div data-controller="delete-report" data-delete-report-id-value="<?php echo esc_attr($report->id()); ?>"
                      class="modal-parent small delete-report">
                     <button id="delete-report-button"
                             data-action="delete-report#toggleModal"
@@ -115,8 +115,8 @@
                             </button>
                         </div>
                     </div>
-                </div>
-            @endif
-        </div>
-    @endif
+                </div><?php
+            endif; ?>
+        </div><?php
+    endif; ?>
 </div>

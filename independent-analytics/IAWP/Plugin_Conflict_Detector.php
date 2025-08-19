@@ -70,7 +70,7 @@ class Plugin_Conflict_Detector
         }
         if (\is_plugin_active('all-in-one-wp-security-and-firewall/wp-security.php')) {
             $settings = \get_option('aio_wp_security_configs', []);
-            if (\array_key_exists('aiowps_disallow_unauthorized_rest_requests', $settings)) {
+            if (\is_array($settings) && \array_key_exists('aiowps_disallow_unauthorized_rest_requests', $settings)) {
                 if ($settings['aiowps_disallow_unauthorized_rest_requests'] == 1) {
                     return ['plugin' => 'wp-security', 'error' => \__('The "All In One WP Security" plugin is blocking REST API requests, which Independent Analytics needs to record views. Please disable this setting via the WP Security > Miscellaneous menu.', 'independent-analytics')];
                 }
@@ -78,7 +78,7 @@ class Plugin_Conflict_Detector
         }
         if (\is_plugin_active('disable-json-api/disable-json-api.php')) {
             $settings = \get_option('disable_rest_api_options', []);
-            if (\array_key_exists('roles', $settings)) {
+            if (\is_array($settings) && \array_key_exists('roles', $settings)) {
                 if ($settings['roles']['none']['default_allow'] == \false) {
                     if ($settings['roles']['none']['allow_list']['/iawp/search'] == \false) {
                         return ['plugin' => 'disable-json-api', 'error' => \__('The "Disable REST API" plugin is blocking REST API requests for unauthenticated users, which Independent Analytics needs to record views. Please enable the /iawp/search route, so Independent Analytics can track your visitors.', 'independent-analytics')];
@@ -88,7 +88,7 @@ class Plugin_Conflict_Detector
         }
         if (\is_plugin_active('disable-xml-rpc-api/disable-xml-rpc-api.php')) {
             $settings = \get_option('dsxmlrpc-settings');
-            if (\array_key_exists('json-rest-api', $settings)) {
+            if (\is_array($settings) && \array_key_exists('json-rest-api', $settings)) {
                 if ($settings['json-rest-api'] == 1) {
                     return ['plugin' => 'disable-xml-rpc-api', 'error' => \__('The "Disable XML-RPC-API" plugin is blocking REST API requests, which Independent Analytics needs to record views. Please visit the Security Settings menu and turn off the "Disable JSON REST API" option, so Independent Analytics can track your visitors.', 'independent-analytics')];
                 }
@@ -102,7 +102,7 @@ class Plugin_Conflict_Detector
         }
         if (\is_plugin_active('wp-security-hardening/wp-hardening.php')) {
             $settings = \get_option('whp_fixer_option');
-            if (\array_key_exists('disable_json_api', $settings)) {
+            if (\is_array($settings) && \array_key_exists('disable_json_api', $settings)) {
                 if ($settings['disable_json_api'] != 'off') {
                     return ['plugin' => 'wp-hardening', 'error' => \__('The "WP Hardening" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Hardening > Security Fixers menu and turn off the "Disable WP API JSON" option, so Independent Analytics can track your visitors.', 'independent-analytics')];
                 }
@@ -110,13 +110,13 @@ class Plugin_Conflict_Detector
         }
         if (\is_plugin_active('wp-rest-api-authentication/miniorange-api-authentication.php')) {
             $settings = \get_option('mo_api_authentication_protectedrestapi_route_whitelist');
-            if (\in_array('/iawp/search', $settings)) {
+            if (\is_array($settings) && \in_array('/iawp/search', $settings)) {
                 return ['plugin' => 'miniorange-api-authentication', 'error' => \__('The "WordPress REST API Authentication" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the miniOrange API Authentication > Protected REST APIs menu and uncheck the "/iawp/search" box to allow Independent Analytics to track your visitors.', 'independent-analytics')];
             }
         }
         if (\is_plugin_active('ninjafirewall/ninjafirewall.php')) {
             $settings = \get_option('nfw_options');
-            if (\array_key_exists('no_restapi', $settings)) {
+            if (\is_array($settings) && \array_key_exists('no_restapi', $settings)) {
                 if ($settings['no_restapi'] == 1) {
                     return ['plugin' => 'ninjafirewall', 'error' => \__('The "NinjaFirewall" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the NinjaFirewall > Firewall Policies menu and uncheck the "Block any access to the API" checkbox to allow Independent Analytics to track your visitors.', 'independent-analytics')];
                 }
@@ -125,15 +125,13 @@ class Plugin_Conflict_Detector
         if (\is_plugin_active('wp-cerber/wp-cerber.php')) {
             // This option has been renamed before. If there's an issue in here, check that it wasn't renamed again.
             $settings = \get_option('cerber_configuration');
-            if ($settings === \false) {
+            if (!\is_array($settings)) {
                 $settings = \get_option('cerber-hardening');
             }
-            if ($settings !== \false) {
-                if (\array_key_exists('norest', $settings)) {
-                    if ($settings['norest'] === '1') {
-                        if (\is_array($settings['restwhite']) && !\in_array('iawp', $settings['restwhite']) || \is_string($settings['restwhite']) && !String_Util::str_contains($settings['restwhite'], 'iawp')) {
-                            return ['plugin' => 'wp-cerber', 'error' => \__('The "WP Cerber" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Cerber > Dashboard > Hardening menu and add "iawp" to your allowed namespaces. This will keep the REST API locked down while allowing requests for Independent Analytics.', 'independent-analytics')];
-                        }
+            if (\is_array($settings) && \array_key_exists('norest', $settings)) {
+                if ($settings['norest'] === '1') {
+                    if (\is_array($settings['restwhite']) && !\in_array('iawp', $settings['restwhite']) || \is_string($settings['restwhite']) && !String_Util::str_contains($settings['restwhite'], 'iawp')) {
+                        return ['plugin' => 'wp-cerber', 'error' => \__('The "WP Cerber" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Cerber > Dashboard > Hardening menu and add "iawp" to your allowed namespaces. This will keep the REST API locked down while allowing requests for Independent Analytics.', 'independent-analytics')];
                     }
                 }
             }
@@ -141,10 +139,10 @@ class Plugin_Conflict_Detector
         if (\is_plugin_active('wp-simple-firewall/icwp-wpsf.php')) {
             // This option has been renamed before. If there's an issue in here, check that it wasn't renamed again.
             $settings = \get_option('icwp_wpsf_opts_all');
-            if ($settings === \false) {
+            if (!\is_array($settings)) {
                 $settings = \get_option('icwp_wpsf_opts_free');
             }
-            if (\array_key_exists('lockdown', $settings)) {
+            if (\is_array($settings) && \array_key_exists('lockdown', $settings)) {
                 if (\array_key_exists('disable_anonymous_restapi', $settings['lockdown'])) {
                     if ($settings['lockdown']['disable_anonymous_restapi'] == 'Y') {
                         if (\array_key_exists('api_namespace_exclusions', $settings['lockdown'])) {
@@ -158,7 +156,7 @@ class Plugin_Conflict_Detector
         }
         if (\is_plugin_active('wp-hide-security-enhancer/wp-hide.php')) {
             $settings = \get_option('wph_settings');
-            if (\array_key_exists('module_settings', $settings)) {
+            if (\is_array($settings) && \array_key_exists('module_settings', $settings)) {
                 if (\array_key_exists('disable_json_rest_v2', $settings['module_settings'])) {
                     if ($settings['module_settings']['disable_json_rest_v2'] == 'yes') {
                         return ['plugin' => 'wp-hide', 'error' => \__('The "WP Hide" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Hide > Rewrite URLs menu and switch the "Disable JSON REST V2 service" option to "No."', 'independent-analytics')];
@@ -173,7 +171,7 @@ class Plugin_Conflict_Detector
         }
         if (\is_plugin_active('admin-site-enhancements/admin-site-enhancements.php')) {
             $settings = \get_option('admin_site_enhancements');
-            if (\array_key_exists('disable_rest_api', $settings)) {
+            if (\is_array($settings) && \array_key_exists('disable_rest_api', $settings)) {
                 if ($settings['disable_rest_api']) {
                     return ['plugin' => 'admin-site-enhancements', 'error' => \__('The "Admin and Site Enhancements" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the Tools > Enhancements menu, click on the "Disable Components" section, and deselect the "Disable REST API" setting to allow Independent Analytics to track your visitors.', 'independent-analytics')];
                 }
@@ -197,6 +195,14 @@ class Plugin_Conflict_Detector
         if (\is_plugin_active('patchstack/patchstack.php')) {
             if (\get_option('patchstack_json_is_disabled') == '1') {
                 return ['plugin' => 'patchstack', 'error' => \__('The Patchstack Security plugin has disabled the REST API, which Independent Analytics needs to record visitors. Please login to the Patchstack app, navigate to the Hardening menu for this site, and turn off the "Restrict WP REST API access" option.', 'independent-analytics')];
+            }
+        }
+        if (\is_plugin_active('rest-api-toolbox/rest-api-toolbox.php')) {
+            $settings = \get_option('rest-api-toolbox-settings-general');
+            if (\is_array($settings) && \array_key_exists('disable-rest-api', $settings)) {
+                if ($settings['disable-rest-api'] == '1') {
+                    return ['plugin' => 'rest-api-toolbox', 'error' => \__('The REST API Toolbox plugin has disabled the REST API, which Independent Analytics needs to record visitors. Please visit the Settings > REST API Toolbox menu and uncheck the "Disable REST API" option to allow Independent Analytics to track your visitors.', 'independent-analytics')];
+                }
             }
         }
         return null;

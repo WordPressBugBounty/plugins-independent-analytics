@@ -3,7 +3,7 @@
 namespace IAWP\Models;
 
 /** @internal */
-class Campaign
+class Campaign extends \IAWP\Models\Model
 {
     use \IAWP\Models\Universal_Model_Columns;
     protected $row;
@@ -22,6 +22,14 @@ class Campaign
         $this->utm_campaign = $row->utm_campaign;
         $this->utm_term = $row->utm_term;
         $this->utm_content = $row->utm_content;
+    }
+    public function id() : int
+    {
+        return $this->row->campaign_id;
+    }
+    public function table_type() : string
+    {
+        return 'campaigns';
     }
     /*
      * Column names have shared logic between tables. So "title" for resources has the same logic
@@ -65,5 +73,13 @@ class Campaign
     public function params() : string
     {
         return \http_build_query(['title' => $this->title(), 'utm_source' => $this->utm_source(), 'utm_medium' => $this->utm_medium(), 'utm_campaign' => $this->utm_campaign(), 'utm_term' => $this->utm_term(), 'utm_content' => $this->utm_content()]);
+    }
+    public function examiner_title() : string
+    {
+        return $this->title();
+    }
+    public function examiner_url() : string
+    {
+        return \IAWPSCOPED\iawp_dashboard_url(['tab' => 'campaigns', 'examiner' => $this->id()]);
     }
 }

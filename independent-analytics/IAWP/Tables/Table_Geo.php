@@ -12,7 +12,7 @@ use IAWP\Tables\Groups\Groups;
 /** @internal */
 class Table_Geo extends \IAWP\Tables\Table
 {
-    protected function table_name() : string
+    public function id() : string
     {
         return 'geo';
     }

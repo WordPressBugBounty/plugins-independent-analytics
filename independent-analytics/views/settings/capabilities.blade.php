@@ -12,7 +12,7 @@
             <div class="user-roles">
                 <?php foreach ($editable_roles as $role): ?>
                     <div class="user-role">
-                        <p>{{ $role['name'] }}</p>
+                        <p><?php echo esc_html($role['name']); ?></p>
                         <div class="role role-<?php echo esc_attr($role['key']); ?>">
                             <select name="<?php echo esc_attr($role['key']); ?>">
                                 <option value=""><?php esc_html_e('No access', 'independent-analytics'); ?></option>

@@ -17,7 +17,7 @@ use IAWP\Tables\Groups\Groups;
 /** @internal */
 class Table_Devices extends \IAWP\Tables\Table
 {
-    protected function table_name() : string
+    public function id() : string
     {
         return 'devices';
     }

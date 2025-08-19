@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Independent Analytics &#8211; Google Analytics Alternative for WordPress - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-05-07 12:47:16+0000\n"
+"PO-Revision-Date: 2025-06-25 14:37:39+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10,6 +10,38 @@ msgstr ""
 "X-Generator: GlotPress/4.0.1\n"
 "Language: it\n"
 "Project-Id-Version: Plugins - Independent Analytics &#8211; Google Analytics Alternative for WordPress - Stable (latest release)\n"
+
+#: IAWP/Independent_Analytics.php:245
+msgid "Integrations"
+msgstr "Integrazioni"
+
+#: IAWP/Plugin_Conflict_Detector.php:187
+msgid "The \"Admin and Site Enhancements Pro\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the Tools > Enhancements menu, click on the \"Disable Components\" section, and then click the \"Expand\" link under \"Disable REST API.\" You can then enter \"iawp/search\" into the textarea to whitelist the route used by Independent Analytics."
+msgstr "Il plugin \"Admin and Site Enhancements Pro\" sta bloccando le REST API, di cui Independent Analytics ha bisogno per raccogliere i dati delle visite. Vai a Strumenti > menu Enhancements, fai clic sulla sezione \"Disabilita i componenti\", e poi dai clic sul link \"espandi\" sotto \"Disabilita le REST API.\" Puoi anche digitare \"iawp/search\" nell'area testuale per aggiungere alla whitelist la route usata da Independent Analytics."
+
+#: views/settings/delete.blade.php:50
+msgid "You are about to reset your analytics. This will delete all analytics data and reset all stats to zero. All saved reports will be reset."
+msgstr "Stai per reimpostare le analisi. Questa operazione cancellerà tutti i dati delle analisi e azzererà tutte le statistiche. Anche tutti i rapporti salvati saranno azzerati."
+
+#: IAWP/Settings.php:55
+msgid "Color scheme"
+msgstr "Schema colori"
+
+#: IAWP/Click_Tracking.php:21
+msgid "ID"
+msgstr "ID"
+
+#: IAWP/Appearance.php:32
+msgid "System"
+msgstr "Sistema"
+
+#: IAWP/Appearance.php:32
+msgid "Dark"
+msgstr "Scuro"
+
+#: IAWP/Appearance.php:32
+msgid "Light"
+msgstr "Chiaro"
 
 #: views/settings/view-counter/threshold.blade.php:3
 msgid "Hide the view counter unless it has this many views or more."
@@ -19,7 +51,7 @@ msgstr "Nascondi il contatore delle visualizzazioni, a meno che non abbia un num
 msgid "Migration started at:"
 msgstr "La migrazione è iniziata alle:"
 
-#: IAWP/Settings.php:122
+#: IAWP/Settings.php:124
 msgid "Minimum views required"
 msgstr "Visualizzazioni minime necessarie"
 
@@ -50,7 +82,7 @@ msgstr "Non abbiamo trovato dati per questo intervallo di date."
 #: views/overview/modules/busiest-day-of-week.blade.php:28
 #: views/overview/modules/busiest-time-of-day.blade.php:28
 #: views/overview/modules/line-chart.blade.php:31
-#: views/overview/modules/map.blade.php:26
+#: views/overview/modules/map.blade.php:25
 #: views/overview/modules/new-sessions.blade.php:24
 #: views/overview/modules/pie-chart.blade.php:24
 #: views/overview/modules/recent-conversions.blade.php:70
@@ -108,11 +140,11 @@ msgstr "Geo"
 msgid "Overview"
 msgstr "Panoramica"
 
-#: IAWP/Plugin_Conflict_Detector.php:186
+#: IAWP/Plugin_Conflict_Detector.php:199
 msgid "The Patchstack Security plugin has disabled the REST API, which Independent Analytics needs to record visitors. Please login to the Patchstack app, navigate to the Hardening menu for this site, and turn off the \"Restrict WP REST API access\" option."
 msgstr "Il plugin Patchstack Security ha disabilitato l'API REST, di cui Independent Analytics ha bisogno per registrare le visite. Accedi all'app Patchstack, naviga nel menu Hardening per questo sito e disattiva l'opzione “Limita l'accesso a WP REST API”."
 
-#: IAWP/Plugin_Conflict_Detector.php:181
+#: IAWP/Plugin_Conflict_Detector.php:194
 msgid "A setting in the \"Autoptimize\" plugin is preventing Independent Analytics from tracking visitors. Please visit the Settings > Autoptimize menu and uncheck the \"Also aggregate inline JS\" option."
 msgstr "Un'impostazione del plugin “Autoptimize” impedisce a Independent Analytics di tracciare i visitatori. Visita il menu Impostazioni > Autoptimize e deseleziona l'opzione “Aggrega anche JS inline”."
 
@@ -318,7 +350,7 @@ msgstr "Scarica il file CSV delle metriche quotidiane"
 msgid "Download Table CSV"
 msgstr "Scarica la tabella CSV"
 
-#: IAWP/Independent_Analytics.php:148
+#: IAWP/Independent_Analytics.php:200
 msgid "Success"
 msgstr "Successo"
 
@@ -326,7 +358,7 @@ msgstr "Successo"
 msgid "External"
 msgstr "Esterno"
 
-#: IAWP/Admin_Page/Analytics_Page.php:176
+#: IAWP/Admin_Page/Analytics_Page.php:178
 msgid "The \"Solid Security\" plugin is disabling PHP execution in the plugins folder, and this is preventing click tracking from working. Please visit the Security > Settings page, click on the Advanced section, click on System Tweaks Settings, uncheck the \"Disable PHP Plugins\" option, and then save."
 msgstr "Il plugin “Solid Security” sta disabilitando l'esecuzione di PHP nella cartella dei plugin e ciò impedisce il funzionamento del tracciamento dei clic. Visita la pagina Sicurezza > Impostazioni, fai clic sulla sezione Avanzate, poi su Impostazioni delle modifiche di sistema, deseleziona l'opzione “Disabilita plugin PHP” e salva."
 
@@ -406,12 +438,12 @@ msgstr "Pattern dei link"
 msgid "View Clicks Report"
 msgstr "Visualizza il report dei clic"
 
-#: views/click-tracking/link.blade.php:104
+#: views/click-tracking/link.blade.php:114
 #: views/click-tracking/menu.blade.php:83
 msgid "Resume Tracking"
 msgstr "Riprendi il monitoraggio"
 
-#: views/click-tracking/link.blade.php:91
+#: views/click-tracking/link.blade.php:101
 #: views/click-tracking/menu.blade.php:36
 msgid "Edit"
 msgstr "Modifica"
@@ -519,15 +551,15 @@ msgstr "Zip"
 msgid "PDFs"
 msgstr "PDF"
 
-#: IAWP/Independent_Analytics.php:281
+#: IAWP/Independent_Analytics.php:345
 msgid "Export Clicks"
 msgstr "Esporta clic"
 
-#: IAWP/Independent_Analytics.php:281
+#: IAWP/Independent_Analytics.php:345
 msgid "Exporting Clicks"
 msgstr "Esportazione dei clic"
 
-#: IAWP/Independent_Analytics.php:180 views/click-tracking/menu.blade.php:4
+#: IAWP/Independent_Analytics.php:232 views/click-tracking/menu.blade.php:4
 msgid "Click Tracking"
 msgstr "Monitoraggio dei clic"
 
@@ -572,6 +604,10 @@ msgstr "Ti raccomandiamo di abilitare il monitoraggio per i visitatori registrat
 msgctxt "Variable is the name of a plugin"
 msgid "%s compatibility:"
 msgstr "Compatibilità con %s:"
+
+#: IAWP/Independent_Analytics.php:262
+msgid "Independent Analytics Debug"
+msgstr "Debug di Independent Analytics"
 
 #: views/settings/woocommerce.blade.php:46
 #: views/settings/woocommerce.blade.php:48
@@ -707,45 +743,45 @@ msgstr "I ruoli utente ignorati possono comunque accedere al sito, ma la loro at
 msgid "Ignore User Roles"
 msgstr "Ignora i ruoli utente"
 
-#: IAWP/Independent_Analytics.php:281 IAWP/Overview/Form_Field.php:91
+#: IAWP/Independent_Analytics.php:345 IAWP/Overview/Form_Field.php:91
 #: views/chart.blade.php:40 views/chart.blade.php:43
 msgid "No Comparison"
 msgstr "Nessun confronto"
 
-#: IAWP/Settings.php:131
+#: IAWP/Settings.php:133
 msgid "Display the label"
 msgstr "Visualizza l'etichetta"
 
-#: IAWP/Migrations/Migration_17.php:33
+#: IAWP/Report_Finder.php:198
 msgctxt "short for operating system"
 msgid "OS"
 msgstr "OS"
 
-#: IAWP/Migrations/Migration_17.php:31
+#: IAWP/Report_Finder.php:196
 msgid "European Countries"
 msgstr "Paesi europei"
 
-#: IAWP/Migrations/Migration_17.php:28
+#: IAWP/Report_Finder.php:193
 msgid "Fastest-Growing Referrers"
 msgstr "Referenti in rapida crescita"
 
-#: IAWP/Migrations/Migration_17.php:27
+#: IAWP/Report_Finder.php:192
 msgid "Social Media Traffic"
 msgstr "Traffico dai social media"
 
-#: IAWP/Migrations/Migration_17.php:26
+#: IAWP/Report_Finder.php:191
 msgid "Search Engine Traffic"
 msgstr "Traffico dai motori di ricerca"
 
-#: IAWP/Migrations/Migration_17.php:24
+#: IAWP/Report_Finder.php:189
 msgid "Fastest-Growing Pages"
 msgstr "Pagine in rapida crescita"
 
-#: IAWP/Migrations/Migration_17.php:23
+#: IAWP/Report_Finder.php:188
 msgid "Top Landing Pages"
 msgstr "Landing Page principali"
 
-#: IAWP/Migrations/Migration_17.php:22
+#: IAWP/Report_Finder.php:187
 msgid "Blog Posts"
 msgstr "Articoli del blog"
 
@@ -900,7 +936,7 @@ msgstr "Passa a Independent Analytics Pro per ottenere le statistiche relative a
 msgid "General"
 msgstr "Generale"
 
-#: IAWP/Independent_Analytics.php:194
+#: IAWP/Independent_Analytics.php:252
 msgid "New"
 msgstr "Nuovo"
 
@@ -946,7 +982,7 @@ msgstr "La email sarà consegnata il primo giorno di ogni mese."
 msgid "Delivery Interval"
 msgstr "Intervallo di consegna"
 
-#: IAWP/Settings.php:62
+#: IAWP/Settings.php:64
 msgid "Views column"
 msgstr "Colonna Visualizzazioni"
 
@@ -979,10 +1015,6 @@ msgstr "Espandi la barra laterale"
 #: views/partials/sidebar.blade.php:31
 msgid "Collapse sidebar"
 msgstr "Chiudi la barra laterale"
-
-#: views/partials/sidebar.blade.php:22
-msgid "Upgrade to Pro (45% off)"
-msgstr "Passa a Pro (45% di sconto)"
 
 #: views/partials/report-header.blade.php:114
 msgid "Delete report"
@@ -1019,7 +1051,7 @@ msgstr "Salva come"
 
 #: views/partials/report-header.blade.php:54 views/settings/pruner.blade.php:32
 #: views/settings/pruner.blade.php:37 views/settings/woocommerce.blade.php:38
-#: views/click-tracking/link.blade.php:94
+#: views/click-tracking/link.blade.php:104
 #: views/overview/module-editor.blade.php:43 views/settings/pruner.blade.php:33
 #: views/settings/pruner.blade.php:38 views/settings/woocommerce.blade.php:40
 msgid "Save"
@@ -1154,10 +1186,6 @@ msgstr "Il plugin verrà disattivato immediatamente dopo la cancellazione di tut
 #: views/settings/delete.blade.php:70
 msgid "You are about to delete all data associated with Independent Analytics. This includes all analytics data and settings."
 msgstr "Stai per eliminare tutti i dati associati a Independent Analytics. Ciò include tutti i dati e le impostazioni di analisi."
-
-#: views/settings/delete.blade.php:50
-msgid "You are about to reset your analytics. This will delete all of the data and return all stats to zero."
-msgstr "Stai per reimpostare l'analisi. Questa operazione eliminerà tutti i dati e riporterà tutte le statistiche a zero."
 
 #: views/settings/delete.blade.php:21
 msgid "Delete all data & deactivate plugin"
@@ -1322,23 +1350,23 @@ msgstr "Scegli un formato"
 msgid "Download Report"
 msgstr "Scarica report"
 
-#: IAWP/Settings.php:141
+#: IAWP/Settings.php:143
 msgid "Allow manual adjustment?"
 msgstr "Vuoi permettere la regolazione manuale?"
 
-#: IAWP/Settings.php:138
+#: IAWP/Settings.php:140
 msgid "Make the view counter private?"
 msgstr "Vuoi rendere privato il contatore di visualizzazione?"
 
-#: IAWP/Settings.php:114
+#: IAWP/Settings.php:116
 msgid "Date range to count views"
 msgstr "Intervallo di date per il conteggio delle visualizzazioni"
 
-#: IAWP/Settings.php:68
+#: IAWP/Settings.php:70
 msgid "Salt refresh rate"
 msgstr "Frequenza di aggiornamento di Salt"
 
-#: IAWP/Settings.php:60
+#: IAWP/Settings.php:62
 msgid "Dashboard widget"
 msgstr "Widget della bacheca"
 
@@ -1346,23 +1374,23 @@ msgstr "Widget della bacheca"
 msgid "Average Session Duration"
 msgstr "Durata media della sessione"
 
-#: IAWP/Plugin_Conflict_Detector.php:175
+#: IAWP/Plugin_Conflict_Detector.php:178
 msgid "The \"Admin and Site Enhancements\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the Tools > Enhancements menu, click on the \"Disable Components\" section, and deselect the \"Disable REST API\" setting to allow Independent Analytics to track your visitors."
 msgstr "Il plugin \"Admin and Site Enhancements\" sta bloccando l'API REST, di cui Independent Analytics ha bisogno per registrare le visualizzazioni. Vai al menu Strumenti > Miglioramenti, fai clic sulla sezione \"Disabilita componenti\" e deseleziona l'impostazione \"Disabilita API REST\" per consentire a Independent Analytics di tracciare i visitatori."
 
-#: IAWP/Plugin_Conflict_Detector.php:166
+#: IAWP/Plugin_Conflict_Detector.php:169
 msgid "The \"WP Hide\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Hide > Rewrite URLs menu and switch the \"Block any JSON REST calls\" option to \"No.\""
 msgstr "Il plugin \"WP Hide\" blocca l'API REST, di cui Independent Analytics ha bisogno per registrare le visualizzazioni. Vai al menu WP Hide > Rewrite URLs e imposta l'opzione \"Blocca le chiamate REST JSON\" su \"No\"."
 
-#: IAWP/Plugin_Conflict_Detector.php:161
+#: IAWP/Plugin_Conflict_Detector.php:164
 msgid "The \"WP Hide\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Hide > Rewrite URLs menu and switch the \"Disable JSON REST V2 service\" option to \"No.\""
 msgstr "Il plugin \"WP Hide\" blocca l'API REST, di cui Independent Analytics ha bisogno per registrare le visualizzazioni. Vai al menu WP Hide > Rewrite URLs e imposta l'opzione \"Disattiva il servizio JSON REST V2\" su \"No\"."
 
-#: IAWP/Plugin_Conflict_Detector.php:149
+#: IAWP/Plugin_Conflict_Detector.php:152
 msgid "The \"Shield Security\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the Shield Security > Config > Lockdown menu and add \"iawp\" to your allowed namespaces. This will keep the REST API locked down while allowing requests for Independent Analytics."
 msgstr "Il plugin \"Shield Security\" sta bloccando l'API REST, di cui Independent Analytics ha bisogno per registrare le visualizzazioni. Vai al menu Shield Security > Config > Lockdown e aggiungi \"iawp\" ai namespace consentiti. In questo modo l'API REST rimarrà bloccata, pur consentendo le richieste per Independent Analytics."
 
-#: IAWP/Plugin_Conflict_Detector.php:133
+#: IAWP/Plugin_Conflict_Detector.php:135
 msgid "The \"WP Cerber\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Cerber > Dashboard > Hardening menu and add \"iawp\" to your allowed namespaces. This will keep the REST API locked down while allowing requests for Independent Analytics."
 msgstr "Il plugin \"WP Cerber\" sta bloccando l'API REST, di cui Independent Analytics ha bisogno per registrare le visualizzazioni. Vai al menu WP Cerber > Bacheca > Hardening e aggiungi \"iawp\" ai namespace consentiti. In questo modo l'API REST rimarrà bloccata, pur consentendo le richieste per Independent Analytics."
 
@@ -1374,23 +1402,23 @@ msgstr "Successo del checkout"
 msgid "All Time:"
 msgstr "Sempre:"
 
-#: IAWP/Independent_Analytics.php:281
+#: IAWP/Independent_Analytics.php:345
 msgid "Close menu"
 msgstr "Chiudi menu"
 
-#: IAWP/Independent_Analytics.php:281 views/partials/sidebar.blade.php:38
+#: IAWP/Independent_Analytics.php:345 views/partials/sidebar.blade.php:38
 msgid "Open menu"
 msgstr "Apri menu"
 
-#: IAWP/Independent_Analytics.php:281
+#: IAWP/Independent_Analytics.php:345
 msgid "This report archive is invalid. Please export your reports and try again."
 msgstr "L'archivio dei report non è valido. Esporta i report e riprova."
 
-#: IAWP/Independent_Analytics.php:193 IAWP/Independent_Analytics.php:195
+#: IAWP/Independent_Analytics.php:251 IAWP/Independent_Analytics.php:253
 msgid "Changelog"
 msgstr "Changelog"
 
-#: IAWP/Independent_Analytics.php:187
+#: IAWP/Independent_Analytics.php:239
 msgid "Help & Support"
 msgstr "Aiuto e supporto"
 
@@ -1426,6 +1454,7 @@ msgstr "Ultimi 90 giorni"
 msgid "Last 60 Days"
 msgstr "Ultimi 60 giorni"
 
+#: IAWP/Admin_Page/Integrations_Pages.php:16
 #: IAWP/Admin_Page/Support_Page.php:14 IAWP/Admin_Page/Updates_Page.php:15
 msgid "You do not have permission to view this page."
 msgstr "Non hai i permessi per visualizzare questa pagina."
@@ -1506,7 +1535,7 @@ msgstr "Sistema operativo"
 msgid "Type"
 msgstr "Tipo"
 
-#: IAWP/Migrations/Migration_17.php:32
+#: IAWP/Report_Finder.php:197
 msgid "Browsers"
 msgstr "Browser"
 
@@ -1526,11 +1555,11 @@ msgstr "Tipo di dispositivo"
 msgid "Device Types"
 msgstr "Tipi di dispositivi"
 
-#: IAWP/Independent_Analytics.php:281
+#: IAWP/Independent_Analytics.php:345
 msgid "Exporting Devices..."
 msgstr "Sto esportando i dispositivi..."
 
-#: IAWP/Independent_Analytics.php:281
+#: IAWP/Independent_Analytics.php:345
 msgid "Export Devices"
 msgstr "Esporta dispositivi"
 
@@ -1540,20 +1569,20 @@ msgstr "Esporta dispositivi"
 msgid "Devices"
 msgstr "Dispositivi"
 
-#: views/campaign-builder.blade.php:215 views/click-tracking/link.blade.php:109
+#: views/campaign-builder.blade.php:215 views/click-tracking/link.blade.php:119
 #: views/click-tracking/menu.blade.php:84
 msgid "Delete"
 msgstr "Elimina"
 
-#: IAWP/Migrations/Migration_17.php:30
+#: IAWP/Report_Finder.php:195
 msgid "Cities"
 msgstr "Città"
 
-#: IAWP/Plugin_Conflict_Detector.php:120
+#: IAWP/Plugin_Conflict_Detector.php:121
 msgid "The \"NinjaFirewall\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the NinjaFirewall > Firewall Policies menu and uncheck the \"Block any access to the API\" checkbox to allow Independent Analytics to track your visitors."
 msgstr "Il plugin \"NinjaFirewall\" sta bloccando l'API REST, di cui Independent Analytics ha bisogno per registrare le visualizzazioni. Visita il menu NinjaFirewall > Criteri del firewall e deselezionare la casella \"Blocca qualsiasi accesso all'API\" per consentire a Independent Analytics di tracciare i visitatori."
 
-#: IAWP/Email_Reports/Email_Reports.php:123 IAWP/Settings.php:370
+#: IAWP/Email_Reports/Email_Reports.php:123 IAWP/Settings.php:372
 msgid "This email was generated and delivered by %s"
 msgstr "Questa email è stata generata e consegnata da %s"
 
@@ -1606,7 +1635,7 @@ msgstr "Nasconde le statistiche che appaiono nella barra degli strumenti dell'ad
 msgid "Disable admin toolbar stats"
 msgstr "Disattiva le statistiche della barra degli strumenti dell'admin"
 
-#: IAWP/Settings.php:58
+#: IAWP/Settings.php:60
 msgid "Admin toolbar stats"
 msgstr "Statistiche della barra degli strumenti dell'admin"
 
@@ -1633,11 +1662,11 @@ msgstr "Oggi:"
 msgid "Date"
 msgstr "Data"
 
-#: IAWP/Independent_Analytics.php:281
+#: IAWP/Independent_Analytics.php:345
 msgid "Apply Relative Dates"
 msgstr "Applica le date relative"
 
-#: IAWP/Independent_Analytics.php:281
+#: IAWP/Independent_Analytics.php:345
 msgid "Apply Exact Dates"
 msgstr "Applica le date esatte"
 
@@ -1650,31 +1679,31 @@ msgstr "Visualizza la durata"
 msgid "Session Duration"
 msgstr "Durata della sessione"
 
-#: IAWP/Independent_Analytics.php:281
+#: IAWP/Independent_Analytics.php:345
 msgid "Exporting Geolocations..."
 msgstr "Esportazione delle geolocalizzazioni in corso..."
 
-#: IAWP/Plugin_Conflict_Detector.php:113
+#: IAWP/Plugin_Conflict_Detector.php:114
 msgid "The \"WordPress REST API Authentication\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the miniOrange API Authentication > Protected REST APIs menu and uncheck the \"/iawp/search\" box to allow Independent Analytics to track your visitors."
 msgstr "Il plugin \"WordPress REST API Authentication\" blocca l'API REST, di cui Independent Analytics ha bisogno per registrare le visualizzazioni. Visita il menu miniOrange API Authentication > Protected REST APIs e deseleziona la casella \"/iawp/search\" per consentire a Independent Analytics di tracciare le visite al tuo sito."
 
-#: IAWP/Plugin_Conflict_Detector.php:106
+#: IAWP/Plugin_Conflict_Detector.php:107
 msgid "The \"WP Hardening\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Hardening > Security Fixers menu and turn off the \"Disable WP API JSON\" option, so Independent Analytics can track your visitors."
 msgstr "Il plugin \"WP Hardening\" sta bloccando l'API REST, di cui Independent Analytics ha bisogno per registrare le visualizzazioni. Visita il menu WP Hardening > Security Fixers e disattiva l'opzione \"Disable WP API JSON\", in modo che Independent Analytics possa tracciare le visite al tuo sito."
 
-#: IAWP/Independent_Analytics.php:281
+#: IAWP/Independent_Analytics.php:345
 msgid "Export Campaigns"
 msgstr "Esporta campagne"
 
-#: IAWP/Independent_Analytics.php:281
+#: IAWP/Independent_Analytics.php:345
 msgid "Export Geolocations"
 msgstr "Esporta geolocalizzazioni"
 
-#: IAWP/Independent_Analytics.php:281
+#: IAWP/Independent_Analytics.php:345
 msgid "Export Referrers"
 msgstr "Esporta i referenti"
 
-#: IAWP/Independent_Analytics.php:281
+#: IAWP/Independent_Analytics.php:345
 msgid "Export Pages"
 msgstr "Esporta pagine"
 
@@ -1686,19 +1715,19 @@ msgstr "Negozio"
 msgid "Comments"
 msgstr "Commenti"
 
-#: IAWP/Independent_Analytics.php:281
+#: IAWP/Independent_Analytics.php:345
 msgid "Exporting Campaigns..."
 msgstr "Esportazione delle campagne..."
 
-#: IAWP/Independent_Analytics.php:281
+#: IAWP/Independent_Analytics.php:345
 msgid "Exporting Pages..."
 msgstr "Esportazione di pagine..."
 
-#: IAWP/Independent_Analytics.php:281
+#: IAWP/Independent_Analytics.php:345
 msgid "Exporting Referrers..."
 msgstr "Esportazione dei referenti..."
 
-#: IAWP/Independent_Analytics.php:281
+#: IAWP/Independent_Analytics.php:345
 msgid "Copied"
 msgstr "Copiato!"
 
@@ -1706,7 +1735,7 @@ msgstr "Copiato!"
 msgid "[Test]"
 msgstr "[Test]"
 
-#: IAWP/Independent_Analytics.php:281
+#: IAWP/Independent_Analytics.php:345
 #: IAWP/Overview/Modules/New_Sessions_Module.php:34 IAWP/Report.php:105
 #: IAWP/Statistics/Statistics.php:202 IAWP/Tables/Table_Campaigns.php:25
 #: IAWP/Tables/Table_Devices.php:34 IAWP/Tables/Table_Geo.php:28
@@ -1716,7 +1745,7 @@ msgstr "[Test]"
 msgid "Sessions"
 msgstr "Sessioni"
 
-#: IAWP/Independent_Analytics.php:175
+#: IAWP/Independent_Analytics.php:227
 msgid "Campaign Builder"
 msgstr "Builder delle campagne"
 
@@ -1835,47 +1864,47 @@ msgstr "Vendite lorde"
 msgid "Orders"
 msgstr "Ordini"
 
-#: IAWP/Settings.php:219
+#: IAWP/Settings.php:221
 msgid "Block by User Role"
 msgstr "Blocco per ruolo utente"
 
-#: IAWP/Settings.php:207
+#: IAWP/Settings.php:209
 msgid "Scheduled Email Reports"
 msgstr "Rapporti email programmati"
 
-#: IAWP/Plugin_Conflict_Detector.php:100
+#: IAWP/Plugin_Conflict_Detector.php:101
 msgid "The \"All-In-One Intranet\" plugin needs to be deactivated because it is disabling the REST API, which Independent Analytics uses to record visits. You may want to try the \"My Private Site\" plugin instead."
 msgstr "Il plugin \"All-In-One Intranet\" deve essere disattivato perché disabilita l'API REST, di cui Independent si serve per registrare le visite. Al suo posto prova il plugin \"My Private Site\"."
 
-#: views/notices/notice.blade.php:6
+#: views/notices/notice.blade.php:9
 msgid "Learn More"
 msgstr "Scopri di più"
 
-#: IAWP/Admin_Page/Analytics_Page.php:182
+#: IAWP/Admin_Page/Analytics_Page.php:184
 msgid "I've cleared the cache"
 msgstr "Ho svuotato la cache"
 
-#: IAWP/Admin_Page/Analytics_Page.php:182
+#: IAWP/Admin_Page/Analytics_Page.php:184
 msgid "Please clear your cache to ensure tracking works properly."
 msgstr "Svuota la cache per garantire che il tracciamento funzioni correttamente."
 
-#: IAWP/Plugin_Conflict_Detector.php:97
+#: IAWP/Plugin_Conflict_Detector.php:98
 msgid "The \"WPO Tweaks & Optimizations\" plugin needs to be deactivated because it is disabling the REST API, which Independent Analytics uses to record visits."
 msgstr "Il plugin \"WPO Tweaks & Optimizations\" deve essere disattivato perché disabilita l'API REST, di cui Independent Analytics si serve per registrare le visite."
 
-#: IAWP/Plugin_Conflict_Detector.php:92
+#: IAWP/Plugin_Conflict_Detector.php:93
 msgid "The \"Disable XML-RPC-API\" plugin is blocking REST API requests, which Independent Analytics needs to record views. Please visit the Security Settings menu and turn off the \"Disable JSON REST API\" option, so Independent Analytics can track your visitors."
 msgstr "Il plugin \"Disable XML-RPC-API\" blocca le richieste dell'API REST, di cui Independent Analytics ha bisogno per registrare le visualizzazioni. Visita il menu Impostazioni di sicurezza e disattiva l'opzione \"Disabilita JSON REST API\", così che Independent Analytics possa tracciare i tuoi visitatori."
 
-#: IAWP/Plugin_Conflict_Detector.php:83
+#: IAWP/Plugin_Conflict_Detector.php:84
 msgid "The \"Disable REST API\" plugin is blocking REST API requests for unauthenticated users, which Independent Analytics needs to record views. Please enable the /iawp/search route, so Independent Analytics can track your visitors."
 msgstr "Il plugin \"Disable REST API\" blocca le richieste di REST API per gli utenti non autenticati, di cui Independent Analytics ha bisogno per registrare le visualizzazioni. Abilita il percorso /iawp/search, in modo che Independent Analytics possa tracciare i visitatori."
 
-#: IAWP/Plugin_Conflict_Detector.php:74
+#: IAWP/Plugin_Conflict_Detector.php:75
 msgid "The \"All In One WP Security\" plugin is blocking REST API requests, which Independent Analytics needs to record views. Please disable this setting via the WP Security > Miscellaneous menu."
 msgstr "Il plugin \"All In One WP Security\" blocca le richieste API REST, di cui Independent Analytics ha bisogno per registrare le visualizzazioni. Disattiva questa impostazione tramite il menu WP Security > Varie."
 
-#: IAWP/Plugin_Conflict_Detector.php:68
+#: IAWP/Plugin_Conflict_Detector.php:69
 msgid "The \"Disable WP REST API\" plugin needs to be deactivated because Independent Analytics uses the REST API to record visits."
 msgstr "Il plugin \"Disable WP REST API\" deve essere disattivato perché Independent Analytics si serve dell'API REST per registrare le visite."
 
@@ -1996,10 +2025,6 @@ msgstr "Pagine"
 msgid "Track logged-in users"
 msgstr "Traccia gli utenti registrati"
 
-#: views/settings/dark-mode.blade.php:3
-msgid "Enable dark mode theme"
-msgstr "Abilità il tema in modalità scura"
-
 #: views/settings/capabilities.blade.php:39
 msgid "Save Permissions"
 msgstr "Salva i permessi"
@@ -2042,7 +2067,7 @@ msgstr "Questo IP è già bloccato"
 msgid "Input is empty"
 msgstr "Il campo è vuoto"
 
-#: IAWP/Settings.php:200
+#: IAWP/Settings.php:202
 msgid "Block IP Addresses"
 msgstr "Blocca indirizzi IP"
 
@@ -2066,7 +2091,7 @@ msgstr "Crea la tua prima campagna"
 msgid "No campaign data found"
 msgstr "Nessun dato di campagna trovato"
 
-#: IAWP/Independent_Analytics.php:102
+#: IAWP/Independent_Analytics.php:106 views/partials/sidebar.blade.php:22
 msgid "Upgrade to Pro"
 msgstr "Aggiorna a Pro"
 
@@ -2180,7 +2205,7 @@ msgstr "Sorgente"
 msgid "Landing Page"
 msgstr "Landing page"
 
-#: IAWP/Independent_Analytics.php:201
+#: IAWP/Independent_Analytics.php:259
 msgid "Upgrade to Pro &rarr;"
 msgstr "Passa a Pro &rarr;"
 
@@ -2220,40 +2245,40 @@ msgstr "Inserisci gli ID delle pagine che vuoi escludere separati da virgole, es
 msgid "You can output the view counter in a custom location using the shortcode:"
 msgstr "Puoi visualizzare il contatore di visualizzazioni in una posizione personalizzata usando lo shortcode:"
 
-#: IAWP/Settings.php:124 IAWP/Settings.php:179 IAWP/View_Counter.php:51
+#: IAWP/Settings.php:126 IAWP/Settings.php:181 IAWP/View_Counter.php:51
 #: IAWP/View_Counter.php:70
 msgid "Views:"
 msgstr "Visualizzazioni:"
 
-#: IAWP/Settings.php:157
+#: IAWP/Settings.php:159
 msgid "Uncheck all boxes to only show view count manually. See shortcode documentation below for details."
 msgstr "Deseleziona tutte le caselle per mostrare solo il conteggio delle visualizzazioni manualmente. Per i dettagli, leggi la documentazione dello shortcode qui sotto."
 
-#: IAWP/Settings.php:135
+#: IAWP/Settings.php:137
 msgid "Display the icon"
 msgstr "Visualizza l'icona"
 
-#: IAWP/Settings.php:127
+#: IAWP/Settings.php:129
 msgid "Edit the label"
 msgstr "Modifica l'etichetta"
 
-#: IAWP/Settings.php:118
+#: IAWP/Settings.php:120
 msgid "Exclude these pages"
 msgstr "Escludi queste pagine"
 
-#: IAWP/Settings.php:111
+#: IAWP/Settings.php:113
 msgid "Show it in this location"
 msgstr "Mostra in questa posizione"
 
-#: IAWP/Settings.php:107
+#: IAWP/Settings.php:109
 msgid "Display on these post types"
 msgstr "Visualizza su questi tipi di contenuto"
 
-#: IAWP/Settings.php:104 views/settings/view-counter/enable.blade.php:3
+#: IAWP/Settings.php:106 views/settings/view-counter/enable.blade.php:3
 msgid "Enable the view counter"
 msgstr "Abilita il conteggio delle visite"
 
-#: IAWP/Settings.php:100
+#: IAWP/Settings.php:102
 msgid "Public View Counter"
 msgstr "Contatore pubblico delle visite"
 
@@ -2291,8 +2316,7 @@ msgstr "La settimana scorsa"
 msgid "This Week"
 msgstr "Questa settimana"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:66
-#: IAWP/Migrations/Migration_17.php:29
+#: IAWP/Date_Range/Relative_Date_Range.php:66 IAWP/Report_Finder.php:194
 #: views/settings/view-counter/views-to-count.blade.php:8
 msgid "Last 7 Days"
 msgstr "Ultimi 7 giorni"
@@ -2304,8 +2328,7 @@ msgstr "Ultimi 7 giorni"
 msgid "Yesterday"
 msgstr "Ieri"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:53
-#: IAWP/Migrations/Migration_17.php:25
+#: IAWP/Date_Range/Relative_Date_Range.php:53 IAWP/Report_Finder.php:190
 #: views/settings/view-counter/views-to-count.blade.php:4
 msgid "Today"
 msgstr "Oggi"
@@ -2355,7 +2378,7 @@ msgstr "rispetto al periodo precedente"
 #: views/date-picker/date-picker.blade.php:45
 #: views/settings/delete.blade.php:39 views/settings/delete.blade.php:59
 #: views/settings/delete.blade.php:82 views/settings/pruner.blade.php:73
-#: views/click-tracking/link.blade.php:95
+#: views/click-tracking/link.blade.php:105
 #: views/click-tracking/menu.blade.php:106
 #: views/overview/module-editor.blade.php:16
 #: views/overview/module-picker.blade.php:19 views/settings/pruner.blade.php:74
@@ -2375,11 +2398,11 @@ msgstr "Elimina tutti i dati"
 msgid "Danger zone"
 msgstr "Zona pericolosa"
 
-#: IAWP/Settings.php:65
+#: IAWP/Settings.php:67
 msgid "First day of week"
 msgstr "Primo giorno della settimana"
 
-#: IAWP/Independent_Analytics.php:281 IAWP/Report.php:105
+#: IAWP/Independent_Analytics.php:345 IAWP/Report.php:105
 #: IAWP/Statistics/Statistics.php:202 IAWP/Tables/Table_Campaigns.php:25
 #: IAWP/Tables/Table_Devices.php:34 IAWP/Tables/Table_Geo.php:28
 #: IAWP/Tables/Table_Pages.php:28 IAWP/Tables/Table_Referrers.php:26
@@ -2390,7 +2413,7 @@ msgstr "Visitatori"
 msgid "Last 30 Days"
 msgstr "Ultimi 30 giorni"
 
-#: IAWP/Independent_Analytics.php:301 IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
+#: IAWP/Independent_Analytics.php:365 IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
 msgid "Analytics Dashboard"
 msgstr "Bacheca statistiche"
 
@@ -2398,31 +2421,31 @@ msgstr "Bacheca statistiche"
 msgid "Post Category"
 msgstr "Categoria articolo"
 
-#: IAWP/Settings.php:92
+#: IAWP/Settings.php:94
 msgid "Saturday"
 msgstr "Sabato"
 
-#: IAWP/Settings.php:92
+#: IAWP/Settings.php:94
 msgid "Friday"
 msgstr "Venerdì"
 
-#: IAWP/Settings.php:92
+#: IAWP/Settings.php:94
 msgid "Thursday"
 msgstr "Giovedì"
 
-#: IAWP/Settings.php:92
+#: IAWP/Settings.php:94
 msgid "Wednesday"
 msgstr "Mercoledì"
 
-#: IAWP/Settings.php:92
+#: IAWP/Settings.php:94
 msgid "Tuesday"
 msgstr "Martedì"
 
-#: IAWP/Settings.php:92
+#: IAWP/Settings.php:94
 msgid "Monday"
 msgstr "Lunedì"
 
-#: IAWP/Settings.php:92
+#: IAWP/Settings.php:94
 msgid "Sunday"
 msgstr "Domenica"
 
@@ -2458,13 +2481,9 @@ msgstr "Tipo di referente"
 msgid "Save Settings"
 msgstr "Salva le impostazioni"
 
-#: IAWP/Settings.php:56
+#: IAWP/Settings.php:58
 msgid "Track logged in users"
 msgstr "Traccia gli utenti connessi"
-
-#: IAWP/Settings.php:54
-msgid "Dark mode"
-msgstr "Modalità scura"
 
 #: IAWP/Models/Page_Search.php:32
 msgid "Search:"
@@ -2488,7 +2507,7 @@ msgstr "Archivio date (anno)"
 
 #: IAWP/Models/Page_Author_Archive.php:32
 #: IAWP/Models/Page_Post_Type_Archive.php:43
-#: views/click-tracking/link.blade.php:101
+#: views/click-tracking/link.blade.php:111
 #: views/click-tracking/menu.blade.php:37
 msgid "Archive"
 msgstr "Archivia"
@@ -2618,7 +2637,7 @@ msgstr "Applica"
 msgid "+ Add another condition"
 msgstr "+ Aggiungi un'altra condizione"
 
-#: IAWP/Independent_Analytics.php:169
+#: IAWP/Independent_Analytics.php:221
 msgid "Settings"
 msgstr "Impostazioni"
 
@@ -2629,7 +2648,7 @@ msgid "Referrers"
 msgstr "Referenti"
 
 #: IAWP/Custom_WordPress_Columns/Views_Column.php:35
-#: IAWP/Independent_Analytics.php:281 IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
+#: IAWP/Independent_Analytics.php:345 IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
 #: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:202
 #: IAWP/Tables/Table_Campaigns.php:25 IAWP/Tables/Table_Devices.php:34
 #: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Pages.php:28
@@ -2638,12 +2657,12 @@ msgstr "Referenti"
 msgid "Views"
 msgstr "Visualizzazioni"
 
-#: IAWP/Independent_Analytics.php:109
+#: IAWP/Independent_Analytics.php:113
 msgid "Knowledge Base"
 msgstr "Informazioni di base"
 
-#: IAWP/Dashboard_Widget.php:24 IAWP/Independent_Analytics.php:163
-#: IAWP/Independent_Analytics.php:164 IAWP/Interrupt.php:19
+#: IAWP/Dashboard_Widget.php:24 IAWP/Independent_Analytics.php:215
+#: IAWP/Independent_Analytics.php:216 IAWP/Interrupt.php:19
 #: IAWP/Interrupt.php:20
 msgid "Analytics"
 msgstr "Analytics"

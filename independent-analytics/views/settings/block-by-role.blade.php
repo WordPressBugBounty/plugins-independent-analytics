@@ -54,6 +54,15 @@
                     <p class="none"><?php esc_html_e('No ignored User Roles', 'independent-analytics'); ?></p>
                 <?php endif; ?>
             </div>
+            <label class="column-label" for="iawp_ignore_via_cookie">
+                <input type="checkbox" name="iawp_ignore_via_cookie"
+                    id="iawp_ignore_via_cookie" <?php checked(true, $ignore_cookie, true); ?>>
+                <span><?php esc_html_e('Ignore via cookie', 'independent-analytics'); ?></span>
+                <p class="description"><?php 
+                    esc_html_e('Use a cookie so activity can be ignored when logged out too.', 'independent-analytics'); ?> 
+                    <a href="https://independentwp.com/knowledgebase/tracking/block-user-roles/" target="_blank"><?php esc_html_e('Learn more.', 'independent-analytics'); ?></a>
+                </p>
+            </label>
             <div class="save-button-container">
                 <?php submit_button(esc_html__('Save User Roles', 'independent-analytics'), 'iawp-button purple', 'save-block-by-role-settings', false); ?>
                 <p class="warning-message"><span class="dashicons dashicons-warning"></span> <?php esc_html_e('Unsaved changes', 'independent-analytics'); ?></p>

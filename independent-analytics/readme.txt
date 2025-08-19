@@ -1,11 +1,11 @@
 === Independent Analytics - Google Analytics Alternative for WordPress ===
-Contributors: bensibley, andrewmead, freemius
+Contributors: bensibley, andrewmead
 Tags: analytics, wordpress analytics, google analytics, analytics dashboard, statistics
 Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.11.10
+Stable tag: 2.12.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -179,6 +179,20 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.12.0 - August 18th, 2025 =
+
+- **Feature:** Added Solo Reports to Independent Analytics Pro! Click on any table row to view more data for that page/referrer/geolocation/device/campaign/link.
+- **Feature:** Added new option to ignore your own visits using a cookie
+- **Enhancement:** Tracking is compatible with the Maintenance plugin by WebFactory
+- **Enhancement:** Added error notice if REST API is blocked with REST API Toolbox plugin
+- **Enhancement:** Recognizing traffic from 429047995 as the Pinterest iOS app
+- **Enhancement:** Recognizing 30+ subdomains for Pinterest
+- **Enhancement:** Updated all translations
+- **Enhancement:** Added filters to allow pages outside of the WP ID system to be tracked
+- **Fix:** Resolved persistent bug causing fatal error in the Analytics menu for some hosts, namely webgo.de.
+- **Fix:** Resolved PHP notice about use of preg_replace
+- **Fix:** Resolved ctype_digit deprecation notice
 
 = 2.11.10 - July 18th, 2025 =
 
@@ -660,102 +674,5 @@ We use best practice techniques to filter out bot visits as efficiently as possi
 * **Fix:** view counter was missing number formatting
 * **Fix:** various mobile style enhancements
 * **Fix:** added error message for sites missing PDO extension and prevents crashing
-
-= 1.28.3 - August 24th, 2023 =
-
-* **Fix:** real-time and hourly data incorrect for sites with a non-UTC MySQL timezone
-
-= 1.28.2 - August 18th, 2023 =
-
-* **Update:** increased minimum WP version from 5.5 to 5.9
-* **Update:** increased minimum PHP version from 7.3.29 to 7.3.33
-
-= 1.28.1 - August 14th, 2023 =
-
-* **Fix:** migration bug fix for 1.28.0
-
-= 1.28.0 - August 14th, 2023 =
-
-* **Update:** optimized database to reduce storage space by 25% or more
-* **Update:** filter button text is now relevant to each report
-* **Update:** added notice if the REST API is blocked by the NinjaFirewall plugin
-* **Fix:** filtering on the Geographic menu could lead to under-reported values in the Quick Stats
-* **Fix:** the ip-to-geolocation database didn't download for some websites 
-* **Fix:** the chart interval wasn't staying the same when navigating between reports
-* **Fix:** the table layout would break if the columns were edited before the table finished loading
-* **Fix:** numbers in the data table could break into two lines on small screens
-* **Fix:** various styles fixes for Dark Mode
-
-= 1.27.0 - August 2nd, 2023 =
-
-* **Feature:** the monthly email report in the Pro version is now an HTML email instead of an attached PDF
-* **Fix:** fixed formatting error notice with PHP 8
-
-= 1.26.0 - July 12th, 2023 =
-
-* **Feature:** added intervals to the chart, so you can now see hourly, daily, weekly, and monthly data
-* **Update:** Quick Stats now only truncate values that ar 100K or greater
-* **Update:** the Views Per Session metric now shows 2 decimal places in the Quick Stats
-* **Update:** white-labeling the dashboard also removes branding from the browser tab
-* **Update:** the "This Year" date range now ends on today, rather than Dec 31st
-* **Update:** formatted the stats in the Geographic map country stats
-* **Fix:** filtering or sorting by bounce rate could cause the dashboard to stall
-* **Fix:** filtering by a city or subdivision caused the map chart to go empty
-* **Fix:** filtering by landing page in the Campaigns menu produced inaccurate results
-* **Fix:** the column select modal is now scrollable if it's too tall to fit on the screen
-* **Fix:** erroneous text output in the front-end source code
-
-= 1.25.1 - July 5th, 2023 =
-
-* **Fix:** bug fixes
-
-= 1.25.0 - June 21st, 2023 =
-
-* **Feature:** added Views Per Session metric
-* **Feature:** Geographic menu is now grouped by country by default and can be toggled between country and city
-* **Update:** added placeholder to Session Duration filter to clarify that it uses total seconds
-* **Fix:** fixed error that could prevent initial installation from succeeding on older MySQL versions
-
-= 1.24.1 - June 6th, 2023 =
-
-* **Fix:** show correct color for quick stats growth
-
-= 1.24.0 - June 6th, 2023 =
-
-* **Feature:** added Bounce Rate!
-* **Feature:** added stats to the Admin Bar on both the front end and post editor.
-* **Update:** removed popup that asks for feedback when deactivating IA
-* **Update:** abbreviating large numbers in the Quick Stats
-* **Update:** Sessions table column hidden by default
-* **Update:** settings page styles nicer for dark mode
-* **Fix:** translations from wp.org were not matching the text domain in IA
-* **Fix:** added missing i18n for the chart
-* **Fix:** filter wouldn't apply if entered before table finished loading
-
-= 1.23.1 - May 24th, 2023 =
-
-* **Update:** performance improvement for dashboard speed
-* **Fix:** data table not styled properly for dark mode
-
-= 1.23.0 - May 23rd, 2023 =
-
-* **Feature:** added two new metrics: Session Duration & View Duration!
-* **Update:** style updates to Quick Stats that make filtered data easier to read
-* **Fix:** incorrect URL displaying for articles translated with WPML
-* **Fix:** compatibility fixes for plugins adversely affecting IA's dashboard
-* **Fix:** scroll-to-top arrow wasn't working on Learn menu
-
-= 1.22.1 - May 5th, 2023 =
-
-* **Fix:** table rendering bug fix for 1.22.0
-
-= 1.22.0 - May 4th, 2023 =
-
-* **Feature:** the analytics dashboard is now mobile-friendly and accessible at all screen sizes
-* **Fix:** REST API warning message showing too often due to false positives
-* **Fix:** view counter icon not showing for logged-out visitors
-* **Fix:** hidden columns reappeared after refreshing the page
-* **Fix:** the update notice sometimes persisted due to aggressive caching
-* **Fix:** a second session was recorded if a visitor refreshed the page on their first page view
 
 **Changelog truncated here due to 50,000 character limit.**

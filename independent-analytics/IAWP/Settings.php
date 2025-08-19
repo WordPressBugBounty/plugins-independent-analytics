@@ -35,7 +35,7 @@ class Settings
         }
         $ips = \IAWPSCOPED\iawp()->get_option('iawp_blocked_ips', []);
         echo \IAWPSCOPED\iawp_blade()->run('settings.block-ips', ['current_ip' => Request::ip(), 'ip_is_blocked' => Request::is_ip_address_blocked(), 'ips' => $ips]);
-        echo \IAWPSCOPED\iawp_blade()->run('settings.block-by-role', ['roles' => \wp_roles()->roles, 'blocked' => \IAWPSCOPED\iawp()->get_option('iawp_blocked_roles', ['administrator'])]);
+        echo \IAWPSCOPED\iawp_blade()->run('settings.block-by-role', ['roles' => \wp_roles()->roles, 'blocked' => \IAWPSCOPED\iawp()->get_option('iawp_blocked_roles', ['administrator']), 'ignore_cookie' => \IAWPSCOPED\iawp()->get_option('iawp_ignore_via_cookie', \false)]);
         echo \IAWPSCOPED\iawp_blade()->run('settings.capabilities', ['editable_roles' => $this->get_editable_roles(), 'capabilities' => \IAWP\Capability_Manager::all_capabilities()]);
         echo \IAWPSCOPED\iawp_blade()->run('settings.view-counter');
         if (\IAWPSCOPED\iawp()->is_woocommerce_support_enabled()) {
@@ -222,6 +222,8 @@ class Settings
         }, 'iawp-block-by-role-settings');
         $args = ['type' => 'array', 'default' => ['administrator'], 'sanitize_callback' => [$this, 'sanitize_blocked_roles']];
         \register_setting('iawp_block_by_role_settings', 'iawp_blocked_roles', $args);
+        $args = ['type' => 'boolean', 'default' => \false, 'sanitize_callback' => 'rest_sanitize_boolean'];
+        \register_setting('iawp_block_by_role_settings', 'iawp_ignore_via_cookie', $args);
     }
     public function sanitize_view_counter_post_types($user_input)
     {

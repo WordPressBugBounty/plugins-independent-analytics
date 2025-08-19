@@ -76,7 +76,14 @@ class Pages extends \IAWP\Rows\Rows
             $join->on('clicks.view_id', '=', 'views.id');
         })->leftJoinSub($orders_query, 'the_orders', function (JoinClause $join) {
             $join->on('the_orders.view_id', '=', 'views.id');
-        })->tap(Query_Taps::tap_authored_content_check(\false))->when($this->has_wp_comments_table(), function (Builder $query) {
+        })->tap(Query_Taps::tap_authored_content_check(\false))->when($this->examiner_config, function (Builder $query) {
+            if ($this->examiner_config->group() !== 'link_pattern') {
+                return;
+            }
+            $query->leftJoin(Tables::clicked_links() . ' AS clicked_links', function (JoinClause $join) {
+                $join->on('clicked_links.click_id', '=', 'clicks.click_id');
+            });
+        })->tap(Query_Taps::tap_related_to_examined_record($this->examiner_config))->when($this->has_wp_comments_table(), function (Builder $query) {
             $query->selectRaw('IFNULL(comments.comments, 0) AS comments');
             $query->leftJoinSub($this->get_comments_query(), 'comments', 'comments.resource_id', '=', 'resources.id');
         }, function (Builder $query) {
@@ -91,6 +98,8 @@ class Pages extends \IAWP\Rows\Rows
                     $filter->apply_to_query($query);
                 }
             }
+        })->when(\is_int($this->solo_record_id), function (Builder $query) {
+            $query->where('resources.id', '=', $this->solo_record_id);
         })->groupBy('resources.id')->having('views', '>', 0)->when(!$this->is_using_a_calculated_column(), function (Builder $query) use($sort_column) {
             $query->when($this->sort_configuration->is_column_nullable(), function (Builder $query) use($sort_column) {
                 $query->orderByRaw("CASE WHEN {$sort_column} IS NULL THEN 1 ELSE 0 END");

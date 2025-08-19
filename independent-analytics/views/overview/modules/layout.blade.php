@@ -4,18 +4,18 @@
 @php /** @var bool $is_empty */ @endphp
 @php /** @var ?array $dataset */ @endphp
 
-<div class="iawp-module {{ $module->is_full_width() ? 'full-width' : '' }}"
+<div class="iawp-module <?php echo $module->is_full_width() ? 'full-width' : ''; ?>"
      data-controller="module"
-     data-module-module-id-value="{{ esc_attr($module->id()) }}"
-     data-module-has-dataset-value="{{ $module->has_dataset() ? 'true' : 'false' }}"
+     data-module-module-id-value="<?php echo esc_attr($module->id()); ?>"
+     data-module-has-dataset-value="<?php echo $module->has_dataset() ? 'true' : 'false'; ?>"
 >
     <header class="module-header">
-        <div class="module-icon">
-            @include('icons.overview.' . $module->module_type())
+        <div class="module-icon"><?php
+            echo iawp_blade()->run('icons.overview.' . $module->module_type()); ?>
         </div>
         <div class="module-title-container">
-            <h2>{{ sanitize_text_field($module->name()) }}</h2>
-            <p>{{ sanitize_text_field($module->subtitle()) }}</p>
+            <h2><?php echo sanitize_text_field($module->name()); ?></h2>
+            <p><?php echo sanitize_text_field($module->subtitle()); ?></p>
         </div>
         <div class="module-action-links">
             <button data-action="module#edit" class="edit-module-button"><span class="dashicons dashicons-admin-generic"></span></button>
@@ -24,17 +24,13 @@
         </div>
     </header>
     <div class="module-contents">
-        <div class="{{ esc_attr($module->module_type()) }} {{ $is_loaded ? "is-loaded" : "is-loading" }} {{ $is_empty ? "is-empty" : "" }}">
-            @if($is_empty)
-                @hasSection('empty')
-                    @yield('empty')
-                @else
-                    {{-- Show the content if they didn't provide an empty view --}}
-                    @yield('content')
-                @endif
-            @else
-                @yield('content')
-            @endif
+        <div class="<?php echo esc_attr($module->module_type()); ?> <?php echo $is_loaded ? "is-loaded" : "is-loading"; ?> <?php echo $is_empty ? "is-empty" : ""; ?>"><?php
+            echo iawp_blade()->run('overview.modules.' . $module->module_type(), [
+                'module' => $module,
+                'dataset' => $dataset,    
+                'is_empty' => $is_empty,
+                'is_loaded' => $is_loaded,
+            ]); ?>
         </div>
     </div>
 </div>

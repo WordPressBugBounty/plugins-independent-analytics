@@ -194,6 +194,11 @@ class View
     {
         global $wpdb;
         $resources_table = \IAWP\Query::get_table_name(\IAWP\Query::RESOURCES);
+        // Allow site owners to make any view for a virtual page
+        $virtual_id = \apply_filters('iawp_convert_to_virtual_page', $this->payload);
+        if (\is_string($virtual_id)) {
+            $this->payload = ['resource' => 'virtual_page', 'virtual_page_id' => $virtual_id, 'page' => $this->payload['page'] ?? 1];
+        }
         $resource = $this->fetch_resource();
         if (\is_null($resource)) {
             $payload_copy = \array_merge($this->payload);

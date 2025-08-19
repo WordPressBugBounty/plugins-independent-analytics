@@ -7,6 +7,7 @@ use IAWP\Date_Range\Date_Range;
 use IAWP\Date_Range\Exact_Date_Range;
 use IAWP\Date_Range\Relative_Date_Range;
 use IAWP\Env;
+use IAWP\Examiner_Config;
 use IAWP\Statistics\Intervals\Intervals;
 use IAWP\Statistics\Statistics;
 use IAWP\Tables\Table;
@@ -32,9 +33,16 @@ class Export_Report_Statistics extends \IAWP\AJAX\AJAX
         $number_of_rows = $page * \IAWPSCOPED\iawp()->pagination_page_size();
         $table_type = $this->get_field('table_type');
         $is_geo_table = $table_type === 'geo';
-        $table_class = Env::get_table();
-        /** @var Table $table */
-        $table = new $table_class($group);
+        $examiner_config = Examiner_Config::make(['type' => $this->get_field('examiner_type'), 'group' => $this->get_field('examiner_group'), 'id' => $this->get_int_field('examiner_id')]);
+        if ($examiner_config) {
+            $table_class = Env::get_table($examiner_config->type());
+            /** @var Table $table */
+            $table = new $table_class($examiner_config->group());
+        } else {
+            $table_class = Env::get_table();
+            /** @var Table $table */
+            $table = new $table_class($group);
+        }
         $filters = $table->sanitize_filters($filters);
         $sort_configuration = $table->sanitize_sort_parameters($sort_column, $sort_direction);
         $rows_class = $table->group()->rows_class();
@@ -44,7 +52,10 @@ class Export_Report_Statistics extends \IAWP\AJAX\AJAX
         } else {
             $rows_query = new $rows_class($date_range, $number_of_rows, $filters, $sort_configuration);
         }
-        if (empty($filters)) {
+        if ($examiner_config) {
+            $rows_query->limit_to($examiner_config->id());
+        }
+        if (empty($filters) && !$examiner_config) {
             /** @var Statistics $statistics */
             $statistics = new $statistics_class($date_range, null, $chart_interval);
         } else {

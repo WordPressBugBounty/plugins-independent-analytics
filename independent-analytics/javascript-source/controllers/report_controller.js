@@ -11,7 +11,9 @@ class Report_Controller extends Controller {
     static request;
     static targets = ['loadMore', 'exportReportTable', 'exportReportStatistics', 'exportPDF', 'spinner']
     static values = {
+        isExaminer: Boolean,
         name: String,
+        reportName: String,
         relativeRangeId: String,
         exactStart: String,
         exactEnd: String,
@@ -26,6 +28,7 @@ class Report_Controller extends Controller {
         filters: Array
     }
 
+    tableType = undefined
     exactStart = undefined
     exactEnd = undefined
     relativeRangeId = undefined
@@ -54,6 +57,7 @@ class Report_Controller extends Controller {
         this.primaryChartMetricId = this.primaryChartMetricIdValue
         this.secondaryChartMetricId = this.secondaryChartMetricIdValue
         this.filters = this.filtersValue
+        this.tableType = jQuery('#data-table').data('table-name')
         document.addEventListener('iawp:changeDates', this.datesChanged)
         document.addEventListener('iawp:changeColumns', this.columnsChanged)
         document.addEventListener('iawp:changeQuickStats', this.quickStatsChanged)
@@ -184,6 +188,19 @@ class Report_Controller extends Controller {
         this.fetch();
     }
 
+    changeTable = (event) => {
+        this.tableType = event.currentTarget.dataset.tableType
+        this.page = 1;
+
+        event.currentTarget.closest('.examiner-table-tabs').querySelectorAll('.active').forEach((element) => {
+            element.classList.remove('active')
+        })
+
+        event.currentTarget.classList.add('active')
+
+        this.fetch({ newTable: true })
+    }
+
     onFetchingReport = () => {
         this.spinnerTarget.classList.remove('hidden')
 
@@ -202,8 +219,10 @@ class Report_Controller extends Controller {
               isInitialFetch = false,
               showLoadingOverlay = true,
               newGroup = false,
+              newTable = false,
               newDateRange = false
           } = {}) {
+        const isExaminer = this.isExaminerValue
 
         if (showLoadingOverlay) {
             jQuery('#iawp-parent').addClass('loading');
@@ -216,7 +235,7 @@ class Report_Controller extends Controller {
             'exact_end': this.exactEnd,
             'is_new_date_range': newDateRange,
             'relative_range_id': this.relativeRangeId,
-            'table_type': jQuery('#data-table').data('table-name'),
+            'table_type': this.tableType,
             'columns': this.columns,
             'report_quick_stats': ['visitors'], // TODO
             'primary_chart_metric_id': this.primaryChartMetricId,
@@ -225,13 +244,25 @@ class Report_Controller extends Controller {
             'quick_stats': this.quickStats,
             'sort_direction': this.sortDirection,
             'group': this.group,
-            'is_new_group': newGroup,
+            'is_new_group': newGroup && !newTable,
             'chart_interval': this.chartInterval,
             'page': this.page,
         };
 
+        if(newTable) {
+            data.columns = null
+        }
+
         if (Report_Controller.request) {
             Report_Controller.request.abort();
+        }
+
+        if(isExaminer) {
+            const searchParams = new URLSearchParams(document.location.search);
+
+            data['examiner_type'] = searchParams.get('tab')
+            data['examiner_group'] = searchParams.get('group')
+            data['examiner_id'] = searchParams.get('examiner')
         }
 
         document.dispatchEvent(
@@ -251,7 +282,7 @@ class Report_Controller extends Controller {
                 new CustomEvent('iawp:fetchedReport')
             )
 
-            if (newGroup) {
+            if (newGroup || isExaminer) {
                 jQuery('#iawp-table-wrapper').replaceWith(response.table)
                 jQuery('[data-plugin-group-options-option-type-value=columns]').replaceWith(response.columnsHTML)
 
@@ -270,6 +301,7 @@ class Report_Controller extends Controller {
 
             const parser = new DOMParser();
             const statsDocument = parser.parseFromString(response.stats, 'text/html');
+
             jQuery('#quick-stats .iawp-stats').replaceWith(statsDocument.querySelector('.iawp-stats'))
             jQuery('#quick-stats').removeClass('skeleton-ui');
 
@@ -277,6 +309,14 @@ class Report_Controller extends Controller {
                 // Do not update the chart if there are no filters and it's the initial load
             } else {
                 jQuery('#independent-analytics-chart').closest('.chart-container').replaceWith(response.chart);
+            }
+
+            if(isExaminer) {
+                jQuery('#table-toolbar').replaceWith(response.table_toolbar)
+            }
+
+            if(isExaminer && isInitialFetch) {
+                this.enableExaminerTabs()
             }
 
             document.dispatchEvent(
@@ -313,6 +353,48 @@ class Report_Controller extends Controller {
         });
     }
 
+    showExaminer(event) {
+        const title = event.currentTarget.dataset.title
+        const url = new URL(event.currentTarget.dataset.url)
+        const updates = {
+            'exact_start': this.exactStart,
+            'exact_end': this.exactEnd,
+            'relative_range_id': this.relativeRangeId,
+            'quick_stats': this.quickStats,
+            'primary_chart_metric_id': this.primaryChartMetricId,
+            'secondary_chart_metric_id': this.secondaryChartMetricId,
+            'chart_interval': this.chartInterval,
+            'group': this.group,
+        }
+        const params = url.searchParams
+
+        for (const [key, value] of Object.entries(updates)) {
+            if (!value) {
+                continue
+            }
+
+            if(Array.isArray(value)) {
+                value.forEach((item) => params.append(key + '[]', item))
+                continue
+            }
+
+            params.set(key, value)
+        }
+
+        url.search = params.toString()
+
+        document.dispatchEvent(
+            new CustomEvent('iawp:showExaminer', {
+                detail: {
+                    title,
+                    reportName: this.reportNameValue,
+                    dateLabel: this.element.querySelector('.date-picker-parent .iawp-label').innerText,
+                    url: url.toString(),
+                }
+            })
+        )
+    }
+
     exportReportTable() {
         const data = {
             ...iawpActions.export_report_table,
@@ -326,6 +408,14 @@ class Report_Controller extends Controller {
             'sort_direction': this.sortDirection,
             'group': this.group,
         };
+
+        if(this.isExaminerValue) {
+            const searchParams = new URLSearchParams(document.location.search);
+
+            data['examiner_type'] = searchParams.get('tab')
+            data['examiner_group'] = searchParams.get('group')
+            data['examiner_id'] = searchParams.get('examiner')
+        }
 
         this.exportReportTableTarget.classList.add('sending')
         this.exportReportTableTarget.setAttribute('disabled', 'disabled')
@@ -364,6 +454,14 @@ class Report_Controller extends Controller {
             'chart_interval': this.chartInterval,
             'page': this.page,
         };
+
+        if(this.isExaminerValue) {
+            const searchParams = new URLSearchParams(document.location.search);
+
+            data['examiner_type'] = searchParams.get('tab')
+            data['examiner_group'] = searchParams.get('group')
+            data['examiner_id'] = searchParams.get('examiner')
+        }
 
         this.exportReportStatisticsTarget.classList.add('sending')
         this.exportReportStatisticsTarget.setAttribute('disabled', 'disabled')
@@ -482,6 +580,12 @@ class Report_Controller extends Controller {
                 }, 1000)
             })
         }, 250) // Allow animations to finish before exporting blocks things up
+    }
+
+   enableExaminerTabs() {
+        document.querySelectorAll('.examiner-table-tabs button').forEach((button) => {
+            button.removeAttribute('disabled')
+        })
     }
 
     getFileName(fileExtension, type = null) {

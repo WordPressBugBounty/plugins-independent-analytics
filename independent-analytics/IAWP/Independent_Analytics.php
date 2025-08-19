@@ -27,6 +27,7 @@ use IAWP\Menu_Bar_Stats\Menu_Bar_Stats;
 use IAWP\Migrations\Migrations;
 use IAWP\Overview\Module_Refresh_Job;
 use IAWP\Utils\Plugin;
+use IAWP\Utils\Request;
 use IAWP\Utils\Singleton;
 use IAWP\Utils\Timezone;
 use IAWPSCOPED\Illuminate\Support\Carbon;
@@ -83,6 +84,7 @@ class Independent_Analytics
         \add_action('init', [$this, 'load_text_domain']);
         // Freemius adjustments
         \IAWP_FS()->add_filter('pricing_url', [$this, 'change_freemius_pricing_url'], 10);
+        \IAWP_FS()->add_filter('show_affiliate_program_notice', '__return_false');
         \IAWP_FS()->add_filter('show_deactivation_feedback_form', function () {
             return \false;
         });
@@ -95,6 +97,7 @@ class Independent_Analytics
         \add_filter('plugin_row_meta', [$this, 'add_docs_link_in_plugins_menu'], 10, 2);
         \add_action('admin_footer', [$this, 'attach_system_appearance_script'], 99, 0);
         \add_filter('sgo_javascript_combine_excluded_inline_content', [$this, 'exclude_tracking_script_from_speed_optimizer'], 10, 1);
+        \add_action('admin_init', [$this, 'maybe_add_cookie']);
     }
     public function add_upgrade_link_in_plugins_menu($links)
     {
@@ -160,18 +163,22 @@ class Independent_Analytics
         </script>
         <?php 
     }
-    public function add_body_class($classes)
+    public function add_body_class(string $classes) : string
     {
+        $newClasses = [];
         if (\IAWP\Appearance::is_light()) {
-            $classes .= ' iawp-light-mode';
+            $newClasses[] = 'iawp-light-mode';
         } elseif (\IAWP\Appearance::is_dark()) {
-            $classes .= ' iawp-dark-mode';
+            $newClasses[] = 'iawp-dark-mode';
         }
         $page = \IAWP\Env::get_page();
         if (\is_string($page)) {
-            $classes .= " {$page} ";
+            $newClasses[] = $page;
         }
-        return $classes;
+        if (\array_key_exists('examiner', $_GET)) {
+            $newClasses[] = 'iawp-in-examiner';
+        }
+        return $classes . ' ' . \implode(' ', $newClasses) . ' ';
     }
     /**
      * At one point in time, there was a must-use plugin that was created. The plugin file and the
@@ -394,6 +401,14 @@ class Independent_Analytics
                         \wp_enqueue_style('iawp-adminify-styles');
                     }
                 }
+            }
+        }
+    }
+    public function maybe_add_cookie()
+    {
+        if (Request::is_blocked_user_role() && $this->get_option('iawp_ignore_via_cookie', \false)) {
+            if (!isset($_COOKIE['iawp_ignore_visitor'])) {
+                \setcookie('iawp_ignore_visitor', '1', \time() + 365 * 24 * 60 * 60, \COOKIEPATH, \COOKIE_DOMAIN);
             }
         }
     }

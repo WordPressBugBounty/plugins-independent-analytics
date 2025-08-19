@@ -1,23 +1,24 @@
 @php /** @var \IAWP\Tables\Groups\Groups $groups */ @endphp
 @php /** @var \IAWP\Tables\Groups\Group $current_group */ @endphp
 
-@if($groups->has_grouping_options())
+<?php
+if ($groups->has_grouping_options()) : ?>
     <div class="group-select-container">
         <select id="group-select"
                 class="group-select"
                 data-controller="group"
                 data-action="group#changeGroup"
-        >
-            @foreach($groups->groups() as $group)
-                <option id="{{ esc_attr($group->id()) }}"
-                        value="{{ esc_attr($group->id()) }}"
-                        data-testid="group-by-{{ esc_attr($group->id()) }}"
-                        {{ selected($group->id(), $current_group->id(), true) }}
+        ><?php
+            foreach ($groups->groups() as $group) : ?>
+                <option id="<?php echo esc_attr($group->id()); ?>"
+                        value="<?php echo esc_attr($group->id()); ?>"
+                        data-testid="group-by-<?php echo esc_attr($group->id()); ?>"
+                        <?php selected($group->id(), $current_group->id(), true); ?>
                 >
-                    {{ esc_html($group->singular()) }}
-                </option>
-            @endforeach
+                    <?php echo esc_html($group->singular()); ?>
+                </option><?php
+            endforeach; ?>
         </select>
         <label><span class="dashicons dashicons-open-folder"></span></label>
-    </div>
-@endif
+    </div><?php
+endif;

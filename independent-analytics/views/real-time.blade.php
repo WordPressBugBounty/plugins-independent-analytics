@@ -1,6 +1,6 @@
 <div id="report-title-bar" class="report-title-bar">
     <div class="primary-report-title-container">
-        <h1 class="report-title">Real-Time</h1>
+        <h1 class="report-title"><?php esc_html_e('Real-Time', 'independent-analytics'); ?></h1>
     </div>
 
     <div class="buttons">
@@ -9,10 +9,10 @@
                     data-controller="set-favorite-report"
                     data-set-favorite-report-type-value="real-time"
                     data-action="set-favorite-report#setFavoriteReport"
-                    class="iawp-button favorite {{$env->is_favorite('real-time') ? 'active' : '' }}"
+                    class="iawp-button favorite <?php echo $env->is_favorite('real-time') ? 'active' : ''; ?>"
             >
                 <span class="dashicons dashicons-star-filled"></span>
-                {{ __('Make default', 'independent-analytics') }}
+                <?php esc_html_e('Make default', 'independent-analytics'); ?>
             </button>
         </div>
     </div>
@@ -110,8 +110,5 @@
                 <p class="most-popular-empty-message <?php echo count($list['entries']) > 0 ? esc_attr('hide') : '' ?>"><?php esc_html_e('No results in the last 5 minutes.', 'independent-analytics') ?></p>
             </div>
         <?php endforeach; ?>
-    </div>
-    <div id="progress-bar" class="progress-bar">
-        <div class="inner"></div>
     </div>
 </div>

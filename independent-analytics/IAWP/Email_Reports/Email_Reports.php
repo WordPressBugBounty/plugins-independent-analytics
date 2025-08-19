@@ -222,6 +222,10 @@ class Email_Reports
             if (\count($rows) == 0) {
                 continue;
             }
+            // Remove landing page and exit rows with 0 entrances/exits
+            $rows = \array_filter($rows, function ($row) {
+                return $row['views'] > 0;
+            });
             $top_ten[$type] = ['title' => $title, 'rows' => $rows];
         }
         return $top_ten;

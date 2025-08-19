@@ -21,6 +21,35 @@ class Request
         }
         return \sanitize_text_field($_POST[$field]);
     }
+    public static function query(string $field) : ?string
+    {
+        if (empty($_GET[$field])) {
+            return null;
+        }
+        return \sanitize_text_field($_GET[$field]);
+    }
+    public static function query_int(string $field) : ?int
+    {
+        $result = \filter_input(\INPUT_GET, $field, \FILTER_VALIDATE_INT);
+        if (!\is_int($result)) {
+            return null;
+        }
+        return $result;
+    }
+    public static function query_array(string $field) : ?array
+    {
+        if (empty($_GET[$field]) || !\is_array($_GET[$field])) {
+            return null;
+        }
+        $array = [];
+        foreach ($_GET[$field] as $item) {
+            if (!\is_string($item)) {
+                continue;
+            }
+            $array[] = \sanitize_text_field($item);
+        }
+        return $array;
+    }
     public static function path_relative_to_site_url($url = null)
     {
         if (\is_null($url)) {
@@ -95,6 +124,23 @@ class Request
         }
         return \false;
     }
+    /**
+     * @return string[]
+     */
+    public static function ip_headers() : array
+    {
+        return ['HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR', 'HTTP_CF_CONNECTING_IP', 'HTTP_CLIENT_IP', 'HTTP_INCAP_CLIENT_IP', 'HTTP_CF_CONNECTING_IP'];
+    }
+    public static function is_blocked_user_role() : bool
+    {
+        $blocked_roles = \IAWPSCOPED\iawp()->get_option('iawp_blocked_roles', ['administrator']);
+        foreach (\wp_get_current_user()->roles as $visitor_role) {
+            if (\in_array($visitor_role, $blocked_roles)) {
+                return \true;
+            }
+        }
+        return \false;
+    }
     private static function scheme()
     {
         if (!empty($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == 'https' || !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' || !empty($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443') {
@@ -110,12 +156,5 @@ class Request
         } else {
             return null;
         }
-    }
-    /**
-     * @return string[]
-     */
-    public static function ip_headers() : array
-    {
-        return ['HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR', 'HTTP_CF_CONNECTING_IP', 'HTTP_CLIENT_IP', 'HTTP_INCAP_CLIENT_IP', 'HTTP_CF_CONNECTING_IP'];
     }
 }

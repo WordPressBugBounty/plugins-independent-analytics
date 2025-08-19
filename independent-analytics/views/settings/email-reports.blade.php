@@ -92,8 +92,8 @@
                     name="iawp_email_report_from_address" 
                     id="iawp_email_report_from_address"
                     data-option="iawp_email_report_from_address"
-                    value="{{ esc_attr($from) }}">
-                    <p class="description">{{ esc_html__('The email address should come from this domain or your emails may not be delivered.', 'independent-analytics')}}</p>
+                    value="<?php echo esc_attr($from); ?>">
+                    <p class="description"><?php esc_html_e('The email address should come from this domain or your emails may not be delivered.', 'independent-analytics'); ?></p>
             </div>
             <div class="reply-to-email iawp-section">
                 <h3><?php esc_html_e('Reply To email address', 'independent-analytics'); ?></h3>
@@ -101,8 +101,8 @@
                     name="iawp_email_report_reply_to_address" 
                     id="iawp_email_report_reply_to_address"
                     data-option="iawp_email_report_reply_to_address"
-                    value="{{ esc_attr($reply_to) }}">
-                    <p class="description">{{ esc_html__('Any replies to the email report will be delivered to this email address.', 'independent-analytics')}}</p>
+                    value="<?php echo esc_attr($reply_to); ?>">
+                    <p class="description"><?php esc_html_e('Any replies to the email report will be delivered to this email address.', 'independent-analytics'); ?></p>
             </div>
             <div class="email-footer-text iawp-section">
                 <h3><?php esc_html_e('Email footer text', 'independent-analytics'); ?></h3>
@@ -111,7 +111,7 @@
                     id="iawp_email_report_footer"
                     data-option="iawp_email_report_footer"
                     rows=2>
-                        {{ esc_html($footer_text) }}
+                        <?php echo esc_html($footer_text); ?>
                 </textarea>
             </div>
             <div class="email-addresses iawp-section">

@@ -112,7 +112,7 @@ abstract class Module
     public function get_module_html() : string
     {
         $dataset = $this->get_dataset();
-        return \IAWPSCOPED\iawp_render("overview.modules.{$this->module_type()}", ['module' => $this, 'is_loaded' => $dataset !== null, 'is_empty' => \is_array($dataset) && empty($dataset), 'dataset' => $dataset]);
+        return \IAWPSCOPED\iawp_render("overview.modules.layout", ['module' => $this, 'dataset' => $dataset, 'is_loaded' => $dataset !== null, 'is_empty' => \is_array($dataset) && empty($dataset)]);
     }
     public function get_editor_html() : string
     {

@@ -24,6 +24,8 @@ class REST_API
         \add_action('ccsm_header', [$this, 'echo_tracking_script']);
         // Support for CMP - Coming Soon & Maintenance
         \add_action('cmp_footer', [$this, 'echo_tracking_script']);
+        // Support for Maintenance plugin
+        \add_action('add_gg_analytics_code', [$this, 'echo_tracking_script']);
     }
     public function echo_tracking_script()
     {
@@ -37,7 +39,10 @@ class REST_API
         if (!\get_option('iawp_track_authenticated_users') && \is_user_logged_in()) {
             return;
         }
-        if ($this->block_user_role()) {
+        if (Request::is_blocked_user_role()) {
+            return;
+        }
+        if (isset($_COOKIE['iawp_ignore_visitor'])) {
             return;
         }
         // Don't track post or page previews
@@ -451,15 +456,5 @@ class REST_API
             return null;
         }
         return $safe_string;
-    }
-    private function block_user_role() : bool
-    {
-        $blocked_roles = \IAWPSCOPED\iawp()->get_option('iawp_blocked_roles', ['administrator']);
-        foreach (\wp_get_current_user()->roles as $visitor_role) {
-            if (\in_array($visitor_role, $blocked_roles)) {
-                return \true;
-            }
-        }
-        return \false;
     }
 }

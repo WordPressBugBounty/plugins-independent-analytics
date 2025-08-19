@@ -1,21 +1,23 @@
 @php /** @var \IAWP\Overview\Form_Field $form_field */ @endphp
 @php /** @var string[] $selected_value */ @endphp
 
-<p>{{ sanitize_text_field($form_field->name()) }}</p>
+<p><?php echo sanitize_text_field($form_field->name()); ?></p>
 
-<div id="{{ esc_attr($form_field->id()) }}">
-    @foreach($form_field->supported_values() as $value)
+<div id="<?php echo esc_attr($form_field->id()); ?>"><?php
+    $first_loop = true;
+    foreach ($form_field->supported_values() as $value) : ?>
         <label>
             <input type="radio"
-                   name="{{ esc_attr($form_field->id()) }}"
-                   value="{{ esc_attr($value->id()) }}"
-            @if($selected_value !== null)
-                {{ $value->id() == $selected_value ? 'checked' : '' }}
-                    @else
-                {{ $loop->first ? 'checked' : '' }}
-                    @endif
+                   name="<?php echo esc_attr($form_field->id()); ?>"
+                   value="<?php echo esc_attr($value->id()); ?>"<?php
+                if ($selected_value !== null) {
+                    echo $value->id() == $selected_value ? 'checked' : '';
+                } else {
+                    echo $first_loop ? 'checked' : '';
+                } ?>
             />
-            <span>{{ sanitize_text_field($value->name()) }}</span>
-        </label>
-    @endforeach
+            <span><?php echo sanitize_text_field($value->name()); ?></span>
+        </label><?php
+        $first_loop = false;
+    endforeach; ?>
 </div>

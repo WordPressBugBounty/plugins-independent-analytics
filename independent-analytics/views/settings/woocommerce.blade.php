@@ -13,19 +13,19 @@
         esc_html_e('Choose which order statuses should be counted in the analytics reports.', 'independent-analytics'); 
     ?></p>
     <div class="settings-checkbox-group">
-        <ol>
-            @foreach($statuses->get_statuses() as $status)
+        <ol><?php
+            foreach ($statuses->get_statuses() as $status) : ?>
                 <li>
                     <label>
                         <input type="checkbox"
-                               name="{{$status['id']}}"
-                               @if($status['is_tracked'] === true) checked @endif
-                               data-testid="wc-status-{{$status['id']}}"
+                            name="<?php echo esc_attr($status['id']); ?>" <?php
+                            echo $status['is_tracked'] === true ? 'checked' : ''; ?>
+                            data-testid="wc-status-<?php echo esc_attr($status['id']); ?>"
                         >
-                        {{$status['name']}}
+                        <?php echo esc_html($status['name']); ?>
                     </label>
-                </li>
-            @endforeach
+                </li><?php
+            endforeach; ?>
         </ol>
     </div>
     <div class="button-group">

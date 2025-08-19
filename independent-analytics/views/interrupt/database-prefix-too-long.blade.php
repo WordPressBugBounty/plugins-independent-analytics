@@ -4,12 +4,12 @@
 <div class="settings-container interrupt-message"
      data-controller="migration-redirect"
 >
-    <h2>{{__("Your database prefix is longer than 25 characters", "independent-analytics")}}</h2>
+    <h2><?php esc_html_e("Your database prefix is longer than 25 characters", "independent-analytics"); ?></h2>
     <p>
-        {{__("Your current database prefix", "independent-analytics")}} <strong>"{{$prefix}}"</strong> {{__("is longer than the allowed 25 characters.", "independent-analytics")}}
+        <?php esc_html_e("Your current database prefix", "independent-analytics"); ?> <strong>"<?php echo esc_html($prefix); ?>"</strong> <?php esc_html_e("is longer than the allowed 25 characters.", "independent-analytics"); ?>
     </p>
     <p>
-        {{__("Please click the button below to follow a brief tutorial that will show you how to easily change your database prefix.", "independent-analytics")}}
+        <?php esc_html_e("Please click the button below to follow a brief tutorial that will show you how to easily change your database prefix.", "independent-analytics"); ?>
     </p>
     <p>
         <a href="https://independentwp.com/knowledgebase/common-questions/database-prefix-length-error/"

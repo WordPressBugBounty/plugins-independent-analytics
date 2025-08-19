@@ -183,8 +183,22 @@ export default class extends Controller {
     updateMetricSelectWidth(element) {
         const option = element.options[element.selectedIndex]
 
-        this.adaptiveWidthSelectTarget[0].innerHTML = option.innerText
-        element.style.width = this.adaptiveWidthSelectTarget.getBoundingClientRect().width + 'px'
+        // The intersection observer was added to improve support for the examiner which operates
+        // in an iFrame. Without this, the adaptiveWidthSelectTarget has a width of zero when
+        // this code runs.
+        
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.adaptiveWidthSelectTarget[0].innerHTML = option.innerText
+                    element.style.width = this.adaptiveWidthSelectTarget.getBoundingClientRect().width + 'px'
+                    observer.disconnect()
+                }
+            });
+        });
+
+        observer.observe(this.adaptiveWidthSelectTarget);
+
         element.parentElement.classList.add('visible');
     }
 

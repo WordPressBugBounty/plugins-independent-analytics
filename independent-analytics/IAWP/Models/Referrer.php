@@ -3,7 +3,7 @@
 namespace IAWP\Models;
 
 /** @internal */
-class Referrer
+class Referrer extends \IAWP\Models\Model
 {
     use \IAWP\Models\Universal_Model_Columns;
     protected $row;
@@ -18,6 +18,14 @@ class Referrer
         $this->referrer = $row->referrer;
         $this->domain = $row->domain;
         $this->referrer_type = $row->referrer_type;
+    }
+    public function id() : int
+    {
+        return $this->row->referrer_id;
+    }
+    public function table_type() : string
+    {
+        return 'referrers';
     }
     /**
      * Return group name, referrer url, or direct.
@@ -54,5 +62,13 @@ class Referrer
     public function has_link() : bool
     {
         return !$this->is_direct() && $this->referrer_type !== 'Ad';
+    }
+    public function examiner_title() : string
+    {
+        return $this->referrer();
+    }
+    public function examiner_url() : string
+    {
+        return \IAWPSCOPED\iawp_dashboard_url(['tab' => 'referrers', 'examiner' => $this->id()]);
     }
 }

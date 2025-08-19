@@ -26,7 +26,7 @@ class Dashboard_Options
     private static $default_visible_quick_stats = ['visitors', 'views', 'sessions', 'average_session_duration', 'bounce_rate', 'views_per_session', 'wc_orders', 'wc_net_sales'];
     private function __construct()
     {
-        $this->report = $this->fetch_current_report();
+        $this->report = $this->get_report();
     }
     public function report_name() : ?string
     {
@@ -158,6 +158,9 @@ class Dashboard_Options
         if (\IAWP\Env::get_page() !== 'independent-analytics') {
             return;
         }
+        if (isset($_GET['examiner'])) {
+            return;
+        }
         if (empty($_GET['report']) && empty($_GET['tab'])) {
             $favorite_report = \IAWP\Report_Finder::new()->get_favorited_report();
             if (\is_null($favorite_report)) {
@@ -180,17 +183,35 @@ class Dashboard_Options
         $is_sidebar_collapsed = \get_user_meta(\get_current_user_id(), 'iawp_is_sidebar_collapsed', \true) === '1';
         return $is_sidebar_collapsed;
     }
-    private function fetch_current_report() : ?object
+    public function is_examiner() : bool
     {
-        $reports_table = \IAWP\Query::get_table_name(\IAWP\Query::REPORTS);
-        $report_id = \filter_input(\INPUT_GET, 'report', \FILTER_VALIDATE_INT);
-        if (!\is_int($report_id)) {
-            return null;
+        if (!\IAWPSCOPED\iawp_is_pro()) {
+            return \false;
         }
-        return \IAWP\Illuminate_Builder::new()->from($reports_table)->where('report_id', '=', $report_id)->first();
+        return \array_key_exists('examiner', $_GET);
     }
     private function has_exact_range() : bool
     {
         return !\is_null($this->report->exact_start ?? null) && !\is_null($this->report->exact_end ?? null);
+    }
+    private function get_report() : ?object
+    {
+        if ($this->is_examiner()) {
+            return $this->build_examiner_report();
+        }
+        $id = \filter_input(\INPUT_GET, 'report', \FILTER_VALIDATE_INT);
+        if (\is_int($id)) {
+            return $this->fetch_saved_report($id);
+        }
+        return null;
+    }
+    private function build_examiner_report() : object
+    {
+        return (object) ['exact_start' => Request::query('exact_start'), 'exact_end' => Request::query('exact_end'), 'relative_range_id' => Request::query('relative_range_id'), 'quick_stats' => \json_encode(Request::query_array('quick_stats')), 'primary_chart_metric_id' => Request::query('primary_chart_metric_id'), 'secondary_chart_metric_id' => Request::query('secondary_chart_metric_id'), 'chart_interval' => Request::query('chart_interval'), 'group_name' => Request::query('group'), 'filters' => null, 'columns' => null, 'type' => Request::query('tab')];
+    }
+    private function fetch_saved_report(int $id) : ?object
+    {
+        $reports_table = \IAWP\Query::get_table_name(\IAWP\Query::REPORTS);
+        return \IAWP\Illuminate_Builder::new()->from($reports_table)->where('report_id', '=', $id)->first();
     }
 }

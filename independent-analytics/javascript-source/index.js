@@ -3,6 +3,14 @@ import MicroModal from "micromodal"
 
 document.addEventListener("DOMContentLoaded", () => MicroModal.init())
 
+document.addEventListener("DOMContentLoaded", () => {
+    requestAnimationFrame(() => {
+        // The Examiner is loaded using an iframe. This messages lets the iframed element alert
+        // the parent that's completely loaded and ready to be shown.
+        window.parent.postMessage('iawpPageReady');
+    })
+})
+
 import CampaignBuilderController from "./controllers/campaign_builder_controller"
 import ChartController from "./controllers/chart_controller"
 import ChartIntervalController from "./controllers/chart_interval_controller"
@@ -12,6 +20,8 @@ import CreateReportController from "./controllers/create_report_controller"
 import DeleteDataController from "./controllers/delete_data_controller"
 import DeleteReportController from "./controllers/delete_report_controller"
 import EasepickController from "./controllers/easepick_controller"
+import ExaminerController from "./controllers/examiner_controller"
+import ExaminerHeaderController from "./controllers/examiner_header_controller"
 import ExportOverviewController from "./controllers/export_overview_controller"
 import ExportReportsController from "./controllers/export_reports_controller"
 import FiltersController from "./controllers/filters_controller"
@@ -57,6 +67,8 @@ Stimulus.register("copy-report", CopyReportController)
 Stimulus.register("delete-data", DeleteDataController)
 Stimulus.register('delete-report', DeleteReportController)
 Stimulus.register("easepick", EasepickController)
+Stimulus.register("examiner", ExaminerController)
+Stimulus.register("examiner-header", ExaminerHeaderController)
 Stimulus.register("export-overview", ExportOverviewController)
 Stimulus.register("export-reports", ExportReportsController)
 Stimulus.register("filters", FiltersController)

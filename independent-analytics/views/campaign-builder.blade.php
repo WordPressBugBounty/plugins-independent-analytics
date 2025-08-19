@@ -18,8 +18,9 @@ $utm_content        = $utm_content ?? null;
             <h2><?php esc_html_e('Campaign URL Builder', 'independent-analytics'); ?></h2>
             <a class="link-purple"
                href="https://independentwp.com/knowledgebase/campaigns/how-to-campaign-builder"
-               target="_blank"><?php esc_html_e('Learn how to create campaigns', 'independent-analytics'); ?> <span
-                        class="dashicons dashicons-external"></span></a>
+               target="_blank">
+                <?php esc_html_e('Learn how to create campaigns', 'independent-analytics'); ?> <span class="dashicons dashicons-external"></span>
+            </a>
         </div>
         <form action="" data-action="campaign-builder#submit" data-campaign-builder-target="form">
             <div class="table-container">

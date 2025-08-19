@@ -6,6 +6,7 @@ use DateTime;
 use IAWP\Illuminate_Builder;
 use IAWP\Query;
 use IAWP\Utils\Timezone;
+use IAWPSCOPED\Illuminate\Support\Collection;
 /** @internal */
 class Relative_Date_Range extends \IAWP\Date_Range\Date_Range
 {
@@ -178,11 +179,15 @@ class Relative_Date_Range extends \IAWP\Date_Range\Date_Range
      *
      * @return Relative_Date_Range[]
      */
-    public static function ranges() : array
+    public static function ranges(?array $ranges_to_include = null) : array
     {
-        return \array_map(function (string $range_id) {
-            return new self($range_id);
-        }, self::VALID_RELATIVE_RANGE_IDS);
+        return Collection::make(self::VALID_RELATIVE_RANGE_IDS)->when(\is_array($ranges_to_include), function ($collection) use($ranges_to_include) {
+            return $collection->filter(function ($range) use($ranges_to_include) {
+                return \in_array($range, $ranges_to_include);
+            });
+        })->map(function ($range) {
+            return new self($range);
+        })->all();
     }
     /**
      * @return string[]

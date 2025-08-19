@@ -11,7 +11,7 @@ if ($integration->activated()) {
     }
 }
 ?>
-<div class="iawp-integration {{ esc_attr($class) }}">
-    <p class="iawp-plugin-icon">{!! $integration->icon() !!}</p>
-    <p class="iawp-plugin-name">{{ esc_html($integration->name()) }}</p>
+<div class="iawp-integration <?php echo esc_attr($class); ?>">
+    <p class="iawp-plugin-icon"><?php echo $integration->icon(); ?></p>
+    <p class="iawp-plugin-name"><?php echo esc_html($integration->name()); ?></p>
 </div>

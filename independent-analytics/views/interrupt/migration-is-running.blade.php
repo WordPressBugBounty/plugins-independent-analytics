@@ -1,8 +1,17 @@
-@extends('interrupt.layout')
-
-@section('content')
+<div id="iawp-parent" class="iawp-parent">
+    <div class="header">
+        <div class="logo">
+            <img src="<?php echo esc_url(iawp_url_to('img/logo.png')); ?>" data-testid="logo"/>
+        </div>
+        <a href="https://independentwp.com/knowledgebase/"
+           class="iawp-button purple"
+           target="_blank">
+            <span class="dashicons dashicons-sos"></span>
+            <span><?php esc_html_e('Get Help', 'independent-analytics'); ?></span>
+        </a>
+    </div>
     <div class="settings-container interrupt-message"
-         data-controller="migration-redirect"
+        data-controller="migration-redirect"
     >
         <div id="iawp-update-running">
             <h2><?php esc_html_e('Update running', 'independent-analytics'); ?></h2>
@@ -20,4 +29,6 @@
         </div>
         <div id="iawp-migration-error" class="iawp-migration-error"></div>
     </div>
-@endsection
+</div>
+
+

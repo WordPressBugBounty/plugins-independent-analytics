@@ -4,15 +4,19 @@
 @php /** @var \IAWP\Overview\Modules\Module[] $template_modules */ @endphp
 
 {{-- Template to reshow the module picker --}}
-<template id="module-picker-template">
-    @include('overview.module-picker', [ 'show_list' => true ])
+<template id="module-picker-template"><?php
+    echo iawp_blade()->run('overview.module-picker', [ 
+        'show_list' => true,
+        'template_modules' => $template_modules, 
+    ]); ?>
 </template>
 
 {{-- Template for every supported module type --}}
-@foreach($template_modules as $module)
-    <template id="{{ $module->module_type() }}-module-template">
-        @include('overview.module-editor', [
+<?php
+foreach($template_modules as $module) : ?>
+    <template id="<?php echo esc_attr($module->module_type()) . '-module-template'; ?>"><?php 
+        echo iawp_blade()->run('overview.module-editor', [
             'module' => $module
-        ])
-    </template>
-@endforeach
+        ]); ?>
+    </template><?php
+endforeach;

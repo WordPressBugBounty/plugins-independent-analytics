@@ -1,10 +1,30 @@
 <div class="updates-menu">
     <div class="updates-container">
         <div class="heading">
-            <h1>{{ __("Newest Updates", "independent-analytics") }}</h1>
+            <h1><?php esc_html_e("Newest Updates", "independent-analytics"); ?></h1>
             <a class="link-purple" href="https://independentwp.com/changelog/"
-                target="_blank">{{ __("View all updates", "independent-analytics") }} <span
+                target="_blank"><?php esc_html_e("View all updates", "independent-analytics"); ?><span
                     class="dashicons dashicons-external"></span></a>
+        </div>
+        <div class="entry">
+            <div class="video-container">
+                <iframe src="https://www.youtube-nocookie.com/embed/PI39D6NFd9A?si=DHaHAvWWaDoiEFei" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <div class="text">
+                <div class="title-container">
+                    <h2 class="title">Version 2.12 - Uncover Hidden Gems with Solo Reports</h2>
+                    <span class="date">August 19th, 2025</span>
+                </div>
+                <div class="description-container">
+                    <p>Version 2.12 adds Solo Reports to Independent Analytics Pro. View a dedicated report for any page, referrer, location, device, campaign, link, or link pattern.</p>
+                        <p>Learn more about <a
+                            href="https://independentwp.com/features/solo-reports/"
+                            target="_blank">Solo Reports here</a> or review the <a
+                            href="https://independentwp.com/changelog/version-2-12-0/"
+                            target="_blank">full changelog here</a>.
+                        </p>
+                </div>
+            </div>
         </div>
         <div class="entry">
             <div class="video-container">
@@ -39,27 +59,6 @@
                     <p>You can review the <a
                             href="https://independentwp.com/changelog/version-2-10/"
                             target="_blank">full changelog here</a>.</p>
-                </div>
-            </div>
-        </div>
-        <div class="entry">
-            <div class="video-container">
-                <iframe src="https://www.youtube-nocookie.com/embed/hhW-gaeOusk?si=YjN_IDFe9LPygsF2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            </div>
-            <div class="text">
-                <div class="title-container">
-                    <h2 class="title">Version 2.9 - Click Tracking Added to IA Pro</h2>
-                    <span class="date">November 4th, 2024</span>
-                </div>
-                <div class="description-container">
-                    <p>Version 2.9 adds click tracking to Independent Analytics Pro. Track any link on your website with the innovative and user-friendly 
-                        Click Tracking menu, and review your data in the new Clicks report.</p>
-                        <p>Learn more about <a
-                            href="https://independentwp.com/features/click-tracking/"
-                            target="_blank">click tracking here</a> or review the <a
-                            href="https://independentwp.com/changelog/version-2-9/"
-                            target="_blank">full changelog here</a>.
-                        </p>
                 </div>
             </div>
         </div>

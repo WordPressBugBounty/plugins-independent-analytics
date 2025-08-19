@@ -7,6 +7,8 @@ use IAWP\Date_Range\Date_Range;
 use IAWP\Date_Range\Exact_Date_Range;
 use IAWP\Date_Range\Relative_Date_Range;
 use IAWP\Env;
+use IAWP\Examiner_Config;
+use IAWP\Rows\Rows;
 use IAWP\Tables\Table;
 use IAWP\Utils\Timezone;
 use Throwable;
@@ -25,12 +27,16 @@ class Export_Report_Table extends \IAWP\AJAX\AJAX
         $sort_direction = $this->get_field('sort_direction') ?? null;
         $group = $this->get_field('group') ?? null;
         $table_class = Env::get_table();
+        $examiner_config = Examiner_Config::make(['type' => $this->get_field('examiner_type'), 'group' => $this->get_field('examiner_group'), 'id' => $this->get_int_field('examiner_id')]);
         /** @var Table $table */
         $table = new $table_class($group);
         $filters = $table->sanitize_filters($filters);
         $sort_configuration = $table->sanitize_sort_parameters($sort_column, $sort_direction);
         $rows_class = $table->group()->rows_class();
         $rows_query = new $rows_class($date_range, null, $filters, $sort_configuration);
+        if ($examiner_config) {
+            $rows_query->for_examiner($examiner_config);
+        }
         $rows = $rows_query->rows();
         $csv = $table->csv($rows, \true)->to_string();
         $csv = \wp_kses($csv, 'strip');

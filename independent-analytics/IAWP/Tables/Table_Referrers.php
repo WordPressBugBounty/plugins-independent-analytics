@@ -11,7 +11,7 @@ use IAWP\Tables\Groups\Groups;
 /** @internal */
 class Table_Referrers extends \IAWP\Tables\Table
 {
-    protected function table_name() : string
+    public function id() : string
     {
         return 'referrers';
     }

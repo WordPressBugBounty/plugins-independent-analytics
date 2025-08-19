@@ -7,6 +7,7 @@ use IAWP\Illuminate_Builder;
 use IAWP\Models\Device;
 use IAWP\Query;
 use IAWP\Query_Taps;
+use IAWP\Tables;
 use IAWPSCOPED\Illuminate\Database\Query\Builder;
 use IAWPSCOPED\Illuminate\Database\Query\JoinClause;
 /** @internal */
@@ -45,7 +46,14 @@ class Device_Browsers extends \IAWP\Rows\Rows
             $join->on('views.id', '=', 'orders.initial_view_id')->where('orders.is_included_in_analytics', '=', \true);
         })->leftJoin("{$this->tables::clicks()} AS clicks", function (JoinClause $join) {
             $join->on('views.id', '=', 'clicks.view_id');
-        })->tap(Query_Taps::tap_authored_content_check())->when(!$this->appears_to_be_for_real_time_analytics(), function (Builder $query) {
+        })->tap(Query_Taps::tap_authored_content_check())->when($this->examiner_config, function (Builder $query) {
+            if ($this->examiner_config->group() !== 'link_pattern') {
+                return;
+            }
+            $query->leftJoin(Tables::clicked_links() . ' AS clicked_links', function (JoinClause $join) {
+                $join->on('clicked_links.click_id', '=', 'clicks.click_id');
+            });
+        })->tap(Query_Taps::tap_related_to_examined_record($this->examiner_config))->when(!$this->appears_to_be_for_real_time_analytics(), function (Builder $query) {
             $query->whereBetween('sessions.created_at', $this->get_current_period_iso_range());
         })->whereBetween('views.viewed_at', $this->get_current_period_iso_range())->leftJoinSub($this->get_form_submissions_query(), 'form_submissions', function (JoinClause $join) {
             $join->on('form_submissions.view_id', '=', 'views.id');
@@ -65,6 +73,8 @@ class Device_Browsers extends \IAWP\Rows\Rows
                     $filter->apply_to_query($query);
                 }
             }
+        })->when(\is_int($this->solo_record_id), function (Builder $query) {
+            $query->where('device_browsers.device_browser_id', '=', $this->solo_record_id);
         })->groupBy('device_browsers.device_browser_id')->having('views', '>', 0)->when(!$this->is_using_a_calculated_column(), function (Builder $query) {
             $query->when($this->sort_configuration->is_column_nullable(), function (Builder $query) {
                 $query->orderByRaw("CASE WHEN {$this->sort_configuration->column()} IS NULL THEN 1 ELSE 0 END");

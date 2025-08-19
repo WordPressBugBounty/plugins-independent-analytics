@@ -3,7 +3,7 @@
 namespace IAWP\Models;
 
 /** @internal */
-class Geo
+class Geo extends \IAWP\Models\Model
 {
     use \IAWP\Models\Universal_Model_Columns;
     protected $row;
@@ -20,6 +20,18 @@ class Geo
         $this->country_code = $row->country_code;
         $this->subdivision = $row->subdivision ?? '';
         $this->city = $row->city ?? '';
+    }
+    public function id() : int
+    {
+        return $this->row->city_id ?? $this->row->country_id;
+    }
+    public function table_type() : string
+    {
+        return 'geo';
+    }
+    public function is_country() : bool
+    {
+        return \strlen($this->subdivision) === 0 && \strlen($this->city) === 0;
     }
     public function continent()
     {
@@ -40,5 +52,13 @@ class Geo
     public function city()
     {
         return $this->city;
+    }
+    public function examiner_title() : string
+    {
+        return $this->is_country() ? $this->country() : $this->city();
+    }
+    public function examiner_url() : string
+    {
+        return \IAWPSCOPED\iawp_dashboard_url(['tab' => 'geo', 'examiner' => $this->id()]);
     }
 }

@@ -3,8 +3,10 @@
 namespace IAWP\Rows;
 
 use IAWP\Date_Range\Date_Range;
+use IAWP\Examiner_Config;
 use IAWP\Form_Submissions\Form;
 use IAWP\Illuminate_Builder;
+use IAWP\Models\Model;
 use IAWP\Query;
 use IAWP\Sort_Configuration;
 use IAWP\Tables;
@@ -18,16 +20,36 @@ abstract class Rows
     /** @var Filter[] */
     protected $filters;
     protected $sort_configuration;
+    protected $model;
+    protected $solo_record_id = null;
+    protected $examiner_config = null;
     private $rows = null;
-    public function __construct(Date_Range $date_range, ?int $number_of_rows = null, ?array $filters = null, ?Sort_Configuration $sort_configuration = null)
+    public function __construct(Date_Range $date_range, ?int $number_of_rows = null, ?array $filters = null, ?Sort_Configuration $sort_configuration = null, Model $model = null)
     {
         $this->date_range = $date_range;
         $this->number_of_rows = $number_of_rows;
         $this->filters = $filters ?? [];
         $this->sort_configuration = $sort_configuration ?? new Sort_Configuration('visitors');
+        $this->model = $model;
     }
     protected abstract function fetch_rows() : array;
     public abstract function attach_filters(Builder $query) : void;
+    /**
+     * Used to limit the rows to just a single record. This is useful if you want a single page,
+     * referrer, etc. row, and you know the records database id.
+     *
+     * @param int $id
+     *
+     * @return void
+     */
+    public function limit_to(int $id) : void
+    {
+        $this->solo_record_id = $id;
+    }
+    public function for_examiner(Examiner_Config $config)
+    {
+        $this->examiner_config = $config;
+    }
     public function rows()
     {
         if (\is_array($this->rows)) {

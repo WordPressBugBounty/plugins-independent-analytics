@@ -5,13 +5,13 @@
             <?php esc_html_e('Read Tutorial', 'independent-analytics'); ?>
         </a>
     </div>
-    <div class="button-group">
-        @if($is_pro)
+    <div class="button-group"><?php
+        if ($is_pro) : ?>
             <button id="reset-overview" data-action="click->reset-overview#open"
                     class="iawp-button red">
                     <?php esc_html_e('Reset overview report', 'independent-analytics'); ?>
-            </button>
-        @endif
+            </button><?php
+        endif; ?>
         <button id="reset-analytics-button" data-action="click->reset-analytics#open"
                 class="iawp-button red">
             <?php esc_html_e('Reset analytics', 'independent-analytics'); ?>

@@ -10,7 +10,7 @@ use IAWP\Tables\Groups\Groups;
 /** @internal */
 class Table_Campaigns extends \IAWP\Tables\Table
 {
-    protected function table_name() : string
+    public function id() : string
     {
         return 'campaigns';
     }

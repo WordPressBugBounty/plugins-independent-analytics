@@ -22,6 +22,7 @@ use IAWP\Utils\Security;
 use IAWP\Utils\Timezone;
 use IAWP\Utils\URL;
 use IAWP\Utils\WordPress_Site_Date_Format_Pattern;
+use IAWPSCOPED\Illuminate\Support\Collection;
 use IAWPSCOPED\Illuminate\Support\Str;
 /** @internal */
 abstract class Table
@@ -49,7 +50,7 @@ abstract class Table
      * @return array<Column>
      */
     protected abstract function local_columns() : array;
-    protected abstract function table_name() : string;
+    public abstract function id() : string;
     /**
      * @return string[]
      */
@@ -77,7 +78,7 @@ abstract class Table
     }
     public function get_table_markup(string $sort_column, string $sort_direction)
     {
-        return \IAWPSCOPED\iawp_blade()->run('tables.table', ['table' => $this, 'table_name' => $this->table_name(), 'all_columns' => $this->get_columns(), 'visible_column_count' => $this->visible_column_count(), 'number_of_shown_rows' => 0, 'rows' => [], 'render_skeleton' => \true, 'page_size' => \IAWPSCOPED\iawp()->pagination_page_size(), 'sort_column' => $sort_column, 'sort_direction' => $sort_direction, 'has_campaigns' => Campaign_Builder::has_campaigns()]);
+        return \IAWPSCOPED\iawp_blade()->run('tables.table', ['table' => $this, 'all_columns' => $this->get_columns(), 'visible_column_count' => $this->visible_column_count(), 'number_of_shown_rows' => 0, 'rows' => [], 'render_skeleton' => \true, 'page_size' => \IAWPSCOPED\iawp()->pagination_page_size(), 'sort_column' => $sort_column, 'sort_direction' => $sort_direction, 'has_campaigns' => Campaign_Builder::has_campaigns()]);
     }
     public function set_statistics(Statistics $statistics)
     {
@@ -324,12 +325,13 @@ abstract class Table
      */
     public function sanitize_filters(array $filters) : array
     {
-        return \array_values(\array_filter(\array_map(function ($filter) {
+        return Collection::make($filters)->map(function ($filter) {
             return $this->sanitize_filter($filter);
-        }, $filters)));
+        })->filter()->values()->all();
     }
     public function sanitize_filter(array $filter) : ?Filter
     {
+        // column, inclusion, operator, operand
         $column = $this->get_column($filter['column']);
         if (\is_null($column)) {
             return null;
@@ -395,9 +397,9 @@ abstract class Table
     public function get_rendered_template(array $rows, bool $just_rows, string $sort_column, string $sort_direction)
     {
         if ($just_rows) {
-            return \IAWPSCOPED\iawp_blade()->run('tables.rows', ['table' => $this, 'table_name' => $this->table_name(), 'all_columns' => $this->get_columns(), 'visible_column_count' => $this->visible_column_count(), 'number_of_shown_rows' => \count($rows), 'rows' => $rows, 'render_skeleton' => \false, 'page_size' => \IAWPSCOPED\iawp()->pagination_page_size(), 'sort_column' => $sort_column, 'sort_direction' => $sort_direction, 'has_campaigns' => Campaign_Builder::has_campaigns()]);
+            return \IAWPSCOPED\iawp_blade()->run('tables.rows', ['table' => $this, 'all_columns' => $this->get_columns(), 'visible_column_count' => $this->visible_column_count(), 'number_of_shown_rows' => \count($rows), 'rows' => $rows, 'render_skeleton' => \false, 'page_size' => \IAWPSCOPED\iawp()->pagination_page_size(), 'sort_column' => $sort_column, 'sort_direction' => $sort_direction, 'has_campaigns' => Campaign_Builder::has_campaigns()]);
         }
-        return \IAWPSCOPED\iawp_blade()->run('tables.table', ['table' => $this, 'table_name' => $this->table_name(), 'all_columns' => $this->get_columns(), 'visible_column_count' => $this->visible_column_count(), 'number_of_shown_rows' => \count($rows), 'rows' => $rows, 'render_skeleton' => \false, 'page_size' => \IAWPSCOPED\iawp()->pagination_page_size(), 'sort_column' => $sort_column, 'sort_direction' => $sort_direction, 'has_campaigns' => Campaign_Builder::has_campaigns()]);
+        return \IAWPSCOPED\iawp_blade()->run('tables.table', ['table' => $this, 'all_columns' => $this->get_columns(), 'visible_column_count' => $this->visible_column_count(), 'number_of_shown_rows' => \count($rows), 'rows' => $rows, 'render_skeleton' => \false, 'page_size' => \IAWPSCOPED\iawp()->pagination_page_size(), 'sort_column' => $sort_column, 'sort_direction' => $sort_direction, 'has_campaigns' => Campaign_Builder::has_campaigns()]);
     }
     /**
      * @return Column[]

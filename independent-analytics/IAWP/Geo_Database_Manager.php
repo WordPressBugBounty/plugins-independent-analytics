@@ -113,8 +113,9 @@ class Geo_Database_Manager
     }
     private function last_attempted_at() : ?CarbonImmutable
     {
-        $timestamp = \get_option('iawp_geo_database_download_last_attempted_at', \false);
-        if (!$timestamp || !\ctype_digit($timestamp)) {
+        $timestamp = \get_option('iawp_geo_database_download_last_attempted_at', null);
+        $valid = \is_int($timestamp) || \is_string($timestamp) && \ctype_digit($timestamp);
+        if (!$valid) {
             return null;
         }
         try {

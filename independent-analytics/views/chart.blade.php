@@ -8,27 +8,29 @@
 
 <div class="chart-container">
     <div class="chart-inner"
-         data-testid="chart"
-         data-controller="chart"
-         @foreach($stimulus_values as $key => $value)
-             data-chart-{{$key}}-value="{{is_array($value) ? $chart->encode_json($value) : $value}}"
-            @endforeach
+        data-testid="chart"
+        data-controller="chart"
+        <?php foreach($stimulus_values as $key => $value) : ?>
+            data-chart-<?php echo esc_attr($key); ?>-value="<?php echo is_array($value) ? esc_attr($chart->encode_json($value)) : esc_attr($value); ?>"
+        <?php endforeach; ?>
     >
         <div class="legend-container">
             <div class="legend" style="display: none;"></div>
-            @if(!$chart->is_preview())
+            <?php if (!$chart->is_preview()) : ?>
                 <div class="primary-metric-select-container metric-select-container">
                     <select id="primary-metric-select" 
                             data-chart-target="primaryMetricSelect"
                             data-action="chart#changePrimaryMetric"
                     >
-                        @foreach($available_datasets as $group)
-                            <optgroup label="{{ $group['name'] }}">
-                                @foreach($group['items'] as $item)
-                                    <option value="{{ $item['id'] }}" {!! selected($primary_chart_metric_id, $item['id'], true) !!} {!! $secondary_chart_metric_id === $item['id'] ? 'disabled' : '' !!}>{{ $item['name'] }}</option>
-                                @endforeach
+                        <?php foreach($available_datasets as $group) : ?>
+                            <optgroup label="<?php echo esc_attr($group['name']); ?>">
+                                <?php foreach($group['items'] as $item) : ?>
+                                    <option value="<?php echo esc_attr($item['id']); ?>" <?php selected($primary_chart_metric_id, $item['id'], true); ?> <?php echo $secondary_chart_metric_id === $item['id'] ? 'disabled' : ''; ?>>
+                                        <?php echo esc_html($item['name']); ?>
+                                    </option>
+                                <?php endforeach; ?>
                             </optgroup>
-                        @endforeach
+                        <?php endforeach; ?>
                     </select>
                 </div>
 
@@ -37,14 +39,16 @@
                             data-chart-target="secondaryMetricSelect"
                             data-action="chart#changeSecondaryMetric"
                     >
-                        <option value="no_comparison" {!! selected(is_null($secondary_chart_metric_id)) !!}><?php esc_html_e('No Comparison', 'independent-analytics'); ?></option>
-                        @foreach($available_datasets as $group)
-                            <optgroup label="{{ $group['name'] }}">
-                                @foreach($group['items'] as $item)
-                                    <option value="{{ $item['id'] }}" {!! selected($secondary_chart_metric_id, $item['id'], true) !!} {!! $primary_chart_metric_id === $item['id'] ? 'disabled' : '' !!}>{{ $item['name'] }}</option>
-                                @endforeach
+                        <option value="no_comparison" <?php selected(is_null($secondary_chart_metric_id)); ?>><?php esc_html_e('No Comparison', 'independent-analytics'); ?></option>
+                        <?php foreach($available_datasets as $group) : ?>
+                            <optgroup label="<?php echo esc_attr($group['name']); ?>">
+                                <?php foreach($group['items'] as $item) : ?>
+                                    <option value="<?php echo esc_attr($item['id']); ?>" <?php selected($secondary_chart_metric_id, $item['id'], true); ?> <?php echo $primary_chart_metric_id === $item['id'] ? 'disabled' : ''; ?>>
+                                        <?php echo esc_html($item['name']); ?>
+                                    </option>
+                                <?php endforeach; ?>
                             </optgroup>
-                        @endforeach
+                        <?php endforeach; ?>
                     </select>
                 </div>
 
@@ -55,15 +59,13 @@
                 <select id="chart-interval-select" class="chart-interval-select"
                         data-controller="chart-interval"
                         data-action="chart-interval#setChartInterval">
-                    @foreach($intervals as $interval)
-                        <option value="{{ esc_attr($interval->id()) }}"
-                                @php selected($interval->equals($current_interval)) @endphp
-                        >
-                            {{ $interval->label() }}
+                    <?php foreach($intervals as $interval) :?>
+                        <option value="<?php echo esc_attr($interval->id()); ?>" <?php selected($interval->equals($current_interval)); ?>>
+                            <?php echo esc_html($interval->label()); ?>
                         </option>
-                    @endforeach
+                    <?php endforeach; ?>
                 </select>
-            @endif
+            <?php endif; ?>
         </div>
         <canvas id="independent-analytics-chart" data-chart-target="canvas"></canvas>
     </div>

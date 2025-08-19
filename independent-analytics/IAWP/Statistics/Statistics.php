@@ -47,17 +47,17 @@ abstract class Statistics
         $this->date_range = $date_range;
         $this->rows = $rows;
         $this->chart_interval = $chart_interval ?? Intervals::default_for($date_range->number_of_days());
-        if (\is_null($rows)) {
-            $this->statistics = $this->query($this->date_range);
-            $this->previous_period_statistics = $this->query($this->date_range->previous_period());
-            $this->statistics_grouped_by_date_interval = $this->query($this->date_range, null, \true);
-        } else {
+        if ($rows instanceof Rows) {
             $this->statistics = $this->query($this->date_range, $rows);
             $this->previous_period_statistics = $this->query($this->date_range->previous_period(), $rows);
             $this->statistics_grouped_by_date_interval = $this->query($this->date_range, $rows, \true);
             $this->unfiltered_statistics = $this->query($this->date_range);
             $this->previous_period_unfiltered_statistic = $this->query($this->date_range->previous_period());
             $this->unfiltered_statistics_grouped_by_date_interval = $this->query($this->date_range, null, \true);
+        } else {
+            $this->statistics = $this->query($this->date_range);
+            $this->previous_period_statistics = $this->query($this->date_range->previous_period());
+            $this->statistics_grouped_by_date_interval = $this->query($this->date_range, null, \true);
         }
         $this->statistic_instances = $this->make_statistic_instances();
         $this->statistic_instances = \array_filter($this->statistic_instances, function (\IAWP\Statistics\Statistic $statistic) {

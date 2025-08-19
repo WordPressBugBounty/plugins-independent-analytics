@@ -16,6 +16,7 @@ class Database_Manager
         });
         // Recreate the saved reports
         \IAWP\Report_Finder::insert_default_reports();
+        $this->delete_overview_report_data();
         $this->delete_all_post_meta();
     }
     public function delete_all_data() : void
@@ -29,6 +30,14 @@ class Database_Manager
     {
         global $wpdb;
         $options = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->options} WHERE option_name LIKE %s", 'iawp_%'));
+        foreach ($options as $option) {
+            \delete_option($option->option_name);
+        }
+    }
+    private function delete_overview_report_data() : void
+    {
+        global $wpdb;
+        $options = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->options} WHERE option_name LIKE %s", 'iawp_module_%'));
         foreach ($options as $option) {
             \delete_option($option->option_name);
         }

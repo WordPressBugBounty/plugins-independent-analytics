@@ -9,14 +9,14 @@
 <div id="report-header-container" class="report-header-container">
     <div id="report-title-bar" class="report-title-bar overview-report">
         <div class="primary-report-title-container">
-            <h1 class="report-title">{{ __('Overview', 'independent-analytics') }}</h1>
+            <h1 class="report-title"><?php esc_html_e('Overview', 'independent-analytics'); ?></h1>
             <div class="last-updated-container">
-                <span id="iawp-modules-refreshed-at">{{ sanitize_text_field($last_refreshed_at) }}</span>
+                <span id="iawp-modules-refreshed-at"><?php echo sanitize_text_field($last_refreshed_at); ?></span>
                 <button class="refresh-overview-button"
                         data-controller="refresh-overview"
                         data-action="refresh-overview#refresh"
-                        data-refresh-overview-loading-text-value="{{ __('Refreshing...', 'independent-analytics') }}"
-                >{{ __('Refresh', 'independent-analytics') }}</button>
+                        data-refresh-overview-loading-text-value="<?php esc_html_e('Refreshing...', 'independent-analytics'); ?>"
+                ><?php esc_html_e('Refresh', 'independent-analytics'); ?></button>
             </div>
         </div>
         <div class="buttons">
@@ -25,10 +25,10 @@
                         data-controller="set-favorite-report"
                         data-set-favorite-report-type-value="overview"
                         data-action="set-favorite-report#setFavoriteReport"
-                        class="iawp-button favorite {{$env->is_favorite('overview') ? 'active' : '' }}"
+                        class="iawp-button favorite <?php echo $env->is_favorite('overview') ? 'active' : ''; ?>"
                 >
                     <span class="dashicons dashicons-star-filled"></span>
-                    {{ __('Make default', 'independent-analytics') }}
+                    <?php esc_html_e('Make default', 'independent-analytics'); ?>
                 </button>
             </div>
         </div>
@@ -52,7 +52,7 @@
                         <button data-controller="export-overview"
                                 data-action="export-overview#export"
                                 class="pdf-export-button iawp-button"
-                            >{{ __('Download PDF', 'independent-analytics') }}</button>
+                            ><?php esc_html_e('Download PDF', 'independent-analytics'); ?></button>
                     </div>
                 </div>
             </div>
@@ -60,11 +60,15 @@
     </div>
 </div>
 <div data-controller="module-list">
-    <div id="module-list" class="module-list" data-module-list-target="list">
-        @foreach($saved_modules as $module)
-            {!! $module->get_module_html() !!}
-        @endforeach
-        @include('overview.module-picker')
-    </div>
-    @include('overview.module-templates')
+    <div id="module-list" class="module-list" data-module-list-target="list"><?php
+        foreach($saved_modules as $module) {
+            echo $module->get_module_html();
+        }
+        echo iawp_blade()->run('overview.module-picker', [
+            'template_modules' => $template_modules
+        ]); ?>
+    </div><?php
+    echo iawp_blade()->run('overview.module-templates', [
+        'template_modules' => $template_modules
+    ]); ?>
 </div>

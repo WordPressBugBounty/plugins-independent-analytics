@@ -27,10 +27,13 @@ abstract class Admin_Page
         }
         $options = Dashboard_Options::getInstance();
         $tab = (new Env())->get_tab();
+        $examiner_class = \array_key_exists('examiner', $_GET) ? 'iawp-examiner-parent' : '';
         ?>
         
         <div id="iawp-parent" class="iawp-parent <?php 
         echo \esc_attr($tab);
+        ?> <?php 
+        echo \esc_attr($examiner_class);
         ?>">
             <div id="iawp-layout" class="iawp-layout <?php 
         echo $options->is_sidebar_collapsed() ? 'collapsed' : '';

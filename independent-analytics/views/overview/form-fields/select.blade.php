@@ -1,45 +1,49 @@
 @php /** @var \IAWP\Overview\Form_Field $form_field */ @endphp
 @php /** @var string $selected_value */ @endphp
 
-@php
-    $selected_value = $selected_value ?? null;
-    $template_values = $form_field->template_values();
-    $has_groups = !array_key_exists(0, $template_values);
-@endphp
+<?php
+$selected_value = $selected_value ?? null;
+$template_values = $form_field->template_values();
+$has_groups = !array_key_exists(0, $template_values);
 
-@if($has_groups)
+if ($has_groups) : ?>
     <div>
-        <label>{{ sanitize_text_field($form_field->name()) }}</label>
-        <select name="{{ esc_attr($form_field->id()) }}" id="{{ esc_attr($form_field->id()) }}">
-            @foreach($template_values as $group_name => $values)
-                @php $first_group = $loop->first @endphp
-                <optgroup label="{{ esc_attr($group_name) }}">
-                    @foreach($values as $value)
-                        <option value="{{ esc_attr($value->id()) }}"
-                            @if($selected_value !== null)
-                                {{ $value->id() == $selected_value ? 'selected' : '' }}
-                            @else
-                                {{ $first_group && $loop->first ? 'selected' : '' }}
-                            @endif
-                        >{{ sanitize_text_field($value->name()) }}</option>
-                    @endforeach
-                </optgroup>
-            @endforeach
+        <label><?php echo sanitize_text_field($form_field->name()); ?></label>
+        <select name="<?php echo esc_attr($form_field->id()); ?>" id="<?php echo esc_attr($form_field->id()); ?>"><?php
+            $first_group = true;
+            $first_loop = true;
+            foreach ($template_values as $group_name => $values) : ?>
+                <optgroup label="<?php echo esc_attr($group_name); ?>"><?php
+                    foreach ($values as $value) : ?>
+                        <option value="<?php echo esc_attr($value->id()); ?>"<?php
+                            if ($selected_value !== null) {
+                                echo $value->id() == $selected_value ? 'selected' : '';
+                            } else {
+                                echo $first_group && $first_loop ? 'selected' : '';
+                            } ?>
+                        ><?php echo sanitize_text_field($value->name()); ?></option><?php
+                        $first_loop = false;
+                    endforeach; ?>
+                </optgroup><?php
+                $first_group = false;
+            endforeach; ?>
         </select>
-    </div>
-@else
+    </div><?php
+else : ?>
     <div>
-        <label>{{ sanitize_text_field($form_field->name()) }}</label>
-        <select name="{{ esc_attr($form_field->id()) }}" id="{{ esc_attr($form_field->id()) }}">
-            @foreach($template_values as $value)
-                <option value="{{ esc_attr($value->id()) }}"
-                @if($selected_value !== null)
-                    {{ $value->id() == $selected_value ? 'selected' : '' }}
-                @else
-                    {{ $loop->first ? 'selected' : '' }}
-                @endif
-                >{{ sanitize_text_field($value->name()) }}</option>
-            @endforeach
+        <label><?php echo sanitize_text_field($form_field->name()); ?></label>
+        <select name="<?php echo esc_attr($form_field->id()); ?>" id="<?php echo esc_attr($form_field->id()); ?>"><?php
+            $first_loop = true;
+            foreach ($template_values as $value) : ?>
+                <option value="<?php echo esc_attr($value->id()); ?>"<?php 
+                if ($selected_value !== null) {
+                    echo $value->id() == $selected_value ? 'selected' : '';
+                } else {
+                    echo $first_loop ? 'selected' : '';
+                } ?>
+                ><?php echo sanitize_text_field($value->name()); ?></option><?php
+                $first_loop = false;
+            endforeach; ?>
         </select>
-    </div>
-@endif
+    </div><?php
+endif;

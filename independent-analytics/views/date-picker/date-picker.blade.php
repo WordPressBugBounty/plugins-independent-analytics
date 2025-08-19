@@ -8,7 +8,7 @@
             </button>
             <input id="iawp-start-date-keyboard" class="iawp-start-date-keyboard keyboard-input" type="date" 
                 value="<?php echo esc_attr(iawp()->date_i18n('Y-m-d', $start_date)); ?>" 
-                aria-label="{{ esc_html__('Start date', 'independent-analytics')}}" />
+                aria-label="<?php esc_html_e('Start date', 'independent-analytics'); ?>" />
             <input id="iawp-start-date" class="iawp-start-date iawp-active" type="text" 
                 readonly value="<?php echo esc_attr(iawp()->date_i18n($user_format, $start_date)); ?>"
                 data-date="<?php echo esc_attr($start_date->format('Y-m-d')); ?>"
@@ -19,7 +19,7 @@
         <div class="iawp-input-container current-month">
             <input id="iawp-end-date-keyboard" class="iawp-end-date-keyboard keyboard-input" type="date" 
                 value="<?php echo esc_attr(iawp()->date_i18n('Y-m-d', $end_date)); ?>" 
-                aria-label="{{ esc_html__('End date', 'independent-analytics') }}" />
+                aria-label="<?php esc_html_e('End date', 'independent-analytics'); ?>" />
             <input id="iawp-end-date" class="iawp-end-date" type="text" 
                 readonly value="<?php echo esc_attr(iawp()->date_i18n($user_format, $end_date)); ?>"
                 data-date="<?php echo esc_attr($end_date->format('Y-m-d')); ?>"
@@ -61,7 +61,7 @@
         foreach ($date_ranges as $date_range):
             $exact_start = $date_range->start()->setTimezone($timezone)->format('Y-m-d');
             $exact_end   = $date_range->end()->setTimezone($timezone)->format('Y-m-d'); 
-            $classes = $relative_range == $date_range->relative_range_id() ? 'iawp-button active' : 'iawp-button'; ?>
+            $classes     = $relative_range == $date_range->relative_range_id() ? 'iawp-button active' : 'iawp-button'; ?>
             <button class="<?php echo esc_attr($classes); ?>"
                     data-dates-target="relativeRange"
                     data-action="dates#relativeRangeSelected"

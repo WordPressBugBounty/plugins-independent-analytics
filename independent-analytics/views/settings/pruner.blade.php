@@ -9,28 +9,33 @@
             esc_html_e('Read Tutorial', 'independent-analytics'); ?>
         </a>
     </div>
-    <div class="schedule-notification @if($pruner->is_enabled()) is-scheduled  @endif"
+    <div class="schedule-notification <?php echo $pruner->is_enabled() ? 'is-scheduled' : ''; ?>"
          data-pruner-target="statusMessage"
          data-testid="data-pruner-notice">
-        <span class="dashicons dashicons-yes-alt"></span><span
-                class="dashicons dashicons-dismiss"></span>
+        <span class="dashicons dashicons-yes-alt"></span>
+        <span class="dashicons dashicons-dismiss"></span>
         <p><?php
-           echo wp_kses_post($pruner->status_message()); ?></p>
+            $status_message = $pruner->status_message();
+            if (!is_null($status_message)) {
+                echo wp_kses_post($status_message);
+            } ?>
+        </p>
     </div>
     <div class="iawp-section">
-        <select data-pruner-target="cutoffs" data-action="pruner#selectChanged" data-testid="data-pruner-select">
-            @foreach($pruner->cutoff_options() as $cutoff_option)
-                <option value="{{$cutoff_option[0]}}"
-                        @if($cutoff_option[0] === $pruner->get_pruning_cutoff()) selected @endif>{{$cutoff_option[1]}}</option>
-            @endforeach
+        <select data-pruner-target="cutoffs" data-action="pruner#selectChanged" data-testid="data-pruner-select"><?php
+            foreach ($pruner->cutoff_options() as $cutoff_option) : ?>
+                <option value="<?php echo esc_attr($cutoff_option[0]); ?>" <?php
+                    echo $cutoff_option[0] === $pruner->get_pruning_cutoff() ? 'selected' : ''; ?>><?php echo esc_html($cutoff_option[1]); ?>
+                </option><?php
+            endforeach; ?>
         </select>
     </div>
     <div class="button-group">
         <button class="iawp-button purple"
                 data-pruner-target="saveButton"
                 data-action="pruner#saveClick"
-                data-original-text="<?php echo __('Save', 'independent-analytics') ?>"
-                data-loading-text="<?php echo __('Saving...', 'independent-analytics') ?>"
+                data-original-text="<?php esc_html_e('Save', 'independent-analytics'); ?>"
+                data-loading-text="<?php esc_html_e('Saving...', 'independent-analytics'); ?>"
                 disabled="disabled"
                 data-testid="save-data-pruner"
         >
@@ -58,8 +63,8 @@
                             class="iawp-button purple"
                             data-action="pruner#confirmClick"
                             data-pruner-target="confirmButton"
-                            data-original-text="<?php echo esc_attr__('Enable Automatic Data Deletion', 'independent-analytics'); ?>"
-                            data-loading-text="<?php echo esc_attr__('Enabling Automatic Data Deletion...', 'independent-analytics'); ?>"
+                            data-original-text="<?php esc_attr_e('Enable Automatic Data Deletion', 'independent-analytics'); ?>"
+                            data-loading-text="<?php esc_attr_e('Enabling Automatic Data Deletion...', 'independent-analytics'); ?>"
                             data-testid="submit-data-pruner"
                     >
                         <?php

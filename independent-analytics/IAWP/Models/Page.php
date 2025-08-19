@@ -4,10 +4,11 @@ namespace IAWP\Models;
 
 use IAWP\Illuminate_Builder;
 use IAWP\Query;
+use IAWP\Tables;
 use IAWP\Utils\Request;
 use IAWPSCOPED\Illuminate\Support\Str;
 /** @internal */
-abstract class Page
+abstract class Page extends \IAWP\Models\Model
 {
     use \IAWP\Models\Universal_Model_Columns;
     protected $row;
@@ -55,6 +56,14 @@ abstract class Page
     protected abstract function calculate_avatar();
     protected abstract function calculate_date();
     protected abstract function calculate_category();
+    public function id() : int
+    {
+        return $this->id;
+    }
+    public function table_type() : string
+    {
+        return 'views';
+    }
     public function entrances() : int
     {
         return $this->entrances;
@@ -94,19 +103,20 @@ abstract class Page
     }
     public final function update_cache() : void
     {
-        $resources_table = Query::get_table_name(Query::RESOURCES);
-        $resource_key = $this->resource_key();
-        $resource_value = $this->resource_value();
         $url = $this->calculate_url();
+        $cache = ['cached_title' => $this->calculate_title(), 'cached_url' => \is_string($url) ? Str::limit($url, 2083) : $url, 'cached_type' => $this->calculate_type(), 'cached_type_label' => $this->calculate_type_label(), 'cached_author_id' => $this->calculate_author_id(), 'cached_author' => $this->calculate_author(), 'cached_date' => $this->calculate_date(), 'cached_category' => !empty($this->calculate_category()) ? \implode(', ', $this->calculate_category()) : null];
+        if ($this instanceof \IAWP\Models\Page_Virtual) {
+            // Allow site owners to override page values such as the title, author, etc
+            $modified_cache = \apply_filters('iawp_override_virtual_page_details', $cache, $this->resource_value());
+            if (\is_array($modified_cache)) {
+                $cache = $modified_cache;
+            }
+        }
         try {
-            Illuminate_Builder::new()->from($resources_table)->where($resource_key, '=', $resource_value)->update(['cached_title' => $this->calculate_title(), 'cached_url' => \is_string($url) ? Str::limit($url, 2083) : $url, 'cached_type' => $this->calculate_type(), 'cached_type_label' => $this->calculate_type_label(), 'cached_author_id' => $this->calculate_author_id(), 'cached_author' => $this->calculate_author(), 'cached_date' => $this->calculate_date(), 'cached_category' => !empty($this->calculate_category()) ? \implode(', ', $this->calculate_category()) : null]);
+            Illuminate_Builder::new()->from(Tables::resources())->where($this->resource_key(), '=', $this->resource_value())->update($cache);
         } catch (\PDOException $e) {
             // Do nothing
         }
-    }
-    public final function id()
-    {
-        return $this->id;
     }
     public final function url($full_url = \false)
     {
@@ -223,6 +233,14 @@ abstract class Page
     public function most_popular_subtitle() : ?string
     {
         return null;
+    }
+    public function examiner_title() : string
+    {
+        return $this->title();
+    }
+    public function examiner_url() : string
+    {
+        return \IAWPSCOPED\iawp_dashboard_url(['tab' => 'views', 'examiner' => $this->id()]);
     }
     private function use_cache() : bool
     {
