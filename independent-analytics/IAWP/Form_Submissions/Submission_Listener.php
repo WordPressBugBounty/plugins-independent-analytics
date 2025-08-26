@@ -205,10 +205,10 @@ class Submission_Listener
         }, 10, 3);
         // Forminator
         \add_action('forminator_form_submit_response', function ($response, $form_id) {
-            if (!\function_exists('IAWPSCOPED\\forminator_get_form_name')) {
+            if (!\function_exists('forminator_get_form_name')) {
                 return $response;
             }
-            $form_name = forminator_get_form_name($form_id);
+            $form_name = \forminator_get_form_name($form_id);
             try {
                 $submission = new \IAWP\Form_Submissions\Submission(17, \intval($form_id), Security::string($form_name));
                 $submission->record_submission();
@@ -218,10 +218,10 @@ class Submission_Listener
         }, 10, 2);
         // Forminator (ajax)
         \add_action('forminator_form_ajax_submit_response', function ($response, $form_id) {
-            if (!\function_exists('IAWPSCOPED\\forminator_get_form_name')) {
+            if (!\function_exists('forminator_get_form_name')) {
                 return $response;
             }
-            $form_name = forminator_get_form_name($form_id);
+            $form_name = \forminator_get_form_name($form_id);
             try {
                 $submission = new \IAWP\Form_Submissions\Submission(17, \intval($form_id), Security::string($form_name));
                 $submission->record_submission();
