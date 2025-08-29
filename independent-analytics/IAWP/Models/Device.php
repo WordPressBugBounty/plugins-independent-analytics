@@ -37,7 +37,7 @@ class Device extends \IAWP\Models\Model
     {
         return $this->os;
     }
-    public function examiner_title() : string
+    public function examiner_title() : ?string
     {
         return $this->type ?? $this->os ?? $this->browser;
     }

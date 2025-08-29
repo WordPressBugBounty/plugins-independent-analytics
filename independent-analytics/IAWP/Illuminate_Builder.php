@@ -80,28 +80,23 @@ class Illuminate_Builder
         $capsule->setAsGlobal();
         $capsule->bootEloquent();
         $connection = $capsule->getConnection();
-        self::disable_mariadb_optimization($connection);
+        self::mariadb_connection_tweaks($connection);
         return $connection;
     }
-    /**
-     * This disabled the lateral derived optimization for MariaDB users. This was cause slowdowns
-     * when filtering even with few views.
-     *
-     * https://mariadb.com/kb/en/lateral-derived-optimization/
-     *
-     * @param Connection $connection
-     *
-     * @return void
-     */
-    private static function disable_mariadb_optimization(Connection $connection)
+    private static function mariadb_connection_tweaks(Connection $connection) : void
     {
         $pdo = $connection->getPdo();
         $version = $pdo->query("SELECT VERSION() AS version")->fetchColumn();
-        if (\strpos(\strtolower($version), 'mariadb') === \false) {
+        $is_mariadb = \is_int(\strpos(\strtolower($version), 'mariadb'));
+        if (!$is_mariadb) {
             return;
         }
         try {
+            // Disable the lateral derived optimization for MariaDB users. This was cause slowdowns when filtering even with few views.
+            // https://mariadb.com/kb/en/lateral-derived-optimization/
             $pdo->exec("SET optimizer_switch='split_materialized=off'");
+            // Disable ONLY_FULL_GROUP_BY which MariaDB treats differently than MySQL.
+            $pdo->exec("SET sql_mode = (SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
         } catch (\Throwable $exception) {
         }
     }

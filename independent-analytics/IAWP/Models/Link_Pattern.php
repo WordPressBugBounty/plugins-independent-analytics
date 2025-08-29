@@ -32,7 +32,7 @@ class Link_Pattern extends \IAWP\Models\Model
     {
         return $this->link_clicks;
     }
-    public function examiner_title() : string
+    public function examiner_title() : ?string
     {
         return $this->link_name();
     }

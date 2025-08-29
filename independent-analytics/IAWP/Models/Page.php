@@ -234,7 +234,7 @@ abstract class Page extends \IAWP\Models\Model
     {
         return null;
     }
-    public function examiner_title() : string
+    public function examiner_title() : ?string
     {
         return $this->title();
     }

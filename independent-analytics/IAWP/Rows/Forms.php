@@ -32,7 +32,7 @@ class Forms extends \IAWP\Rows\Rows
             }
         })->when(\is_int($this->number_of_rows), function (Builder $query) {
             $query->limit($this->number_of_rows);
-        })->orderBy($this->sort_configuration->column(), $this->sort_configuration->direction())->orderBy('form_title')->groupBy('forms.form_id', 'forms.cached_form_title');
+        })->orderBy($this->sort_configuration->column(), $this->sort_configuration->direction())->orderBy('form_title')->groupBy('forms.form_id');
         return $query;
     }
 }

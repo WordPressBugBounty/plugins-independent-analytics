@@ -43,7 +43,7 @@ class Links extends \IAWP\Rows\Rows
             $query->leftJoin($this->tables::views() . ' AS views', 'views.id', '=', 'clicks.view_id');
             $query->leftJoin($this->tables::sessions() . ' AS sessions', 'sessions.session_id', '=', 'views.session_id');
             $query->tap(Query_Taps::tap_related_to_examined_record($this->examiner_config));
-        })->orderBy($this->sort_configuration->column(), $this->sort_configuration->direction())->orderBy('link_name')->groupBy('link_rules.link_rule_id', 'clicks.click_target_id', 'click_targets.click_target_id', 'link_rules.name', 'click_targets.target');
+        })->orderBy($this->sort_configuration->column(), $this->sort_configuration->direction())->orderBy('link_name')->groupBy('link_rules.link_rule_id', 'clicks.click_target_id');
         return $query;
     }
 }

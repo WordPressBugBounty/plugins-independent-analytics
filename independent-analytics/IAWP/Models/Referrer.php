@@ -63,7 +63,7 @@ class Referrer extends \IAWP\Models\Model
     {
         return !$this->is_direct() && $this->referrer_type !== 'Ad';
     }
-    public function examiner_title() : string
+    public function examiner_title() : ?string
     {
         return $this->referrer();
     }

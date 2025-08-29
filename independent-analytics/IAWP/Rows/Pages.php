@@ -58,7 +58,7 @@ class Pages extends \IAWP\Rows\Rows
             $join->on('orders.view_id', '=', 'views.id');
         })->leftJoin($orders_query->raw($sessions_table . ' AS sessions'), function (JoinClause $join) {
             $join->on('views.session_id', '=', 'sessions.session_id');
-        })->where('orders.is_included_in_analytics', '=', \true)->whereBetween('orders.created_at', $this->get_current_period_iso_range())->groupBy('orders.view_id', 'sessions.initial_view_id');
+        })->where('orders.is_included_in_analytics', '=', \true)->whereBetween('orders.created_at', $this->get_current_period_iso_range())->groupBy('orders.view_id');
         $pages_query = Illuminate_Builder::new();
         $pages_query->select('resources.*')->selectRaw('COUNT(DISTINCT views.id)  AS views')->selectRaw('COUNT(DISTINCT sessions.visitor_id)  AS visitors')->selectRaw('COUNT(DISTINCT IF(initial_view.resource_id = resources.id, sessions.visitor_id, NULL))  AS landing_page_visitors')->selectRaw('COUNT(DISTINCT sessions.session_id)  AS sessions')->selectRaw('COUNT(DISTINCT IF(sessions.final_view_id IS NULL, sessions.session_id, NULL))  AS bounces')->selectRaw('AVG(TIMESTAMPDIFF(SECOND, views.viewed_at, views.next_viewed_at))  AS average_view_duration')->selectRaw('COUNT(DISTINCT IF(resources.id = initial_view.resource_id, sessions.session_id, NULL))  AS entrances')->selectRaw('COUNT(DISTINCT IF((resources.id = final_view.resource_id OR (resources.id = initial_view.resource_id AND sessions.final_view_id IS NULL)), sessions.session_id, NULL))  AS exits')->selectRaw('COUNT(DISTINCT clicks.click_id)  AS clicks')->selectRaw('IFNULL(SUM(the_orders.wc_orders), 0) AS wc_orders')->selectRaw('IFNULL(SUM(the_orders.wc_gross_sales), 0) AS wc_gross_sales')->selectRaw('IFNULL(SUM(the_orders.wc_refunded_amount), 0) AS wc_refunded_amount')->selectRaw('IFNULL(SUM(wc_refunds), 0) AS wc_refunds')->selectRaw('IFNULL(SUM(form_submissions.form_submissions), 0) AS form_submissions')->tap(function (Builder $query) {
             foreach (Form::get_forms() as $form) {
@@ -100,7 +100,7 @@ class Pages extends \IAWP\Rows\Rows
             }
         })->when(\is_int($this->solo_record_id), function (Builder $query) {
             $query->where('resources.id', '=', $this->solo_record_id);
-        })->groupBy('resources.id', 'resources.resource', 'resources.singular_id', 'resources.author_id', 'resources.virtual_page_id', 'resources.date_archive', 'resources.search_query', 'resources.post_type', 'resources.term_id', 'resources.not_found_url', 'resources.cached_title', 'resources.cached_url', 'resources.cached_type', 'resources.cached_type_label', 'resources.cached_author_id', 'resources.cached_author', 'resources.cached_category', 'resources.cached_date', 'comments.comments')->having('views', '>', 0)->when(!$this->is_using_a_calculated_column(), function (Builder $query) use($sort_column) {
+        })->groupBy('resources.id')->having('views', '>', 0)->when(!$this->is_using_a_calculated_column(), function (Builder $query) use($sort_column) {
             $query->when($this->sort_configuration->is_column_nullable(), function (Builder $query) use($sort_column) {
                 $query->orderByRaw("CASE WHEN {$sort_column} IS NULL THEN 1 ELSE 0 END");
             })->orderBy($sort_column, $this->sort_configuration->direction())->orderBy('cached_title')->when(\is_int($this->number_of_rows), function (Builder $query) {

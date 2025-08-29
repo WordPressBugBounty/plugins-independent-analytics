@@ -53,7 +53,7 @@ class Geo extends \IAWP\Models\Model
     {
         return $this->city;
     }
-    public function examiner_title() : string
+    public function examiner_title() : ?string
     {
         return $this->is_country() ? $this->country() : $this->city();
     }

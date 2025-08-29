@@ -74,7 +74,7 @@ class Campaign extends \IAWP\Models\Model
     {
         return \http_build_query(['title' => $this->title(), 'utm_source' => $this->utm_source(), 'utm_medium' => $this->utm_medium(), 'utm_campaign' => $this->utm_campaign(), 'utm_term' => $this->utm_term(), 'utm_content' => $this->utm_content()]);
     }
-    public function examiner_title() : string
+    public function examiner_title() : ?string
     {
         return $this->title();
     }
