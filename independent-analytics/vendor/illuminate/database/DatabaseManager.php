@@ -266,7 +266,7 @@ class DatabaseManager implements ConnectionResolverInterface
     {
         $previousName = $this->getDefaultConnection();
         $this->setDefaultConnection($name);
-        return tap($callback(), function () use($previousName) {
+        return \IAWPSCOPED\tap($callback(), function () use($previousName) {
             $this->setDefaultConnection($previousName);
         });
     }

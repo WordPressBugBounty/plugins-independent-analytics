@@ -51,7 +51,7 @@ class Sequence implements Countable
      */
     public function __invoke()
     {
-        return tap(\IAWPSCOPED\value($this->sequence[$this->index % $this->count], $this), function () {
+        return \IAWPSCOPED\tap(\IAWPSCOPED\value($this->sequence[$this->index % $this->count], $this), function () {
             $this->index = $this->index + 1;
         });
     }

@@ -6,7 +6,11 @@
         <span class="dashicons dashicons-warning"></span>
     </div>
     <div class="iawp-message">
-        <p><span class="iawp-message-text"><?php echo wp_kses_post($notice_text); ?></span> <a href="<?php echo esc_url($url); ?>" class="link-white" target="_blank"><?php esc_html_e('Learn More', 'independent-analytics'); ?></a></p>
+        <?php if ($plugin == 'minify-html-markup') : ?>
+            <p><span class="iawp-message-text"><?php echo wp_kses_post($notice_text); ?></span></p>
+        <?php else : ?>
+            <p><span class="iawp-message-text"><?php echo wp_kses_post($notice_text); ?></span> <a href="<?php echo esc_url($url); ?>" class="link-white" target="_blank"><?php esc_html_e('Learn More', 'independent-analytics'); ?></a></p>
+        <?php endif; ?>
     </div>
     <?php if ($button_text) : ?>
         <div>

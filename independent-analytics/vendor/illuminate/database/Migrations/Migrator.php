@@ -491,7 +491,7 @@ class Migrator
     {
         $previousConnection = $this->resolver->getDefaultConnection();
         $this->setConnection($name);
-        return tap($callback(), function () use($previousConnection) {
+        return \IAWPSCOPED\tap($callback(), function () use($previousConnection) {
             $this->setConnection($previousConnection);
         });
     }

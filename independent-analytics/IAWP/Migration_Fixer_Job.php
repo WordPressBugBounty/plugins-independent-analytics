@@ -33,7 +33,7 @@ class Migration_Fixer_Job extends \IAWP\Cron_Job
         }
         // Dangerous migrations are the ones we believe could result in data loss if automatically
         // restarted. Do nothing when one of these is seen.
-        $dangerous_migrations = [23];
+        $dangerous_migrations = [23, 45, 46, 47, 48, 49, 51];
         $running_migration = \intval(\get_option('iawp_db_version', '0')) + 1;
         // Did it fail on a dangerous migration? Do nothing.
         if (\in_array($running_migration, $dangerous_migrations)) {

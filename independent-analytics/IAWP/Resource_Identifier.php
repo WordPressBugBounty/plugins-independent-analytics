@@ -83,6 +83,10 @@ class Resource_Identifier
             $type = 'date_archive';
             $meta_key = 'date_archive';
             $meta_value = self::get_date_archive_date();
+        } elseif (\is_search()) {
+            $type = 'search';
+            $meta_key = 'search_query';
+            $meta_value = \get_search_query();
         } elseif (\is_post_type_archive()) {
             $type = 'post_type_archive';
             $meta_key = 'post_type';
@@ -114,10 +118,6 @@ class Resource_Identifier
             $type = 'term_archive';
             $meta_key = 'term_id';
             $meta_value = $term_id;
-        } elseif (\is_search()) {
-            $type = 'search';
-            $meta_key = 'search_query';
-            $meta_value = \get_search_query();
         } elseif (\is_home()) {
             $type = 'home';
             $meta_key = null;

@@ -46,7 +46,7 @@ abstract class Facade
     {
         if (!static::isMock()) {
             $class = static::getMockableClass();
-            return tap($class ? Mockery::spy($class) : Mockery::spy(), function ($spy) {
+            return \IAWPSCOPED\tap($class ? Mockery::spy($class) : Mockery::spy(), function ($spy) {
                 static::swap($spy);
             });
         }
@@ -80,7 +80,7 @@ abstract class Facade
      */
     protected static function createFreshMockInstance()
     {
-        return tap(static::createMock(), function ($mock) {
+        return \IAWPSCOPED\tap(static::createMock(), function ($mock) {
             static::swap($mock);
             $mock->shouldAllowMockingProtectedMethods();
         });

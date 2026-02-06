@@ -76,16 +76,8 @@ class WP_Options_Storage
         if (!$match_found) {
             $new_records->push($attributes);
         }
-        \update_option($this->option_name, $new_records->all(), \true);
+        \update_option($this->option_name, $new_records->all(), \false);
         return $attributes['id'];
-        // $this->delete($attributes['id']);
-        //
-        // $records   = get_option($this->option_name, []);
-        // $records[] = $attributes;
-        //
-        // update_option($this->option_name, $records, true);
-        //
-        // return $attributes['id'];
     }
     /**
      * Delete a record by its id.
@@ -103,7 +95,7 @@ class WP_Options_Storage
         $new_records = Collection::make($records)->reject(function ($module) use($id) {
             return $module['id'] === $id;
         })->values()->all();
-        \update_option($this->option_name, $new_records, \true);
+        \update_option($this->option_name, $new_records, \false);
         // Return true if a record was deleted
         return \count($records) === \count($new_records) + 1;
     }
@@ -126,6 +118,6 @@ class WP_Options_Storage
             $b_index = \array_search($b['id'], $ids);
             return $a_index <=> $b_index;
         })->values()->all();
-        \update_option($this->option_name, $sorted_records, \true);
+        \update_option($this->option_name, $sorted_records, \false);
     }
 }

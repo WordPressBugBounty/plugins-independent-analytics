@@ -33,7 +33,7 @@ class Pie_Chart_Module extends \IAWP\Overview\Modules\Module
             $filters = null;
         }
         $rows_class = $table->group()->rows_class();
-        $rows_query = new $rows_class($date_range, null, $filters, $sort_configuration);
+        $rows_query = new $rows_class($date_range, $sort_configuration, null, $filters);
         $rows = Collection::make($rows_query->rows());
         $dataset = $rows->take(4)->map(function ($model) use($table, $metric_column) {
             $title_column = $table->group()->title_column();

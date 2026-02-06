@@ -115,8 +115,12 @@ class View_Counter
         if (\is_null($current_resource)) {
             return null;
         }
-        // Get stats for individual posts in the loop if shortcode added to each post
         global $post;
+        // Note: There is an unkown circumstance that can cause $post to be null with Divi
+        if (\is_null($post)) {
+            return null;
+        }
+        // Get stats for individual posts in the loop if shortcode added to each post
         if ($post->ID != $current_resource->meta_value() && \is_main_query() && \in_the_loop()) {
             $current_resource = \IAWP\Resource_Identifier::for_post_id($post->ID);
         }

@@ -61,9 +61,13 @@ class Pruner
             $this->delete_view_orphans(Tables::clicks(), 'view_id', 'id');
             // Delete orphaned clicked links
             $clicks_table = Tables::clicks();
-            Illuminate_Builder::new()->from(Tables::clicked_links(), 'orphans')->leftJoin("{$clicks_table} AS clicks", "orphans.click_id", '=', "clicks.click_id")->whereNull('clicks.click_id')->delete();
+            Illuminate_Builder::new()->from(Tables::clicked_links(), 'orphans')->leftJoin("{$clicks_table} AS clicks", 'orphans.click_id', '=', 'clicks.click_id')->whereNull('clicks.click_id')->delete();
+            // Delete orphaned links
+            $clicked_links_table = Tables::clicked_links();
+            Illuminate_Builder::new()->from(Tables::links(), 'links')->leftJoin("{$clicked_links_table} AS clicked_links", 'clicked_links.link_id', '=', 'links.id')->whereNull('clicked_links.click_id')->delete();
             // Delete orphaned click targets
-            Illuminate_Builder::new()->from(Tables::click_targets(), 'orphans')->leftJoin("{$clicks_table} AS clicks", "orphans.click_target_id", '=', "clicks.click_target_id")->whereNull('clicks.click_id')->delete();
+            $links_table = Tables::links();
+            Illuminate_Builder::new()->from(Tables::click_targets(), 'orphans')->leftJoin("{$links_table} AS links", 'orphans.click_target_id', '=', 'links.click_target_id')->whereNull('links.id')->delete();
         });
         \delete_option('iawp_beginning_of_time');
     }

@@ -8,17 +8,19 @@ if ($groups->has_grouping_options()) : ?>
                 class="group-select"
                 data-controller="group"
                 data-action="group#changeGroup"
-        ><?php
-            foreach ($groups->groups() as $group) : ?>
-                <option id="<?php echo esc_attr($group->id()); ?>"
-                        value="<?php echo esc_attr($group->id()); ?>"
-                        data-testid="group-by-<?php echo esc_attr($group->id()); ?>"
-                        <?php selected($group->id(), $current_group->id(), true); ?>
-                >
-                    <?php echo esc_html($group->singular()); ?>
-                </option><?php
-            endforeach; ?>
+        >
+            <optgroup label="<?php echo __('Group rows by', 'independent-analytics'); ?>">
+                <?php foreach ($groups->groups() as $group) : ?>
+                    <option id="<?php echo esc_attr($group->id()); ?>"
+                            value="<?php echo esc_attr($group->id()); ?>"
+                            data-testid="group-by-<?php echo esc_attr($group->id()); ?>"
+                            <?php selected($group->id(), $current_group->id(), true); ?>
+                    >
+                        <?php echo esc_html($group->singular()); ?>
+                    </option>
+                <?php endforeach; ?>
+            </optgroup>
         </select>
         <label><span class="dashicons dashicons-open-folder"></span></label>
-    </div><?php
-endif;
+    </div>
+<?php endif; ?>

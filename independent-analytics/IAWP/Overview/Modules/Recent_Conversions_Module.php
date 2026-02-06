@@ -28,7 +28,7 @@ class Recent_Conversions_Module extends \IAWP\Overview\Modules\Module
     {
         $tables = Tables::class;
         // Get recent clicks
-        $recent_clicks_query = Illuminate_Builder::new()->select(['clicks.view_id', 'clicks.created_at', 'link_rules.name'])->selectRaw("'click' as conversion_type")->from($tables::clicks(), 'clicks')->join("{$tables::clicked_links()} AS clicked_links", "clicks.click_id", '=', "clicked_links.click_id")->join("{$tables::link_rules()} AS link_rules", "clicked_links.link_rule_id", '=', "link_rules.link_rule_id");
+        $recent_clicks_query = Illuminate_Builder::new()->select(['clicks.view_id', 'clicks.created_at', 'link_rules.name'])->selectRaw("'click' as conversion_type")->from($tables::clicks(), 'clicks')->join("{$tables::clicked_links()} AS clicked_links", 'clicks.click_id', '=', 'clicked_links.click_id')->join("{$tables::links()} AS links", 'clicked_links.link_id', '=', 'links.id')->join("{$tables::link_rules()} AS link_rules", 'links.link_rule_id', '=', 'link_rules.link_rule_id');
         // Get form submission conversions
         $recent_submissions_query = Illuminate_Builder::new()->select(['form_submissions.view_id', 'form_submissions.created_at'])->selectRaw("IF(forms.cached_form_title = '', '(Unnamed form)', forms.cached_form_title) AS name")->selectRaw("'form_submission' as conversion_type")->from($tables::form_submissions(), 'form_submissions')->join("{$tables::forms()} AS forms", "form_submissions.form_id", '=', "forms.form_id");
         // Get order conversions

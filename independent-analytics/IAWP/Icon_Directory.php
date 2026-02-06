@@ -25,7 +25,7 @@ class Icon_Directory
         }
         return '<img class="flag" alt="' . \esc_attr($this->alt_text) . '" src="' . $icon_url . '"/>';
     }
-    private function find_icon_url(string $icon) : ?string
+    public function find_icon_url(string $icon) : ?string
     {
         $file_name = $this->convert_icon_name_to_file_name($icon);
         if (\in_array($file_name, $this->files)) {

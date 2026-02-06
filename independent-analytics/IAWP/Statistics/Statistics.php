@@ -69,12 +69,12 @@ abstract class Statistics
      */
     public function get_statistics() : array
     {
-        return $this->statistic_instances;
+        return Collection::make($this->statistic_instances)->filter(fn(\IAWP\Statistics\Statistic $statistic) => !$statistic->is_invisible())->values()->all();
     }
     public function get_grouped_statistics()
     {
         // This whole thing is a bit of a mess...
-        return Collection::make($this->statistic_instances)->groupBy(function (\IAWP\Statistics\Statistic $item, int $key) {
+        return Collection::make($this->statistic_instances)->filter(fn(\IAWP\Statistics\Statistic $statistic) => !$statistic->is_invisible())->groupBy(function (\IAWP\Statistics\Statistic $item, int $key) {
             return Plugin_Group::get_plugin_group($item->plugin_group())->name();
         })->map(function (Collection $group, $plugin_group) {
             $items = $group->map(function (\IAWP\Statistics\Statistic $item) {
@@ -134,9 +134,15 @@ abstract class Statistics
     {
         $sessions_table = Query::get_table_name(Query::SESSIONS);
         $views_table = Query::get_table_name(Query::VIEWS);
+        $referrers_table = Query::get_table_name(Query::REFERRERS);
+        $campaigns_table = Query::get_table_name(Query::CAMPAIGNS);
         $column = $this->total_table_rows_column() ?? $this->required_column();
         $query = Illuminate_Builder::new()->selectRaw("COUNT(DISTINCT {$column}) AS total_table_rows")->from("{$sessions_table} AS sessions")->join("{$views_table} AS views", function (JoinClause $join) {
             $join->on('sessions.session_id', '=', 'views.session_id');
+        })->leftJoin("{$referrers_table} AS referrers", function (JoinClause $join) {
+            $join->on('sessions.referrer_id', '=', 'referrers.id');
+        })->leftJoin("{$campaigns_table} AS campaigns", function (JoinClause $join) {
+            $join->on('sessions.campaign_id', '=', 'campaigns.campaign_id');
         })->tap(Query_Taps::tap_authored_content_check(\true))->when(!\is_null($this->rows), function (Builder $query) {
             $this->rows->attach_filters($query);
         })->whereBetween('sessions.created_at', [$this->date_range->iso_start(), $this->date_range->iso_end()])->whereBetween('views.viewed_at', [$this->date_range->iso_start(), $this->date_range->iso_end()]);
@@ -239,28 +245,38 @@ abstract class Statistics
         $sessions_table = Query::get_table_name(Query::SESSIONS);
         $views_table = Query::get_table_name(Query::VIEWS);
         $orders_table = Query::get_table_name(Query::ORDERS);
+        $referrers_table = Query::get_table_name(Query::REFERRERS);
+        $campaigns_table = Query::get_table_name(Query::CAMPAIGNS);
         $form_submissions_table = Query::get_table_name(Query::FORM_SUBMISSIONS);
-        $form_submissions_query = Illuminate_Builder::new()->select(['form_id', 'session_id'])->selectRaw('COUNT(*) AS form_submissions')->from($form_submissions_table, 'form_submissions')->whereBetween('created_at', [$range->iso_start(), $range->iso_end()])->groupBy(['form_id', 'session_id']);
+        $form_submissions_query = Illuminate_Builder::new()->select(['form_id', 'view_id'])->selectRaw('COUNT(*) AS form_submissions')->from($form_submissions_table, 'form_submissions')->whereBetween('created_at', [$range->iso_start(), $range->iso_end()])->groupBy(['form_id', 'view_id']);
         $session_statistics = Illuminate_Builder::new();
-        $session_statistics->select('sessions.session_id')->selectRaw('COUNT(DISTINCT views.id) AS views')->selectRaw('COUNT(DISTINCT clicks.click_id) AS clicks')->selectRaw('COUNT(DISTINCT orders.order_id) AS orders')->selectRaw('IFNULL(CAST(SUM(orders.total) AS SIGNED), 0) AS gross_sales')->selectRaw('IFNULL(CAST(SUM(orders.total_refunded) AS SIGNED), 0) AS total_refunded')->selectRaw('IFNULL(CAST(SUM(orders.total_refunds) AS SIGNED), 0) AS total_refunds')->selectRaw('IFNULL(CAST(SUM(orders.total - orders.total_refunded) AS SIGNED), 0) AS net_sales')->from("{$sessions_table} AS sessions")->join("{$views_table} AS views", function (JoinClause $join) {
+        $session_statistics->select('sessions.session_id')->selectRaw('COUNT(DISTINCT views.id) AS views')->selectRaw('COUNT(DISTINCT clicks.click_id) AS clicks')->selectRaw('COUNT(DISTINCT orders.order_id) AS orders')->selectRaw('IFNULL(CAST(SUM(orders.total) AS SIGNED), 0) AS gross_sales')->selectRaw('IFNULL(CAST(SUM(orders.total_refunded) AS SIGNED), 0) AS total_refunded')->selectRaw('IFNULL(CAST(SUM(orders.total_refunds) AS SIGNED), 0) AS total_refunds')->selectRaw('IFNULL(CAST(SUM(orders.total - orders.total_refunded) AS SIGNED), 0) AS net_sales')->selectRaw('IFNULL(SUM(form_submissions.form_submissions), 0) AS form_submissions')->tap(function (Builder $query) {
+            foreach (Form::get_forms() as $form) {
+                $query->selectRaw('IFNULL(SUM(IF(form_submissions.form_id = ?, form_submissions.form_submissions, 0)), 0) AS ' . $form->submissions_column(), [$form->id()]);
+            }
+        })->from("{$sessions_table} AS sessions")->join("{$views_table} AS views", function (JoinClause $join) {
             $join->on('sessions.session_id', '=', 'views.session_id');
         })->leftJoin("{$orders_table} AS orders", function (JoinClause $join) {
             $join->on('views.id', '=', 'orders.initial_view_id')->where('orders.is_included_in_analytics', '=', \true);
         })->leftJoin("{$this->tables::clicks()} AS clicks", function (JoinClause $join) {
             $join->on('views.id', '=', 'clicks.view_id');
-        })->tap(Query_Taps::tap_authored_content_check(\true))->when(!\is_null($rows), function (Builder $query) use($rows) {
+        })->leftJoin("{$referrers_table} AS referrers", function (JoinClause $join) {
+            $join->on('sessions.referrer_id', '=', 'referrers.id');
+        })->leftJoin("{$campaigns_table} AS campaigns", function (JoinClause $join) {
+            $join->on('sessions.campaign_id', '=', 'campaigns.campaign_id');
+        })->leftJoinSub($form_submissions_query, 'form_submissions', 'views.id', '=', 'form_submissions.view_id')->tap(Query_Taps::tap_authored_content_check(\true))->when(!\is_null($rows), function (Builder $query) use($rows) {
             $rows->attach_filters($query);
         })->whereBetween('sessions.created_at', [$range->iso_start(), $range->iso_end()])->whereBetween('views.viewed_at', [$range->iso_start(), $range->iso_end()])->groupBy('sessions.session_id')->when(!\is_null($this->required_column()), function (Builder $query) {
             $query->whereNotNull($this->required_column());
         });
         $statistics = Illuminate_Builder::new();
-        $statistics->selectRaw('IFNULL(CAST(SUM(sessions.total_views) AS SIGNED), 0) AS total_views')->selectRaw('IFNULL(CAST(SUM(session_statistics.views) AS SIGNED), 0) AS views')->selectRaw('COUNT(DISTINCT sessions.visitor_id) AS visitors')->selectRaw('COUNT(DISTINCT sessions.session_id) AS sessions')->selectRaw('IFNULL(CAST(SUM(session_statistics.clicks) AS SIGNED), 0) AS clicks')->selectRaw('IFNULL(CAST(AVG(TIMESTAMPDIFF(SECOND, sessions.created_at, sessions.ended_at)) AS SIGNED), 0) AS average_session_duration')->selectRaw('COUNT(DISTINCT IF(sessions.final_view_id IS NULL, sessions.session_id, NULL)) AS bounces')->selectRaw('IFNULL(CAST(SUM(session_statistics.orders) AS SIGNED), 0) AS wc_orders')->selectRaw('IFNULL(CAST(SUM(session_statistics.gross_sales) AS SIGNED), 0) AS wc_gross_sales')->selectRaw('IFNULL(CAST(SUM(session_statistics.total_refunds) AS SIGNED), 0) AS wc_refunds')->selectRaw('IFNULL(CAST(SUM(session_statistics.total_refunded) AS SIGNED), 0) AS wc_refunded_amount')->selectRaw('IFNULL(CAST(SUM(session_statistics.net_sales) AS SIGNED), 0) AS wc_net_sales')->selectRaw('IFNULL(SUM(form_submissions.form_submissions), 0) AS form_submissions')->tap(function (Builder $query) {
+        $statistics->selectRaw('IFNULL(CAST(SUM(sessions.total_views) AS SIGNED), 0) AS total_views')->selectRaw('IFNULL(CAST(SUM(session_statistics.views) AS SIGNED), 0) AS views')->selectRaw('COUNT(DISTINCT sessions.visitor_id) AS visitors')->selectRaw('COUNT(DISTINCT sessions.session_id) AS sessions')->selectRaw('IFNULL(CAST(SUM(session_statistics.clicks) AS SIGNED), 0) AS clicks')->selectRaw('IFNULL(CAST(AVG(TIMESTAMPDIFF(SECOND, sessions.created_at, sessions.ended_at)) AS SIGNED), 0) AS average_session_duration')->selectRaw('COUNT(DISTINCT IF(sessions.final_view_id IS NULL, sessions.session_id, NULL)) AS bounces')->selectRaw('IFNULL(CAST(SUM(session_statistics.orders) AS SIGNED), 0) AS wc_orders')->selectRaw('IFNULL(CAST(SUM(session_statistics.gross_sales) AS SIGNED), 0) AS wc_gross_sales')->selectRaw('IFNULL(CAST(SUM(session_statistics.total_refunds) AS SIGNED), 0) AS wc_refunds')->selectRaw('IFNULL(CAST(SUM(session_statistics.total_refunded) AS SIGNED), 0) AS wc_refunded_amount')->selectRaw('IFNULL(CAST(SUM(session_statistics.net_sales) AS SIGNED), 0) AS wc_net_sales')->selectRaw('IFNULL(SUM(session_statistics.form_submissions), 0) AS form_submissions')->tap(function (Builder $query) {
             foreach (Form::get_forms() as $form) {
-                $query->selectRaw('IFNULL(SUM(IF(form_submissions.form_id = ?, form_submissions.form_submissions, 0)), 0) AS ' . $form->submissions_column(), [$form->id()]);
+                $query->selectRaw('IFNULL(SUM(session_statistics.' . $form->submissions_column() . '), 0) AS ' . $form->submissions_column());
             }
         })->from("{$sessions_table} AS sessions")->joinSub($session_statistics, 'session_statistics', function (JoinClause $join) {
             $join->on('sessions.session_id', '=', 'session_statistics.session_id');
-        })->leftJoinSub($form_submissions_query, 'form_submissions', 'sessions.session_id', '=', 'form_submissions.session_id')->whereBetween('sessions.created_at', [$range->iso_start(), $range->iso_end()])->when($is_grouped_by_date_interval, function (Builder $query) use($utc_offset, $site_offset) {
+        })->whereBetween('sessions.created_at', [$range->iso_start(), $range->iso_end()])->when($is_grouped_by_date_interval, function (Builder $query) use($utc_offset, $site_offset) {
             if ($this->chart_interval->id() === 'daily') {
                 $query->selectRaw("DATE(CONVERT_TZ(sessions.created_at, '{$utc_offset}', '{$site_offset}')) AS date");
             } elseif ($this->chart_interval->id() === 'monthly') {
@@ -374,17 +390,20 @@ abstract class Statistics
     }
     private function get_ecommerce_icon() : ?string
     {
-        if (\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_edd_support_enabled() && !\IAWPSCOPED\iawp()->is_pmpro_support_enabled()) {
+        if (\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_edd_support_enabled() && !\IAWPSCOPED\iawp()->is_pmpro_support_enabled() && !\IAWPSCOPED\iawp()->is_fluent_cart_support_enabled()) {
             return 'woocommerce';
         }
-        if (\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_edd_support_enabled() && !\IAWPSCOPED\iawp()->is_pmpro_support_enabled()) {
+        if (\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_edd_support_enabled() && !\IAWPSCOPED\iawp()->is_pmpro_support_enabled() && !\IAWPSCOPED\iawp()->is_fluent_cart_support_enabled()) {
             return 'surecart';
         }
-        if (\IAWPSCOPED\iawp()->is_edd_support_enabled() && !\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_pmpro_support_enabled()) {
+        if (\IAWPSCOPED\iawp()->is_edd_support_enabled() && !\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_pmpro_support_enabled() && !\IAWPSCOPED\iawp()->is_fluent_cart_support_enabled()) {
             return 'edd';
         }
-        if (\IAWPSCOPED\iawp()->is_pmpro_support_enabled() && !\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_edd_support_enabled()) {
+        if (\IAWPSCOPED\iawp()->is_pmpro_support_enabled() && !\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_edd_support_enabled() && !\IAWPSCOPED\iawp()->is_fluent_cart_support_enabled()) {
             return 'pmpro';
+        }
+        if (\IAWPSCOPED\iawp()->is_fluent_cart_support_enabled() && !\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_edd_support_enabled() && !\IAWPSCOPED\iawp()->is_pmpro_support_enabled()) {
+            return 'fluentcart';
         }
         return null;
     }

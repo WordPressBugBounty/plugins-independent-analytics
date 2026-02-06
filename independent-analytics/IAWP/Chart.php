@@ -20,8 +20,16 @@ class Chart
     public function get_html() : string
     {
         $options = \IAWP\Dashboard_Options::getInstance();
-        $primary_statistic = $this->statistics->get_statistic($options->primary_chart_metric_id()) ?? $this->statistics->get_statistic('clicks') ?? $this->statistics->get_statistic('visitors');
+        $primary_statistic = $this->statistics->get_statistic($options->primary_chart_metric_id()) ?? $this->statistics->get_statistic('visitors');
         $secondary_statistic = \is_string($options->secondary_chart_metric_id()) ? $this->statistics->get_statistic($options->secondary_chart_metric_id()) : null;
+        // Exception for clicks report
+        if ($primary_statistic && $primary_statistic->is_invisible()) {
+            $primary_statistic = $this->statistics->get_statistic('clicks');
+        }
+        // Exception for clicks report
+        if ($secondary_statistic && $secondary_statistic->is_invisible()) {
+            $secondary_statistic = null;
+        }
         $labels = \array_map(function ($data_point) {
             return Security::json_encode($this->statistics->chart_interval()->get_label_for($data_point[0]));
         }, $primary_statistic->statistic_over_time());

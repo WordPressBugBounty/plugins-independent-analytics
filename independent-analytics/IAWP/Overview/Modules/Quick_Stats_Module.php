@@ -34,7 +34,7 @@ class Quick_Stats_Module extends \IAWP\Overview\Modules\Module
         } else {
             $filters = null;
         }
-        $rows_query = new $rows_class($date_range, null, $filters);
+        $rows_query = new $rows_class($date_range, $table->sanitize_sort_parameters(), null, $filters);
         // $rows       = $rows_query->rows();
         $statistics_class = $table->group()->statistics_class();
         /** @var Statistics $statistics */

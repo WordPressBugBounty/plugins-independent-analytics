@@ -4,11 +4,11 @@ import MicroModal from "micromodal"
 document.addEventListener("DOMContentLoaded", () => MicroModal.init())
 
 document.addEventListener("DOMContentLoaded", () => {
-    requestAnimationFrame(() => {
+    setTimeout(() => {
         // The Examiner is loaded using an iframe. This messages lets the iframed element alert
         // the parent that's completely loaded and ready to be shown.
         window.parent.postMessage('iawpPageReady');
-    })
+    }, 0)
 })
 
 import CampaignBuilderController from "./controllers/campaign_builder_controller"
@@ -28,8 +28,10 @@ import FiltersController from "./controllers/filters_controller"
 import GroupController from "./controllers/group_controller"
 import ImportReportController from "./controllers/import_reports_controller"
 import MapController from "./controllers/map_controller"
+import JourneyController from "./controllers/journey_controller"
 import MigrationRedirectController from "./controllers/migration_redirect_controller"
 import ModalController from "./controllers/modal_controller"
+import PauseEmailsController from "./controllers/pause_emails_controller"
 import PieChartController from "./controllers/pie_chart_controller"
 import PluginGroupOptions from "./controllers/plugin_group_options_controller"
 import PrunerController from "./controllers/pruner_controller"
@@ -46,6 +48,7 @@ import SetFavoriteReportController from "./controllers/set_favorite_report_contr
 import SortController from "./controllers/sort_controller"
 import SortableReportsController from "./controllers/sortable_reports_controller"
 import TableColumnsController from "./controllers/table_columns_controller"
+import TooltipController from "./controllers/tooltip_controller"
 import WooCommerceSettingsController from "./controllers/woocommerce_settings_controller"
 // Overview
 import AddModuleController from "./controllers/overview/add_module"
@@ -62,7 +65,6 @@ Stimulus.register("campaign-builder", CampaignBuilderController)
 Stimulus.register("chart", ChartController)
 Stimulus.register("chart-interval", ChartIntervalController)
 Stimulus.register("clipboard", ClipboardController)
-Stimulus.register("table-columns", TableColumnsController)
 Stimulus.register("copy-report", CopyReportController)
 Stimulus.register("delete-data", DeleteDataController)
 Stimulus.register('delete-report', DeleteReportController)
@@ -75,8 +77,10 @@ Stimulus.register("filters", FiltersController)
 Stimulus.register("group", GroupController)
 Stimulus.register('import-reports', ImportReportController)
 Stimulus.register("map", MapController)
+Stimulus.register("journey", JourneyController)
 Stimulus.register("migration-redirect", MigrationRedirectController)
 Stimulus.register("modal", ModalController)
+Stimulus.register("pause-emails", PauseEmailsController)
 Stimulus.register("pie-chart", PieChartController)
 Stimulus.register("plugin-group-options", PluginGroupOptions)
 Stimulus.register("pruner", PrunerController)
@@ -94,6 +98,7 @@ Stimulus.register("set-favorite-report", SetFavoriteReportController)
 Stimulus.register("sort", SortController)
 Stimulus.register("sortable-reports", SortableReportsController)
 Stimulus.register("table-columns", TableColumnsController)
+Stimulus.register("tooltip", TooltipController)
 Stimulus.register("woocommerce-settings", WooCommerceSettingsController)
 // Overview
 Stimulus.register("add-module", AddModuleController)
@@ -103,5 +108,3 @@ Stimulus.register("module-editor", ModuleEditorController)
 Stimulus.register("module-list", ModuleListController)
 Stimulus.register("module-picker", ModulePickerController)
 Stimulus.register("reorder-modules", ReorderModulesController)
-
-

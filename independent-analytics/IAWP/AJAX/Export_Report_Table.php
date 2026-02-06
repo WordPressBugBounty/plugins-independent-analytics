@@ -8,7 +8,6 @@ use IAWP\Date_Range\Exact_Date_Range;
 use IAWP\Date_Range\Relative_Date_Range;
 use IAWP\Env;
 use IAWP\Examiner_Config;
-use IAWP\Rows\Rows;
 use IAWP\Tables\Table;
 use IAWP\Utils\Timezone;
 use Throwable;
@@ -33,7 +32,7 @@ class Export_Report_Table extends \IAWP\AJAX\AJAX
         $filters = $table->sanitize_filters($filters);
         $sort_configuration = $table->sanitize_sort_parameters($sort_column, $sort_direction);
         $rows_class = $table->group()->rows_class();
-        $rows_query = new $rows_class($date_range, null, $filters, $sort_configuration);
+        $rows_query = new $rows_class($date_range, $sort_configuration, null, $filters);
         if ($examiner_config) {
             $rows_query->for_examiner($examiner_config);
         }

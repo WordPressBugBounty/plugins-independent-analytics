@@ -635,6 +635,93 @@
             "install-path": "..\/illuminate\/support"
         },
         {
+            "name": "league\/csv",
+            "version": "9.7.4",
+            "version_normalized": "9.7.4.0",
+            "source": {
+                "type": "git",
+                "url": "https:\/\/github.com\/thephpleague\/csv.git",
+                "reference": "002f55f649e7511710dc7154ff44c7be32c8195c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https:\/\/api.github.com\/repos\/thephpleague\/csv\/zipball\/002f55f649e7511710dc7154ff44c7be32c8195c",
+                "reference": "002f55f649e7511710dc7154ff44c7be32c8195c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": "^7.3 || ^8.0"
+            },
+            "require-dev": {
+                "ext-curl": "*",
+                "ext-dom": "*",
+                "friendsofphp\/php-cs-fixer": "^3.0",
+                "phpstan\/phpstan": "^1.0",
+                "phpstan\/phpstan-phpunit": "^1.0.0",
+                "phpstan\/phpstan-strict-rules": "^1.0",
+                "phpunit\/phpunit": "^9.5"
+            },
+            "suggest": {
+                "ext-dom": "Required to use the XMLConverter and or the HTMLConverter classes",
+                "ext-iconv": "Needed to ease transcoding CSV using iconv stream filters"
+            },
+            "time": "2021-11-30T07:09:34+00:00",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "9.x-dev"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "files": [
+                    "src\/functions_include.php"
+                ],
+                "psr-4": {
+                    "IAWPSCOPED\\League\\Csv\\": "src"
+                }
+            },
+            "notification-url": "https:\/\/packagist.org\/downloads\/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ignace Nyamagana Butera",
+                    "email": "nyamsprod@gmail.com",
+                    "homepage": "https:\/\/github.com\/nyamsprod\/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "CSV data manipulation made easy in PHP",
+            "homepage": "http:\/\/csv.thephpleague.com",
+            "keywords": [
+                "convert",
+                "csv",
+                "export",
+                "filter",
+                "import",
+                "read",
+                "transform",
+                "write"
+            ],
+            "support": {
+                "docs": "https:\/\/csv.thephpleague.com",
+                "issues": "https:\/\/github.com\/thephpleague\/csv\/issues",
+                "rss": "https:\/\/github.com\/thephpleague\/csv\/releases.atom",
+                "source": "https:\/\/github.com\/thephpleague\/csv"
+            },
+            "funding": [
+                {
+                    "url": "https:\/\/github.com\/sponsors\/nyamsprod",
+                    "type": "github"
+                }
+            ],
+            "install-path": "..\/league\/csv"
+        },
+        {
             "name": "league\/uri",
             "version": "6.5.0",
             "version_normalized": "6.5.0.0",
@@ -809,17 +896,17 @@
         },
         {
             "name": "matomo\/device-detector",
-            "version": "6.3.2",
-            "version_normalized": "6.3.2.0",
+            "version": "6.4.8",
+            "version_normalized": "6.4.8.0",
             "source": {
                 "type": "git",
                 "url": "https:\/\/github.com\/matomo-org\/device-detector.git",
-                "reference": "fd4042cb6a7f3f985a81aedc075dd59e0b991a51"
+                "reference": "56baf981af4f192e15a4f369d4975af847a81ccb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https:\/\/api.github.com\/repos\/matomo-org\/device-detector\/zipball\/fd4042cb6a7f3f985a81aedc075dd59e0b991a51",
-                "reference": "fd4042cb6a7f3f985a81aedc075dd59e0b991a51",
+                "url": "https:\/\/api.github.com\/repos\/matomo-org\/device-detector\/zipball\/56baf981af4f192e15a4f369d4975af847a81ccb",
+                "reference": "56baf981af4f192e15a4f369d4975af847a81ccb",
                 "shasum": ""
             },
             "require": {
@@ -836,13 +923,14 @@
                 "phpunit\/phpunit": "^8.5.8",
                 "psr\/cache": "^1.0.1",
                 "psr\/simple-cache": "^1.0.1",
+                "slevomat\/coding-standard": "<8.16.0",
                 "symfony\/yaml": "^5.1.7"
             },
             "suggest": {
                 "doctrine\/cache": "Can directly be used for caching purpose",
                 "ext-yaml": "Necessary for using the Pecl YAML parser"
             },
-            "time": "2024-05-28T10:16:19+00:00",
+            "time": "2025-11-26T16:02:47+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {

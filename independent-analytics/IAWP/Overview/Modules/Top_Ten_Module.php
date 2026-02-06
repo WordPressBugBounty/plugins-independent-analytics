@@ -32,7 +32,7 @@ class Top_Ten_Module extends \IAWP\Overview\Modules\Module
             $filters = null;
         }
         $rows_class = $table->group()->rows_class();
-        $rows_query = new $rows_class($date_range, 10, $filters, $sort_configuration);
+        $rows_query = new $rows_class($date_range, $sort_configuration, 10, $filters);
         $rows = $rows_query->rows();
         return Collection::make($rows)->map(function ($model) use($table, $sort_configuration) {
             $title_column = $table->group()->title_column();

@@ -6,6 +6,7 @@ use IAWP\Illuminate_Builder;
 use IAWP\Tables;
 use IAWP\Utils\URL;
 use IAWPSCOPED\Illuminate\Support\Collection;
+use IAWPSCOPED\Illuminate\Support\Str;
 // TODO - This for more link a matcher and not a finder...
 /** @internal */
 class Link_Rule_Finder
@@ -78,7 +79,14 @@ class Link_Rule_Finder
         if (!$url->is_valid_url()) {
             return \false;
         }
-        return $link_rule->value() === $url->get_domain();
+        $domain = $url->get_domain();
+        $domains = [$domain];
+        if (Str::startsWith($domain, 'www.')) {
+            $domains[] = Str::after($domain, 'www.');
+        } else {
+            $domains[] = 'www.' . $domain;
+        }
+        return \in_array($link_rule->value(), $domains);
     }
     private function is_matching_extension($link_rule) : bool
     {

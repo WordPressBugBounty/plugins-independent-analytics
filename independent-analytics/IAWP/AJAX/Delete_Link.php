@@ -25,16 +25,19 @@ class Delete_Link extends \IAWP\AJAX\AJAX
         if (\is_null($link_rule_id)) {
             \wp_send_json_error([], 400);
         }
-        // Delete the link
+        // Delete the link rule
         Illuminate_Builder::new()->from(Tables::link_rules())->where('link_rule_id', '=', $link_rule_id)->delete();
-        // Delete the linked clicks
-        Illuminate_Builder::new()->from(Tables::clicked_links())->where('link_rule_id', '=', $link_rule_id)->delete();
-        // Delete the clicks
+        // Delete the links
+        Illuminate_Builder::new()->from(Tables::links())->where('link_rule_id', '=', $link_rule_id)->delete();
+        // Delete orphaned click targets
+        $links = Tables::links();
+        Illuminate_Builder::new()->from(Tables::click_targets(), 'click_targets')->leftJoin("{$links} AS links", 'links.click_target_id', '=', 'click_targets.click_target_id')->whereNull('links.click_target_id')->delete();
+        // Delete orphaned clicked links
+        $links = Tables::links();
+        Illuminate_Builder::new()->from(Tables::clicked_links(), 'clicked_links')->leftJoin("{$links} AS links", 'links.id', '=', 'clicked_links.link_id')->whereNull('links.click_target_id')->delete();
+        // Delete orphaned clicks
         $clicked_links_table = Tables::clicked_links();
-        Illuminate_Builder::new()->from(Tables::clicks(), 'clicks')->leftJoin("{$clicked_links_table} AS clicked_links", "clicks.click_id", '=', "clicked_links.click_id")->whereNull('clicked_links.click_id')->delete();
-        // Delete the click targets
-        $clicks_table = Tables::clicks();
-        Illuminate_Builder::new()->from(Tables::click_targets(), 'click_targets')->leftJoin("{$clicks_table} AS clicks", "click_targets.click_target_id", '=', "clicks.click_target_id")->whereNull('clicks.click_target_id')->delete();
+        Illuminate_Builder::new()->from(Tables::clicks(), 'clicks')->leftJoin("{$clicked_links_table} AS clicked_links", 'clicked_links.click_id', '=', 'clicks.click_id')->whereNull('clicked_links.click_id')->delete();
         \wp_send_json_success(['id' => $link_rule_id]);
     }
 }

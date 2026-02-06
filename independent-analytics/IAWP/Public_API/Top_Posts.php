@@ -6,6 +6,7 @@ use IAWPSCOPED\Carbon\CarbonImmutable;
 use IAWP\Date_Range\Exact_Date_Range;
 use IAWP\Illuminate_Builder;
 use IAWP\Query;
+use IAWPSCOPED\Illuminate\Database\Query\Builder;
 use IAWPSCOPED\Illuminate\Database\Query\JoinClause;
 /** @internal */
 class Top_Posts
@@ -26,7 +27,9 @@ class Top_Posts
             $join->on('resources.id', '=', 'views.resource_id');
         })->join("{$sessions_table} AS sessions", function (JoinClause $join) {
             $join->on('sessions.session_id', '=', 'views.session_id');
-        })->whereNotNull('resources.singular_id')->where('resources.cached_type', '=', $this->options['post_type'])->whereBetween('views.viewed_at', [$date_range->iso_start(), $date_range->iso_end()])->limit($this->options['limit'])->orderByDesc($this->options['sort_by'])->groupBy('resources.id');
+        })->whereNotNull('resources.singular_id')->where('resources.cached_type', '=', $this->options['post_type'])->when(\is_int($this->options['category']), function (Builder $query) {
+            $query->whereRaw("find_in_set(?, REPLACE(cached_category, ', ', ','))", [$this->options['category']]);
+        })->whereBetween('views.viewed_at', [$date_range->iso_start(), $date_range->iso_end()])->limit($this->options['limit'])->orderByDesc($this->options['sort_by'])->groupBy('resources.id');
         $results = $resource_statistics_query->get()->toArray();
         return $results;
     }
@@ -37,6 +40,12 @@ class Top_Posts
             $post_type = $options['post_type'];
         } else {
             $post_type = 'post';
+        }
+        // Category
+        if (\array_key_exists('category', $options) && \is_int($options['category'])) {
+            $category = $options['category'];
+        } else {
+            $category = null;
         }
         // Limit
         if (\array_key_exists('limit', $options) && \is_int($options['limit'])) {
@@ -68,6 +77,6 @@ class Top_Posts
         } else {
             $sort_by = 'views';
         }
-        return ['post_type' => $post_type, 'limit' => $limit, 'from' => $from, 'to' => $to, 'sort_by' => $sort_by];
+        return ['post_type' => $post_type, 'category' => $category, 'limit' => $limit, 'from' => $from, 'to' => $to, 'sort_by' => $sort_by];
     }
 }

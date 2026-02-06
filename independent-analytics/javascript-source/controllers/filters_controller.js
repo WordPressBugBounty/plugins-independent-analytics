@@ -3,7 +3,8 @@ import * as easepick from "@easepick/bundle";
 
 export default class extends Controller {
     static values = {
-        filters: Array
+        filters: Array,
+        filterLogic: String
     }
     static targets = [
         'modal',
@@ -18,6 +19,7 @@ export default class extends Controller {
         'operand',
         'conditionButtons',
         'spinner',
+        'filterLogic'
     ]
 
     appliedConditions = 0
@@ -99,7 +101,7 @@ export default class extends Controller {
                 return condition.contains(operand)
             }).forEach((operand) => {
                 const isMatch = operand.dataset.column === columnTarget.value
-                
+
                 operand.classList.toggle('show', isMatch)
 
                 if(isMatch) {
@@ -236,6 +238,7 @@ export default class extends Controller {
             new CustomEvent('iawp:changeFilters', {
                 detail: {
                     filters,
+                    filterLogic: this.filterLogicValue,
                     showLoadingOverlay
                 }
             })
@@ -243,6 +246,7 @@ export default class extends Controller {
     }
 
     reset() {
+        this.filterLogicTarget.value = 'and'
         this.conditionTargets.forEach((condition) => {
             condition.remove()
         })
@@ -294,6 +298,10 @@ export default class extends Controller {
             const matchingColumn = operand.dataset.column === column
             operand.classList.toggle('show', matchingColumn)
         })
+    }
+
+    changeFilterLogic(event) {
+        this.filterLogicValue = event.target.value
     }
 
     operandChange(e) {

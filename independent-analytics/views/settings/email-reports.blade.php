@@ -13,11 +13,24 @@
                value="/wp-admin/admin.php?page=independent-analytics-settings">
         <?php wp_nonce_field('iawp_email_report_settings-options'); ?>
         <div class="inner">
-            <div id="next-email" class="schedule-notification <?php echo $is_scheduled ? 'is-scheduled' : 'is-not-scheduled'; ?>"
-                data-timestamp="<?php echo absint($timestamp); ?>">
-                <span class="dashicons dashicons-yes-alt"></span><span class="dashicons dashicons-dismiss"></span> 
-                <p><?php echo wp_kses_post($scheduled_date); ?></p>
-            </div>
+            <?php if($is_scheduled): ?>
+                <div id="next-email" class="schedule-notification is-scheduled" data-timestamp="<?php echo absint($timestamp); ?>">
+                    <span class="dashicons dashicons-yes-alt"></span>
+                    <p><?php echo wp_kses_post($scheduled_date); ?></p>
+                    <button class="iawp-button" type="button" data-controller="pause-emails" data-action="pause-emails#pause"><?php esc_html_e('Pause Emails', 'independent-analytics'); ?></button>
+                </div>
+            <?php elseif($is_paused): ?>
+                <div id="next-email" class="schedule-notification is-paused" data-timestamp="<?php echo absint($timestamp); ?>">
+                    <span class="dashicons dashicons-controls-pause"></span>
+                    <p><?php esc_html_e('Emails are currently paused.', 'independent-analytics'); ?></p>
+                    <button class="iawp-button" type="button" data-controller="pause-emails" data-action="pause-emails#resume"><?php esc_html_e('Resume Emails', 'independent-analytics'); ?></button>
+                </div>
+            <?php else: ?>
+                <div id="next-email" class="schedule-notification is-not-scheduled">
+                    <span class="dashicons dashicons-dismiss"></span>
+                    <p><?php echo wp_kses_post($scheduled_date); ?></p>
+                </div>
+            <?php endif; ?>
             <div class="delivery-interval iawp-section">
                 <h3><?php esc_html_e('Delivery Interval', 'independent-analytics'); ?></h3>
                 <select id="iawp_email_report_interval" name="iawp_email_report_interval">
@@ -88,8 +101,8 @@
             </div>
             <div class="from-email iawp-section">
                 <h3><?php esc_html_e('From email address', 'independent-analytics'); ?></h3>
-                <input type="email" 
-                    name="iawp_email_report_from_address" 
+                <input type="email"
+                    name="iawp_email_report_from_address"
                     id="iawp_email_report_from_address"
                     data-option="iawp_email_report_from_address"
                     value="<?php echo esc_attr($from); ?>">
@@ -97,8 +110,8 @@
             </div>
             <div class="reply-to-email iawp-section">
                 <h3><?php esc_html_e('Reply To email address', 'independent-analytics'); ?></h3>
-                <input type="email" 
-                    name="iawp_email_report_reply_to_address" 
+                <input type="email"
+                    name="iawp_email_report_reply_to_address"
                     id="iawp_email_report_reply_to_address"
                     data-option="iawp_email_report_reply_to_address"
                     value="<?php echo esc_attr($reply_to); ?>">
@@ -106,8 +119,8 @@
             </div>
             <div class="email-footer-text iawp-section">
                 <h3><?php esc_html_e('Email footer text', 'independent-analytics'); ?></h3>
-                <textarea type="email" 
-                    name="iawp_email_report_footer" 
+                <textarea type="email"
+                    name="iawp_email_report_footer"
                     id="iawp_email_report_footer"
                     data-option="iawp_email_report_footer"
                     rows=2>
@@ -123,10 +136,10 @@
                     </div>
                     <div class="blueprint">
                         <div class="entry">
-                            <input type="text" readonly 
-                                name="iawp_email_report_email_addresses[]" 
-                                id="iawp_email_report_email_addresses[]" 
-                                data-option="iawp_email_report_email_addresses" 
+                            <input type="text" readonly
+                                name="iawp_email_report_email_addresses[]"
+                                id="iawp_email_report_email_addresses[]"
+                                data-option="iawp_email_report_email_addresses"
                                 value="">
                             <button class="remove iawp-button ghost-purple"><?php esc_html_e('Remove email', 'independent-analytics'); ?></button>
                         </div>
@@ -139,8 +152,8 @@
                     <?php for ($i = 0; $i < count($emails); $i++) : ?>
                         <div class="entry">
                             <input type="email" readonly
-                                id="iawp_email_report_email_addresses[<?php echo esc_attr($i); ?>]" 
-                                name="iawp_email_report_email_addresses[<?php echo esc_attr($i); ?>]" 
+                                id="iawp_email_report_email_addresses[<?php echo esc_attr($i); ?>]"
+                                name="iawp_email_report_email_addresses[<?php echo esc_attr($i); ?>]"
                                 data-option="iawp_email_report_email_addresses"
                                 value="<?php echo esc_attr($emails[$i]); ?>" />
                                 <button class="remove iawp-button ghost-purple"><?php esc_html_e('Remove email', 'independent-analytics'); ?></button>

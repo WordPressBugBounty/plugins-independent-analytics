@@ -104,7 +104,7 @@ trait AsPivot
             return 0;
         }
         $this->touchOwners();
-        return tap($this->getDeleteQuery()->delete(), function () {
+        return \IAWPSCOPED\tap($this->getDeleteQuery()->delete(), function () {
             $this->exists = \false;
             $this->fireModelEvent('deleted', \false);
         });

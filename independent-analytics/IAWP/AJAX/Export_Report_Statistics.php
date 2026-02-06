@@ -48,9 +48,9 @@ class Export_Report_Statistics extends \IAWP\AJAX\AJAX
         $rows_class = $table->group()->rows_class();
         $statistics_class = $table->group()->statistics_class();
         if ($is_geo_table) {
-            $rows_query = new $rows_class($date_range, null, $filters, $sort_configuration);
+            $rows_query = new $rows_class($date_range, $sort_configuration, null, $filters);
         } else {
-            $rows_query = new $rows_class($date_range, $number_of_rows, $filters, $sort_configuration);
+            $rows_query = new $rows_class($date_range, $sort_configuration, $number_of_rows, $filters);
         }
         if ($examiner_config) {
             $rows_query->limit_to($examiner_config->id());

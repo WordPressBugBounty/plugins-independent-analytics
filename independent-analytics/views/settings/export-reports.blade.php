@@ -50,7 +50,7 @@
 </div>
 
 <div class="settings-container import-reports" data-controller="import-reports"
-     data-import-reports-database-version-value="<?php echo '43'; ?>">
+     data-import-reports-database-version-value="<?php echo '52'; ?>">
     <div class="heading">
         <h2><?php
             esc_html_e('Import Custom Reports', 'independent-analytics'); ?>

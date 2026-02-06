@@ -31,7 +31,8 @@ class ExaminerController extends Controller {
 
         const currentSvg =  document.querySelector(`.reports-list .menu-section.current svg`)
         if(currentSvg) {
-            this.element.querySelector('.examiner-skeleton .report-subtitle').prepend(currentSvg)
+            const clonedSVG = currentSvg.cloneNode(true)
+            this.element.querySelector('.examiner-skeleton .report-subtitle').prepend(clonedSVG)
         }
 
         MicroModal.show('iawp-examiner-modal', {

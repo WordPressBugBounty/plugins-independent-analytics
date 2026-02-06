@@ -111,7 +111,8 @@ class Visitor
     {
         $visitors_table = Query::get_table_name(Query::VISITORS);
         Illuminate_Builder::new()->from($visitors_table)->insertOrIgnore([['hash' => $hash]]);
-        return Illuminate_Builder::new()->from($visitors_table)->where('hash', '=', $hash)->value('visitor_id');
+        $id = Illuminate_Builder::new()->from($visitors_table)->where('hash', '=', $hash)->value('visitor_id');
+        return (int) $id;
     }
     public static function fetch_current_visitor() : self
     {

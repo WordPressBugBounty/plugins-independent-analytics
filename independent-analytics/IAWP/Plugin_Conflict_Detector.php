@@ -94,8 +94,8 @@ class Plugin_Conflict_Detector
                 }
             }
         }
-        if (\is_plugin_active('wpo-tweaks/wordpress-wpo-tweaks.php')) {
-            return ['plugin' => 'wordpress-wpo-tweaks', 'error' => \__('The "WPO Tweaks & Optimizations" plugin needs to be deactivated because it is disabling the REST API, which Independent Analytics uses to record visits.', 'independent-analytics')];
+        if (\is_plugin_active('wpo-tweaks/wpo-tweaks.php')) {
+            return ['plugin' => 'wpo-tweaks', 'error' => \__('The "WPO Tweaks & Optimizations" plugin needs to be deactivated because it is disabling the REST API, which Independent Analytics uses to record visits.', 'independent-analytics')];
         }
         if (\is_plugin_active('all-in-one-intranet/basic_all_in_one_intranet.php')) {
             return ['plugin' => 'basic_all_in_one_intranet', 'error' => \__('The "All-In-One Intranet" plugin needs to be deactivated because it is disabling the REST API, which Independent Analytics uses to record visits. You may want to try the "My Private Site" plugin instead.', 'independent-analytics')];
@@ -203,6 +203,28 @@ class Plugin_Conflict_Detector
                 if ($settings['disable-rest-api'] == '1') {
                     return ['plugin' => 'rest-api-toolbox', 'error' => \__('The REST API Toolbox plugin has disabled the REST API, which Independent Analytics needs to record visitors. Please visit the Settings > REST API Toolbox menu and uncheck the "Disable REST API" option to allow Independent Analytics to track your visitors.', 'independent-analytics')];
                 }
+            }
+        }
+        if (\is_plugin_active('minify-html-markup/minify-html.php')) {
+            // Note: both options enabled by default before anything is saved in the DB. `false` is unset, `no` is saved as no
+            if (\get_option('minify_html_active') !== 'no' && \get_option('minify_javascript') !== 'no') {
+                return ['plugin' => 'minify-html-markup', 'error' => \__('The Minify HTML plugin is preventing Independent Analytics from tracking visitors. Please visit the Settings > Minify HTML menu and disable the option called "Minify inline JavaScript" to resume tracking.', 'independent-analytics')];
+            }
+        }
+        if (\is_plugin_active('falcon/falcon.php')) {
+            $settings = \get_option('falcon');
+            $show_warning = \false;
+            // Note: REST API is disabled by default without any options saved in the DB
+            if ($settings === \false) {
+                $show_warning = \true;
+            }
+            if (\is_array($settings) && \array_key_exists('features', $settings)) {
+                if (\in_array('no_rest_api', $settings['features'])) {
+                    $show_warning = \true;
+                }
+            }
+            if ($show_warning) {
+                return ['plugin' => 'falcon', 'error' => \__('The Falcon plugin has disabled the REST API for anonymous visitors, which Independent Analytics needs to record stats. Please visit the Settings > Falcon menu, open the Security section, and uncheck the "Disable REST API for unauthenticated requests" option to allow Independent Analytics to record stats.', 'independent-analytics')];
             }
         }
         return null;

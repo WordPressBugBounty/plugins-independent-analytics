@@ -311,7 +311,7 @@ abstract class Factory
             return $this->state($attributes)->make([], $parent);
         }
         if ($this->count === null) {
-            return tap($this->makeInstance($parent), function ($instance) {
+            return \IAWPSCOPED\tap($this->makeInstance($parent), function ($instance) {
                 $this->callAfterMaking(\IAWPSCOPED\collect([$instance]));
             });
         }
@@ -333,7 +333,7 @@ abstract class Factory
     protected function makeInstance(?Model $parent)
     {
         return Model::unguarded(function () use($parent) {
-            return tap($this->newModel($this->getExpandedAttributes($parent)), function ($instance) {
+            return \IAWPSCOPED\tap($this->newModel($this->getExpandedAttributes($parent)), function ($instance) {
                 if (isset($this->connection)) {
                     $instance->setConnection($this->connection);
                 }

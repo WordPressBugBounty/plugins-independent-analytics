@@ -847,7 +847,7 @@ class LazyCollection implements CanBeEscapedWhenCastToString, Enumerable
             while ($iterator->valid()) {
                 $chunk[$iterator->key()] = $iterator->current();
                 if (\count($chunk) == $size) {
-                    (yield tap(new static($chunk), function () use(&$chunk, $step) {
+                    (yield \IAWPSCOPED\tap(new static($chunk), function () use(&$chunk, $step) {
                         $chunk = \array_slice($chunk, $step, null, \true);
                     }));
                     // If the $step between chunks is bigger than each chunk's $size

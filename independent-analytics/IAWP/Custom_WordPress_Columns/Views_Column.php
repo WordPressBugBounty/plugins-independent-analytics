@@ -28,7 +28,7 @@ class Views_Column
             \add_filter("manage_edit-{$post_type_slug}_sortable_columns", [self::class, 'enable_sorting']);
         }
     }
-    public static function set_column_header(array $columns, string $post_type = null) : array
+    public static function set_column_header(array $columns, ?string $post_type = null) : array
     {
         // manage_pages_columns doesn't set the $post_type argument, so checking is_null() works for it
         if (\is_null($post_type) || \in_array($post_type, self::post_type_slugs())) {

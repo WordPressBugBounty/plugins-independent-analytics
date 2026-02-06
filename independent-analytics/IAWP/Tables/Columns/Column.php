@@ -2,6 +2,7 @@
 
 namespace IAWP\Tables\Columns;
 
+use IAWP\ColumnOptions\Options;
 use IAWP\Plugin_Group_Option;
 use IAWP\Tables\Groups\Group;
 /** @internal */
@@ -12,16 +13,19 @@ class Column implements Plugin_Group_Option
     private $plugin_group;
     private $plugin_group_header;
     private $visible;
+    private $can_be_filtered;
     private $type;
     private $exportable;
-    private $options;
+    private ?Options $options;
     private $filter_placeholder;
     private $unavailable_for;
-    private $database_column;
+    private $separate_database_column;
+    private $separate_filter_column;
     private $is_nullable;
     private $is_plugin_active;
     private $requires_pro;
     private $aggregatable;
+    private $is_concrete_column;
     public function __construct($attributes)
     {
         $this->id = $attributes['id'];
@@ -29,16 +33,19 @@ class Column implements Plugin_Group_Option
         $this->plugin_group = $attributes['plugin_group'] ?? 'general';
         $this->plugin_group_header = $attributes['plugin_group_header'] ?? null;
         $this->visible = $attributes['visible'] ?? \false;
+        $this->can_be_filtered = $attributes['can_be_filtered'] ?? \true;
         $this->type = $attributes['type'];
         $this->exportable = $attributes['exportable'] ?? \true;
-        $this->options = $attributes['options'] ?? [];
+        $this->options = $attributes['options'] ?? null;
         $this->filter_placeholder = $attributes['filter_placeholder'] ?? '';
         $this->unavailable_for = $attributes['unavailable_for'] ?? [];
-        $this->database_column = $attributes['database_column'] ?? null;
+        $this->separate_database_column = $attributes['separate_database_column'] ?? null;
+        $this->separate_filter_column = $attributes['separate_filter_column'] ?? null;
         $this->is_nullable = $attributes['is_nullable'] ?? \false;
         $this->is_plugin_active = $attributes['is_subgroup_plugin_active'] ?? \true;
         $this->requires_pro = $attributes['requires_pro'] ?? \false;
         $this->aggregatable = $attributes['aggregatable'] ?? \false;
+        $this->is_concrete_column = $attributes['is_concrete_column'] ?? \false;
     }
     public function is_enabled() : bool
     {
@@ -63,6 +70,14 @@ class Column implements Plugin_Group_Option
     {
         return $this->id;
     }
+    public function separate_database_column() : ?string
+    {
+        return $this->separate_database_column;
+    }
+    public function separate_filter_column() : ?string
+    {
+        return $this->separate_filter_column;
+    }
     public function name() : string
     {
         return $this->name;
@@ -70,10 +85,6 @@ class Column implements Plugin_Group_Option
     public function plugin_group() : string
     {
         return $this->plugin_group;
-    }
-    public function database_column() : string
-    {
-        return !\is_null($this->database_column) ? $this->database_column : $this->id;
     }
     public function is_group_plugin_enabled() : bool
     {
@@ -93,6 +104,10 @@ class Column implements Plugin_Group_Option
     public function is_visible() : bool
     {
         return $this->visible;
+    }
+    public function can_be_filtered() : bool
+    {
+        return $this->can_be_filtered;
     }
     public function is_member_of_plugin_group(string $plugin_group) : bool
     {
@@ -140,10 +155,7 @@ class Column implements Plugin_Group_Option
     {
         return $this->exportable;
     }
-    /**
-     * @return array List of possible options for this filter such as a list of authors or list of post categories
-     */
-    public function options() : array
+    public function options() : ?Options
     {
         return $this->options;
     }
@@ -154,5 +166,9 @@ class Column implements Plugin_Group_Option
     public function is_nullable() : bool
     {
         return $this->is_nullable;
+    }
+    public function is_concrete_column() : bool
+    {
+        return $this->is_concrete_column;
     }
 }

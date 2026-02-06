@@ -730,7 +730,7 @@ class BelongsToMany extends Relation
     public function paginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
     {
         $this->query->addSelect($this->shouldSelect($columns));
-        return tap($this->query->paginate($perPage, $columns, $pageName, $page), function ($paginator) {
+        return \IAWPSCOPED\tap($this->query->paginate($perPage, $columns, $pageName, $page), function ($paginator) {
             $this->hydratePivotRelation($paginator->items());
         });
     }
@@ -746,7 +746,7 @@ class BelongsToMany extends Relation
     public function simplePaginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
     {
         $this->query->addSelect($this->shouldSelect($columns));
-        return tap($this->query->simplePaginate($perPage, $columns, $pageName, $page), function ($paginator) {
+        return \IAWPSCOPED\tap($this->query->simplePaginate($perPage, $columns, $pageName, $page), function ($paginator) {
             $this->hydratePivotRelation($paginator->items());
         });
     }
@@ -762,7 +762,7 @@ class BelongsToMany extends Relation
     public function cursorPaginate($perPage = null, $columns = ['*'], $cursorName = 'cursor', $cursor = null)
     {
         $this->query->addSelect($this->shouldSelect($columns));
-        return tap($this->query->cursorPaginate($perPage, $columns, $cursorName, $cursor), function ($paginator) {
+        return \IAWPSCOPED\tap($this->query->cursorPaginate($perPage, $columns, $cursorName, $cursor), function ($paginator) {
             $this->hydratePivotRelation($paginator->items());
         });
     }

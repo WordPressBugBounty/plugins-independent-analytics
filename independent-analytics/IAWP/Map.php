@@ -28,14 +28,8 @@ class Map
         }
         \ob_start();
         ?>
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <div class="chart-container">
-            <div class="chart-inner">
-                <div class="legend-container">
-                    <h2 class="legend-title"><?php 
-        echo $this->title;
-        ?></h2>
-                </div>
+            <div class="chart-inner chart-inner--map">
                 <div id="independent-analytics-chart"
                      data-controller="map"
                      data-map-data-value="<?php 

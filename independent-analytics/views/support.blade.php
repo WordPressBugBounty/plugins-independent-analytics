@@ -88,20 +88,20 @@
             </div>
             <div class="follow-us resource">
                 <div class="icon-container">
-                    <span class="dashicons dashicons-twitter"></span>
+                    <span class="dashicons dashicons-youtube"></span>
                 </div>
                 <div class="text">
                     <h2>Follow Us</h2>
                     <p>Follow us on any of our profiles to find out when new updates are available and what's changed.</p>
                     <div class="social-icons-list">
-                        <a href="https://twitter.com/AnalyticsForWP" target="_blank"><img src="<?php echo esc_url(iawp_url_to('img/twitter.svg')) ?>"/></a>
-                        <a href="https://www.facebook.com/people/Independent-Analytics/100086904035609/" target="_blank"><img src="<?php echo esc_url(iawp_url_to('img/facebook.svg')) ?>"/></a>    
                         <a href="https://www.youtube.com/@Independent_Analytics" target="_blank"><img src="<?php echo esc_url(iawp_url_to('img/youtube.svg')) ?>"/></a>
+                        <a href="https://www.facebook.com/people/Independent-Analytics/100086904035609/" target="_blank"><img src="<?php echo esc_url(iawp_url_to('img/facebook.svg')) ?>"/></a>
+                        <a href="https://x.com/AnalyticsForWP" target="_blank"><img src="<?php echo esc_url(iawp_url_to('img/twitter.svg')) ?>"/></a>
+                        <a href="https://bsky.app/profile/independentwp.bsky.social" target="_blank"><img src="<?php echo esc_url(iawp_url_to('img/bluesky.svg')) ?>"/></a>
                         <a href="https://www.reddit.com/r/independentanalytics/" target="_blank"><img src="<?php echo esc_url(iawp_url_to('img/reddit.svg')) ?>"/></a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <?php echo iawp_blade()->run('partials.email-course-ad'); ?>
 </div>

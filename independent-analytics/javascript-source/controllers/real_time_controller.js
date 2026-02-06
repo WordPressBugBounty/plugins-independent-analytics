@@ -230,12 +230,14 @@ export default class extends Controller {
                 responsive: true,
                 scales: {
                     y: {
+                        border: {
+                            color: '#DEDAE6',
+                            dash: [2, 4]
+                        },
                         grid: {
-                            borderColor: '#DEDAE6',
                             tickColor: '#DEDAE6',
                             display: true,
                             drawOnChartArea: true,
-                            borderDash: [2, 4]
                         },
                         beginAtZero: true,
                         suggestedMax: 5,
@@ -246,8 +248,10 @@ export default class extends Controller {
                     },
                     x: {
                         stacked: true,
+                        border: {
+                            color: '#DEDAE6',
+                        },
                         grid: {
-                            borderColor: '#DEDAE6',
                             tickColor: '#DEDAE6',
                             display: true,
                             drawOnChartArea: false,

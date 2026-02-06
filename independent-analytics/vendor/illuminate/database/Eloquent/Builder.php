@@ -396,7 +396,7 @@ class Builder
         if (!\is_null($instance = $this->where($attributes)->first())) {
             return $instance;
         }
-        return tap($this->newModelInstance(\array_merge($attributes, $values)), function ($instance) {
+        return \IAWPSCOPED\tap($this->newModelInstance(\array_merge($attributes, $values)), function ($instance) {
             $instance->save();
         });
     }
@@ -409,7 +409,7 @@ class Builder
      */
     public function updateOrCreate(array $attributes, array $values = [])
     {
-        return tap($this->firstOrNew($attributes), function ($instance) use($values) {
+        return \IAWPSCOPED\tap($this->firstOrNew($attributes), function ($instance) use($values) {
             $instance->fill($values)->save();
         });
     }
@@ -733,7 +733,7 @@ class Builder
      */
     public function create(array $attributes = [])
     {
-        return tap($this->newModelInstance($attributes), function ($instance) {
+        return \IAWPSCOPED\tap($this->newModelInstance($attributes), function ($instance) {
             $instance->save();
         });
     }

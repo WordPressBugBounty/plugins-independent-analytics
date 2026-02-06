@@ -721,7 +721,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
         if ($this->fireModelEvent('updating') === \false) {
             return \false;
         }
-        return tap($this->setKeysForSaveQuery($query)->{$method}($column, $amount, $extra), function () use($column) {
+        return \IAWPSCOPED\tap($this->setKeysForSaveQuery($query)->{$method}($column, $amount, $extra), function () use($column) {
             $this->syncChanges();
             $this->fireModelEvent('updated', \false);
             $this->syncOriginalAttribute($column);
@@ -1306,7 +1306,7 @@ abstract class Model implements Arrayable, ArrayAccess, CanBeEscapedWhenCastToSt
     {
         $defaults = [$this->getKeyName(), $this->getCreatedAtColumn(), $this->getUpdatedAtColumn()];
         $attributes = Arr::except($this->getAttributes(), $except ? \array_unique(\array_merge($except, $defaults)) : $defaults);
-        return tap(new static(), function ($instance) use($attributes) {
+        return \IAWPSCOPED\tap(new static(), function ($instance) use($attributes) {
             $instance->setRawAttributes($attributes);
             $instance->setRelations($this->relations);
             $instance->fireModelEvent('replicating', \false);

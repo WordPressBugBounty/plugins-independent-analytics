@@ -6,6 +6,7 @@ use IAWP\Tables\Table_Campaigns;
 use IAWP\Tables\Table_Clicks;
 use IAWP\Tables\Table_Devices;
 use IAWP\Tables\Table_Geo;
+use IAWP\Tables\Table_Journeys;
 use IAWP\Tables\Table_Pages;
 use IAWP\Tables\Table_Referrers;
 /** @internal */
@@ -68,7 +69,7 @@ class Env
             return null;
         }
         $page = $_GET['page'] ?? null;
-        $valid_pages = ['independent-analytics', 'independent-analytics-settings', 'independent-analytics-campaign-builder', 'independent-analytics-click-tracking', 'independent-analytics-support-center', 'independent-analytics-integrations', 'independent-analytics-updates', 'independent-analytics-debug'];
+        $valid_pages = ['independent-analytics', 'independent-analytics-settings', 'independent-analytics-campaign-builder', 'independent-analytics-click-tracking', 'independent-analytics-support-center', 'independent-analytics-integrations', 'independent-analytics-updates', 'independent-analytics-debug', 'independent-analytics-visitor'];
         if (\in_array($page, $valid_pages)) {
             return $page;
         }
@@ -82,8 +83,11 @@ class Env
         $default_tab = 'views';
         $valid_tabs = ['views', 'referrers', 'geo', 'devices'];
         if (\IAWPSCOPED\iawp_is_pro()) {
+            $valid_tabs = \array_merge($valid_tabs, ['campaigns', 'clicks', 'real-time']);
+        }
+        if (\IAWPSCOPED\iawp_is_pro() && \IAWP\Capability_Manager::can_view_all_analytics()) {
             $default_tab = 'overview';
-            $valid_tabs = \array_merge($valid_tabs, ['campaigns', 'clicks', 'real-time', 'overview']);
+            $valid_tabs = \array_merge($valid_tabs, ['journeys', 'overview']);
         }
         $tab = \array_key_exists('tab', $_GET) ? \stripslashes(\sanitize_text_field($_GET['tab'])) : \false;
         $is_valid = \in_array($tab, $valid_tabs);
@@ -115,6 +119,8 @@ class Env
                 return Table_Campaigns::class;
             case 'clicks':
                 return Table_Clicks::class;
+            case 'journeys':
+                return Table_Journeys::class;
         }
     }
 }

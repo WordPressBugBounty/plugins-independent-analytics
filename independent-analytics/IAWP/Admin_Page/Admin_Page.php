@@ -29,7 +29,7 @@ abstract class Admin_Page
         $tab = (new Env())->get_tab();
         $examiner_class = \array_key_exists('examiner', $_GET) ? 'iawp-examiner-parent' : '';
         ?>
-        
+
         <div id="iawp-parent" class="iawp-parent <?php 
         echo \esc_attr($tab);
         ?> <?php 
@@ -40,7 +40,7 @@ abstract class Admin_Page
         ?>">
                 <?php 
         if ($show_report_sidebar) {
-            echo \IAWPSCOPED\iawp_render('partials.sidebar', ['report_finder' => Report_Finder::new(), 'is_white_labeled' => Capability_Manager::show_white_labeled_ui(), 'can_edit_settings' => Capability_Manager::can_edit()]);
+            echo \IAWPSCOPED\iawp_render('partials.sidebar', ['report_finder' => Report_Finder::new(), 'is_white_labeled' => Capability_Manager::show_white_labeled_ui(), 'can_edit_settings' => Capability_Manager::can_edit(), 'can_view_all_analytics' => Capability_Manager::can_view_all_analytics()]);
         }
         ?>
                 <div class="iawp-layout-main">

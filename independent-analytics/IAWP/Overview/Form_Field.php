@@ -79,8 +79,7 @@ class Form_Field
             return \IAWP\Overview\Form_Field_Option::new($report->id(), $report->name());
         })->values()->all();
         $sort_direction_values = [\IAWP\Overview\Form_Field_Option::new('desc', 'High-to-Low'), \IAWP\Overview\Form_Field_Option::new('asc', 'Low-to-High')];
-        $ranges_to_support = ['TODAY', 'YESTERDAY', 'THIS_WEEK', 'LAST_WEEK', 'LAST_SEVEN', 'LAST_THIRTY', 'LAST_THREE_MONTHS', 'LAST_SIX_MONTHS', 'LAST_TWELVE_MONTHS'];
-        $date_range_values = Collection::make(Relative_Date_Range::ranges($ranges_to_support))->map(function (Relative_Date_Range $range) {
+        $date_range_values = Collection::make(Relative_Date_Range::ranges())->map(function (Relative_Date_Range $range) {
             return \IAWP\Overview\Form_Field_Option::new($range->relative_range_id(), $range->label());
         })->all();
         $busiest_date_range_values = Collection::make(Relative_Date_Range::ranges())->filter(function (Relative_Date_Range $range) {

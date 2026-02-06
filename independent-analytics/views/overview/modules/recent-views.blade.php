@@ -15,30 +15,26 @@ if($is_loaded) : ?>
         $dataset = $module->add_icons_to_dataset($dataset);
         for ($i = 0; $i < count($dataset); $i++) :
             if ($i % 10 == 0) : ?>
-                <div class="module-page module-page-<?php echo $i/10 + 1; ?> <?php echo $i == 0 ? 'current' : ''; ?> visitors-grid"><?php 
+                <div class="module-page module-page-<?php echo $i/10 + 1; ?> <?php echo $i == 0 ? 'current' : ''; ?> visitors-grid"><?php
             endif; ?>
-            <div>
+            <div data-controller="tooltip" data-tooltip-text-value="<?php echo esc_attr($dataset[$i]['viewed_at_the_long_way']); ?>">
                 <span class="icon-container">
                     <span class="icon"><?php echo sanitize_text_field($dataset[$i]['viewed_at']); ?></span>
-                    <span class="icon-label"><?php echo sanitize_text_field($dataset[$i]['viewed_at_the_long_way']); ?></span>
                 </span>
             </div>
-            <div>
+            <div data-controller="tooltip" data-tooltip-text-value="<?php echo esc_attr($dataset[$i]['country']); ?>">
                 <span class="icon-container">
                     <span class="icon"><?php echo wp_kses($dataset[$i]['flag'], 'post'); ?></span>
-                    <span class="icon-label"><?php echo sanitize_text_field($dataset[$i]['country']); ?></span>
                 </span>
             </div>
-            <div>
+            <div data-controller="tooltip" data-tooltip-text-value="<?php echo esc_attr($dataset[$i]['device_type']); ?>">
                 <span class="icon-container">
                     <span class="icon"><?php echo wp_kses($dataset[$i]['device_type_icon'], 'post'); ?></span>
-                    <span class="icon-label"><?php echo sanitize_text_field($dataset[$i]['device_type']); ?></span>
                 </span>
             </div>
-            <div>
+            <div data-controller="tooltip" data-tooltip-text-value="<?php echo esc_attr($dataset[$i]['browser']); ?>">
                 <span class="icon-container">
                     <span class="icon"><?php echo wp_kses($dataset[$i]['browser_icon'], 'post'); ?></span>
-                    <span class="icon-label"><?php echo sanitize_text_field($dataset[$i]['browser']); ?></span>
                 </span>
             </div>
             <div class="page-title">
@@ -62,7 +58,7 @@ if($is_loaded) : ?>
                             class="dashicons dashicons-arrow-right-alt2"></span></button>
             </div><?php
         endif; ?>
-    </div><?php 
+    </div><?php
 else : ?>
     <div class="loading-message">
         <img src="<?php echo esc_url(iawp_url_to('img/loading.svg')) ?>"/>

@@ -2,6 +2,7 @@
 
 namespace IAWP\Models;
 
+use IAWP\Favicon\Favicon;
 /** @internal */
 class Referrer extends \IAWP\Models\Model
 {
@@ -40,6 +41,15 @@ class Referrer extends \IAWP\Models\Model
     public function referrer_url() : string
     {
         return $this->domain;
+    }
+    public function referrer_favicon_url() : ?string
+    {
+        return Favicon::for($this->domain)->url();
+    }
+    public function fallback_favicon_color_id() : int
+    {
+        $options = [1, 2, 3, 4, 5];
+        return $options[\abs(\crc32($this->row->domain ?? '')) % \count($options)];
     }
     /**
      * Return group referrer type, referrer, or direct.

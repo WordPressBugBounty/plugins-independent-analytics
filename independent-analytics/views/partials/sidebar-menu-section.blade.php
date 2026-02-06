@@ -53,7 +53,7 @@
     if ($collapsed_label) : ?>
         <span class="collapsed-label">
             <a href="<?php echo esc_url($url); ?>" <?php echo $external ? 'target="_blank"' : ''; ?>><?php
-                echo esc_html($collapsed_label) . ' ' . $external ? '<span class="dashicons dashicons-external"></span>' : ''; ?>
+                echo esc_html($collapsed_label) . ' ' . ($external ? '<span class="dashicons dashicons-external"></span>' : ''); ?>
             </a>
         </span><?php
     endif; ?>

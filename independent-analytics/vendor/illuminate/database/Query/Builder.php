@@ -2843,7 +2843,7 @@ class Builder
      */
     public function cloneWithout(array $properties)
     {
-        return tap($this->clone(), function ($clone) use($properties) {
+        return \IAWPSCOPED\tap($this->clone(), function ($clone) use($properties) {
             foreach ($properties as $property) {
                 $clone->{$property} = null;
             }
@@ -2857,7 +2857,7 @@ class Builder
      */
     public function cloneWithoutBindings(array $except)
     {
-        return tap($this->clone(), function ($clone) use($except) {
+        return \IAWPSCOPED\tap($this->clone(), function ($clone) use($except) {
             foreach ($except as $type) {
                 $clone->bindings[$type] = [];
             }

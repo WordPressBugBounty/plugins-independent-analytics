@@ -24,14 +24,7 @@
                 </a>
             </div><?php
         endif; ?>
-        <div class="collapse-container">
-            <button id="collapse-sidebar" class="collapse-sidebar iawp-text-button"
-                    data-testid="collapse-button"><span
-                        class="dashicons dashicons-admin-collapse"></span><span
-                        class="text"><?php esc_html_e('Collapse sidebar', 'independent-analytics'); ?></span>
-            </button>
-            <span class="collapsed-label"><?php esc_html_e('Expand sidebar', 'independent-analytics'); ?></span>
-        </div>
+
         <div class="mobile-menu">
             <button id="mobile-menu-toggle" class="mobile-menu-toggle iawp-button ghost-purple">
                 <span class="dashicons dashicons-menu"></span> <span class="text"><?php
@@ -43,13 +36,13 @@
             <div class="reports-list">
                 <?php
                 // OVERVIEW
-                if ($env->is_pro()) {
+                if ($env->is_pro() && $can_view_all_analytics) {
                     echo iawp_blade()->run('partials.sidebar-menu-section', [
                         'can_edit_settings' => $can_edit_settings,
                         'report_name'       => esc_html__('Overview', 'independent-analytics'),
                         'report_type'       => 'overview',
                         'reports'           => null,
-                        'collapsed_label'   => esc_html__('Open overview', 'independent-analytics'),
+                        'collapsed_label'   => esc_html__('Overview report', 'independent-analytics'),
                         'supports_saved_reports' => false,
                         'url'               => iawp_dashboard_url(['tab' => 'overview']),
                         'external'          => false,
@@ -63,12 +56,23 @@
                         'report_name'       => esc_html__('Real-time', 'independent-analytics'),
                         'report_type'       => 'real-time',
                         'reports'           => null,
-                        'collapsed_label'   => esc_html__(
-                            'Open Real-time analytics',
-                            'independent-analytics'
-                        ),
+                        'collapsed_label'   => esc_html__('Real-time report','independent-analytics'),
                         'supports_saved_reports' => false,
                         'url'               => iawp_dashboard_url(['tab' => 'real-time']),
+                        'external'          => false,
+                        'upgrade'           => false
+                    ]);
+                }
+                // JOURNEYS
+                if ($env->is_pro() && $can_view_all_analytics) {
+                    echo iawp_blade()->run('partials.sidebar-menu-section', [
+                        'can_edit_settings' => $can_edit_settings,
+                        'report_name'       => esc_html__('User Journeys', 'independent-analytics'),
+                        'report_type'       => 'journeys',
+                        'reports'           => $report_finder->get_saved_reports_for_type('journeys'),
+                        'collapsed_label'   => '',
+                        'supports_saved_reports' => true,
+                        'url'               => iawp_dashboard_url(['tab' => 'journeys']),
                         'external'          => false,
                         'upgrade'           => false
                     ]);
@@ -135,6 +139,7 @@
                         'upgrade'           => false
                     ]);
                 }
+                // CLICKS
                 if ($env->is_pro()) {
                     echo iawp_blade()->run('partials.sidebar-menu-section', [
                         'can_edit_settings' => $can_edit_settings,
@@ -161,6 +166,21 @@
                         ),
                         'supports_saved_reports' => false,
                         'url'               => 'https://independentwp.com/features/overview-report/?utm_source=User+Dashboard&utm_medium=WP+Admin&utm_campaign=Overview+menu+item&utm_content=Sidebar',
+                        'external'          => true,
+                        'upgrade'           => true
+                    ]);
+                    // USER JOURNEYS UPGRADE
+                    echo iawp_blade()->run('partials.sidebar-menu-section', [
+                        'can_edit_settings' => $can_edit_settings,
+                        'report_name'       => esc_html__('User Journeys', 'independent-analytics'),
+                        'report_type'       => 'journeys',
+                        'reports'           => null,
+                        'collapsed_label'   => esc_html__(
+                            'Get user journeys',
+                            'independent-analytics'
+                        ),
+                        'supports_saved_reports' => false,
+                        'url'               => 'https://independentwp.com/features/user-journeys/?utm_source=User+Dashboard&utm_medium=WP+Admin&utm_campaign=User+Journeys+menu+item&utm_content=Sidebar',
                         'external'          => true,
                         'upgrade'           => true
                     ]);
@@ -211,6 +231,14 @@
                     ]);
                 } ?>
             </div>
+        </div>
+        <div class="collapse-container">
+            <button id="collapse-sidebar" class="collapse-sidebar iawp-text-button"
+                    data-testid="collapse-button"><span
+                        class="dashicons dashicons-admin-collapse"></span><span
+                        class="text"><?php esc_html_e('Collapse sidebar', 'independent-analytics'); ?></span>
+            </button>
+            <span class="collapsed-label"><?php esc_html_e('Expand sidebar', 'independent-analytics'); ?></span>
         </div>
     </div>
 </div>

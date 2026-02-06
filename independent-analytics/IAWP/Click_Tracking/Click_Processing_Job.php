@@ -7,6 +7,7 @@ use IAWP\Models\Visitor;
 use IAWP\Payload_Validator;
 use IAWP\Utils\Security;
 use IAWPSCOPED\Illuminate\Support\Str;
+use IAWPSCOPED\League\Uri\Uri;
 /** @internal */
 class Click_Processing_Job extends Cron_Job
 {
@@ -40,9 +41,6 @@ class Click_Processing_Job extends Cron_Job
         }
         while (($json = \fgets($job_handle)) !== \false) {
             $event = \json_decode($json, \true);
-            $event['href'] = \sanitize_url($event['href']);
-            $event['classes'] = Security::string($event['classes']);
-            $event['ids'] = Security::string($event['ids']);
             if (\is_null($event)) {
                 continue;
             }
@@ -50,6 +48,12 @@ class Click_Processing_Job extends Cron_Job
             if (!$payload_validator->is_valid() || \is_null($payload_validator->resource())) {
                 continue;
             }
+            if (\is_string($event['href']) && !$this->is_valid_href($event['href'])) {
+                continue;
+            }
+            $event['href'] = \sanitize_url($event['href']);
+            $event['classes'] = Security::string($event['classes']);
+            $event['ids'] = Security::string($event['ids']);
             $click = \IAWP\Click_Tracking\Click::new(['href' => $event['href'], 'classes' => $event['classes'], 'ids' => $event['ids'], 'resource_id' => $payload_validator->resource()['id'], 'visitor_id' => Visitor::fetch_visitor_id_by_hash($event['visitor_token']), 'created_at' => \DateTime::createFromFormat('U', $event['created_at'])]);
             $click->track();
         }
@@ -84,5 +88,40 @@ class Click_Processing_Job extends Cron_Job
             return null;
         }
         return $job_file;
+    }
+    private function is_valid_href(string $href) : bool
+    {
+        if ($this->has_injection_attempt($href)) {
+            return \false;
+        }
+        $uri = Uri::createFromString($href);
+        $scheme = $uri->getScheme();
+        if ($scheme === null) {
+            return \false;
+        }
+        $is_http = $scheme === 'http' || $scheme === 'https';
+        if ($is_http && \filter_var($href, \FILTER_VALIDATE_URL) === \false) {
+            return \false;
+        }
+        return \true;
+    }
+    /**
+     * The goal of this method is not security. That's handled by the secure and robust functions
+     * that PHP and WordPress provide. The goal of this function is to detect when someone tried
+     * to use SQL injection so we can ignore the spam clicks.
+     *
+     * @param string $string
+     *
+     * @return bool
+     */
+    private function has_injection_attempt(string $string) : bool
+    {
+        $patterns = ['/select\\s.*\\sfrom/i', '/waitfor\\sdelay/i', '/pg_sleep/i'];
+        foreach ($patterns as $pattern) {
+            if (\preg_match($pattern, $string)) {
+                return \true;
+            }
+        }
+        return \false;
     }
 }

@@ -15,6 +15,7 @@ if ($is_loaded) : ?>
         data-chart-locale-value="<?php echo esc_attr(get_bloginfo('language')); ?>"
         data-chart-currency-value="<?php echo esc_attr(iawp()->get_currency_code()); ?>"
         data-chart-is-preview-value="1"
+        data-chart-show-legend-value="1"
         data-chart-primary-chart-metric-id-value="<?php echo esc_attr($dataset['primary_dataset_id']); ?>"
         data-chart-primary-chart-metric-name-value="<?php echo esc_attr($dataset['primary_dataset_name']); ?>"
         data-chart-secondary-chart-metric-id-value="<?php echo esc_attr($dataset['secondary_dataset_id']); ?>"

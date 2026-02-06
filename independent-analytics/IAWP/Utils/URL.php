@@ -30,6 +30,13 @@ class URL
             return \false;
         }
     }
+    public function get_url() : ?string
+    {
+        if (!$this->is_valid_url()) {
+            return null;
+        }
+        return $this->url;
+    }
     public function get_domain() : ?string
     {
         if (!$this->is_valid_url()) {

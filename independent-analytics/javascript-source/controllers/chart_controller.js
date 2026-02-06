@@ -21,6 +21,10 @@ export default class extends Controller {
             type: Boolean,
             default: false,
         },
+        showLegend: {
+            type: Boolean,
+            default: false,
+        },
         disableDarkMode: {
             type: Boolean,
             default: false,
@@ -91,7 +95,7 @@ export default class extends Controller {
             this.chart = null
         }
     }
-   
+
     getLocale() {
         // Validate the locale
         try {
@@ -186,7 +190,7 @@ export default class extends Controller {
         // The intersection observer was added to improve support for the examiner which operates
         // in an iFrame. Without this, the adaptiveWidthSelectTarget has a width of zero when
         // this code runs.
-        
+
         const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -352,13 +356,15 @@ export default class extends Controller {
             },
             scales: {
                 y: {
+                    border: {
+                        color: '#DEDAE6',
+                        dash: [2, 4]
+                    },
                     grid: {
                         color: this.shouldUseDarkMode() ? '#676173' : '#DEDAE6',
-                        borderColor: '#DEDAE6',
                         tickColor: '#DEDAE6',
                         display: true,
                         drawOnChartArea: true,
-                        borderDash: [2, 4]
                     },
                     beginAtZero: true,
                     suggestedMax: null,
@@ -377,13 +383,15 @@ export default class extends Controller {
                 defaultRight: {
                     position: 'right',
                     display: 'auto',
+                    border: {
+                        color: '#DEDAE6',
+                        dash: [2, 4]
+                    },
                     grid: {
                         color: this.shouldUseDarkMode() ? '#9a95a6' : '#DEDAE6',
-                        borderColor: '#DEDAE6',
                         tickColor: '#DEDAE6',
                         display: true,
                         drawOnChartArea: false,
-                        borderDash: [2, 4]
                     },
                     beginAtZero: true,
                     suggestedMax: null,
@@ -404,8 +412,10 @@ export default class extends Controller {
                     },
                 },
                 x: {
+                    border: {
+                        color: '#DEDAE6',
+                    },
                     grid: {
-                        borderColor: '#DEDAE6',
                         tickColor: '#DEDAE6',
                         display: true,
                         drawOnChartArea: false,
@@ -427,7 +437,24 @@ export default class extends Controller {
             plugins: {
                 mode: String, // 'light' or 'dark'
                 legend: {
-                    display: false
+                    display: this.showLegendValue,
+                    align: 'start',
+                    labels: {
+                        boxHeight: 14,
+                        boxWidth: 14,
+                        useBorderRadius: true,
+                        borderRadius: 7,
+                        padding: 8,
+                        color: this.shouldUseDarkMode() ? '#DEDAE6' : '#676173',
+                        generateLabels: (chart) => {
+                            const original = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+                            return original.map(label => ({
+                                ...label,
+                                fillStyle: label.strokeStyle,
+                                lineWidth: 0,
+                            }));
+                        }
+                    }
                 },
                 corsair: {
                     dash: [2, 4],
@@ -456,8 +483,19 @@ export default class extends Controller {
             data: data,
             options: options,
             plugins: [
-                corsairPlugin
+                corsairPlugin,
+                {
+                  beforeInit(chart) {
+                    const originalFit = chart.legend.fit;
 
+                    chart.legend.fit = function () {
+                      // Call the original function and bind scope in order to use `this` correctly inside it
+                      originalFit.bind(chart.legend)();
+
+                      this.height += 16;
+                    }
+                  }
+                }
             ],
         };
 

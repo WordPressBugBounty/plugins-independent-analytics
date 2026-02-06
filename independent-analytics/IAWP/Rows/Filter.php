@@ -2,91 +2,53 @@
 
 namespace IAWP\Rows;
 
-use IAWP\Filter_Lists\Author_Filter_List;
-use IAWP\Filter_Lists\Category_Filter_List;
-use IAWP\Filter_Lists\Device_Browser_Filter_List;
-use IAWP\Filter_Lists\Device_OS_Filter_List;
-use IAWP\Filter_Lists\Device_Type_Filter_List;
-use IAWP\Filter_Lists\Link_Name_Filter_List;
-use IAWP\Filter_Lists\Page_Type_Filter_List;
-use IAWP\Filter_Lists\Referrer_Type_Filter_List;
-use IAWP\Form_Submissions\Form;
-use IAWP\Utils\String_Util;
+use IAWP\Tables\Columns\Column;
 use IAWP\Utils\WordPress_Site_Date_Format_Pattern;
 use IAWPSCOPED\Illuminate\Database\Query\Builder;
-use JsonSerializable;
+use IAWPSCOPED\Illuminate\Support\Str;
 /** @internal */
-class Filter implements JsonSerializable
+class Filter
 {
-    private $filter;
+    public static string $RECORD_FILTER = 'record';
+    public static string $AGGREGATE_FILTER = 'aggregate';
+    public static string $OUTER_FILTER = 'outer';
+    private string $inclusion;
+    private string $operator;
+    private string $operand;
+    private Column $column;
     public function __construct(array $filter)
     {
-        $this->filter = $filter;
+        $this->inclusion = $filter['inclusion'];
+        $this->operator = $filter['operator'];
+        $this->operand = $filter['operand'];
+        $this->column = $filter['column'];
     }
-    public function filter() : array
+    public function apply_to_query(Builder $query, string $filter_type, bool $in_or_chain = \false) : void
     {
-        return $this->filter;
-    }
-    public function apply_to_query(Builder $query) : void
-    {
-        if ($this->filter['column'] === 'category') {
-            $this->apply_category_filter($query);
-        } else {
-            $method = $this->method();
-            $query->{$method}($this->column(), $this->operator(), $this->value());
+        if ($this->column->id() === 'category') {
+            $this->apply_category_filter($query, $in_or_chain);
+            return;
         }
-        // If a filter is based on comments, remove all non-singular pages
-        if ($this->filter['column'] === 'comments') {
-            $query->whereNotNull('pages.singular_id');
+        if ($this->query_value_to_match() === 'is_not_null' && $this->query_operator() === '=') {
+            $query->whereNotNull($this->query_column($filter_type));
+            return;
         }
+        if ($this->query_value_to_match() === 'is_not_null' && $this->query_operator() === '!=') {
+            $query->whereNull($this->query_column($filter_type));
+            return;
+        }
+        $method = $this->query_method($in_or_chain, $filter_type);
+        $query->{$method}($this->query_column($filter_type), $this->query_operator(), $this->query_value_to_match());
     }
     public function html_description() : string
     {
-        return $this->condition_string($this->filter());
-    }
-    public function method() : string
-    {
-        if ($this->filter['column'] === $this->filter['database_column']) {
-            return 'having';
-        } else {
-            return 'where';
-        }
-    }
-    public function column() : string
-    {
-        return $this->filter['database_column'];
-    }
-    // Fix deprecation warning in PHP 8 while still working in PHP 7
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
-    {
-        return $this->filter;
-    }
-    /**
-     * Category filters are different from the other filters
-     *
-     * @param Builder $query
-     * @return void
-     */
-    private function apply_category_filter(Builder $query) : void
-    {
-        $wp_query = new \WP_Query(['posts_per_page' => -1, 'cat' => $this->filter['operand'], 'fields' => 'ids']);
-        $post_ids = $wp_query->posts;
-        $include = $this->filter['inclusion'] === 'include';
-        $is = $this->filter['operator'] === 'is';
-        if ($include === $is) {
-            $query->whereIn('singular_id', $post_ids);
-        } else {
-            $query->where(function (Builder $query) use($post_ids) {
-                $query->whereNotIn('singular_id', $post_ids)->orWhereNull('singular_id');
-            });
-        }
-    }
-    private function condition_string(array $condition) : string
-    {
+        $condition = $this->as_associative_array();
         $full_string = '';
         foreach ($condition as $key => $value) {
-            if (!\in_array($key, ['inclusion', 'column', 'operator', 'operand'])) {
+            if (!\in_array($key, ['inclusion', 'column', 'operator', 'operand', 'name'])) {
+                continue;
+            }
+            if ($key == 'column') {
                 continue;
             }
             $condition_string = '';
@@ -114,12 +76,8 @@ class Filter implements JsonSerializable
                 $condition_string = \esc_html__('Is', 'independent-analytics');
             } elseif ($key == 'operator' && $value == 'isnt') {
                 $condition_string = \esc_html__("Isn't", 'independent-analytics');
-            } elseif ($key == 'operand' && $condition['column'] == 'browser') {
-                $condition_string = Device_Browser_Filter_List::option($value);
-            } elseif ($key == 'operand' && $condition['column'] == 'os') {
-                $condition_string = Device_OS_Filter_List::option($value);
-            } elseif ($key == 'operand' && $condition['column'] == 'device_type') {
-                $condition_string = Device_Type_Filter_List::option($value);
+            } elseif ($key == 'operand' && $this->column->options()) {
+                $condition_string = $this->column->options()->label_for($value);
             } elseif ($key == 'operand' && $condition['column'] == 'date') {
                 try {
                     $date = \DateTime::createFromFormat('U', $value);
@@ -127,42 +85,59 @@ class Filter implements JsonSerializable
                 } catch (\Throwable $e) {
                     $condition_string = $value;
                 }
-            } elseif ($key == 'operand' && $condition['column'] == 'author') {
-                $condition_string = Author_Filter_List::option($value);
-            } elseif ($key == 'operand' && $condition['column'] == 'category') {
-                $condition_string = Category_Filter_List::option($value);
-            } elseif ($key == 'operand' && $condition['column'] == 'referrer_type') {
-                $condition_string = Referrer_Type_Filter_List::option($value);
-            } elseif ($key == 'operand' && $condition['column'] == 'link_name') {
-                $condition_string = Link_Name_Filter_List::option($value);
-            } elseif ($key == 'operand' && $condition['column'] == 'type') {
-                $condition_string = Page_Type_Filter_List::option($value);
-            } elseif ($key == 'column' && \str_contains($value, 'wc')) {
-                $condition_string = \str_replace(['_', '-'], ' ', $value);
-                $condition_string = \str_replace('wc', 'WC', $condition_string);
-            } elseif ($key == 'column' && String_Util::str_starts_with($condition['column'], 'form_submissions_for_')) {
-                $condition_string = \__('Submissions for', 'independent-analytics') . ' ' . Form::find_form_by_column_name($condition['column'])->title();
-            } elseif ($key == 'column' && String_Util::str_starts_with($condition['column'], 'form_conversion_rate_for_')) {
-                $condition_string = \__('Conversion rate for', 'independent-analytics') . ' ' . Form::find_form_by_column_name($condition['column'])->title();
-            } elseif ($key == 'column' && $condition['column'] == 'link_name') {
-                $condition_string = \__('Link Pattern', 'independent-analytics') . ' ';
-            } elseif ($key == 'column' && $value == 'url') {
-                $condition_string = 'URL ';
-            } elseif ($key != 'operand') {
-                $condition_string .= \ucwords(\str_replace('_', ' ', $value)) . ' ';
             } else {
                 $condition_string = $value;
             }
-            if ($key == 'column' || $key == 'operand') {
+            if ($key == 'name' || $key == 'operand') {
                 $condition_string = '<strong>' . $condition_string . '</strong> ';
             }
             $full_string .= $condition_string . ' ';
         }
         return \trim($full_string);
     }
-    private function operator() : string
+    public function column() : string
     {
-        $operator = $this->filter['operator'];
+        return $this->column->id();
+    }
+    public function is_concrete_column() : bool
+    {
+        return $this->column->is_concrete_column();
+    }
+    public function is_calculated_column() : bool
+    {
+        return !$this->column->is_concrete_column();
+    }
+    public function as_associative_array() : array
+    {
+        // The order of the elements here matters
+        return ['inclusion' => $this->inclusion, 'name' => $this->column->name(), 'column' => $this->column->id(), 'operator' => $this->operator, 'operand' => $this->operand];
+    }
+    private function query_method(bool $in_or_chain, string $filter_type) : string
+    {
+        if ($filter_type === \IAWP\Rows\Filter::$AGGREGATE_FILTER) {
+            if ($in_or_chain) {
+                return 'orHaving';
+            }
+            return 'having';
+        }
+        if ($in_or_chain) {
+            return 'orWhere';
+        }
+        return 'where';
+    }
+    private function query_column(string $filter_type) : string
+    {
+        $column = $this->column->separate_database_column() ?? $this->column->separate_filter_column() ?? $this->column->id();
+        if ($filter_type === \IAWP\Rows\Filter::$OUTER_FILTER) {
+            $column = Str::afterLast($column, '.');
+        }
+        return $column;
+    }
+    // Use early returns here to make it more obvious what $result value is actually used
+    // without reading to the end
+    private function query_operator() : string
+    {
+        $operator = $this->operator;
         $result = '';
         if ($operator === 'equal' || $operator === 'is' || $operator === 'exact' || $operator === 'on') {
             $result = '=';
@@ -179,7 +154,7 @@ class Filter implements JsonSerializable
         if ($operator === 'lesser' || $operator === 'before') {
             $result = '<';
         }
-        if ($this->filter['inclusion'] === 'exclude') {
+        if ($this->inclusion === 'exclude') {
             if ($result === '=') {
                 return '!=';
             } elseif ($result === '!=') {
@@ -194,22 +169,41 @@ class Filter implements JsonSerializable
         }
         return $result;
     }
-    private function value() : string
+    private function query_value_to_match() : string
     {
-        if ($this->filter['operator'] === 'contains') {
-            return '%' . $this->filter['operand'] . '%';
+        if ($this->operator === 'contains') {
+            return '%' . $this->operand . '%';
         }
-        if ($this->filter['database_column'] === 'cached_date') {
+        // if ($this->column->id() === 'cached_date') {
+        if ($this->column->id() === 'date') {
             try {
-                $date = \DateTime::createFromFormat('U', $this->filter['operand']);
+                $date = \DateTime::createFromFormat('U', $this->operand);
             } catch (\Throwable $e) {
                 $date = new \DateTime();
             }
             return $date->format('Y-m-d');
         }
-        if (\in_array($this->filter['database_column'], ['wc_gross_sales', 'wc_refunded_amount', 'wc_net_sales', 'wc_earnings_per_visitor', 'wc_average_order_volume'])) {
-            return \strval(\floatval($this->filter['operand']) * 100);
+        // ID is fine here, but should use whatever method gives the database column
+        if (\in_array($this->column->id(), ['wc_gross_sales', 'wc_refunded_amount', 'wc_net_sales', 'wc_earnings_per_visitor', 'wc_average_order_volume'])) {
+            return \strval(\floatval($this->operand) * 100);
         }
-        return $this->filter['operand'];
+        return $this->operand;
+    }
+    private function apply_category_filter(Builder $query, bool $in_or_chain) : void
+    {
+        $wp_query = new \WP_Query(['posts_per_page' => -1, 'cat' => $this->operand, 'fields' => 'ids']);
+        $post_ids = $wp_query->posts;
+        $include = $this->inclusion === 'include';
+        $is = $this->operator === 'is';
+        $method = $in_or_chain ? 'orWhere' : 'where';
+        if ($include === $is) {
+            $query->{$method}(function (Builder $query) use($post_ids) {
+                $query->whereIn('singular_id', $post_ids);
+            });
+        } else {
+            $query->{$method}(function (Builder $query) use($post_ids) {
+                $query->whereNotIn('singular_id', $post_ids)->orWhereNull('singular_id');
+            });
+        }
     }
 }

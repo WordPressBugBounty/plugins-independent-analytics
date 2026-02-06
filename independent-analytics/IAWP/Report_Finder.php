@@ -35,6 +35,8 @@ class Report_Finder
         $reports = \array_merge($reports, $this->get_saved_reports_for_type('campaigns'));
         $reports[] = \IAWP\Report_Finder::get_base_report_for_type('clicks');
         $reports = \array_merge($reports, $this->get_saved_reports_for_type('clicks'));
+        $reports[] = \IAWP\Report_Finder::get_base_report_for_type('journeys');
+        $reports = \array_merge($reports, $this->get_saved_reports_for_type('journeys'));
         self::$get_reports_cached = $reports;
         return $reports;
     }
@@ -112,6 +114,8 @@ class Report_Finder
                 return new \IAWP\Report((object) ['report_id' => 'campaigns', 'name' => \esc_html__('Campaigns', 'independent-analytics'), 'type' => 'campaigns']);
             case 'clicks':
                 return new \IAWP\Report((object) ['report_id' => 'clicks', 'name' => \esc_html__('Clicks', 'independent-analytics'), 'type' => 'clicks']);
+            case 'journeys':
+                return new \IAWP\Report((object) ['report_id' => 'journeys', 'name' => \esc_html__('User Journeys', 'independent-analytics'), 'type' => 'journeys']);
             case 'overview':
                 return new \IAWP\Report((object) ['report_id' => 'overview', 'name' => \esc_html__('Overview', 'independent-analytics'), 'type' => 'overview']);
             case 'real-time':
@@ -196,5 +200,11 @@ class Report_Finder
         \IAWP\Report_Finder::new()->insert_report(['name' => \esc_html__('European Countries', 'independent-analytics'), 'type' => 'geo', 'user_created_report' => 0, 'filters' => [['inclusion' => 'include', 'column' => 'continent', 'operator' => 'exact', 'operand' => 'Europe']]]);
         \IAWP\Report_Finder::new()->insert_report(['name' => \esc_html__('Browsers', 'independent-analytics'), 'type' => 'devices', 'group_name' => 'browser', 'user_created_report' => 0]);
         \IAWP\Report_Finder::new()->insert_report(['name' => \esc_html_x('OS', 'short for operating system', 'independent-analytics'), 'type' => 'devices', 'group_name' => 'os', 'user_created_report' => 0]);
+    }
+    public static function insert_default_user_journey_reports() : void
+    {
+        \IAWP\Report_Finder::new()->insert_report(['name' => \esc_html__('Form Submission', 'independent-analytics'), 'type' => 'journeys', 'group_name' => 'journeys', 'user_created_report' => 0, 'filters' => [['inclusion' => 'include', 'column' => 'submitted_form', 'operator' => 'is', 'operand' => 'is_not_null']]]);
+        \IAWP\Report_Finder::new()->insert_report(['name' => \esc_html__('Clicks', 'independent-analytics'), 'type' => 'journeys', 'group_name' => 'journeys', 'user_created_report' => 0, 'filters' => [['inclusion' => 'include', 'column' => 'clicked_link', 'operator' => 'is', 'operand' => 'is_not_null']]]);
+        \IAWP\Report_Finder::new()->insert_report(['name' => \esc_html__('Orders', 'independent-analytics'), 'type' => 'journeys', 'group_name' => 'journeys', 'user_created_report' => 0, 'filters' => [['inclusion' => 'include', 'column' => 'wc_gross_sales', 'operator' => 'greater', 'operand' => '0']]]);
     }
 }

@@ -44,7 +44,7 @@ trait SoftDeletes
     public function forceDelete()
     {
         $this->forceDeleting = \true;
-        return tap($this->delete(), function ($deleted) {
+        return \IAWPSCOPED\tap($this->delete(), function ($deleted) {
             $this->forceDeleting = \false;
             if ($deleted) {
                 $this->fireModelEvent('forceDeleted', \false);
@@ -59,7 +59,7 @@ trait SoftDeletes
     protected function performDeleteOnModel()
     {
         if ($this->forceDeleting) {
-            return tap($this->setKeysForSaveQuery($this->newModelQuery())->forceDelete(), function () {
+            return \IAWPSCOPED\tap($this->setKeysForSaveQuery($this->newModelQuery())->forceDelete(), function () {
                 $this->exists = \false;
             });
         }

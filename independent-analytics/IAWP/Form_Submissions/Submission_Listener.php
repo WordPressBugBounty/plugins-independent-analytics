@@ -303,8 +303,11 @@ class Submission_Listener
             } catch (\Throwable $e) {
             }
         }, 10, 1);
-        \add_action('et_pb_contact_form_submit', function ($values, $error, $form_info) {
+        \add_action('et_pb_contact_form_submit', function ($values, $has_error, $form_info) {
             try {
+                if ($has_error === \true) {
+                    return;
+                }
                 $submission = new \IAWP\Form_Submissions\Submission(24, \intval(1), Security::string(\__('Divi Contact Form', 'independent-analytics')));
                 $submission->record_submission();
             } catch (\Throwable $e) {
@@ -318,7 +321,44 @@ class Submission_Listener
             } catch (\Throwable $e) {
             }
         }, 10, 3);
-        // // Template
+        // Mailchimp
+        \add_action('mc4wp_form_success', function ($form) {
+            try {
+                $submission = new \IAWP\Form_Submissions\Submission(26, \intval($form->ID), Security::string($form->name));
+                $submission->record_submission();
+            } catch (\Throwable $e) {
+            }
+        }, 10, 1);
+        // Kadence
+        \add_action('kadence_blocks_advanced_form_submission', function ($form, $fields, $post_id) {
+            try {
+                $submission = new \IAWP\Form_Submissions\Submission(27, \intval($post_id), Security::string(\get_the_title($post_id)));
+                $submission->record_submission();
+            } catch (\Throwable $e) {
+            }
+        }, 10, 3);
+        // Newletter
+        \add_action('newsletter_user_post_subscribe', function ($user) {
+            try {
+                $form = \IAWP\Form_Submissions\Newsletter::get_form($user->referrer ?? null);
+                if (!$form) {
+                    return;
+                }
+                $submission = new \IAWP\Form_Submissions\Submission(29, \intval($form['id']), Security::string($form['title']));
+                $submission->record_submission();
+            } catch (\Throwable $e) {
+            }
+        }, 10, 1);
+        // Everest Forms
+        \add_action('everest_forms_process_complete', function ($fields, $entry, $form_data, $entry_id) {
+            try {
+                $id = $form_data['id'];
+                $submission = new \IAWP\Form_Submissions\Submission(30, \intval($id), Security::string(\get_the_title($id)));
+                $submission->record_submission();
+            } catch (\Throwable $e) {
+            }
+        }, 10, 4);
+        // Template
         // add_action('iawp_some_form_callback', function () {
         //     try {
         //         return;

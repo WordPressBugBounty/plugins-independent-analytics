@@ -4,9 +4,7 @@ namespace IAWP\Rows;
 
 use IAWP\Date_Range\Date_Range;
 use IAWP\Examiner_Config;
-use IAWP\Form_Submissions\Form;
 use IAWP\Illuminate_Builder;
-use IAWP\Models\Model;
 use IAWP\Query;
 use IAWP\Sort_Configuration;
 use IAWP\Tables;
@@ -20,20 +18,21 @@ abstract class Rows
     /** @var Filter[] */
     protected $filters;
     protected $sort_configuration;
-    protected $model;
+    protected $filter_logic;
     protected $solo_record_id = null;
     protected $examiner_config = null;
     private $rows = null;
-    public function __construct(Date_Range $date_range, ?int $number_of_rows = null, ?array $filters = null, ?Sort_Configuration $sort_configuration = null, Model $model = null)
+    public function __construct(Date_Range $date_range, Sort_Configuration $sort_configuration, ?int $number_of_rows = null, ?array $filters = null, ?string $filter_logic = null)
     {
         $this->date_range = $date_range;
+        $this->sort_configuration = $sort_configuration;
         $this->number_of_rows = $number_of_rows;
         $this->filters = $filters ?? [];
-        $this->sort_configuration = $sort_configuration ?? new Sort_Configuration('visitors');
-        $this->model = $model;
+        $this->filter_logic = \in_array($filter_logic, ['and', 'or']) ? $filter_logic : 'and';
     }
     protected abstract function fetch_rows() : array;
     public abstract function attach_filters(Builder $query) : void;
+    protected abstract function sort_tie_breaker_column() : string;
     /**
      * Used to limit the rows to just a single record. This is useful if you want a single page,
      * referrer, etc. row, and you know the records database id.
@@ -58,33 +57,48 @@ abstract class Rows
         $this->rows = $this->fetch_rows();
         return $this->rows;
     }
-    /**
-     * @return string[]
-     */
-    protected function calculated_columns() : array
+    protected function only_filtering_by_record_columns() : bool
     {
-        $calculated_columns = ['comments', 'exit_percent', 'views_per_session', 'views_growth', 'visitors_growth', 'bounce_rate', 'wc_net_sales', 'wc_conversion_rate', 'wc_earnings_per_visitor', 'wc_average_order_volume', 'form_conversion_rate'];
-        foreach (Form::get_forms() as $form) {
-            $calculated_columns[] = $form->conversion_rate_column();
+        if (\count($this->filters) === 0) {
+            return \true;
         }
-        return $calculated_columns;
-    }
-    protected function is_a_calculated_column(string $column_name) : bool
-    {
-        return \in_array($column_name, $this->calculated_columns());
-    }
-    protected function is_using_a_calculated_column() : bool
-    {
-        $is_using_a_calculated_column = \false;
         foreach ($this->filters as $filter) {
-            if (\in_array($filter->column(), $this->calculated_columns())) {
-                $is_using_a_calculated_column = \true;
+            if ($filter->is_calculated_column()) {
+                return \false;
             }
         }
-        if (\in_array($this->sort_configuration->column(), $this->calculated_columns())) {
-            $is_using_a_calculated_column = \true;
+        return \true;
+    }
+    protected function only_filtering_by_aggregate_columns() : bool
+    {
+        if (\count($this->filters) === 0) {
+            return \false;
         }
-        return $is_using_a_calculated_column;
+        foreach ($this->filters as $filter) {
+            if ($filter->is_concrete_column()) {
+                return \false;
+            }
+        }
+        return \true;
+    }
+    protected function filtering_by_mixed_columns() : bool
+    {
+        if (\count($this->filters) === 0) {
+            return \false;
+        }
+        $has_record_column = \false;
+        $has_aggregate_column = \false;
+        foreach ($this->filters as $filter) {
+            if ($filter->is_calculated_column()) {
+                $has_aggregate_column = \true;
+            } else {
+                $has_record_column = \true;
+            }
+            if ($has_record_column && $has_aggregate_column) {
+                return \true;
+            }
+        }
+        return \false;
     }
     protected function get_current_period_iso_range() : array
     {
@@ -104,5 +118,73 @@ abstract class Rows
     {
         $form_submissions_table = Query::get_table_name(Query::FORM_SUBMISSIONS);
         return Illuminate_Builder::new()->select(['form_id', 'view_id'])->selectRaw('COUNT(*) AS form_submissions')->from($form_submissions_table, 'form_submissions')->whereBetween('created_at', $this->get_current_period_iso_range())->groupBy(['form_id', 'view_id']);
+    }
+    protected function apply_record_filters(Builder $query) : void
+    {
+        $should_apply_record_filters = $this->using_logical_and_operator() || $this->only_filtering_by_record_columns();
+        if (!$should_apply_record_filters) {
+            return;
+        }
+        if ($this->using_logical_or_operator()) {
+            $query->where(function (Builder $query) {
+                foreach ($this->filters as $index => $filter) {
+                    $filter->apply_to_query($query, \IAWP\Rows\Filter::$RECORD_FILTER, $index > 0);
+                }
+            });
+            return;
+        }
+        foreach ($this->filters as $filter) {
+            if ($filter->is_concrete_column()) {
+                $filter->apply_to_query($query, \IAWP\Rows\Filter::$RECORD_FILTER);
+            }
+        }
+    }
+    protected function can_order_and_limit_at_record_level() : bool
+    {
+        return $this->sort_configuration->the_column()->is_concrete_column() && $this->only_filtering_by_record_columns();
+    }
+    protected function apply_aggregate_filters(Builder $query) : void
+    {
+        $should_apply_aggregate_filters = $this->using_logical_and_operator() || $this->using_logical_or_operator() && $this->only_filtering_by_aggregate_columns();
+        if (!$should_apply_aggregate_filters) {
+            return;
+        }
+        if ($this->using_logical_or_operator()) {
+            $query->where(function (Builder $query) {
+                foreach ($this->filters as $index => $filter) {
+                    $filter->apply_to_query($query, \IAWP\Rows\Filter::$AGGREGATE_FILTER, $index > 0);
+                }
+            });
+            return;
+        }
+        foreach ($this->filters as $filter) {
+            if ($filter->is_calculated_column()) {
+                $filter->apply_to_query($query, \IAWP\Rows\Filter::$AGGREGATE_FILTER);
+            }
+        }
+    }
+    protected function apply_or_filters(Builder $query) : void
+    {
+        $query->where(function (Builder $query) {
+            foreach ($this->filters as $index => $filter) {
+                $filter->apply_to_query($query, \IAWP\Rows\Filter::$OUTER_FILTER, $index > 0);
+            }
+        });
+    }
+    protected function using_logical_or_operator() : bool
+    {
+        return $this->filter_logic === 'or' && \count($this->filters) > 1;
+    }
+    protected function using_logical_and_operator() : bool
+    {
+        return !$this->using_logical_or_operator();
+    }
+    protected function apply_order_and_limit(Builder $query, string $sort_column) : void
+    {
+        $query->when($this->sort_configuration->the_column()->is_nullable(), function (Builder $query) use($sort_column) {
+            $query->orderByRaw("CASE WHEN {$sort_column} IS NULL THEN 1 ELSE 0 END");
+        })->orderBy($sort_column, $this->sort_configuration->direction())->orderBy($this->sort_tie_breaker_column())->when(\is_int($this->number_of_rows), function (Builder $query) {
+            $query->limit($this->number_of_rows);
+        });
     }
 }

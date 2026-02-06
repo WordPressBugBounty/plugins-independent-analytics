@@ -4,8 +4,6 @@
 @php /** @var \IAWP\Overview\Modules\Module[] $saved_modules */ @endphp
 @php /** @var \IAWP\Overview\Modules\Module[] $template_modules */ @endphp
 
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
 <div id="report-header-container" class="report-header-container">
     <div id="report-title-bar" class="report-title-bar overview-report">
         <div class="primary-report-title-container">

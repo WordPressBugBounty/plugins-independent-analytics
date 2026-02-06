@@ -13,6 +13,6 @@ trait Tappable
      */
     public function tap($callback = null)
     {
-        return tap($this, $callback);
+        return \IAWPSCOPED\tap($this, $callback);
     }
 }

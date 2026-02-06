@@ -39,14 +39,17 @@ class Click
         if ($link_rules->isEmpty()) {
             return;
         }
-        $click_target = $this->get_click_target();
         $view_id = $this->get_view_id();
         if (\is_null($view_id)) {
             return;
         }
-        $click_id = Illuminate_Builder::new()->from(Tables::clicks())->insertGetId(['click_target_id' => $click_target->click_target_id, 'view_id' => $view_id, 'created_at' => $this->created_at->format('Y-m-d H:i:s')]);
-        $link_rules->each(function ($link_rule) use($click_id) {
-            Illuminate_Builder::new()->from(Tables::clicked_links())->insertGetId(['click_id' => $click_id, 'link_rule_id' => $link_rule->id()]);
+        $click_target = $this->get_click_target();
+        $link_ids = $link_rules->map(function (\IAWP\Click_Tracking\Link_Rule $link_rule) use($click_target) {
+            return $this->get_link_id_for($link_rule->id(), $click_target->click_target_id);
+        });
+        $click_id = Illuminate_Builder::new()->from(Tables::clicks())->insertGetId(['view_id' => $view_id, 'created_at' => $this->created_at->format('Y-m-d H:i:s')]);
+        $link_ids->each(function ($link_id) use($click_id) {
+            Illuminate_Builder::new()->from(Tables::clicked_links())->insertGetId(['click_id' => $click_id, 'link_id' => $link_id]);
         });
     }
     private function extract_protocol_from_href(?string $href) : ?string
@@ -76,9 +79,9 @@ class Click
         })->when(\is_string($this->protocol), function (Builder $query) {
             $query->where('protocol', '=', $this->protocol);
         });
-        $target = $select_query->first();
-        if (\is_object($target)) {
-            return $target;
+        $match = $select_query->first();
+        if (\is_object($match)) {
+            return $match;
         }
         Illuminate_Builder::new()->from(Tables::click_targets())->insertOrIgnore(['target' => $this->value, 'protocol' => $this->protocol]);
         return $select_query->first();
@@ -97,6 +100,16 @@ class Click
             return $view_id;
         }
         return null;
+    }
+    private function get_link_id_for(int $link_rule_id, int $click_target_id) : int
+    {
+        $select_query = Illuminate_Builder::new()->from(Tables::links())->where('link_rule_id', '=', $link_rule_id)->where('click_target_id', '=', $click_target_id);
+        $match = $select_query->first();
+        if (\is_object($match)) {
+            return $match->id;
+        }
+        Illuminate_Builder::new()->from(Tables::links())->insertOrIgnore(['link_rule_id' => $link_rule_id, 'click_target_id' => $click_target_id]);
+        return $select_query->first()->id;
     }
     public static function new(array $record) : ?self
     {

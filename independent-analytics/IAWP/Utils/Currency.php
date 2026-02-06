@@ -58,6 +58,12 @@ class Currency
             $decoded_value = \html_entity_decode($formatted_value, \ENT_NOQUOTES, 'UTF-8');
             return $round_to_whole_dollars ? Str::before($decoded_value, ".") : $decoded_value;
         }
+        if (\IAWPSCOPED\iawp()->is_fluent_cart_support_enabled()) {
+            $show_decimals = !$round_to_whole_dollars;
+            $formatted_value = \FluentCart\App\Helpers\Helper::toDecimal($amount_in_cents, \true, null, $show_decimals);
+            $decoded_value = \html_entity_decode($formatted_value, \ENT_NOQUOTES, 'UTF-8');
+            return $decoded_value;
+        }
         // Fallback
         return \strval(\intval($amount_in_cents / 100));
     }

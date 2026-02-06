@@ -19,6 +19,7 @@ class Statistic implements Plugin_Group_Option
     private $unfiltered_statistic;
     private $statistic_over_time;
     private $is_visible_in_dashboard_widget;
+    private $is_invisible;
     private $format;
     private $is_growth_good;
     private $is_subgroup_plugin_enabled;
@@ -35,6 +36,7 @@ class Statistic implements Plugin_Group_Option
         $this->unfiltered_statistic = $attributes['unfiltered_statistic'] ?? null;
         $this->statistic_over_time = $attributes['statistic_over_time'] ?? [];
         $this->is_visible_in_dashboard_widget = $attributes['is_visible_in_dashboard_widget'] ?? \false;
+        $this->is_invisible = $attributes['is_invisible'] ?? \false;
         $this->format = $attributes['format'] ?? null;
         $this->is_growth_good = $attributes['is_growth_good'] ?? \true;
         $this->is_subgroup_plugin_enabled = $attributes['is_subgroup_plugin_active'] ?? \true;
@@ -70,6 +72,10 @@ class Statistic implements Plugin_Group_Option
     public function is_visible_in_dashboard_widget() : bool
     {
         return $this->is_visible_in_dashboard_widget;
+    }
+    public function is_invisible() : bool
+    {
+        return $this->is_invisible;
     }
     public function statistic_over_time() : array
     {

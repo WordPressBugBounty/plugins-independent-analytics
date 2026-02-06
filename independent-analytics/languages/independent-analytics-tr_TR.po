@@ -2,20 +2,189 @@
 # This file is distributed under the same license as the Plugins - Independent Analytics &#8211; Google Analytics Alternative for WordPress - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-06-25 14:40:04+0000\n"
+"PO-Revision-Date: 2025-11-24 10:46:06+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: GlotPress/4.0.1\n"
+"X-Generator: GlotPress/4.0.3\n"
 "Language: tr\n"
 "Project-Id-Version: Plugins - Independent Analytics &#8211; Google Analytics Alternative for WordPress - Stable (latest release)\n"
 
-#: IAWP/Independent_Analytics.php:245
-msgid "Integrations"
-msgstr "Entegrasyonlar"
+#: views/partials/sidebar.blade.php:66
+msgid "Real-time report"
+msgstr "Gerçek zamanlı rapor"
 
-#: IAWP/Plugin_Conflict_Detector.php:187
+#: views/partials/sidebar.blade.php:52
+msgid "Overview report"
+msgstr "Genel bakış raporu"
+
+#: IAWP/Independent_Analytics.php:247
+msgid "Rated %s and trusted by over 100,000+ WordPress websites."
+msgstr "100.000'den fazla WordPress web sitesi tarafından güvenilir bulunmuş %s puanla değerlendirilmiştir."
+
+#: IAWP/Independent_Analytics.php:244
+msgid "Security alerts"
+msgstr "Güvenlik uyarıları"
+
+#: IAWP/Independent_Analytics.php:243
+msgid "New feature updates"
+msgstr "Yeni özellik güncellemeleri"
+
+#: IAWP/Independent_Analytics.php:242
+msgid "Subscriber-only sales announcements"
+msgstr "Abonelere özel satış duyuruları"
+
+#: IAWP/Independent_Analytics.php:241
+msgid "Free email tutorial series"
+msgstr "Ücretsiz e-posta eğitim serisi"
+
+#: IAWP/Independent_Analytics.php:239
+msgctxt "What follows is a list of benefits"
+msgid "Subscribe now and you'll receive our:"
+msgstr "Şimdi abone olun ve şunları edinin:"
+
+#: IAWP/Independent_Analytics.php:237
+msgid "If you signup for our free email course, we’ll walk you through each feature in Independent Analytics, so you can learn how to analyze and optimize your website for growth."
+msgstr "Ücretsiz e-posta kursumuza kaydolursanız, Independent Analytics'in tüm özelliklerini size tanıtacağız, böylece web sitenizi analiz edip büyüme için optimize etmeyi öğrenebilirsiniz."
+
+#: IAWP/Independent_Analytics.php:235
+msgid "You've just taken the first step towards building a better website."
+msgstr "Daha iyi bir web sitesi oluşturmak için ilk adımı attınız."
+
+#: IAWP/Independent_Analytics.php:231
+msgid "Congratulations on Your New Analytics! 🎉"
+msgstr "Yeni analitiğiniz için teşbik ederiz! 🎉"
+
+#: IAWP/Independent_Analytics.php:98
+msgid "No, thanks"
+msgstr "Hayır, teşekkürler"
+
+#: IAWP/Independent_Analytics.php:98
+msgid "Subscribe & Go To Analytics"
+msgstr "Abone olun ve analitiğe gidin"
+
+#: views/woocommerce-order-meta-box.blade.php:41
+msgid "Powered by %s."
+msgstr "Altyapı %s"
+
+#: views/woocommerce-order-meta-box.blade.php:34
+msgid "Location"
+msgstr "Konum"
+
+#: views/woocommerce-order-meta-box.blade.php:31
+msgid "Device Data"
+msgstr "Cihaz bilgisi"
+
+#: views/woocommerce-order-meta-box.blade.php:28
+msgid "Time of Purchase"
+msgstr "Satın alma zamanı"
+
+#: views/woocommerce-order-meta-box.blade.php:25
+msgid "Pages viewed"
+msgstr "Görüntülenen sayfalar"
+
+#: views/woocommerce-order-meta-box.blade.php:17
+msgid "Content:"
+msgstr "İçerik:"
+
+#: views/woocommerce-order-meta-box.blade.php:14
+msgid "Term:"
+msgstr "Dönem:"
+
+#: views/woocommerce-order-meta-box.blade.php:12
+msgid "Campaign:"
+msgstr "Kampanya:"
+
+#: views/woocommerce-order-meta-box.blade.php:11
+msgid "Medium:"
+msgstr "Ortam:"
+
+#: views/woocommerce-order-meta-box.blade.php:10
+msgid "Source:"
+msgstr "Kaynak:"
+
+#: views/woocommerce-order-meta-box.blade.php:8
+msgid "Campaign Data"
+msgstr "Kampanya verileri"
+
+#: views/woocommerce-order-meta-box.blade.php:1
+msgid "Time of Arrival"
+msgstr "Geliş tarihi"
+
+#: views/tables/group-select.blade.php:12
+msgid "Group rows by"
+msgstr "Satırları şuna göre gruplandır"
+
+#: IAWP/WooCommerceOrderMetaBox/WooCommerceOrderMetaBox.php:26
+msgid "Customer Journey"
+msgstr "Müşteri yolculuğu"
+
+#: IAWP/Tables/Table_Campaigns.php:28
+msgid "Unique"
+msgstr "Benzersiz"
+
+#: IAWP/Filters.php:52
+msgid "If %s of the conditions apply"
+msgstr "%s koşul geçerliyse"
+
+#: IAWP/Filters.php:47
+msgid "any"
+msgstr "herhangi"
+
+#: IAWP/Filters.php:46
+msgid "all"
+msgstr "hepsi"
+
+#: IAWP/ColumnOptions/Plugins/ReferrerTypes.php:12
+msgid "AI"
+msgstr "YZ"
+
+#: views/settings/block-ips.blade.php:13
+msgid "Ignore this IP"
+msgstr "Bu IP'yi yok say"
+
+#: views/settings/block-by-role.blade.php:62
+msgid "Use a cookie so activity can be ignored when logged out too."
+msgstr "Çerez kullanarak, oturum kapalıyken de etkinliklerin yok sayılmasını sağlayın."
+
+#: views/settings/block-by-role.blade.php:60
+msgid "Ignore via cookie"
+msgstr "Çerez aracılığıyla yok say"
+
+#: views/examiner/skeleton.blade.php:33
+msgid "Almost ready"
+msgstr "Neredeyse hazır"
+
+#: views/examiner/skeleton.blade.php:32
+msgid "Preparing report"
+msgstr "Rapor hazırlanıyor"
+
+#: views/examiner/skeleton.blade.php:31
+msgid "Fetching data"
+msgstr "Veriler alınıyor"
+
+#: IAWP/Plugin_Conflict_Detector.php:204
+msgid "The REST API Toolbox plugin has disabled the REST API, which Independent Analytics needs to record visitors. Please visit the Settings > REST API Toolbox menu and uncheck the \"Disable REST API\" option to allow Independent Analytics to track your visitors."
+msgstr "REST API Toolbox eklentisi, Independent Analytics'in ziyaretçileri kaydetmek için ihtiyaç duyduğu REST API'yi devre dışı bırakmıştır. Independent Analytics'in ziyaretçilerinizi izlemesine izin vermek için lütfen Ayarlar > REST API Toolbox menüsünü ziyaret edin ve \"REST API'yi devre dışı bırak\" seçeneğinin işaretini kaldırın."
+
+#: IAWP/Utils/Link_Validator.php:13
+msgid "Id cannot contain special characters besides \"-\" and \"_\"."
+msgstr "Kimlik \"-\" ve \"_\" dışında özel karakterler içermemelidir."
+
+#: IAWP/Utils/Link_Validator.php:13
+msgid "Id cannot contain spaces."
+msgstr "Kimlik boşluk içermemelidir."
+
+#: IAWP/Utils/Link_Validator.php:13
+msgid "Id cannot start with a number or special character."
+msgstr "Kimlik bir rakam veya özel karakterle başlayamaz."
+
+#: IAWP/Independent_Analytics.php:283
+msgid "Integrations"
+msgstr "Integrations"
+
+#: IAWP/Plugin_Conflict_Detector.php:185
 msgid "The \"Admin and Site Enhancements Pro\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the Tools > Enhancements menu, click on the \"Disable Components\" section, and then click the \"Expand\" link under \"Disable REST API.\" You can then enter \"iawp/search\" into the textarea to whitelist the route used by Independent Analytics."
 msgstr "\"Admin and Site Enhancements Pro\" eklentisi Independent Analytics'in görüntülemeleri kaydetmek için ihtiyaç duyduğu REST API'yi engellemektedir. Lütfen Araçlar > Geliştirmeler menüsünü ziyaret edin ve \"Bileşenleri etkisizleştir\" bölümüne tıklayın ve ardından REST API'yi etkisizleştir altında yer alan \"Genişlet\" bağlantısına tıklayın. Daha sonra Independent Analytics tarafından kullanılan \"iawp/search\" rotasını beyaz listeye almak için metin alanına girebilirsiniz."
 
@@ -60,33 +229,34 @@ msgid "Unable to parse timestamp"
 msgstr "Zaman damgası ayrıştırılamıyor"
 
 #: IAWP/AJAX/Migration_Status.php:31
+#: views/woocommerce-order-meta-box.blade.php:38
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
-#: views/overview/overview.blade.php:19
+#: views/overview/overview.blade.php:17
 msgid "Refresh"
 msgstr "Yenile"
 
-#: views/overview/overview.blade.php:18
+#: views/overview/overview.blade.php:16
 msgid "Refreshing..."
 msgstr "Yenileniyor..."
 
 #: views/overview/modules/new-sessions.blade.php:9
-#: views/overview/modules/pie-chart.blade.php:9
-#: views/overview/modules/recent-conversions.blade.php:8
-#: views/overview/modules/recent-views.blade.php:10
-#: views/overview/modules/top-ten.blade.php:9
+#: views/overview/modules/pie-chart.blade.php:8
+#: views/overview/modules/recent-conversions.blade.php:7
+#: views/overview/modules/recent-views.blade.php:9
+#: views/overview/modules/top-ten.blade.php:8
 msgid "No data found in this date range."
 msgstr "Bu tarih aralığında veri bulunamadı."
 
-#: views/overview/modules/busiest-day-of-week.blade.php:28
-#: views/overview/modules/busiest-time-of-day.blade.php:28
-#: views/overview/modules/line-chart.blade.php:31
-#: views/overview/modules/map.blade.php:25
-#: views/overview/modules/new-sessions.blade.php:24
-#: views/overview/modules/pie-chart.blade.php:24
-#: views/overview/modules/recent-conversions.blade.php:70
-#: views/overview/modules/recent-views.blade.php:73
+#: views/overview/modules/busiest-day-of-week.blade.php:26
+#: views/overview/modules/busiest-time-of-day.blade.php:26
+#: views/overview/modules/line-chart.blade.php:29
+#: views/overview/modules/map.blade.php:24
+#: views/overview/modules/new-sessions.blade.php:23
+#: views/overview/modules/pie-chart.blade.php:22
+#: views/overview/modules/recent-conversions.blade.php:67
+#: views/overview/modules/recent-views.blade.php:69
 msgid "Loading data..."
 msgstr "Veri yükleniyor..."
 
@@ -107,26 +277,21 @@ msgstr "Genel bakış raporundaki modüllerinizi sıfırlamak üzeresiniz. Tüm 
 msgid "Reset overview report"
 msgstr "Genel bakış raporunu sıfırla"
 
-#: views/partials/sidebar.blade.php:163
+#: views/partials/sidebar.blade.php:155
 msgid "Get Overview"
 msgstr "Genel görünüm"
 
-#: views/partials/sidebar.blade.php:55
-msgid "Open overview"
-msgstr "Genel görünümü aç"
-
-#: views/overview/overview.blade.php:49 views/overview/overview.blade.php:50
+#: views/overview/overview.blade.php:47
 msgid "Download report"
 msgstr "Raporu indir"
 
-#: views/overview/overview.blade.php:39 views/overview/overview.blade.php:40
+#: views/overview/overview.blade.php:37
 msgid "Reorder Modules"
 msgstr "Modülleri yeniden sırala"
 
-#: views/overview/overview.blade.php:38
-#: views/overview/module-editor.blade.php:43
+#: views/overview/module-editor.blade.php:42
 #: views/overview/module-picker.blade.php:12
-#: views/overview/overview.blade.php:39
+#: views/overview/overview.blade.php:36
 msgid "Add Module"
 msgstr "Modül ekle"
 
@@ -135,16 +300,16 @@ msgid "Geo"
 msgstr "Coğrafi"
 
 #: IAWP/Report.php:37 IAWP/Report_Finder.php:116
-#: views/partials/sidebar.blade.php:52 views/partials/sidebar.blade.php:160
-#: views/overview/overview.blade.php:12
+#: views/overview/overview.blade.php:10 views/partials/sidebar.blade.php:49
+#: views/partials/sidebar.blade.php:152
 msgid "Overview"
 msgstr "Genel görünüm"
 
-#: IAWP/Plugin_Conflict_Detector.php:199
+#: IAWP/Plugin_Conflict_Detector.php:197
 msgid "The Patchstack Security plugin has disabled the REST API, which Independent Analytics needs to record visitors. Please login to the Patchstack app, navigate to the Hardening menu for this site, and turn off the \"Restrict WP REST API access\" option."
 msgstr "Patchstack Güvenlik eklentisi, Independent Analytics'in ziyaretçileri kaydetmek için ihtiyaç duyduğu REST API'yi devre dışı bıraktı. Lütfen Patchstack uygulamasına giriş yapın, güçlendirme menüsüne gidin ve \"WP REST API erişimini kısıtla\" seçeneğini kapatın."
 
-#: IAWP/Plugin_Conflict_Detector.php:194
+#: IAWP/Plugin_Conflict_Detector.php:192
 msgid "A setting in the \"Autoptimize\" plugin is preventing Independent Analytics from tracking visitors. Please visit the Settings > Autoptimize menu and uncheck the \"Also aggregate inline JS\" option."
 msgstr "\"Autoptimize\" eklentisindeki bir ayar, Independent Analytics'in ziyaretçileri izlemesini engelliyor. Lütfen Ayarlar > Autoptimize menüsünü ziyaret edin ve \"Satır içi JS'yi de birleştir\" seçeneğinin işaretini kaldırın."
 
@@ -302,7 +467,7 @@ msgstr "Coğrafi rapor"
 msgid "Report"
 msgstr "Rapor"
 
-#: IAWP/Form_Submissions/Submission_Listener.php:328
+#: IAWP/Form_Submissions/Submission_Listener.php:311
 msgid "Divi Contact Form"
 msgstr "Divi Contact Form"
 
@@ -310,15 +475,11 @@ msgstr "Divi Contact Form"
 msgid "Any replies to the email report will be delivered to this email address."
 msgstr "E-posta raporuna verilecek tüm yanıtlar bu e-posta adresine gönderilecektir."
 
-#: views/settings/block-ips.blade.php:13
-msgid "Block this IP"
-msgstr "Bu IP'yi engelleyin"
-
-#: views/click-tracking/menu.blade.php:96
+#: views/click-tracking/menu.blade.php:92
 msgid "No archived link patterns found"
 msgstr "Arşivlenmiş bağlantı kalıbı bulunamadı."
 
-#: views/click-tracking/menu.blade.php:52
+#: views/click-tracking/menu.blade.php:50
 msgid "No link patterns found"
 msgstr "Bağlantı kalıbı bulunamadı"
 
@@ -338,19 +499,19 @@ msgstr "E-posta alt kısım metni"
 msgid "Reply To email address"
 msgstr "E-posta adresine yanıtla"
 
-#: IAWP/Tables/Table_Clicks.php:23
+#: IAWP/Tables/Table_Clicks.php:24
 msgid "Links"
 msgstr "Bağlantılar"
 
-#: IAWP/Tables/Table.php:235
+#: IAWP/Tables/Table.php:236
 msgid "Download Daily Metrics CSV"
 msgstr "Günlük metrikler CSV'sini indirin"
 
-#: IAWP/Tables/Table.php:227
+#: IAWP/Tables/Table.php:228
 msgid "Download Table CSV"
 msgstr "Tablo CSV'sini indirin"
 
-#: IAWP/Independent_Analytics.php:200
+#: IAWP/Independent_Analytics.php:216
 msgid "Success"
 msgstr "Başarılı"
 
@@ -358,7 +519,7 @@ msgstr "Başarılı"
 msgid "External"
 msgstr "Harici"
 
-#: IAWP/Admin_Page/Analytics_Page.php:178
+#: IAWP/Admin_Page/Analytics_Page.php:210
 msgid "The \"Solid Security\" plugin is disabling PHP execution in the plugins folder, and this is preventing click tracking from working. Please visit the Security > Settings page, click on the Advanced section, click on System Tweaks Settings, uncheck the \"Disable PHP Plugins\" option, and then save."
 msgstr "\"Solid Security\" eklentisi, eklentiler klasöründe PHP yürütmesini devre dışı bırakıyor ve bu da tıklama izlemenin çalışmasını engelliyor. Lütfen Güvenlik > Ayarlar sayfasını ziyaret edin, Gelişmiş bölümüne tıklayın, Sistem İnce Ayarlarına tıklayın, \"PHP eklentilerini etkisizleştir\" seçeneğinin işaretini kaldırın ve ardından kaydedin."
 
@@ -382,55 +543,55 @@ msgstr "Bitiş tarihi"
 msgid "Start date"
 msgstr "Başlangıç tarihi"
 
-#: views/click-tracking/menu.blade.php:105
+#: views/click-tracking/menu.blade.php:101
 msgid "Yes"
 msgstr "Evet"
 
-#: views/click-tracking/menu.blade.php:104
+#: views/click-tracking/menu.blade.php:100
 msgid "Deleting this link pattern will remove its stats from the Clicks report permanently."
 msgstr "Bu bağlantı deseninin silinmesi, istatistiklerini tıklamalar raporundan kalıcı olarak kaldıracaktır."
 
-#: views/click-tracking/menu.blade.php:103
+#: views/click-tracking/menu.blade.php:99
 msgid "Are you sure?"
 msgstr "Emin misiniz?"
 
-#: views/click-tracking/menu.blade.php:77
+#: views/click-tracking/menu.blade.php:73
 msgid "Show Archived Links"
 msgstr "Arşivlenmiş bağlantıları göster"
 
-#: views/click-tracking/menu.blade.php:77
+#: views/click-tracking/menu.blade.php:73
 msgid "Hide Archived Links"
 msgstr "Arşivlenmiş bağlantıları gizle"
 
-#: views/click-tracking/menu.blade.php:74
+#: views/click-tracking/menu.blade.php:71
 msgid "Archived link patterns are no longer tracked, but their data remains in the Clicks report. Deleting an archived link pattern will remove it from this list and remove its data from the Clicks report permanently."
 msgstr "Arşivlenmiş bağlantı desenleri artık izlenmez, ancak verileri tıklamalar raporunda kalır. Arşivlenmiş bir bağlantı deseni silindiğinde bu listeden kaldırılır ve verileri tıklamalar raporundan kalıcı olarak silinir."
 
-#: views/click-tracking/menu.blade.php:70
+#: views/click-tracking/menu.blade.php:68
 msgid "Archived Link Patterns"
 msgstr "Arşivlenmiş bağlantı desenleri"
 
-#: views/click-tracking/menu.blade.php:35
-#: views/click-tracking/menu.blade.php:82
+#: views/click-tracking/menu.blade.php:33
+#: views/click-tracking/menu.blade.php:78
 msgid "Value"
 msgstr "Değer"
 
-#: views/click-tracking/menu.blade.php:33
-#: views/click-tracking/menu.blade.php:80
+#: views/click-tracking/menu.blade.php:31
+#: views/click-tracking/menu.blade.php:76
 #: views/overview/module-editor.blade.php:24
 msgid "Name"
 msgstr "Bağlantı ismi"
 
-#: views/click-tracking/menu.blade.php:30
+#: views/click-tracking/menu.blade.php:28
 msgid "Add Link Pattern"
 msgstr "Bağlantı deseni ekle"
 
-#: views/click-tracking/menu.blade.php:26
+#: views/click-tracking/menu.blade.php:25
 msgid "Links matching the patterns below are being actively monitored for clicks."
 msgstr "Aşağıdaki desenlerle eşleşen bağlantıların tıklamaları aktif olarak izlenmektedir."
 
-#: IAWP/Email_Reports/Email_Reports.php:183 IAWP/Tables/Table_Clicks.php:24
-#: views/click-tracking/menu.blade.php:24
+#: IAWP/Email_Reports/Email_Reports.php:190 IAWP/Tables/Table_Clicks.php:25
+#: views/click-tracking/menu.blade.php:23
 msgid "Link Patterns"
 msgstr "Bağlantı desenleri"
 
@@ -438,21 +599,21 @@ msgstr "Bağlantı desenleri"
 msgid "View Clicks Report"
 msgstr "Tıklama raporunu görüntüle"
 
-#: views/click-tracking/link.blade.php:114
-#: views/click-tracking/menu.blade.php:83
+#: views/click-tracking/link.blade.php:101
+#: views/click-tracking/menu.blade.php:79
 msgid "Resume Tracking"
 msgstr "İzlemeyi sürdür"
 
-#: views/click-tracking/link.blade.php:101
-#: views/click-tracking/menu.blade.php:36
+#: views/click-tracking/link.blade.php:89
+#: views/click-tracking/menu.blade.php:34
 msgid "Edit"
 msgstr "Düzenle"
 
-#: views/tables/rows.blade.php:40
+#: views/tables/rows.blade.php:43
 msgid "Edit your tracked links"
 msgstr "İzlenen bağlantılarınızı düzenleyin"
 
-#: views/tables/rows.blade.php:34
+#: views/tables/rows.blade.php:38
 msgid "No click data found"
 msgstr "Tıklama verisi bulunamadı"
 
@@ -468,51 +629,51 @@ msgstr "Rapor ayarlarını dışa aktar"
 msgid "From email address"
 msgstr "Gönderen e-posta adresi"
 
-#: views/partials/sidebar.blade.php:193
+#: views/partials/sidebar.blade.php:185
 msgid "Get click tracking"
 msgstr "Tıklama izleme edinin"
 
-#: IAWP/Utils/Link_Validator.php:12
+#: IAWP/Utils/Link_Validator.php:13
 msgid "Invalid characters in subdirectory."
 msgstr "Alt dizinde geçersiz karakterler."
 
-#: IAWP/Utils/Link_Validator.php:12
+#: IAWP/Utils/Link_Validator.php:13
 msgid "Invalid domain."
 msgstr "Geçersiz alan adı."
 
-#: IAWP/Utils/Link_Validator.php:12
+#: IAWP/Utils/Link_Validator.php:13
 msgid "Invalid Protocol."
 msgstr "Geçersiz protokol."
 
-#: IAWP/Utils/Link_Validator.php:12
+#: IAWP/Utils/Link_Validator.php:13
 msgid "Invalid Extension."
 msgstr "Geçersiz uzantı."
 
-#: IAWP/Utils/Link_Validator.php:12
+#: IAWP/Utils/Link_Validator.php:13
 msgid "Class cannot contain special characters besides \"-\" and \"_\"."
 msgstr "Sınıf, \"-\" ve \"_\" dışında özel karakterler içeremez."
 
-#: IAWP/Utils/Link_Validator.php:12
+#: IAWP/Utils/Link_Validator.php:13
 msgid "Class cannot contain spaces."
 msgstr "Sınıf boşluk içeremez."
 
-#: IAWP/Utils/Link_Validator.php:12
+#: IAWP/Utils/Link_Validator.php:13
 msgid "Class cannot start with a number or special character."
 msgstr "Sınıf bir sayı veya özel karakterle başlayamaz."
 
-#: IAWP/Utils/Link_Validator.php:12
+#: IAWP/Utils/Link_Validator.php:13
 msgid "Invalid type."
 msgstr "Geçersiz tür."
 
-#: IAWP/Utils/Link_Validator.php:12
+#: IAWP/Utils/Link_Validator.php:13
 msgid "Value cannot be empty."
 msgstr "Değer boş olamaz."
 
-#: IAWP/Utils/Link_Validator.php:12
+#: IAWP/Utils/Link_Validator.php:13
 msgid "Name cannot be empty."
 msgstr "İsim boş olamaz."
 
-#: IAWP/Tables/Table_Clicks.php:29
+#: IAWP/Tables/Table_Clicks.php:30
 msgid "Target"
 msgstr "Hedef"
 
@@ -520,18 +681,18 @@ msgstr "Hedef"
 msgid "Click"
 msgstr "Tıklama"
 
-#: IAWP/Rows/Filter.php:148 IAWP/Tables/Table_Clicks.php:29
+#: IAWP/Tables/Table_Clicks.php:30
 msgid "Link Pattern"
 msgstr "Bağlantı deseni"
 
-#: IAWP/Overview/Form_Field.php:92 IAWP/Report.php:37 IAWP/Report.php:105
-#: IAWP/Report.php:114 IAWP/Report_Finder.php:114
-#: IAWP/Statistics/Click_Statistics.php:23 IAWP/Statistics/Statistics.php:206
-#: IAWP/Tables/Table_Campaigns.php:25 IAWP/Tables/Table_Clicks.php:29
-#: IAWP/Tables/Table_Devices.php:34 IAWP/Tables/Table_Geo.php:28
-#: IAWP/Tables/Table_Pages.php:28 IAWP/Tables/Table_Referrers.php:26
-#: views/email/email.blade.php:119 views/partials/sidebar.blade.php:144
-#: views/partials/sidebar.blade.php:190
+#: IAWP/Admin_Page/Analytics_Page.php:238 IAWP/Overview/Form_Field.php:92
+#: IAWP/Report.php:37 IAWP/Report.php:105 IAWP/Report.php:114
+#: IAWP/Report_Finder.php:114 IAWP/Statistics/Click_Statistics.php:23
+#: IAWP/Statistics/Statistics.php:212 IAWP/Tables/Table_Campaigns.php:37
+#: IAWP/Tables/Table_Clicks.php:30 IAWP/Tables/Table_Devices.php:35
+#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Pages.php:29
+#: IAWP/Tables/Table_Referrers.php:30 views/email/email.blade.php:613
+#: views/partials/sidebar.blade.php:138 views/partials/sidebar.blade.php:182
 msgid "Clicks"
 msgstr "Clicks"
 
@@ -551,15 +712,15 @@ msgstr "Zip'ler"
 msgid "PDFs"
 msgstr "PDF'ler"
 
-#: IAWP/Independent_Analytics.php:345
+#: IAWP/Independent_Analytics.php:386
 msgid "Export Clicks"
 msgstr "Tıklamaları dışa aktar"
 
-#: IAWP/Independent_Analytics.php:345
+#: IAWP/Independent_Analytics.php:386
 msgid "Exporting Clicks"
 msgstr "Tıklamalar dışa aktarılıyor"
 
-#: IAWP/Independent_Analytics.php:232 views/click-tracking/menu.blade.php:4
+#: IAWP/Independent_Analytics.php:270 views/click-tracking/menu.blade.php:4
 msgid "Click Tracking"
 msgstr "Tıklama izleme"
 
@@ -587,30 +748,29 @@ msgstr "Sınıf"
 msgid "You do not have permission to edit the click tracking settings."
 msgstr "Tıklama izleme ayarlarını düzenleme izniniz yok."
 
-#: IAWP/Admin_Page/Analytics_Page.php:187
-#: IAWP/Admin_Page/Analytics_Page.php:194
+#: IAWP/Admin_Page/Analytics_Page.php:219
+#: IAWP/Admin_Page/Analytics_Page.php:226
 msgid "Dismiss"
-msgstr "Dismiss"
+msgstr "Kapat"
 
-#: IAWP/Admin_Page/Analytics_Page.php:194
+#: IAWP/Admin_Page/Analytics_Page.php:226
 msgid "Click data syncs every 60 seconds. Please allow for this delay when testing clicks on new links."
 msgstr "Tıklama verileri her 60 saniyede bir senkronize edilir. Yeni bağlantılara tıklamaları test ederken lütfen bu gecikmeyi göz önünde bulundurun."
 
-#: IAWP/Admin_Page/Analytics_Page.php:187
+#: IAWP/Admin_Page/Analytics_Page.php:219
 msgid "We recommend you enable tracking for logged-in visitors."
 msgstr "Oturum açmış ziyaretçiler için izlemeyi etkinleştirmenizi öneririz."
 
-#: IAWP/Admin_Page/Analytics_Page.php:187
+#: IAWP/Admin_Page/Analytics_Page.php:219
 msgctxt "Variable is the name of a plugin"
 msgid "%s compatibility:"
 msgstr "%s uyumluluğu:"
 
-#: IAWP/Independent_Analytics.php:262
+#: IAWP/Independent_Analytics.php:300
 msgid "Independent Analytics Debug"
 msgstr "Independent Analytics hata ayıklama"
 
 #: views/settings/woocommerce.blade.php:46
-#: views/settings/woocommerce.blade.php:48
 msgid "Reset to default statuses"
 msgstr "Varsayılan durumlara sıfırla"
 
@@ -626,12 +786,12 @@ msgstr "WooCommerce sipariş durumları"
 msgid "First view recorded"
 msgstr "Kaydedilen ilk görüntüleme"
 
-#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:206
-#: IAWP/Tables/Table.php:435
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:212
+#: IAWP/Tables/Table.php:426
 msgid "Total Sales"
 msgstr "Toplam satışlar"
 
-#: IAWP/Plugin_Group.php:113
+#: IAWP/Plugin_Group.php:116
 msgid "eCommerce"
 msgstr "e-ticaret"
 
@@ -657,7 +817,7 @@ msgstr ""
 "\n"
 " Bu işlem her gün gece yarısı tekrarlanacaktır."
 
-#: views/interrupt/database-prefix-too-long.blade.php:13
+#: views/interrupt/database-prefix-too-long.blade.php:12
 msgid "Please click the button below to follow a brief tutorial that will show you how to easily change your database prefix."
 msgstr "Veritabanı ön ekinizi nasıl kolayca değiştirebileceğinizi gösteren kısa öğreticiyi görmek için lütfen aşağıdaki düğmeye tıklayın."
 
@@ -665,25 +825,23 @@ msgstr "Veritabanı ön ekinizi nasıl kolayca değiştirebileceğinizi göstere
 msgid "Show the label"
 msgstr "Etiketi göster"
 
-#: views/settings/pruner.blade.php:62 views/settings/pruner.blade.php:63
+#: views/settings/pruner.blade.php:67
 msgid "Enabling Automatic Data Deletion..."
 msgstr "Otomatik veri silme etkinleştiriliyor"
 
-#: views/settings/pruner.blade.php:61 views/settings/pruner.blade.php:66
-#: views/settings/pruner.blade.php:62 views/settings/pruner.blade.php:67
+#: views/settings/pruner.blade.php:66 views/settings/pruner.blade.php:71
 msgid "Enable Automatic Data Deletion"
 msgstr "Otomatik veri silmeyi etkinleştir"
 
-#: views/settings/pruner.blade.php:49 views/settings/pruner.blade.php:50
+#: views/settings/pruner.blade.php:54
 msgid "This will delete all data older then the selected timeframe, reducing the size of the database tables that Independent Analytics uses."
 msgstr "Bu, seçilen zaman diliminden daha eski olan tüm verileri silerek Independent Analytics'in kullandığı veritabanı tablolarının boyutunu azaltır."
 
-#: views/settings/pruner.blade.php:46 views/settings/pruner.blade.php:47
+#: views/settings/pruner.blade.php:51
 msgid "Enable automatic data deletion"
 msgstr "Otomatik veri silmeyi etkinleştir"
 
-#: views/settings/pruner.blade.php:33 views/overview/module-editor.blade.php:41
-#: views/settings/pruner.blade.php:34
+#: views/overview/module-editor.blade.php:40 views/settings/pruner.blade.php:38
 msgid "Saving..."
 msgstr "Kaydediliyor..."
 
@@ -715,7 +873,7 @@ msgstr "Yok sayılan IP adresleri siteye erişmeye devam edebilir, ancak etkinli
 msgid "Ignore IP Addresses"
 msgstr "IP Adreslerini yok say"
 
-#: views/settings/block-by-role.blade.php:58
+#: views/settings/block-by-role.blade.php:67
 msgid "Save User Roles"
 msgstr "Kullanıcı rollerini kaydet"
 
@@ -746,8 +904,8 @@ msgstr "Yok sayılan kullanıcı rolleri siteye erişmeye devam edebilir, ancak 
 msgid "Ignore User Roles"
 msgstr "Kullanıcı rollerini yok say"
 
-#: IAWP/Independent_Analytics.php:345 IAWP/Overview/Form_Field.php:91
-#: views/chart.blade.php:40 views/chart.blade.php:43
+#: IAWP/Independent_Analytics.php:386 IAWP/Overview/Form_Field.php:91
+#: views/chart.blade.php:42
 msgid "No Comparison"
 msgstr "Karşılaştırma yok"
 
@@ -828,16 +986,15 @@ msgstr "Son 90 gün"
 msgid "Last 60 days"
 msgstr "Son 60 gün"
 
-#: views/settings/export-reports.blade.php:42
-#: views/settings/export-reports.blade.php:44
-msgid "No reports found"
-msgstr "Hiçbir rapor bulunamadı"
+#: views/settings/export-reports.blade.php:29
+msgid "No reports found."
+msgstr "No reports found"
 
 #: views/partials/report-header.blade.php:50
 msgid "You have unsaved changes"
 msgstr "Kaydedilmemiş değişiklikleriniz mevcut"
 
-#: IAWP/Plugin_Group.php:118
+#: IAWP/Plugin_Group.php:121
 msgctxt "Plugin name e.g. WPForms submissions"
 msgid "Upgrade to Independent Analytics Pro to track %s submissions."
 msgstr "%s gönderileri takip etmek için Independent Analytics Pro'ya yükseltin."
@@ -850,28 +1007,25 @@ msgstr "Etkinlik"
 msgid "Appointment"
 msgstr "Randevu"
 
-#: IAWP/Email_Reports/Email_Reports.php:189
+#: IAWP/Email_Reports/Email_Reports.php:198
 msgid "Exit Pages"
 msgstr "Çıkış sayfaları"
 
-#: IAWP/Email_Reports/Email_Reports.php:186
+#: IAWP/Email_Reports/Email_Reports.php:194
 msgid "Landing Pages"
 msgstr "Açılış sayfaları"
 
-#: views/quick-stats.blade.php:9
+#: views/quick-stats.blade.php:10
 msgid "Toggle Stats"
 msgstr "İstatistikleri aç/kapat"
 
-#: views/plugin-group-options.blade.php:54
-#: views/plugin-group-options.blade.php:55
+#: views/plugin-group-options.blade.php:53
 msgid "Choose Stats to Display"
 msgstr "Görüntülenecek istatistikleri Seçin"
 
-#: views/plugin-group-options.blade.php:118
-#: views/plugin-group-options.blade.php:126
+#: views/plugin-group-options.blade.php:117
+#: views/plugin-group-options.blade.php:125
 #: views/settings/view-counter.blade.php:14
-#: views/plugin-group-options.blade.php:123
-#: views/plugin-group-options.blade.php:131
 msgid "Learn more"
 msgstr "Daha fazla bilgi"
 
@@ -879,35 +1033,27 @@ msgstr "Daha fazla bilgi"
 msgid "You can also customize the icon display, label, and date range used by the shortcode."
 msgstr "Ayrıca kısa kod tarafından kullanılan simge görüntüsünü, etiketi ve tarih aralığını da özelleştirebilirsiniz."
 
-#: IAWP/Tables/Table.php:439 IAWP/Tables/Table.php:441
-#: views/email/email.blade.php:121
+#: IAWP/Email_Reports/Email_Reports.php:183 IAWP/Tables/Table.php:430
+#: IAWP/Tables/Table.php:432 views/email/email.blade.php:615
 msgid "Submissions"
 msgstr "Gönderiler"
 
-#: IAWP/Rows/Filter.php:146
-msgid "Conversion rate for"
-msgstr "Dönüşüm oranı"
-
-#: IAWP/Rows/Filter.php:144
-msgid "Submissions for"
-msgstr "Gönderimler"
-
-#: IAWP/Report.php:111 IAWP/Statistics/Statistics.php:214
+#: IAWP/Report.php:111 IAWP/Statistics/Statistics.php:220
 msgctxt "Title of the contact form"
 msgid "%s Conversion Rate"
 msgstr "%s Dönüşüm oranı"
 
-#: IAWP/Report.php:110 IAWP/Statistics/Statistics.php:213
+#: IAWP/Report.php:110 IAWP/Statistics/Statistics.php:219
 msgctxt "Title of the contact form"
 msgid "%s Submissions"
 msgstr "%s Gönderimler"
 
-#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:206
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:212
 msgid "Form Conversion Rate"
 msgstr "Form dönüşüm oranı"
 
 #: IAWP/Overview/Form_Field.php:92 IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:206
+#: IAWP/Statistics/Statistics.php:212
 msgid "Form Submissions"
 msgstr "Form gönderimleri"
 
@@ -919,11 +1065,11 @@ msgstr "Bir gönderim kaydedildiğinde formlarınız burada görünecektir."
 msgid "Activate a supported form plugin to display these stats."
 msgstr "Bu istatistikleri görüntülemek için desteklenen bir form eklentisini etkinleştirin."
 
-#: IAWP/Plugin_Group.php:120
+#: IAWP/Plugin_Group.php:123
 msgid "Upgrade to Independent Analytics Pro to track form submissions."
 msgstr "Form gönderimlerini takip etmek için Independent Analytics Pro'ya yükseltin."
 
-#: IAWP/Email_Reports/Email_Reports.php:180 IAWP/Plugin_Group.php:97
+#: IAWP/Email_Reports/Email_Reports.php:186 IAWP/Plugin_Group.php:97
 msgid "Forms"
 msgstr "Formlar"
 
@@ -939,11 +1085,11 @@ msgstr "eTicaret istatistiklerini elde etmek için Independent Analytics Pro'ya 
 msgid "General"
 msgstr "Genel"
 
-#: IAWP/Independent_Analytics.php:252
+#: IAWP/Independent_Analytics.php:290
 msgid "New"
 msgstr "Yeni"
 
-#: IAWP/Filters.php:131
+#: IAWP/Filters.php:141
 msgid "+%d More"
 msgstr "+%d Daha fazla"
 
@@ -960,12 +1106,11 @@ msgstr "Saatlik görüntüleme"
 msgid "Week of"
 msgstr "Haftası"
 
-#: IAWP/Email_Reports/Email_Reports.php:150
+#: IAWP/Email_Reports/Email_Reports.php:149
 msgid "Analytics Report for"
 msgstr "Şunun için Analytics raporu"
 
 #: views/settings/email-reports.blade.php:153
-#: views/settings/email-reports.blade.php:154
 msgid "Preview email"
 msgstr "E-postayı ön izle"
 
@@ -989,25 +1134,23 @@ msgstr "Teslimat aralığı"
 msgid "Views column"
 msgstr "Görüntüleme sütunu"
 
-#: IAWP/Email_Reports/Email_Reports.php:72
+#: IAWP/Email_Reports/Email_Reports.php:71
 msgid "Next email scheduled for %s at %s."
 msgstr "Bir sonraki e-posta %s için %s  gönderilmesi planlanıyor."
 
-#: IAWP/Email_Reports/Email_Reports.php:67
+#: IAWP/Email_Reports/Email_Reports.php:66
 msgid "There is no email scheduled."
 msgstr "Lütfen e-posta adresi ekleyin"
 
-#: views/settings/export-reports.blade.php:72
-#: views/settings/export-reports.blade.php:74
+#: views/settings/export-reports.blade.php:67
 msgid "Import Reports"
 msgstr "Raporları içe aktar"
 
-#: views/settings/export-reports.blade.php:52
-#: views/settings/export-reports.blade.php:54
+#: views/settings/export-reports.blade.php:48
 msgid "Export Reports"
 msgstr "Raporları dışa aktar"
 
-#: views/settings/export-reports.blade.php:23
+#: views/settings/export-reports.blade.php:20
 msgid "Select all reports"
 msgstr "Tüm raporları seç"
 
@@ -1031,8 +1174,8 @@ msgstr "Bu raporu silmek istediğinizden emin misiniz?"
 msgid "Confirm"
 msgstr "Onayla"
 
-#: views/partials/report-header.blade.php:95
-#: views/overview/overview.blade.php:31 views/real-time.blade.php:15
+#: views/overview/overview.blade.php:29
+#: views/partials/report-header.blade.php:95 views/real-time.blade.php:15
 msgid "Make default"
 msgstr "Varsayılan yap"
 
@@ -1052,11 +1195,10 @@ msgstr "Yeni rapor oluştur"
 msgid "Save As"
 msgstr "Farklı kaydet"
 
-#: views/partials/report-header.blade.php:54 views/settings/pruner.blade.php:32
-#: views/settings/pruner.blade.php:37 views/settings/woocommerce.blade.php:38
-#: views/click-tracking/link.blade.php:104
-#: views/overview/module-editor.blade.php:43 views/settings/pruner.blade.php:33
-#: views/settings/pruner.blade.php:38 views/settings/woocommerce.blade.php:40
+#: views/click-tracking/link.blade.php:92
+#: views/overview/module-editor.blade.php:42
+#: views/partials/report-header.blade.php:54 views/settings/pruner.blade.php:37
+#: views/settings/pruner.blade.php:42 views/settings/woocommerce.blade.php:38
 msgid "Save"
 msgstr "Kaydet"
 
@@ -1076,12 +1218,10 @@ msgstr "Raporu yeniden adlandır"
 #: views/interrupt/missing-database-permissions.blade.php:19
 #: views/interrupt/missing-database-tables.blade.php:20
 #: views/interrupt/pdo.blade.php:13
-#: views/interrupt/database-prefix-too-long.blade.php:21
-#: views/interrupt/missing-database-permissions.blade.php:20
 msgid "Follow Tutorial"
 msgstr "Eğitimi Takip et"
 
-#: views/interrupt/layout.blade.php:10
+#: views/interrupt/migration-is-running.blade.php:10
 msgid "Get Help"
 msgstr "Yardım al"
 
@@ -1105,7 +1245,7 @@ msgstr "Tüm güncellemeleri görüntüle"
 msgid "Newest Updates"
 msgstr "En yeni güncellemeler"
 
-#: IAWP/Tables/Table.php:72 views/tables/table-toolbar.blade.php:4
+#: IAWP/Tables/Table.php:73 views/tables/table-toolbar.blade.php:4
 msgid "Toggle Columns"
 msgstr "Sütunları değiştir"
 
@@ -1153,8 +1293,7 @@ msgstr "Kullanıcı ölçümünün doğruluğu için bu ayarı devre dışı bı
 msgid "Refresh the visitor salt every day"
 msgstr "Salt her gün yenileyin"
 
-#: views/settings/export-reports.blade.php:62
-#: views/settings/export-reports.blade.php:64
+#: views/settings/export-reports.blade.php:56
 msgid "Import Custom Reports"
 msgstr "Özel raporları içe aktar"
 
@@ -1207,17 +1346,14 @@ msgstr "Yok sayılmayan IP adresiniz:"
 msgid "Your IP address is ignored:"
 msgstr "Yok sayılan IP adresiniz:"
 
-#: IAWP/Report.php:37 views/partials/sidebar.blade.php:205
+#: IAWP/Report.php:37 views/partials/sidebar.blade.php:197
+#: views/real-time.blade.php:3
 msgid "Real-Time"
 msgstr "Anlık analiz"
 
-#: views/partials/sidebar.blade.php:178
+#: views/partials/sidebar.blade.php:170
 msgid "Get Campaigns"
 msgstr "Kampanyaları alın"
-
-#: views/partials/sidebar.blade.php:69
-msgid "Open Real-time analytics"
-msgstr "Anlık analizleri açın"
 
 #: views/interrupt/missing-database-tables.blade.php:14
 msgid "If you need further guidance, please follow this tutorial:"
@@ -1248,7 +1384,6 @@ msgid "Missing Database Tables"
 msgstr "Eksik veri tabanı tabloları"
 
 #: views/interrupt/missing-database-permissions.blade.php:11
-#: views/interrupt/missing-database-permissions.blade.php:12
 msgid "Please follow our tutorial to enable these permissions on your site and analytics tracking will begin right away:"
 msgstr "Sitenizde bu izinleri etkinleştirmek için lütfen eğitimimizi takip edin; analiz takibi hemen başlayacaktır:"
 
@@ -1288,37 +1423,9 @@ msgstr "Lütfen aşağıdaki bilgileri %s adresine gönderin ve bu hatayı en k�
 msgid "Data Migration Failed"
 msgstr "Veri taşıma başarısız"
 
-#: views/campaign-builder.blade.php:209
+#: views/campaign-builder.blade.php:210
 msgid "Copy to Form"
 msgstr "Forma kopyala"
-
-#: IAWP/Ecommerce/WooCommerce_Referrer_Meta_Box.php:75
-msgid "Campaign Content"
-msgstr "Kampanya içeriği"
-
-#: IAWP/Ecommerce/WooCommerce_Referrer_Meta_Box.php:72
-msgid "Campaign Term"
-msgstr "Kampanya dönemi"
-
-#: IAWP/Ecommerce/WooCommerce_Referrer_Meta_Box.php:69
-msgid "Campaign Name"
-msgstr "Kampanya ismi"
-
-#: IAWP/Ecommerce/WooCommerce_Referrer_Meta_Box.php:66
-msgid "Campaign Medium"
-msgstr "Kampanya ortamı"
-
-#: IAWP/Ecommerce/WooCommerce_Referrer_Meta_Box.php:63
-msgid "Campaign Source"
-msgstr "Kampanya kaynağı"
-
-#: IAWP/Ecommerce/WooCommerce_Referrer_Meta_Box.php:53
-msgid "Referrer:"
-msgstr "Yönlendiren:"
-
-#: IAWP/Ecommerce/WooCommerce_Referrer_Meta_Box.php:42
-msgid "Order Referrer"
-msgstr "Sipariş yönlendiren"
 
 #: IAWP/View_Counter.php:94
 msgid "Increase count by:"
@@ -1328,28 +1435,28 @@ msgstr "Sayımı şu oranda artırın:"
 msgid "View Counter Adjustment"
 msgstr "Sayaç ayarını görüntüle"
 
-#: IAWP/Tables/Table_Pages.php:28
+#: IAWP/Tables/Table_Pages.php:29
 msgid "Exit Rate"
 msgstr "Çıkış oranı"
 
-#: IAWP/Tables/Table_Pages.php:28 views/email/email.blade.php:125
+#: IAWP/Tables/Table_Pages.php:29 views/email/email.blade.php:619
 msgid "Exits"
 msgstr "Çıkışlar"
 
-#: IAWP/Tables/Table_Pages.php:28 views/email/email.blade.php:123
+#: IAWP/Tables/Table_Pages.php:29 views/email/email.blade.php:617
 msgid "Entrances"
 msgstr "Girişler"
 
-#: IAWP/Tables/Table.php:245 views/overview/overview.blade.php:56
+#: IAWP/Tables/Table.php:246 views/overview/overview.blade.php:53
 msgid "Download PDF"
 msgstr "PDF İndir"
 
-#: IAWP/Tables/Table.php:218
+#: IAWP/Tables/Table.php:219
 msgid "Choose a format"
 msgstr "Bir format seçin"
 
-#: IAWP/Tables/Table.php:211 views/overview/overview.blade.php:44
-#: views/overview/overview.blade.php:45
+#: IAWP/Tables/Table.php:212 views/examiner/skeleton.blade.php:24
+#: views/overview/overview.blade.php:42
 msgid "Download Report"
 msgstr "Raporu indir"
 
@@ -1373,27 +1480,27 @@ msgstr "Salt yenileme hızı"
 msgid "Dashboard widget"
 msgstr "Kontrol paneli aracı"
 
-#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:202
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:208
 msgid "Average Session Duration"
 msgstr "Ortalama oturum süresi"
 
-#: IAWP/Plugin_Conflict_Detector.php:178
+#: IAWP/Plugin_Conflict_Detector.php:176
 msgid "The \"Admin and Site Enhancements\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the Tools > Enhancements menu, click on the \"Disable Components\" section, and deselect the \"Disable REST API\" setting to allow Independent Analytics to track your visitors."
 msgstr "\"Admin and Site Enhancements\" eklentisi REST API'sını engelliyor, bu da Independent Analytics'in kullanıcı görüntülemelerini kaydetmesini engelliyor. Lütfen Araçlar > Enhancements menüsüne gidin, \"Disable Components\" bölümüne tıklayın ve \"Disable REST API\" seçeneğini işaretlemeyin ki Independent Analytics kullanıcılarınızı takip edebilsin."
 
-#: IAWP/Plugin_Conflict_Detector.php:169
+#: IAWP/Plugin_Conflict_Detector.php:167
 msgid "The \"WP Hide\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Hide > Rewrite URLs menu and switch the \"Block any JSON REST calls\" option to \"No.\""
 msgstr "\"WP Hide\" eklentisi REST API'yi engelliyor, bu da Independent Analytics'in kullanıcı görüntülemelerini kaydetmesini engelliyor. Lütfen WP Hide > Rewrite URLs menüsüne gidin ve \"Block any JSON REST calls\" seçeneğini \"No\" olarak değiştirin ki Independent Analytics kullanıcılarınızı takip edebilsin."
 
-#: IAWP/Plugin_Conflict_Detector.php:164
+#: IAWP/Plugin_Conflict_Detector.php:162
 msgid "The \"WP Hide\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Hide > Rewrite URLs menu and switch the \"Disable JSON REST V2 service\" option to \"No.\""
 msgstr "The \"WP Hide\" eklentisi REST API'yı engelliyor, bu da Independent Analytics'in kullanıcı görüntülemelerini kaydetmesini engelliyor. Lütfen WP Hide > Rewrite URLs ve \"Disable JSON REST V2 service\" seçeneğini \"No\" olarak değiştirin ki Independent Analytics kullanıcılarınızı takip edebilsin."
 
-#: IAWP/Plugin_Conflict_Detector.php:152
+#: IAWP/Plugin_Conflict_Detector.php:150
 msgid "The \"Shield Security\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the Shield Security > Config > Lockdown menu and add \"iawp\" to your allowed namespaces. This will keep the REST API locked down while allowing requests for Independent Analytics."
 msgstr "\"Shield Security\" eklentisi, Independent Analytics'in görüntülemeleri kaydetmek için ihtiyaç duyduğu REST API'ını engelliyor. Lütfen Shield Security > Config > Lockdown menüsünü ziyaret edin ve izin verilen ad alanlarınıza \"iawp\" ekleyin. Bu, Independent Analytics için isteklere izin verirken REST API'ı kilitli tutacaktır."
 
-#: IAWP/Plugin_Conflict_Detector.php:135
+#: IAWP/Plugin_Conflict_Detector.php:134
 msgid "The \"WP Cerber\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Cerber > Dashboard > Hardening menu and add \"iawp\" to your allowed namespaces. This will keep the REST API locked down while allowing requests for Independent Analytics."
 msgstr "\"WP Cerber\" eklentisi, Independent Analytics'in görüntülemeleri kaydetmek için ihtiyaç duyduğu REST API'sını engelliyor. Lütfen WP Cerber > Dashboard > Hardening menüsünü ziyaret edin ve izin verilen ad alanlarınıza \"iawp\" ekleyin. Bu, Independent Analytics için isteklere izin verirken REST API'yı kilitli tutacaktır."
 
@@ -1405,55 +1512,55 @@ msgstr "Ödeme başarılı"
 msgid "All Time:"
 msgstr "Her zaman:"
 
-#: IAWP/Independent_Analytics.php:345
+#: IAWP/Independent_Analytics.php:386
 msgid "Close menu"
 msgstr "Menüyü kapat"
 
-#: IAWP/Independent_Analytics.php:345 views/partials/sidebar.blade.php:38
+#: IAWP/Independent_Analytics.php:386 views/partials/sidebar.blade.php:38
 msgid "Open menu"
 msgstr "Menüyü aç"
 
-#: IAWP/Independent_Analytics.php:345
+#: IAWP/Independent_Analytics.php:386
 msgid "This report archive is invalid. Please export your reports and try again."
 msgstr "Bu rapor arşivi geçersiz. Lütfen raporlarınızı dışa aktarın ve tekrar deneyin."
 
-#: IAWP/Independent_Analytics.php:251 IAWP/Independent_Analytics.php:253
+#: IAWP/Independent_Analytics.php:289 IAWP/Independent_Analytics.php:291
 msgid "Changelog"
 msgstr "Değişiklik günlüğü"
 
-#: IAWP/Independent_Analytics.php:239
+#: IAWP/Independent_Analytics.php:277
 msgid "Help & Support"
 msgstr "Yardım ve destek"
 
-#: IAWP/Filter_Lists/Referrer_Type_Filter_List.php:11
+#: IAWP/ColumnOptions/Plugins/ReferrerTypes.php:12
 msgid "Ad"
 msgstr "Reklam"
 
-#: IAWP/Filters.php:32
+#: IAWP/Filters.php:36
 msgid "+ Add Filter"
 msgstr "+ Filtre ekle"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:174
+#: IAWP/Date_Range/Relative_Date_Range.php:175
 msgid "All Time"
 msgstr "Tüm zamanlar"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:150
+#: IAWP/Date_Range/Relative_Date_Range.php:151
 msgid "Last 12 Months"
 msgstr "Son 12 Ay"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:142
+#: IAWP/Date_Range/Relative_Date_Range.php:143
 msgid "Last 6 Months"
 msgstr "Son 6 Ay"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:134
+#: IAWP/Date_Range/Relative_Date_Range.php:135
 msgid "Last 3 Months"
 msgstr "Son 3 Ay"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:87
+#: IAWP/Date_Range/Relative_Date_Range.php:88
 msgid "Last 90 Days"
 msgstr "Son 90 Gün"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:80
+#: IAWP/Date_Range/Relative_Date_Range.php:81
 msgid "Last 60 Days"
 msgstr "Son 60 Gün"
 
@@ -1462,15 +1569,15 @@ msgstr "Son 60 Gün"
 msgid "You do not have permission to view this page."
 msgstr "Bu sayfayı görüntüleme izniniz yok."
 
-#: IAWP/Admin_Page/Analytics_Page.php:190
+#: IAWP/Admin_Page/Analytics_Page.php:222
 msgid "There is no issue at this time, but you will need to enable the missing permissions before updating the plugin to a newer version to ensure an error is avoided. Please click this link to read our tutorial:"
 msgstr "Şu anda bir sorun yok, ancak eklentiyi yeni bir sürüme güncellemeden önce eksik izinleri etkinleştirmeniz gerekecek, böylece bir hata önlenmiş olur. Lütfen bu bağlantıya tıklayarak eğitimimizi okuyun:"
 
-#: IAWP/Admin_Page/Analytics_Page.php:190
+#: IAWP/Admin_Page/Analytics_Page.php:222
 msgid "Your site is missing the following critical database permissions:"
 msgstr "Sitenizde aşağıdaki kritik veri tabanı izinleri eksik:"
 
-#: views/tables/rows.blade.php:15
+#: views/tables/rows.blade.php:20
 msgid "No device data found"
 msgstr "Cihaz verisi bulunamadı"
 
@@ -1502,14 +1609,14 @@ msgstr "Başlık arka planı"
 msgid "Customize the colors"
 msgstr "Renkleri özelleştirin"
 
+#: views/click-tracking/menu.blade.php:6
 #: views/settings/block-by-role.blade.php:5
 #: views/settings/block-ips.blade.php:5 views/settings/capabilities.blade.php:5
 #: views/settings/delete.blade.php:5 views/settings/email-reports.blade.php:5
 #: views/settings/export-reports.blade.php:11
-#: views/settings/export-reports.blade.php:67 views/settings/pruner.blade.php:9
+#: views/settings/export-reports.blade.php:62 views/settings/pruner.blade.php:9
 #: views/settings/view-counter.blade.php:3
-#: views/settings/woocommerce.blade.php:9 views/click-tracking/menu.blade.php:6
-#: views/settings/export-reports.blade.php:69
+#: views/settings/woocommerce.blade.php:9
 msgid "Read Tutorial"
 msgstr "Eğitimi okuyun"
 
@@ -1529,12 +1636,12 @@ msgstr "Son güncellemeyle ilgili bir sorun varsa, lütfen sol taraftaki %1$sCon
 msgid "It looks like Independent Analytics was rolled back to an older version not compatible with the current version of the database. Unfortunately, it is not possible to revert the database to an older version without causing data loss. Please update Independent Analytics to the latest version available."
 msgstr "Görünüşe göre Independent Analytics, veri tabanının mevcut sürümüyle uyumlu olmayan eski bir sürüme döndürüldü. Maalesef veri kaybına neden olmadan veri tabanını eski bir sürüme döndürmek mümkün değildir. Lütfen Independent Analytics'i mevcut en son sürüme güncelleyin."
 
-#: IAWP/Tables/Table_Devices.php:34
+#: IAWP/Tables/Table_Devices.php:35
 msgid "Operating System"
 msgstr "İşletim sistemi"
 
-#: IAWP/Tables/Table_Devices.php:34 views/click-tracking/menu.blade.php:34
-#: views/click-tracking/menu.blade.php:81
+#: IAWP/Tables/Table_Devices.php:35 views/click-tracking/menu.blade.php:32
+#: views/click-tracking/menu.blade.php:77
 msgid "Type"
 msgstr "Tür"
 
@@ -1542,38 +1649,39 @@ msgstr "Tür"
 msgid "Browsers"
 msgstr "Tarayıcılar"
 
-#: IAWP/Tables/Table_Devices.php:29 IAWP/Tables/Table_Devices.php:34
+#: IAWP/Tables/Table_Devices.php:30 IAWP/Tables/Table_Devices.php:35
 msgid "Browser"
 msgstr "Tarayıcı"
 
-#: IAWP/Tables/Table_Devices.php:28
+#: IAWP/Tables/Table_Devices.php:29
 msgid "OS"
 msgstr "İşletim sistemi"
 
-#: IAWP/Tables/Table_Devices.php:27
+#: IAWP/Tables/Table_Devices.php:28
 msgid "Device Type"
 msgstr "Cihaz tipi"
 
-#: IAWP/Real_Time.php:65
+#: IAWP/Real_Time.php:74
 msgid "Device Types"
 msgstr "Cihaz türleri"
 
-#: IAWP/Independent_Analytics.php:345
+#: IAWP/Independent_Analytics.php:386
 msgid "Exporting Devices..."
 msgstr "Cihazlar dışa aktarılıyor..."
 
-#: IAWP/Independent_Analytics.php:345
+#: IAWP/Independent_Analytics.php:386
 msgid "Export Devices"
 msgstr "Cihazları dışa aktar"
 
-#: IAWP/Email_Reports/Email_Reports.php:174
+#: IAWP/Admin_Page/Analytics_Page.php:238
+#: IAWP/Email_Reports/Email_Reports.php:176
 #: IAWP/Overview/Modules/Module.php:424 IAWP/Report.php:37
-#: IAWP/Report_Finder.php:110 views/partials/sidebar.blade.php:118
+#: IAWP/Report_Finder.php:110 views/partials/sidebar.blade.php:112
 msgid "Devices"
 msgstr "Cihazlar"
 
-#: views/campaign-builder.blade.php:215 views/click-tracking/link.blade.php:119
-#: views/click-tracking/menu.blade.php:84
+#: views/campaign-builder.blade.php:216 views/click-tracking/link.blade.php:105
+#: views/click-tracking/menu.blade.php:80
 msgid "Delete"
 msgstr "Sil"
 
@@ -1585,23 +1693,23 @@ msgstr "Şehirler"
 msgid "The \"NinjaFirewall\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the NinjaFirewall > Firewall Policies menu and uncheck the \"Block any access to the API\" checkbox to allow Independent Analytics to track your visitors."
 msgstr "The \"NinjaFirewall\" eklentisi REST API'yı engelliyor, bu da Independent Analytics'in kullanıcı görüntülemelerini kaydetmesini engelliyor. Lütfen NinjaFirewall > Firewall Policies Politikaları menüsüne gidin ve \"Block any access to the API\" seçeneğinin işaretini kaldırın ki Independent Analytics kullanıcılarınızı takip edebilsin."
 
-#: IAWP/Email_Reports/Email_Reports.php:123 IAWP/Settings.php:372
+#: IAWP/Email_Reports/Email_Reports.php:122 IAWP/Settings.php:374
 msgid "This email was generated and delivered by %s"
 msgstr "Bu e-posta %s tarafından oluşturulup teslim edildi"
 
-#: views/email/email.blade.php:113
+#: views/email/email.blade.php:565
 msgid "Top 10's"
 msgstr "En İyi 10'lar"
 
-#: views/email/email.blade.php:91
+#: views/email/email.blade.php:281
 msgid "Performance Overview"
 msgstr "Performansa genel bakış"
 
-#: views/email/email.blade.php:91
+#: views/email/email.blade.php:220
 msgid "Website performance report"
 msgstr "Web sitesi performans raporu"
 
-#: views/email/email.blade.php:1
+#: views/email/email.blade.php:6
 msgid "Website Analytics Report"
 msgstr "Web sitesi analizi raporu"
 
@@ -1624,9 +1732,9 @@ msgstr "Saatlik"
 msgid "Daily"
 msgstr "Günlük"
 
-#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:204
-#: IAWP/Tables/Table_Campaigns.php:25 IAWP/Tables/Table_Devices.php:34
-#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Referrers.php:26
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:210
+#: IAWP/Tables/Table_Campaigns.php:37 IAWP/Tables/Table_Devices.php:35
+#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Referrers.php:30
 msgid "Views Per Session"
 msgstr "Oturum başına görüntüleme sayısı"
 
@@ -1642,10 +1750,10 @@ msgstr "Yönetici araç çubuğu istatistiklerini kapat"
 msgid "Admin toolbar stats"
 msgstr "Yönetici araç çubuğu istatistikleri"
 
-#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:202
-#: IAWP/Tables/Table_Campaigns.php:25 IAWP/Tables/Table_Devices.php:34
-#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Pages.php:28
-#: IAWP/Tables/Table_Referrers.php:26
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:208
+#: IAWP/Tables/Table_Campaigns.php:37 IAWP/Tables/Table_Devices.php:35
+#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Pages.php:29
+#: IAWP/Tables/Table_Referrers.php:30
 msgid "Bounce Rate"
 msgstr "Hemen çıkma oranı"
 
@@ -1665,24 +1773,24 @@ msgstr "Bugün:"
 msgid "Date"
 msgstr "Tarih"
 
-#: IAWP/Independent_Analytics.php:345
+#: IAWP/Independent_Analytics.php:386
 msgid "Apply Relative Dates"
 msgstr "Tarihleri ​​Uygula"
 
-#: IAWP/Independent_Analytics.php:345
+#: IAWP/Independent_Analytics.php:386
 msgid "Apply Exact Dates"
 msgstr "Kesin Tarihleri Uygula"
 
-#: IAWP/Tables/Table_Pages.php:28
+#: IAWP/Tables/Table_Pages.php:29
 msgid "View Duration"
 msgstr "Süreyi Görüntüle"
 
-#: IAWP/Tables/Table_Campaigns.php:25 IAWP/Tables/Table_Devices.php:34
-#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Referrers.php:26
+#: IAWP/Tables/Table_Campaigns.php:37 IAWP/Tables/Table_Devices.php:35
+#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Referrers.php:30
 msgid "Session Duration"
 msgstr "Oturum Süresi"
 
-#: IAWP/Independent_Analytics.php:345
+#: IAWP/Independent_Analytics.php:386
 msgid "Exporting Geolocations..."
 msgstr "Geolocations dışa aktarılıyor..."
 
@@ -1694,19 +1802,19 @@ msgstr "\"WordPress REST API Authentication\" eklentisi, Independent Analytics'i
 msgid "The \"WP Hardening\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Hardening > Security Fixers menu and turn off the \"Disable WP API JSON\" option, so Independent Analytics can track your visitors."
 msgstr "\"WP Hardening\" eklentisi, Independent Analytics'in görüntülemeleri kaydetmek için ihtiyaç duyduğu REST API'yi engelliyor. Lütfen WP Hardening > Security Fixers menüsünü ziyaret edin ve Independent Analytics'in kullanıcılarınızı izleyebilmesi için \"Disable WP API JSON\" seçeneğini kapatın."
 
-#: IAWP/Independent_Analytics.php:345
+#: IAWP/Independent_Analytics.php:386
 msgid "Export Campaigns"
 msgstr "Kampanyaları dışa aktar"
 
-#: IAWP/Independent_Analytics.php:345
+#: IAWP/Independent_Analytics.php:386
 msgid "Export Geolocations"
 msgstr "Geolocations konumları dışa aktar"
 
-#: IAWP/Independent_Analytics.php:345
+#: IAWP/Independent_Analytics.php:386
 msgid "Export Referrers"
 msgstr "Yönlendirenleri dışa aktar"
 
-#: IAWP/Independent_Analytics.php:345
+#: IAWP/Independent_Analytics.php:386
 msgid "Export Pages"
 msgstr "Sayfaları dışa aktar"
 
@@ -1714,57 +1822,58 @@ msgstr "Sayfaları dışa aktar"
 msgid "Shop"
 msgstr "Mağaza"
 
-#: IAWP/Tables/Table_Pages.php:28
+#: IAWP/Tables/Table_Pages.php:29
 msgid "Comments"
 msgstr "Yorumlar"
 
-#: IAWP/Independent_Analytics.php:345
+#: IAWP/Independent_Analytics.php:386
 msgid "Exporting Campaigns..."
 msgstr "Kampanyalar dışa aktarılıyor..."
 
-#: IAWP/Independent_Analytics.php:345
+#: IAWP/Independent_Analytics.php:386
 msgid "Exporting Pages..."
 msgstr "Sayfalar dışa aktarılıyor..."
 
-#: IAWP/Independent_Analytics.php:345
+#: IAWP/Independent_Analytics.php:386
 msgid "Exporting Referrers..."
 msgstr "Yönlendirenler dışa aktarılıyor..."
 
-#: IAWP/Independent_Analytics.php:345
+#: IAWP/Independent_Analytics.php:386
 msgid "Copied"
 msgstr "Kopyalandı"
 
-#: IAWP/Email_Reports/Email_Reports.php:148
+#: IAWP/Email_Reports/Email_Reports.php:147
 msgid "[Test]"
 msgstr "[Test]"
 
-#: IAWP/Independent_Analytics.php:345
+#: IAWP/Independent_Analytics.php:386
 #: IAWP/Overview/Modules/New_Sessions_Module.php:34 IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:202 IAWP/Tables/Table_Campaigns.php:25
-#: IAWP/Tables/Table_Devices.php:34 IAWP/Tables/Table_Geo.php:28
-#: IAWP/Tables/Table_Pages.php:28 IAWP/Tables/Table_Referrers.php:26
-#: views/overview/modules/busiest-day-of-week.blade.php:20
-#: views/overview/modules/busiest-time-of-day.blade.php:20
+#: IAWP/Statistics/Click_Statistics.php:23 IAWP/Statistics/Statistics.php:208
+#: IAWP/Tables/Table_Campaigns.php:37 IAWP/Tables/Table_Devices.php:35
+#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Pages.php:29
+#: IAWP/Tables/Table_Referrers.php:30
+#: views/overview/modules/busiest-day-of-week.blade.php:18
+#: views/overview/modules/busiest-time-of-day.blade.php:18
 msgid "Sessions"
 msgstr "Oturumlar"
 
-#: IAWP/Independent_Analytics.php:227
+#: IAWP/Independent_Analytics.php:265
 msgid "Campaign Builder"
 msgstr "Kampanya oluşturucu"
 
-#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:206
-#: IAWP/Tables/Table.php:435
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:212
+#: IAWP/Tables/Table.php:426
 msgid "Average Order Volume"
 msgstr "Ortalama sipariş hacmi"
 
-#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:206
-#: IAWP/Tables/Table.php:435
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:212
+#: IAWP/Tables/Table.php:426
 msgid "Earnings Per Visitor"
 msgstr "Kullanıcı başına kazanç"
 
-#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:206
-#: IAWP/Tables/Table.php:435 IAWP/Tables/Table.php:439
-#: IAWP/Tables/Table.php:442
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:212
+#: IAWP/Tables/Table.php:426 IAWP/Tables/Table.php:430
+#: IAWP/Tables/Table.php:433
 msgid "Conversion Rate"
 msgstr "Dönüşüm oranı"
 
@@ -1773,39 +1882,31 @@ msgid "Newer database version found"
 msgstr "Daha yeni veri tabanı sürümü bulundu"
 
 #: views/settings/email-reports.blade.php:154
-#: views/settings/email-reports.blade.php:155
 msgid "Send test email"
 msgstr "Test e-postası gönder"
 
 #: views/settings/email-reports.blade.php:152
-#: views/settings/email-reports.blade.php:153
 msgid "Save settings"
 msgstr "Ayarları kaydet"
 
 #: views/settings/email-reports.blade.php:138
-#: views/settings/email-reports.blade.php:139
 msgid "Sending to these addresses"
 msgstr "Bu adreslere gönderiliyor"
 
 #: views/settings/email-reports.blade.php:135
-#: views/settings/email-reports.blade.php:136
 msgid "This email already exists"
 msgstr "Bu e-posta zaten mevcut"
 
 #: views/settings/email-reports.blade.php:131
 #: views/settings/email-reports.blade.php:146
-#: views/settings/email-reports.blade.php:132
-#: views/settings/email-reports.blade.php:147
 msgid "Remove email"
 msgstr "E-postayı kaldır"
 
 #: views/settings/email-reports.blade.php:122
-#: views/settings/email-reports.blade.php:123
 msgid "Add email"
 msgstr "E-posta ekle"
 
 #: views/settings/email-reports.blade.php:118
-#: views/settings/email-reports.blade.php:119
 msgid "Add new email addresses"
 msgstr "Yeni e-posta adresleri ekleyin"
 
@@ -1825,45 +1926,46 @@ msgstr "E-posta raporu"
 msgid "This user role is already blocked"
 msgstr "Bu kullanıcı rolü zaten engellendi"
 
+#: views/settings/block-by-role.blade.php:63
 #: views/settings/refresh-salt.blade.php:5
 msgid "Learn more."
 msgstr "Daha fazla bilgi."
 
-#: views/interrupt/migration-is-running.blade.php:17
+#: views/interrupt/migration-is-running.blade.php:26
 msgid "This page will automatically refresh when the update's finished."
 msgstr "Güncelleme tamamlandığında bu sayfa otomatik olarak yenilenecektir."
 
-#: views/interrupt/migration-is-running.blade.php:14
+#: views/interrupt/migration-is-running.blade.php:23
 msgid "Your site's performance is not impacted by this update. Analytics tracking will resume once the update is complete."
 msgstr "Sitenizin performansı bu güncellemeden etkilenmez. Güncelleme tamamlandıktan sonra analiz izleme devam edecek."
 
-#: views/interrupt/migration-is-running.blade.php:10
+#: views/interrupt/migration-is-running.blade.php:19
 msgid ""
 "We're running an update designed to speed up and improve Independent Analytics.\n"
 "                This can take anywhere from 5 seconds to 5 minutes."
 msgstr "Independent Analytics'i hızlandırmak ve geliştirmek için bir güncelleme yayınlıyoruz.↵                  Bu işlem 5 saniye ile 5 dakika arasında sürebilir."
 
-#: views/interrupt/migration-is-running.blade.php:8
+#: views/interrupt/migration-is-running.blade.php:17
 msgid "Update running"
 msgstr "Güncelleme çalışıyor"
 
-#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:206
-#: IAWP/Tables/Table.php:435
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:212
+#: IAWP/Tables/Table.php:426
 msgid "Refunded Amount"
 msgstr "İade Edilen tutar"
 
-#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:206
-#: IAWP/Tables/Table.php:435
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:212
+#: IAWP/Tables/Table.php:426
 msgid "Refunds"
 msgstr "Geri iadeler"
 
-#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:206
-#: IAWP/Tables/Table.php:435
+#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:212
+#: IAWP/Tables/Table.php:426
 msgid "Gross Sales"
 msgstr "Brüt satış"
 
 #: IAWP/Overview/Form_Field.php:92 IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:206 IAWP/Tables/Table.php:435
+#: IAWP/Statistics/Statistics.php:212 IAWP/Tables/Table.php:426
 msgid "Orders"
 msgstr "Siparişler"
 
@@ -1883,11 +1985,11 @@ msgstr "\"All-In-One Intranet\" eklentisinin devre dışı bırakılması gereki
 msgid "Learn More"
 msgstr "Daha fazla bilgi"
 
-#: IAWP/Admin_Page/Analytics_Page.php:184
+#: IAWP/Admin_Page/Analytics_Page.php:216
 msgid "I've cleared the cache"
 msgstr "Önbelleği temizledim"
 
-#: IAWP/Admin_Page/Analytics_Page.php:184
+#: IAWP/Admin_Page/Analytics_Page.php:216
 msgid "Please clear your cache to ensure tracking works properly."
 msgstr "İzlemenin düzgün çalıştığından emin olmak için lütfen önbelleğinizi temizleyin."
 
@@ -1915,59 +2017,59 @@ msgstr "\"Disable WP REST API\" eklentisi, Independent Analytics'in ziyaretleri 
 msgid "White-label for non-admins"
 msgstr "Bu ayar Independent Analytics markalamasının yanı sıra bilgi tabanına, destek forumuna ve PRO sürüm yükseltmesine giden bağlantıları da gizleyecektir."
 
-#: views/real-time.blade.php:110 views/real-time.blade.php:111
+#: views/real-time.blade.php:110
 msgid "No results in the last 5 minutes."
 msgstr "Son 5 dakikada sonuç yok."
 
-#: views/real-time.blade.php:74 views/real-time.blade.php:75
+#: views/real-time.blade.php:74
 msgid "The Last 30 Minutes"
 msgstr "Son 30 dakika"
 
-#: views/real-time.blade.php:63 views/real-time.blade.php:64
+#: views/real-time.blade.php:63
 msgid "The Last 5 Minutes"
 msgstr "Son 5 dakika"
 
-#: views/real-time.blade.php:45 views/real-time.blade.php:46
+#: views/real-time.blade.php:45
 msgid "Active Visitors is the number of people who have viewed a page within the last 5 minutes."
 msgstr "Active Visitors, son 5 dakika içinde bir sayfayı görüntülemiş olan kişi sayısıdır."
 
-#: IAWP/Tables/Table_Campaigns.php:25 IAWP/Tables/Table_Devices.php:34
-#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Pages.php:28
-#: IAWP/Tables/Table_Referrers.php:26
+#: IAWP/Tables/Table_Campaigns.php:37 IAWP/Tables/Table_Devices.php:35
+#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Pages.php:29
+#: IAWP/Tables/Table_Referrers.php:30
 msgid "Visitors Growth"
 msgstr "Kullanıcı artışı"
 
-#: IAWP/Tables/Table_Campaigns.php:25 IAWP/Tables/Table_Devices.php:34
-#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Pages.php:28
-#: IAWP/Tables/Table_Referrers.php:26
+#: IAWP/Tables/Table_Campaigns.php:37 IAWP/Tables/Table_Devices.php:35
+#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Pages.php:29
+#: IAWP/Tables/Table_Referrers.php:30
 msgid "Views Growth"
 msgstr "Görüntüleme artışı"
 
-#: IAWP/Real_Time.php:65
+#: IAWP/Real_Time.php:74
 msgid "Active Campaigns"
 msgstr "Aktif Kampanyalar"
 
-#: IAWP/Real_Time.php:65
+#: IAWP/Real_Time.php:74
 msgid "Active Countries"
 msgstr "Aktif Ülkeler"
 
-#: IAWP/Real_Time.php:65
+#: IAWP/Real_Time.php:74
 msgid "Active Referrers"
 msgstr "Aktif Yönlendirenler"
 
-#: IAWP/Real_Time.php:65
+#: IAWP/Real_Time.php:74
 msgid "Active Pages"
 msgstr "Aktif sayfalar"
 
-#: IAWP/Email_Reports/Email_Reports.php:171 IAWP/Real_Time.php:64
+#: IAWP/Email_Reports/Email_Reports.php:172 IAWP/Real_Time.php:73
 msgid "Countries"
 msgstr "Ülkeler"
 
-#: IAWP/Real_Time.php:77
+#: IAWP/Real_Time.php:86
 msgid "Active Visitors"
 msgstr "Aktif kullanıcılar"
 
-#: IAWP/Real_Time.php:77
+#: IAWP/Real_Time.php:86
 msgid "Active Visitor"
 msgstr "Aktif kullanı"
 
@@ -1999,28 +2101,29 @@ msgstr "dakika"
 msgid "now"
 msgstr "şimdi"
 
-#: views/partials/sidebar.blade.php:208
+#: views/partials/sidebar.blade.php:200
 msgid "Get Real-time analytics"
 msgstr "Gerçek zamanlı analizler alın"
 
-#: IAWP/Report_Finder.php:118 views/partials/sidebar.blade.php:66
+#: IAWP/Report_Finder.php:118 views/partials/sidebar.blade.php:63
 msgid "Real-time"
 msgstr "Anlık Analiz"
 
-#: views/plugin-group-options.blade.php:70
-#: views/plugin-group-options.blade.php:72
+#: views/plugin-group-options.blade.php:69
 msgid "PRO"
 msgstr "PRO"
 
-#: IAWP/Email_Reports/Email_Reports.php:177 IAWP/Report.php:37
-#: IAWP/Report_Finder.php:112 views/partials/sidebar.blade.php:131
-#: views/partials/sidebar.blade.php:175
+#: IAWP/Admin_Page/Analytics_Page.php:238
+#: IAWP/Email_Reports/Email_Reports.php:180 IAWP/Report.php:37
+#: IAWP/Report_Finder.php:112 views/partials/sidebar.blade.php:125
+#: views/partials/sidebar.blade.php:167
 msgid "Campaigns"
 msgstr "Kampanyalar"
 
-#: IAWP/Email_Reports/Email_Reports.php:165 IAWP/Real_Time.php:62
+#: IAWP/Admin_Page/Analytics_Page.php:238
+#: IAWP/Email_Reports/Email_Reports.php:164 IAWP/Real_Time.php:71
 #: IAWP/Report.php:37 IAWP/Report_Finder.php:104
-#: views/partials/sidebar.blade.php:82
+#: views/partials/sidebar.blade.php:76
 msgid "Pages"
 msgstr "Sayfalar"
 
@@ -2048,10 +2151,9 @@ msgstr "Hangi kullanıcıların analizleri görüntüleyebileceğine ve ayarlar�
 msgid "User Permissions"
 msgstr "Kullanıcı İzinleri"
 
-#: views/settings/block-by-role.blade.php:59
+#: views/settings/block-by-role.blade.php:68
 #: views/settings/block-ips.blade.php:59
 #: views/settings/email-reports.blade.php:155
-#: views/settings/email-reports.blade.php:156
 msgid "Unsaved changes"
 msgstr "Kaydedilmemiş değişiklikler var"
 
@@ -2066,7 +2168,6 @@ msgstr "Bu IP zaten engellenmiş."
 #: views/settings/block-by-role.blade.php:38
 #: views/settings/block-ips.blade.php:38
 #: views/settings/email-reports.blade.php:134
-#: views/settings/email-reports.blade.php:135
 msgid "Input is empty"
 msgstr "Giriş boş"
 
@@ -2086,96 +2187,96 @@ msgstr "Ayarları düzenleme izniniz yok."
 msgid "View all analytics and edit settings"
 msgstr "Tüm analizleri görüntüle ve ayarları düzenle"
 
-#: views/tables/rows.blade.php:26
+#: views/tables/rows.blade.php:30
 msgid "Create your first campaign"
 msgstr "İlk kampanyanızı oluşturun"
 
-#: views/tables/rows.blade.php:20
+#: views/tables/rows.blade.php:25
 msgid "No campaign data found"
 msgstr "Kampanya verisi bulunamadı"
 
-#: IAWP/Independent_Analytics.php:106 views/partials/sidebar.blade.php:22
+#: IAWP/Independent_Analytics.php:118 views/partials/sidebar.blade.php:22
 msgid "Upgrade to Pro"
 msgstr "Pro sürüme yükselt"
 
-#: views/campaign-builder.blade.php:194
+#: views/campaign-builder.blade.php:195
 msgctxt "Created five minutes ago"
 msgid "Created %s"
 msgstr "%s oluşturuldu"
 
-#: views/campaign-builder.blade.php:221
+#: views/campaign-builder.blade.php:222
 msgid "No campaign URLs found"
 msgstr "Kampanya URL'leri bulunamadı"
 
-#: views/campaign-builder.blade.php:183
+#: views/campaign-builder.blade.php:184
 msgid "Latest Campaign URLs"
 msgstr "Son kampanya URL'leri"
 
-#: views/campaign-builder.blade.php:174 views/campaign-builder.blade.php:203
+#: views/campaign-builder.blade.php:175 views/campaign-builder.blade.php:204
 msgid "Copy URL"
 msgstr "Url'i kopyala"
 
-#: views/campaign-builder.blade.php:157
+#: views/campaign-builder.blade.php:158
 msgid "New campaign created"
 msgstr "Yeni kampanya oluşturuldu"
 
-#: views/campaign-builder.blade.php:148
+#: views/campaign-builder.blade.php:149
 msgid "Create Campaign URL"
 msgstr "Kampanya URL'i Oluştur"
 
-#: views/campaign-builder.blade.php:137
+#: views/campaign-builder.blade.php:138
 msgid "Position of the link on the page e.g. author bio"
 msgstr "Bağlantının sayfadaki konumu, örneğin yazar biyografisi"
 
-#: views/campaign-builder.blade.php:134
+#: views/campaign-builder.blade.php:135
 msgid "Bio link"
 msgstr "Biyo bağlantısı"
 
-#: views/campaign-builder.blade.php:123
+#: views/campaign-builder.blade.php:124
 msgid "Keyword used in paid advertising"
 msgstr "Ücretli reklamlarda kullanılan anahtar kelime"
 
-#: views/campaign-builder.blade.php:120
+#: views/campaign-builder.blade.php:121
 msgid "Get website traffic"
 msgstr "Sitenizdeki trafiğini takip edin"
 
-#: views/campaign-builder.blade.php:106
+#: views/campaign-builder.blade.php:107
 msgid "Title of the page or ad"
 msgstr "Sayfanın veya reklamın başlığı"
 
-#: views/campaign-builder.blade.php:102
+#: views/campaign-builder.blade.php:103
 msgid "5 Ways to Get More Traffic"
 msgstr "Daha fazla trafik almanın 5 yolu"
 
-#: views/campaign-builder.blade.php:88
+#: views/campaign-builder.blade.php:89
 msgid "Type of website e.g. Search, Social, Ad"
 msgstr "Web sitesi türü ör. Arama, sosyal, reklam"
 
-#: views/campaign-builder.blade.php:84
+#: views/campaign-builder.blade.php:85
 msgid "Social Media"
 msgstr "Sosyal medya"
 
-#: views/campaign-builder.blade.php:69
+#: views/campaign-builder.blade.php:70
 msgid "Name of the website the link will be placed on"
 msgstr "Bağlantının yerleştirileceği web sitesinin adı"
 
-#: views/campaign-builder.blade.php:53
+#: views/campaign-builder.blade.php:54
 msgid "Leave empty to use your homepage"
 msgstr "Ana sayfanızı kullanmak için boş bırakın"
 
-#: views/campaign-builder.blade.php:44
+#: views/campaign-builder.blade.php:45
 msgid "Landing Page Path"
 msgstr "Açılış sayfası yolu"
 
-#: views/campaign-builder.blade.php:39
+#: views/campaign-builder.blade.php:40
 msgid "Campaign links always lead to your site"
 msgstr "Kampanya bağlantıları her zaman sitenize yönlendirir"
 
-#: views/campaign-builder.blade.php:30
+#: views/campaign-builder.blade.php:31
 msgid "Site URL"
 msgstr "Site URL'i"
 
-#: views/campaign-builder.blade.php:21
+#: views/campaign-builder.blade.php:22
 msgid "Learn how to create campaigns"
 msgstr "Kampanyaların nasıl oluşturulacağını öğrenin"
 
@@ -2183,40 +2284,43 @@ msgstr "Kampanyaların nasıl oluşturulacağını öğrenin"
 msgid "Campaign URL Builder"
 msgstr "Kampanya URL Oluşturucu"
 
-#: IAWP/Tables/Table_Campaigns.php:25 views/campaign-builder.blade.php:128
+#: IAWP/Tables/Table_Campaigns.php:37 views/campaign-builder.blade.php:129
 msgid "Content"
 msgstr "İçerik"
 
-#: IAWP/Tables/Table_Campaigns.php:25 views/campaign-builder.blade.php:114
+#: IAWP/Tables/Table_Campaigns.php:37 views/campaign-builder.blade.php:115
 msgid "Term"
 msgstr "Terim"
 
-#: IAWP/Tables/Table_Campaigns.php:20 IAWP/Tables/Table_Campaigns.php:25
-#: views/campaign-builder.blade.php:96
+#: IAWP/Tables/Table_Campaigns.php:32 IAWP/Tables/Table_Campaigns.php:37
+#: views/campaign-builder.blade.php:97
 msgid "Campaign"
 msgstr "Kampanya"
 
-#: IAWP/Tables/Table_Campaigns.php:25 views/campaign-builder.blade.php:77
+#: IAWP/Tables/Table_Campaigns.php:31 IAWP/Tables/Table_Campaigns.php:37
+#: views/campaign-builder.blade.php:78
 msgid "Medium"
 msgstr "Orta"
 
-#: IAWP/Tables/Table_Campaigns.php:25 views/campaign-builder.blade.php:58
+#: IAWP/Tables/Table_Campaigns.php:30 IAWP/Tables/Table_Campaigns.php:37
+#: views/campaign-builder.blade.php:59
 msgid "Source"
 msgstr "Kaynak"
 
-#: IAWP/Tables/Table_Campaigns.php:25
+#: IAWP/Tables/Table_Campaigns.php:29 IAWP/Tables/Table_Campaigns.php:37
+#: views/woocommerce-order-meta-box.blade.php:22
 msgid "Landing Page"
 msgstr "Açılış sayfası"
 
-#: IAWP/Independent_Analytics.php:259
+#: IAWP/Independent_Analytics.php:297
 msgid "Upgrade to Pro &rarr;"
 msgstr "Pro'ya yükseltin →"
 
-#: views/tables/table.blade.php:91
+#: views/tables/table.blade.php:94
 msgid "Load Next %d Rows"
 msgstr "Sıradaki %d satırı yükle"
 
-#: views/tables/table.blade.php:88
+#: views/tables/table.blade.php:91
 msgid "Showing All Rows"
 msgstr "Tüm satırlar gösteriliyor"
 
@@ -2289,49 +2393,49 @@ msgstr "Genel görünüm sayacı"
 msgid "Open Dashboard"
 msgstr "Kontrol panelini aç"
 
-#: views/tables/rows.blade.php:12
+#: views/tables/rows.blade.php:16
 msgid "No geographic data found"
 msgstr "Coğrafi veri bulunamadı"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:168
+#: IAWP/Date_Range/Relative_Date_Range.php:169
 msgid "Last Year"
 msgstr "Geçen yıl"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:159
+#: IAWP/Date_Range/Relative_Date_Range.php:160
 msgid "This Year"
 msgstr "Bu yıl"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:126
+#: IAWP/Date_Range/Relative_Date_Range.php:127
 msgid "Last Month"
 msgstr "Geçen ay"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:118
+#: IAWP/Date_Range/Relative_Date_Range.php:119
 msgid "This Month"
 msgstr "Bu ay"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:108
+#: IAWP/Date_Range/Relative_Date_Range.php:109
 #: views/settings/view-counter/views-to-count.blade.php:7
 msgid "Last Week"
 msgstr "Geçen hafta"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:101
+#: IAWP/Date_Range/Relative_Date_Range.php:102
 #: views/settings/view-counter/views-to-count.blade.php:6
 msgid "This Week"
 msgstr "Bu hafta"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:66 IAWP/Report_Finder.php:194
+#: IAWP/Date_Range/Relative_Date_Range.php:67 IAWP/Report_Finder.php:194
 #: views/settings/view-counter/views-to-count.blade.php:8
 msgid "Last 7 Days"
 msgstr "Son 7 gün"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:59
+#: IAWP/Date_Range/Relative_Date_Range.php:60
 #: IAWP/Overview/Modules/Recent_Conversions_Module.php:46
 #: IAWP/Overview/Modules/Recent_Views_Module.php:37
 #: views/settings/view-counter/views-to-count.blade.php:5
 msgid "Yesterday"
 msgstr "Dün"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:53 IAWP/Report_Finder.php:190
+#: IAWP/Date_Range/Relative_Date_Range.php:54 IAWP/Report_Finder.php:190
 #: views/settings/view-counter/views-to-count.blade.php:4
 msgid "Today"
 msgstr "Bugün"
@@ -2344,7 +2448,7 @@ msgstr "Şehir"
 msgid "Subdivision"
 msgstr "Alt bölüm"
 
-#: IAWP/Real_Time.php:64 IAWP/Tables/Table_Geo.php:22
+#: IAWP/Real_Time.php:73 IAWP/Tables/Table_Geo.php:22
 #: IAWP/Tables/Table_Geo.php:28
 msgid "Country"
 msgstr "Ülke"
@@ -2353,38 +2457,35 @@ msgstr "Ülke"
 msgid "Continent"
 msgstr "Kıta"
 
-#: IAWP/Admin_Page/Analytics_Page.php:159
+#: IAWP/Admin_Page/Analytics_Page.php:191
 msgctxt "Following text is a noun: DB-IP"
 msgid "Geolocation data powered by"
 msgstr "Geolocation verileri tarafından desteklenmektedir"
 
-#: IAWP/Report_Finder.php:108 views/partials/sidebar.blade.php:106
+#: IAWP/Admin_Page/Analytics_Page.php:238 IAWP/Report_Finder.php:108
+#: views/partials/sidebar.blade.php:100
 msgid "Geographic"
 msgstr "Coğrafi"
 
-#: IAWP/Filters.php:42
-msgid "Filters"
-msgstr "Filtreler"
-
-#: views/tables/rows.blade.php:9
+#: views/tables/rows.blade.php:12
 msgid "No referrers found"
 msgstr "Yönlendiren bulunamadı"
 
-#: views/tables/rows.blade.php:6
+#: views/tables/rows.blade.php:8
 msgid "No views found"
 msgstr "Görünüm bulunamadı"
 
-#: views/quick-stat.blade.php:26
+#: views/quick-stat.blade.php:24
 msgid "vs. previous period"
 msgstr "önceki döneme kıyasla"
 
+#: views/click-tracking/link.blade.php:93
+#: views/click-tracking/menu.blade.php:102
 #: views/date-picker/date-picker.blade.php:45
-#: views/settings/delete.blade.php:39 views/settings/delete.blade.php:59
-#: views/settings/delete.blade.php:82 views/settings/pruner.blade.php:73
-#: views/click-tracking/link.blade.php:105
-#: views/click-tracking/menu.blade.php:106
 #: views/overview/module-editor.blade.php:16
-#: views/overview/module-picker.blade.php:19 views/settings/pruner.blade.php:74
+#: views/overview/module-picker.blade.php:19 views/settings/delete.blade.php:39
+#: views/settings/delete.blade.php:59 views/settings/delete.blade.php:82
+#: views/settings/pruner.blade.php:78
 msgid "Cancel"
 msgstr "İptal"
 
@@ -2405,22 +2506,23 @@ msgstr "Tehlikeli bölge"
 msgid "First day of week"
 msgstr "Haftanın ilk günü"
 
-#: IAWP/Independent_Analytics.php:345 IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:202 IAWP/Tables/Table_Campaigns.php:25
-#: IAWP/Tables/Table_Devices.php:34 IAWP/Tables/Table_Geo.php:28
-#: IAWP/Tables/Table_Pages.php:28 IAWP/Tables/Table_Referrers.php:26
+#: IAWP/Independent_Analytics.php:386 IAWP/Report.php:105
+#: IAWP/Statistics/Click_Statistics.php:23 IAWP/Statistics/Statistics.php:208
+#: IAWP/Tables/Table_Campaigns.php:37 IAWP/Tables/Table_Devices.php:35
+#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Pages.php:29
+#: IAWP/Tables/Table_Referrers.php:30
 msgid "Visitors"
 msgstr "Kullanıcılar"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:73
+#: IAWP/Date_Range/Relative_Date_Range.php:74
 msgid "Last 30 Days"
 msgstr "Son 30 gün"
 
-#: IAWP/Independent_Analytics.php:365 IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
+#: IAWP/Independent_Analytics.php:406 IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
 msgid "Analytics Dashboard"
 msgstr "Analitik kontrol paneli"
 
-#: IAWP/Tables/Table_Pages.php:28
+#: IAWP/Tables/Table_Pages.php:29
 msgid "Post Category"
 msgstr "Yazı kategorisi"
 
@@ -2452,31 +2554,31 @@ msgstr "Pazartesi"
 msgid "Sunday"
 msgstr "Pazar"
 
-#: IAWP/Tables/Table.php:103
+#: IAWP/Tables/Table.php:104
 msgid "(deleted)"
 msgstr "(silindi)"
 
-#: IAWP/Tables/Table_Pages.php:28
+#: IAWP/Tables/Table_Pages.php:29
 msgid "Publish Date"
 msgstr "Yayın tarihi"
 
-#: IAWP/Tables/Table_Pages.php:28
+#: IAWP/Tables/Table_Pages.php:29
 msgid "Page Type"
 msgstr "Sayfa türü"
 
-#: IAWP/Tables/Table_Pages.php:28
+#: IAWP/Tables/Table_Pages.php:29
 msgid "Author"
 msgstr "Yazar"
 
-#: IAWP/Tables/Table_Pages.php:28
+#: IAWP/Tables/Table_Pages.php:29
 msgid "URL"
 msgstr "URL"
 
-#: IAWP/Tables/Table_Pages.php:28
+#: IAWP/Tables/Table_Pages.php:29
 msgid "Title"
 msgstr "Başlık"
 
-#: IAWP/Tables/Table_Referrers.php:26
+#: IAWP/Tables/Table_Referrers.php:25 IAWP/Tables/Table_Referrers.php:30
 msgid "Referrer Type"
 msgstr "Yönlendiren türü"
 
@@ -2510,108 +2612,108 @@ msgstr "Tarih Arşivi (Yıl)"
 
 #: IAWP/Models/Page_Author_Archive.php:32
 #: IAWP/Models/Page_Post_Type_Archive.php:43
-#: views/click-tracking/link.blade.php:111
-#: views/click-tracking/menu.blade.php:37
+#: views/click-tracking/link.blade.php:99
+#: views/click-tracking/menu.blade.php:35
 msgid "Archive"
 msgstr "Arşiv"
 
-#: IAWP/Filters.php:244 IAWP/Rows/Filter.php:104
+#: IAWP/Filters.php:284 IAWP/Rows/Filter.php:68
 msgid "On"
 msgstr "Açık"
 
-#: IAWP/Filters.php:244 IAWP/Rows/Filter.php:108
+#: IAWP/Filters.php:284 IAWP/Rows/Filter.php:72
 msgid "After"
 msgstr "Sonra"
 
-#: IAWP/Filters.php:244 IAWP/Rows/Filter.php:106
+#: IAWP/Filters.php:284 IAWP/Rows/Filter.php:70
 msgid "Before"
 msgstr "Önce"
 
-#: IAWP/Filters.php:242 IAWP/Rows/Filter.php:116
+#: IAWP/Filters.php:282 IAWP/Rows/Filter.php:80
 msgid "Isn't"
 msgstr "Değil"
 
-#: IAWP/Filters.php:242 IAWP/Rows/Filter.php:114
+#: IAWP/Filters.php:282 IAWP/Rows/Filter.php:78
 msgid "Is"
 msgstr "Olan"
 
-#: IAWP/Filters.php:240
+#: IAWP/Filters.php:280
 msgid "Equal to"
 msgstr "Eşit"
 
-#: IAWP/Filters.php:240
+#: IAWP/Filters.php:280
 msgid "Less than"
 msgstr "Daha az"
 
-#: IAWP/Filters.php:240
+#: IAWP/Filters.php:280
 msgid "Greater than"
 msgstr "Şundan büyük"
 
-#: IAWP/Filters.php:238 IAWP/Rows/Filter.php:112
+#: IAWP/Filters.php:278 IAWP/Rows/Filter.php:76
 msgid "Exactly matches"
 msgstr "Tam olarak eşleşiyor"
 
-#: IAWP/Filters.php:238 IAWP/Rows/Filter.php:110
+#: IAWP/Filters.php:278 IAWP/Rows/Filter.php:74
 msgid "Contains"
 msgstr "İçerir"
 
-#: IAWP/Filter_Lists/Page_Type_Filter_List.php:35
+#: IAWP/ColumnOptions/Plugins/PageTypes.php:36
 msgid "404"
 msgstr "404"
 
-#: IAWP/Filter_Lists/Page_Type_Filter_List.php:34
+#: IAWP/ColumnOptions/Plugins/PageTypes.php:35
 msgid "Search Results"
 msgstr "Arama sonuçları"
 
-#: IAWP/Filter_Lists/Page_Type_Filter_List.php:33
+#: IAWP/ColumnOptions/Plugins/PageTypes.php:34
 msgid "Date Archive"
 msgstr "Tarih arşivi"
 
-#: IAWP/Filter_Lists/Page_Type_Filter_List.php:32
+#: IAWP/ColumnOptions/Plugins/PageTypes.php:33
 #: IAWP/Models/Page_Author_Archive.php:40
 msgid "Author Archive"
 msgstr "Yazar arşivi"
 
-#: IAWP/Filter_Lists/Page_Type_Filter_List.php:31
+#: IAWP/ColumnOptions/Plugins/PageTypes.php:32
 msgid "Blog Home"
 msgstr "Blog ana sayfası"
 
-#: IAWP/Filter_Lists/Page_Type_Filter_List.php:19
+#: IAWP/ColumnOptions/Plugins/PageTypes.php:20
 msgid "Tag"
 msgstr "Etiket"
 
-#: IAWP/Filter_Lists/Page_Type_Filter_List.php:18
+#: IAWP/ColumnOptions/Plugins/PageTypes.php:19
 msgid "Category"
 msgstr "Kategori"
 
-#: IAWP/Filter_Lists/Page_Type_Filter_List.php:14
+#: IAWP/ColumnOptions/Plugins/PageTypes.php:15
 msgid "Attachment"
 msgstr "Ek dosya"
 
-#: IAWP/Filter_Lists/Page_Type_Filter_List.php:13
-#: IAWP/Models/Page_Virtual.php:63 IAWP/Real_Time.php:62
-#: IAWP/Tables/Table_Pages.php:23
+#: IAWP/ColumnOptions/Plugins/PageTypes.php:14 IAWP/Models/Page_Virtual.php:63
+#: IAWP/Real_Time.php:71 IAWP/Tables/Table_Pages.php:24
 msgid "Page"
 msgstr "Sayfa"
 
-#: IAWP/Filter_Lists/Page_Type_Filter_List.php:12
+#: IAWP/ColumnOptions/Plugins/PageTypes.php:13
 msgid "Post"
 msgstr "Yazı"
 
-#: IAWP/Filter_Lists/Referrer_Type_Filter_List.php:11
+#: IAWP/ColumnOptions/Plugins/ReferrerTypes.php:12
 msgid "Direct"
 msgstr "Direkt"
 
-#: IAWP/Filter_Lists/Referrer_Type_Filter_List.php:11 IAWP/Real_Time.php:63
-#: IAWP/Tables/Table_Referrers.php:21 IAWP/Tables/Table_Referrers.php:26
+#: IAWP/ColumnOptions/Plugins/ReferrerTypes.php:12 IAWP/Real_Time.php:72
+#: IAWP/Tables/Table_Referrers.php:24 IAWP/Tables/Table_Referrers.php:30
+#: views/woocommerce-order-meta-box.blade.php:4
 msgid "Referrer"
 msgstr "Yönlendiren"
 
-#: IAWP/Filter_Lists/Referrer_Type_Filter_List.php:11
+#: IAWP/ColumnOptions/Plugins/ReferrerTypes.php:12
 msgid "Social"
 msgstr "Sosyal"
 
-#: IAWP/Filter_Lists/Referrer_Type_Filter_List.php:11
+#: IAWP/ColumnOptions/Plugins/ReferrerTypes.php:12
 #: IAWP/Models/Page_Search.php:40
 msgid "Search"
 msgstr "Arama"
@@ -2620,52 +2722,53 @@ msgstr "Arama"
 msgid "Choose a column"
 msgstr "Bir sütun seçin"
 
-#: IAWP/Filters.php:151 IAWP/Rows/Filter.php:96
+#: IAWP/Filters.php:161 IAWP/Rows/Filter.php:60
 msgid "Exclude"
 msgstr "Hariç"
 
-#: IAWP/Filters.php:150 IAWP/Rows/Filter.php:94
+#: IAWP/Filters.php:160 IAWP/Rows/Filter.php:58
 msgid "Include"
 msgstr "Dahil"
 
-#: IAWP/Filters.php:76
+#: IAWP/Filters.php:86
 msgid "Reset"
 msgstr "Sıfırla"
 
-#: IAWP/Filters.php:67 views/date-picker/date-picker.blade.php:39
+#: IAWP/Filters.php:77 views/date-picker/date-picker.blade.php:39
 msgid "Apply"
 msgstr "Uygula"
 
-#: IAWP/Filters.php:58
+#: IAWP/Filters.php:68
 msgid "+ Add another condition"
 msgstr "+ Başka bir koşul ekle"
 
-#: IAWP/Independent_Analytics.php:221
+#: IAWP/Independent_Analytics.php:259
 msgid "Settings"
 msgstr "Ayarlar"
 
-#: IAWP/Email_Reports/Email_Reports.php:168 IAWP/Real_Time.php:63
+#: IAWP/Admin_Page/Analytics_Page.php:238
+#: IAWP/Email_Reports/Email_Reports.php:168 IAWP/Real_Time.php:72
 #: IAWP/Report.php:37 IAWP/Report_Finder.php:106
-#: views/partials/sidebar.blade.php:94
+#: views/partials/sidebar.blade.php:88
 msgid "Referrers"
 msgstr "Yönlendirenler"
 
 #: IAWP/Custom_WordPress_Columns/Views_Column.php:35
-#: IAWP/Independent_Analytics.php:345 IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
-#: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:202
-#: IAWP/Tables/Table_Campaigns.php:25 IAWP/Tables/Table_Devices.php:34
-#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Pages.php:28
-#: IAWP/Tables/Table_Referrers.php:26 views/email/email.blade.php:127
-#: views/real-time.blade.php:88 views/real-time.blade.php:89
+#: IAWP/Independent_Analytics.php:386 IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
+#: IAWP/Report.php:105 IAWP/Statistics/Click_Statistics.php:23
+#: IAWP/Statistics/Statistics.php:208 IAWP/Tables/Table_Campaigns.php:37
+#: IAWP/Tables/Table_Devices.php:35 IAWP/Tables/Table_Geo.php:28
+#: IAWP/Tables/Table_Pages.php:29 IAWP/Tables/Table_Referrers.php:30
+#: views/email/email.blade.php:621 views/real-time.blade.php:88
 msgid "Views"
 msgstr "Sayfa görüntüleme sayısı"
 
-#: IAWP/Independent_Analytics.php:113
+#: IAWP/Independent_Analytics.php:125
 msgid "Knowledge Base"
 msgstr "Bilgi bankası"
 
-#: IAWP/Dashboard_Widget.php:24 IAWP/Independent_Analytics.php:215
-#: IAWP/Independent_Analytics.php:216 IAWP/Interrupt.php:19
+#: IAWP/Dashboard_Widget.php:24 IAWP/Independent_Analytics.php:253
+#: IAWP/Independent_Analytics.php:254 IAWP/Interrupt.php:19
 #: IAWP/Interrupt.php:20
 msgid "Analytics"
 msgstr "Analitik"

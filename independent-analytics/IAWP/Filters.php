@@ -3,25 +3,29 @@
 namespace IAWP;
 
 use IAWP\Tables\Columns\Column;
+use IAWP\Utils\Security;
 use IAWP\Utils\WordPress_Site_Date_Format_Pattern;
 /** @internal */
 class Filters
 {
     public function get_filters_html(array $columns) : string
     {
-        $opts = \IAWP\Dashboard_Options::getInstance();
+        $options = \IAWP\Dashboard_Options::getInstance();
         \ob_start();
         ?>
     <div class="modal-parent filters"
          data-controller="filters"
          data-filters-filters-value="<?php 
-        echo \esc_attr(\json_encode($opts->filters()));
+        echo \esc_attr(\json_encode($options->raw_filters()));
+        ?>"
+         data-filters-filter-logic-value="<?php 
+        echo Security::attr($options->filter_logic());
         ?>"
     >
         <span class="dashicons dashicons-filter"></span>
         <div id="filter-condition-buttons" data-filters-target="conditionButtons" class="filter-condition-buttons">
             <?php 
-        echo $this->condition_buttons_html($opts->filters());
+        echo $this->condition_buttons_html($options->filters());
         ?>
         </div>
         <button id="filters-button" class="filters-button"
@@ -37,9 +41,15 @@ class Filters
              data-filters-target="modal"
         >
             <div class="modal-inner">
-                <div class="title-small">
+                <?php 
+        $select = '<select name="filter_logic" data-filters-target="filterLogic" id="filter_logic" data-action="filters#changeFilterLogic">
+                                    <option value="and" ' . ($options->filter_logic() === 'and' ? 'selected' : '') . '>' . \esc_html__('all', 'independent-analytics') . '</option>
+                                    <option value="or" ' . ($options->filter_logic() === 'or' ? 'selected' : '') . '>' . \esc_html__('any', 'independent-analytics') . '</option>
+                                </select>';
+        ?>
+                <div class="title-small filter-title">
                     <?php 
-        \esc_html_e('Filters', 'independent-analytics');
+        \printf(\__('If %s of the conditions apply', 'independent-analytics'), $select);
         ?>
                     <span data-filters-target="spinner" class="dashicons dashicons-update iawp-spin hidden"></span>
                 </div>
@@ -208,22 +218,52 @@ class Filters
                     $html .= '<input data-filters-target="operand" data-action="keydown->filters#operandKeyDown filters#operandChange" data-column="' . \esc_attr($column->id()) . '" type="number" data-testid="' . \esc_attr($column->id()) . '-operand" placeholder="' . \esc_attr($column->filter_placeholder()) . '" />';
                     break;
                 case 'date':
-                    $html .= '<input type="text" 
+                    $html .= '<input type="text"
                         data-filters-target="operand"
                         data-action="keydown->filters#operandKeyDown filters#operandChange"
                         data-column="' . \esc_attr($column->id()) . '"
                         data-controller="easepick"
-                        data-css="' . \esc_url(\IAWPSCOPED\iawp_url_to('dist/styles/easepick/datepicker.css')) . '" data-dow="' . \absint(\IAWPSCOPED\iawp()->get_option('iawp_dow', 1)) . '" 
-                        data-format="' . \esc_attr(WordPress_Site_Date_Format_Pattern::for_javascript()) . '" 
+                        data-css="' . \esc_url(\IAWPSCOPED\iawp_url_to('dist/styles/easepick/datepicker.css')) . '" data-dow="' . \absint(\IAWPSCOPED\iawp()->get_option('iawp_dow', 1)) . '"
+                        data-format="' . \esc_attr(WordPress_Site_Date_Format_Pattern::for_javascript()) . '"
                         data-testid="' . \esc_attr($column->id()) . '-operand" />';
                     break;
                 case 'select':
                     $html .= '<select data-filters-target="operand" data-column="' . \esc_attr($column->id()) . '" data-testid="' . \esc_attr($column->id()) . '-operand">';
-                    foreach ($column->options() as $option) {
-                        $html .= '<option value="' . \esc_attr($option[0]) . '">' . \esc_html($option[1]) . '</option>';
-                    }
+                    $html .= $this->get_select_options($column);
                     $html .= '</select>';
                     break;
+            }
+        }
+        return $html;
+    }
+    private function get_select_options(Column $column) : string
+    {
+        $html = '';
+        $parents = [];
+        $children_by_parent_id = [];
+        foreach ($column->options()->all() as $option) {
+            if ($option->is_parent()) {
+                $parents[] = $option;
+                continue;
+            }
+            if (!\array_key_exists($option->parent_id, $children_by_parent_id)) {
+                $children_by_parent_id[$option->parent_id] = [];
+            }
+            $children_by_parent_id[$option->parent_id][] = $option;
+        }
+        $has_nesting = \count($children_by_parent_id) > 0;
+        foreach ($parents as $parent) {
+            if ($has_nesting) {
+                $html .= '<optgroup label="' . \esc_attr($parent->label) . '">';
+            }
+            $html .= '<option value="' . \esc_attr($parent->id) . '">' . \esc_html($parent->label) . '</option>';
+            if (\array_key_exists($parent->id, $children_by_parent_id)) {
+                foreach ($children_by_parent_id[$parent->id] as $child) {
+                    $html .= '<option value="' . \esc_attr($child->id) . '">' . \esc_html($child->label) . '</option>';
+                }
+            }
+            if ($has_nesting) {
+                $html .= '</optgroup>';
             }
         }
         return $html;

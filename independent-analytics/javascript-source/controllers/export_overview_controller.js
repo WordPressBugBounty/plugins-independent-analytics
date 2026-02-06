@@ -1,6 +1,7 @@
 import {Controller} from "@hotwired/stimulus"
 import html2pdf from 'html2pdf.js'
 import {Chart} from 'chart.js'
+import {svgToPng} from "../utils/svg-to-png";
 
 export default class extends Controller {
     static values = {
@@ -11,9 +12,9 @@ export default class extends Controller {
         this.element.classList.add('sending')
         this.element.setAttribute('disabled', 'disabled')
 
-        setTimeout(() => {
+        setTimeout(async () => {
             const charts = Object.values(Chart.instances)
-            const mapElements = window.mapInstances || []
+            const mapElements = window.iawpMaps || []
 
             // Assign a temporary unique id to every chart
             charts.forEach((chart) => {
@@ -47,13 +48,9 @@ export default class extends Controller {
                 delete chart.canvas.dataset.chartExportId
             })
 
-            mapElements.forEach((map) => {
-                // Get an image of the chart
-                const base64Image = map.getImageURI()
-
+            for (const map of mapElements) {
                 // Generate an image element to inline
-                const imageElement = document.createElement('img')
-                imageElement.src = base64Image
+                const imageElement = await svgToPng(map.mapImage)
                 imageElement.classList.add('chart-converted-to-image')
 
                 // Swap the chart for the image
@@ -62,7 +59,7 @@ export default class extends Controller {
 
                 // Remove the temporary export id
                 delete map.container.dataset.chartExportId
-            })
+            }
 
             // Prevent stimulus controllers from firing
             clonedPage.querySelectorAll('[data-controller]').forEach((element) => {

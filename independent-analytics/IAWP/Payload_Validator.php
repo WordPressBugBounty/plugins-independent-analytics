@@ -9,6 +9,7 @@ class Payload_Validator
 {
     private $payload;
     private $signature;
+    private ?bool $is_valid = null;
     public function __construct(string $payload, string $signature)
     {
         $this->payload = $payload;
@@ -16,15 +17,10 @@ class Payload_Validator
     }
     public function is_valid() : bool
     {
-        $signature = \md5(Salt::request_payload_salt() . $this->payload);
-        if ($signature !== $this->signature) {
-            return \false;
+        if ($this->is_valid === null) {
+            $this->is_valid = $this->validate();
         }
-        $decoded_payload = \json_decode($this->payload, \true);
-        if ($decoded_payload === null) {
-            return \false;
-        }
-        return \true;
+        return $this->is_valid;
     }
     public function payload() : ?array
     {
@@ -73,6 +69,18 @@ class Payload_Validator
             return null;
         }
         return (array) $row;
+    }
+    private function validate() : bool
+    {
+        $signature = \md5(Salt::request_payload_salt() . $this->payload);
+        if ($signature !== $this->signature) {
+            return \false;
+        }
+        $decoded_payload = \json_decode($this->payload, \true);
+        if ($decoded_payload === null) {
+            return \false;
+        }
+        return \true;
     }
     public static function new(string $payload, string $signature)
     {

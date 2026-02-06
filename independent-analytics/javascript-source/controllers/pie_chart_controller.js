@@ -19,8 +19,9 @@ export default class extends Controller {
     }
 
     renderChart() {
-        const labels = this.dataValue.map((item) => item.label)
-        const values = this.dataValue.map((item) => item.value)
+        const sortedData = this.dataValue.sort((a, b) => b.value - a.value);
+        const labels = sortedData.map((item) => item.label)
+        const values = sortedData.map((item) => item.value)
 
         const data = {
             labels: labels,
@@ -48,6 +49,27 @@ export default class extends Controller {
                         position: 'left',
                         labels: {
                             color: isDarkMode() ? '#ffffff' : '#6D6A73',
+                            boxHeight: 18,
+                            boxWidth: 18,
+                            useBorderRadius: true,
+                            borderRadius: 9,
+                            generateLabels: (chart) => {
+                                const original = Chart.overrides.pie.plugins.legend.labels.generateLabels(chart);
+                                const total = chart.data.datasets[0].data.reduce((sum, value, index) => {
+                                    return chart.getDataVisibility(index) ? sum + value : sum;
+                                }, 0);
+
+                                return original.map((label, index) => {
+                                    const value = chart.data.datasets[0].data[index];
+                                    const dataItem = sortedData[index];
+
+                                    return {
+                                        ...label,
+                                        text: `${label.text} (${this.formatPercent(value, total)})`,
+                                        lineWidth: 0,
+                                    };
+                                });
+                            }
                         }
                     },
                     tooltip: {
@@ -60,8 +82,8 @@ export default class extends Controller {
                             },
                             label: (tooltip) => {
                                 const chart = tooltip.chart
-                                const data = this.dataValue[tooltip.dataIndex]
-                                const total = this.dataValue.reduce((total, dataset, index) => {
+                                const data = sortedData[tooltip.dataIndex]
+                                const total = sortedData.reduce((total, dataset, index) => {
                                     if(!chart.getDataVisibility(index)) {
                                         return total;
                                     }

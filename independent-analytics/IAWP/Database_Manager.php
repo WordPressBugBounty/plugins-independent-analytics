@@ -3,6 +3,7 @@
 namespace IAWP;
 
 use IAWP\Custom_WordPress_Columns\Views_Column;
+use IAWP\Utils\Dir;
 use IAWPSCOPED\Illuminate\Support\Collection;
 /** @internal */
 class Database_Manager
@@ -16,6 +17,7 @@ class Database_Manager
         });
         // Recreate the saved reports
         \IAWP\Report_Finder::insert_default_reports();
+        \IAWP\Report_Finder::insert_default_user_journey_reports();
         $this->delete_overview_report_data();
         $this->delete_all_post_meta();
     }
@@ -25,6 +27,7 @@ class Database_Manager
         $this->delete_all_iawp_user_metadata();
         $this->delete_all_iawp_tables();
         $this->delete_all_post_meta();
+        $this->delete_cached_favicons();
     }
     private function delete_all_iawp_options() : void
     {
@@ -50,6 +53,13 @@ class Database_Manager
             \delete_user_meta($metadata->user_id, $metadata->meta_key);
         }
     }
+    private function delete_cached_favicons() : void
+    {
+        try {
+            Dir::delete(\IAWPSCOPED\iawp_upload_path_to('iawp-favicons/'));
+        } catch (\Throwable $error) {
+        }
+    }
     private function delete_all_iawp_tables() : void
     {
         $this->get_tables()->each(function ($table) {
@@ -70,5 +80,18 @@ class Database_Manager
     private function delete_all_post_meta() : void
     {
         \delete_post_meta_by_key(Views_Column::$meta_key);
+    }
+    public static function register_actions() : void
+    {
+        \add_action('iawp_reset_analytics', function () {
+            $manager = new self();
+            $manager->reset_analytics();
+        });
+        \add_action('iawp_reset_database', function () {
+            $db_version = \intval(\get_option('iawp_db_version', '0'));
+            $manager = new self();
+            $manager->delete_all_data();
+            \update_option('iawp_db_version', $db_version);
+        });
     }
 }

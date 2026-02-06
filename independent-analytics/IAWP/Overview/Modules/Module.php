@@ -172,7 +172,7 @@ abstract class Module
     public function refresh_dataset()
     {
         \delete_option($this->option_name());
-        \update_option($this->option_name(), $this->calculate_dataset(), \true);
+        \update_option($this->option_name(), $this->calculate_dataset(), \false);
     }
     protected function get_dataset_number_of_days() : ?int
     {

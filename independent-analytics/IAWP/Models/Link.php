@@ -18,7 +18,7 @@ class Link extends \IAWP\Models\Model
     }
     public function id() : int
     {
-        return $this->row->click_target_id;
+        return $this->row->link_id;
     }
     public function table_type() : string
     {

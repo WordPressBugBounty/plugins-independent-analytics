@@ -3,7 +3,6 @@
 namespace IAWP\Email_Reports;
 
 use DateTime;
-use IAWP\Email_Reports\Intervals\Monthly;
 use IAWP\Rows\Campaigns;
 use IAWP\Rows\Countries;
 use IAWP\Rows\Device_Types;
@@ -14,6 +13,13 @@ use IAWP\Rows\Referrers;
 use IAWP\Sort_Configuration;
 use IAWP\Statistics\Page_Statistics;
 use IAWP\Statistics\Statistic;
+use IAWP\Tables\Columns\Column;
+use IAWP\Tables\Table_Campaigns;
+use IAWP\Tables\Table_Clicks;
+use IAWP\Tables\Table_Devices;
+use IAWP\Tables\Table_Geo;
+use IAWP\Tables\Table_Pages;
+use IAWP\Tables\Table_Referrers;
 use IAWP\Utils\Timezone;
 use IAWP\Utils\URL;
 /** @internal */
@@ -21,7 +27,7 @@ class Email_Reports
 {
     public function __construct()
     {
-        $monitored_options = ['iawp_email_report_interval', 'iawp_email_report_time', 'iawp_email_report_email_addresses'];
+        $monitored_options = ['iawp_email_report_interval', 'iawp_email_report_time', 'iawp_email_report_email_addresses', 'iawp_email_report_paused'];
         foreach ($monitored_options as $option) {
             \add_action('update_option_' . $option, [$this, 'schedule'], 10, 0);
             \add_action('add_option_' . $option, [$this, 'schedule'], 10, 0);
@@ -33,18 +39,14 @@ class Email_Reports
     }
     public function schedule()
     {
-        $this->unschedule();
+        \wp_unschedule_hook('iawp_send_email_report');
+        if (\get_option('iawp_email_report_paused', '0') === '1') {
+            return;
+        }
         if (empty(\IAWPSCOPED\iawp()->get_option('iawp_email_report_email_addresses', []))) {
             return;
         }
         \wp_schedule_event($this->interval()->next_interval_start()->getTimestamp(), $this->interval()->id(), 'iawp_send_email_report');
-    }
-    public function unschedule()
-    {
-        $timestamp = \wp_next_scheduled('iawp_send_email_report');
-        if (\is_int($timestamp)) {
-            \wp_unschedule_event($timestamp, 'iawp_send_email_report');
-        }
     }
     /**
      * For testing purposes, get the
@@ -90,6 +92,9 @@ class Email_Reports
         $this->schedule();
         $to = \IAWPSCOPED\iawp()->get_option('iawp_email_report_email_addresses', []);
         if (empty($to)) {
+            return;
+        }
+        if (\get_option('iawp_email_report_paused', '0') === '1') {
             return;
         }
         $from = \IAWPSCOPED\iawp()->get_option('iawp_email_report_from_address', \get_option('admin_email'));
@@ -157,35 +162,45 @@ class Email_Reports
         $date_range = $this->interval()->date_range();
         $queries = ['pages' => 'title', 'referrers' => 'referrer', 'countries' => 'country', 'devices' => 'device_type', 'campaigns' => 'title', 'forms' => 'form_title', 'clicks' => 'link_name', 'landing_pages' => 'title', 'exit_pages' => 'title'];
         $top_ten = [];
-        $sort_configuration = new Sort_Configuration('views', 'desc');
         $title = '';
         foreach ($queries as $type => $title) {
             if ($type === 'pages') {
-                $query = new Pages($date_range, 10, null, $sort_configuration);
+                $pages_table = new Table_Pages();
+                $query = new Pages($date_range, $pages_table->sanitize_sort_parameters(), 10);
                 $title = \esc_html__('Pages', 'independent-analytics');
             } elseif ($type === 'referrers') {
-                $query = new Referrers($date_range, 10, null, $sort_configuration);
+                $referrers_table = new Table_Referrers();
+                $query = new Referrers($date_range, $referrers_table->sanitize_sort_parameters(), 10);
                 $title = \esc_html__('Referrers', 'independent-analytics');
             } elseif ($type === 'countries') {
-                $query = new Countries($date_range, 10, null, $sort_configuration);
+                $geo_table = new Table_Geo();
+                $query = new Countries($date_range, $geo_table->sanitize_sort_parameters(), 10);
                 $title = \esc_html__('Countries', 'independent-analytics');
             } elseif ($type === 'devices') {
-                $query = new Device_Types($date_range, 10, null, $sort_configuration);
+                $devices_table = new Table_Devices();
+                $query = new Device_Types($date_range, $devices_table->sanitize_sort_parameters(), 10);
                 $title = \esc_html__('Devices', 'independent-analytics');
             } elseif ($type === 'campaigns') {
-                $query = new Campaigns($date_range, 10, null, $sort_configuration);
+                $campaigns_table = new Table_Campaigns();
+                $query = new Campaigns($date_range, $campaigns_table->sanitize_sort_parameters(), 10);
                 $title = \esc_html__('Campaigns', 'independent-analytics');
             } elseif ($type === 'forms') {
-                $query = new Forms($date_range, 10, null, new Sort_Configuration('submissions', 'desc'));
+                // This is a special case for form submissions which doesn't have an associated table
+                $column = new Column(['id' => 'submissions', 'name' => \__('Submissions', 'independent-analytics'), 'type' => 'int']);
+                $sort_configuration = new Sort_Configuration($column);
+                $query = new Forms($date_range, $sort_configuration, 10);
                 $title = \esc_html__('Forms', 'independent-analytics');
             } elseif ($type === 'clicks') {
-                $query = new Link_Patterns($date_range, 10, null, new Sort_Configuration('link_clicks', 'desc'));
+                $clicks_table = new Table_Clicks();
+                $query = new Link_Patterns($date_range, $clicks_table->sanitize_sort_parameters(), 10);
                 $title = \esc_html__('Link Patterns', 'independent-analytics');
             } elseif ($type === 'landing_pages') {
-                $query = new Pages($date_range, 10, null, new Sort_Configuration('entrances', 'desc'));
+                $pages_table = new Table_Pages();
+                $query = new Pages($date_range, $pages_table->sanitize_sort_parameters('entrances'), 10);
                 $title = \esc_html__('Landing Pages', 'independent-analytics');
             } elseif ($type === 'exit_pages') {
-                $query = new Pages($date_range, 10, null, new Sort_Configuration('exits', 'desc'));
+                $pages_table = new Table_Pages();
+                $query = new Pages($date_range, $pages_table->sanitize_sort_parameters('exits'), 10);
                 $title = \esc_html__('Exit Pages', 'independent-analytics');
             } else {
                 continue;

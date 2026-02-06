@@ -603,7 +603,7 @@ trait HasRelationships
      */
     protected function newRelatedInstance($class)
     {
-        return tap(new $class(), function ($instance) {
+        return \IAWPSCOPED\tap(new $class(), function ($instance) {
             if (!$instance->getConnectionName()) {
                 $instance->setConnection($this->connection);
             }

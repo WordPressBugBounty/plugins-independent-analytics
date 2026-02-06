@@ -67,6 +67,23 @@ class Database
         $row = $wpdb->get_row($wpdb->prepare("\n                SHOW INDEX FROM {$table} WHERE Key_name = %s\n            ", $index));
         return !\is_null($row);
     }
+    public static function column_collation_for(string $table, string $column) : ?string
+    {
+        global $wpdb;
+        try {
+            $rows = $wpdb->get_row($wpdb->prepare("\n                    SHOW FULL COLUMNS FROM {$table} WHERE Field = %s\n                ", $column));
+            if (!$rows) {
+                return null;
+            }
+            $collation = $rows->Collation ?? null;
+            if (!$collation) {
+                return null;
+            }
+            return $collation;
+        } catch (\Throwable $e) {
+        }
+        return null;
+    }
     /**
      * From MySQL: It is not possible to deny a privilege granted at a higher level by absence of that privilege at a lower level.
      *

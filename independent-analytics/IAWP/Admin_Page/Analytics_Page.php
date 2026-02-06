@@ -17,6 +17,7 @@ use IAWP\Real_Time;
 use IAWP\Report;
 use IAWP\Report_Finder;
 use IAWP\Tables\Table;
+use IAWP\Tables\Table_Journeys;
 use IAWP\Utils\Request;
 use IAWP\Utils\Security;
 use IAWPSCOPED\Illuminate\Support\Arr;
@@ -44,6 +45,11 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
             $this->notices();
             return;
         }
+        // User journeys is a very difference animal
+        if ($tab === 'journeys') {
+            $this->user_journey_interface();
+            return;
+        }
         $table_class = Env::get_table($tab);
         $table = new $table_class($options->group());
         $sort_configuration = $table->sanitize_sort_parameters($options->sort_column(), $options->sort_direction());
@@ -52,7 +58,7 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         $examiner_model = null;
         if ($options->is_examiner()) {
             $rows_class = $table->group()->rows_class();
-            $rows = new $rows_class($options->get_date_range(), null, null, $sort_configuration);
+            $rows = new $rows_class($options->get_date_range(), $sort_configuration);
             $id = Request::query_int('examiner');
             $rows->limit_to($id);
             $examiner_model = $rows->rows()[0];
@@ -64,13 +70,91 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         // Never show the map when loading the geo examiner. It'll only ever show a single country anyway.
         if ($tab === 'geo' && !$options->is_examiner()) {
             $table_data_class = $table->group()->rows_class();
-            $geo_data = new $table_data_class($date_rage);
+            $geo_data = new $table_data_class($date_rage, $table->sanitize_sort_parameters());
             $map_data = new Map_Data($geo_data->rows());
             $chart = new Map($map_data->get_country_data(), null, $is_showing_skeleton_ui);
         } else {
             $chart = new Chart($statistics, \false, $is_showing_skeleton_ui);
         }
         $this->interface($table, $stats, $chart, $examiner_model);
+    }
+    private function user_journey_interface()
+    {
+        $options = Dashboard_Options::getInstance();
+        $table = new Table_Journeys();
+        $sort_configuration = $table->sanitize_sort_parameters('created_at', 'DESC');
+        $header = \IAWPSCOPED\iawp_blade()->run('partials.report-header', ['report' => Report_Finder::new()->fetch_current_report(), 'can_edit' => Capability_Manager::can_edit()]);
+        ?>
+        <div data-controller="report"
+             data-report-is-examiner-value="<?php 
+        echo $options->is_examiner() ? '1' : '0';
+        ?>"
+             data-report-name-value="<?php 
+        echo Security::string($options->report_name());
+        ?>"
+             data-report-report-name-value="<?php 
+        echo Security::string($table->group()->singular());
+        ?>"
+             data-report-relative-range-id-value="<?php 
+        echo Security::attr($options->relative_range_id());
+        ?>"
+             data-report-exact-start-value="<?php 
+        echo Security::attr($options->start());
+        ?>"
+             data-report-exact-end-value="<?php 
+        echo Security::attr($options->end());
+        ?>"
+             data-report-group-value="<?php 
+        echo Security::attr($table->group()->id());
+        ?>"
+             data-report-filters-value="<?php 
+        echo \esc_attr(Security::json_encode($options->raw_filters()));
+        ?>"
+             data-report-filter-logic-value="<?php 
+        echo Security::attr($options->filter_logic());
+        ?>"
+             data-report-chart-interval-value="<?php 
+        echo Security::attr($options->chart_interval()->id());
+        ?>"
+             data-report-sort-column-value="<?php 
+        echo Security::attr($sort_configuration->column());
+        ?>"
+             data-report-sort-direction-value="<?php 
+        echo Security::attr($sort_configuration->direction());
+        ?>"
+             data-report-columns-value="<?php 
+        echo \esc_attr(Security::json_encode($table->visible_column_ids()));
+        ?>"
+             data-report-quick-stats-value="<?php 
+        echo \esc_attr(Security::json_encode($options->visible_quick_stats()));
+        ?>"
+             data-report-primary-chart-metric-id-value="<?php 
+        echo \esc_attr($options->primary_chart_metric_id());
+        ?>"
+             data-report-secondary-chart-metric-id-value="<?php 
+        echo \esc_attr($options->secondary_chart_metric_id());
+        ?>"
+        >
+            <div id="report-header-container" class="report-header-container">
+                <?php 
+        echo $header;
+        ?>
+                <?php 
+        $table->output_report_toolbar();
+        ?>
+                <div class="modal-background"></div>
+            </div>
+            <?php 
+        echo $table->get_table_toolbar_markup();
+        ?>
+            <div class="user-journeys">
+                <?php 
+        echo $table->get_table_markup($sort_configuration->column(), $sort_configuration->direction());
+        ?>
+            </div>
+        </div>
+        <?php 
+        $this->notices();
     }
     private function interface(Table $table, $stats, $chart, $examiner_model = null)
     {
@@ -80,18 +164,13 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         $examiner_tabs = '';
         if ($examiner_model) {
             $header = Header::html($table, $examiner_model);
-            $available_tabs = Collection::make($this->tables())->filter(function (array $table) use($examiner_model) {
+            $available_tabs = Collection::make($this->examiner_tabs())->filter(function (array $table) use($examiner_model) {
                 return $table['table_type'] !== $examiner_model->table_type();
             })->values()->all();
             $current = Arr::first($available_tabs);
             $examiner_tabs = \IAWPSCOPED\iawp_blade()->run('examiner.table-tabs', ['tables' => $available_tabs, 'active' => $current['table_type']]);
             $table_class = Env::get_table($current['table_type']);
             $table = new $table_class();
-        }
-        if ($options->is_examiner()) {
-            ?>
-            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-            <?php 
         }
         ?>
         <div data-controller="report"
@@ -117,7 +196,10 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         echo Security::attr($table->group()->id());
         ?>"
              data-report-filters-value="<?php 
-        echo \esc_attr(Security::json_encode($options->filters()));
+        echo \esc_attr(Security::json_encode($options->raw_filters()));
+        ?>"
+             data-report-filter-logic-value="<?php 
+        echo Security::attr($options->filter_logic());
         ?>"
              data-report-chart-interval-value="<?php 
         echo Security::attr($options->chart_interval()->id());
@@ -230,7 +312,7 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
             echo \IAWPSCOPED\iawp_blade()->run('notices.getting-started');
         }
     }
-    private function tables() : array
+    private function examiner_tabs() : array
     {
         return [['table_type' => 'views', 'name' => \__('Pages', 'independent-analytics')], ['table_type' => 'referrers', 'name' => \__('Referrers', 'independent-analytics')], ['table_type' => 'geo', 'name' => \__('Geographic', 'independent-analytics')], ['table_type' => 'devices', 'name' => \__('Devices', 'independent-analytics')], ['table_type' => 'campaigns', 'name' => \__('Campaigns', 'independent-analytics')], ['table_type' => 'clicks', 'name' => \__('Clicks', 'independent-analytics')]];
     }

@@ -426,7 +426,7 @@ trait HasAttributes
             }
             throw new LogicException(\sprintf('%s::%s must return a relationship instance.', static::class, $method));
         }
-        return tap($relation->getResults(), function ($results) use($method) {
+        return \IAWPSCOPED\tap($relation->getResults(), function ($results) use($method) {
             $this->setRelation($method, $results);
         });
     }
@@ -887,7 +887,7 @@ trait HasAttributes
      */
     protected function getArrayAttributeWithValue($path, $key, $value)
     {
-        return tap($this->getArrayAttributeByKey($key), function (&$array) use($path, $value) {
+        return \IAWPSCOPED\tap($this->getArrayAttributeByKey($key), function (&$array) use($path, $value) {
             Arr::set($array, \str_replace('->', '.', $path), $value);
         });
     }

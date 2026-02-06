@@ -45,7 +45,7 @@ abstract class HasOneOrMany extends Relation
      */
     public function make(array $attributes = [])
     {
-        return tap($this->related->newInstance($attributes), function ($instance) {
+        return \IAWPSCOPED\tap($this->related->newInstance($attributes), function ($instance) {
             $this->setForeignAttributesForCreate($instance);
         });
     }
@@ -212,7 +212,7 @@ abstract class HasOneOrMany extends Relation
      */
     public function updateOrCreate(array $attributes, array $values = [])
     {
-        return tap($this->firstOrNew($attributes), function ($instance) use($values) {
+        return \IAWPSCOPED\tap($this->firstOrNew($attributes), function ($instance) use($values) {
             $instance->fill($values);
             $instance->save();
         });
@@ -249,7 +249,7 @@ abstract class HasOneOrMany extends Relation
      */
     public function create(array $attributes = [])
     {
-        return tap($this->related->newInstance($attributes), function ($instance) {
+        return \IAWPSCOPED\tap($this->related->newInstance($attributes), function ($instance) {
             $this->setForeignAttributesForCreate($instance);
             $instance->save();
         });

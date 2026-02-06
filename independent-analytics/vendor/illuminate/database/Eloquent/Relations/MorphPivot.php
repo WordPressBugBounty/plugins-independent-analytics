@@ -59,7 +59,7 @@ class MorphPivot extends Pivot
         }
         $query = $this->getDeleteQuery();
         $query->where($this->morphType, $this->morphClass);
-        return tap($query->delete(), function () {
+        return \IAWPSCOPED\tap($query->delete(), function () {
             $this->fireModelEvent('deleted', \false);
         });
     }

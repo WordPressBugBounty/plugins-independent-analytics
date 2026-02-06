@@ -32,7 +32,7 @@ class Map_Module extends \IAWP\Overview\Modules\Module
             $filters = null;
         }
         $rows_class = $table->group()->rows_class();
-        $rows_query = new $rows_class($date_range, null, $filters, $sort_configuration);
+        $rows_query = new $rows_class($date_range, $sort_configuration, null, $filters);
         $rows = $rows_query->rows();
         $map_data = new Map_Data($rows);
         return $map_data->get_country_data();

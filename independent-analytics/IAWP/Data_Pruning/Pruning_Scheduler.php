@@ -85,16 +85,9 @@ class Pruning_Scheduler
         $cutoff = \get_option('iawp_pruning_cutoff', '');
         $this->update_pruning_cutoff($cutoff);
     }
-    public function unschedule() : void
-    {
-        $scheduled_at_timestamp = \wp_next_scheduled('iawp_prune');
-        if (\is_int($scheduled_at_timestamp)) {
-            \wp_unschedule_event($scheduled_at_timestamp, 'iawp_prune');
-        }
-    }
     private function schedule_pruning(string $cutoff) : void
     {
-        $this->unschedule();
+        \wp_unschedule_hook('iawp_prune');
         if ($cutoff === 'disabled') {
             return;
         }

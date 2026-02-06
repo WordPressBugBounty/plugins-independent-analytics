@@ -66,7 +66,7 @@ class DeviceDetector
     /**
      * Current version number of DeviceDetector
      */
-    public const VERSION = '6.3.2';
+    public const VERSION = '6.4.8';
     /**
      * Constant used as value for unknown browser / os
      */
@@ -645,7 +645,7 @@ class DeviceDetector
      */
     protected function hasAndroidTableFragment() : bool
     {
-        $regex = 'Android( [\\.0-9]+)?; Tablet;|Tablet(?! PC)|.*\\-tablet$';
+        $regex = 'Android( [.0-9]+)?; Tablet;|Tablet(?! PC)|.*\\-tablet$';
         return !!$this->matchUserAgent($regex);
     }
     /**
@@ -655,7 +655,7 @@ class DeviceDetector
      */
     protected function hasAndroidMobileFragment() : bool
     {
-        $regex = 'Android( [\\.0-9]+)?; Mobile;|.*\\-mobile$';
+        $regex = 'Android( [.0-9]+)?; Mobile;|.*\\-mobile$';
         return !!$this->matchUserAgent($regex);
     }
     /**
@@ -665,7 +665,7 @@ class DeviceDetector
      */
     protected function hasAndroidVRFragment() : bool
     {
-        $regex = 'Android( [\\.0-9]+)?; Mobile VR;| VR ';
+        $regex = 'Android( [.0-9]+)?; Mobile VR;| VR ';
         return !!$this->matchUserAgent($regex);
     }
     /**
@@ -795,7 +795,7 @@ class DeviceDetector
          * Note: We do not check for browser (family) here, as there might be mobile apps using Chrome, that won't have
          *       a detected browser, but can still be detected. So we check the useragent for Chrome instead.
          */
-        if (null === $this->device && 'Android' === $osFamily && $this->matchUserAgent('Chrome/[\\.0-9]*')) {
+        if (null === $this->device && 'Android' === $osFamily && $this->matchUserAgent('Chrome/[.0-9]*')) {
             if ($this->matchUserAgent('(?:Mobile|eliboM)')) {
                 $this->device = AbstractDeviceParser::DEVICE_TYPE_SMARTPHONE;
             } else {
@@ -842,9 +842,15 @@ class DeviceDetector
             $this->device = AbstractDeviceParser::DEVICE_TYPE_SMARTPHONE;
         }
         /**
-         * All unknown devices under running Java ME are more likely a features phones
+         * All unknown devices under running Java ME are more likely features phones
          */
         if ('Java ME' === $osName && null === $this->device) {
+            $this->device = AbstractDeviceParser::DEVICE_TYPE_FEATURE_PHONE;
+        }
+        /**
+         * All devices running KaiOS are more likely features phones
+         */
+        if ('KaiOS' === $osName) {
             $this->device = AbstractDeviceParser::DEVICE_TYPE_FEATURE_PHONE;
         }
         /**
@@ -860,15 +866,41 @@ class DeviceDetector
             $this->device = AbstractDeviceParser::DEVICE_TYPE_TABLET;
         }
         /**
+         * All devices running Puffin Secure Browser that contain letter 'D' are assumed to be desktops
+         */
+        if (null === $this->device && $this->matchUserAgent('Puffin/(?:\\d+[.\\d]+)[LMW]D')) {
+            $this->device = AbstractDeviceParser::DEVICE_TYPE_DESKTOP;
+        }
+        /**
+         * All devices running Puffin Web Browser that contain letter 'P' are assumed to be smartphones
+         */
+        if (null === $this->device && $this->matchUserAgent('Puffin/(?:\\d+[.\\d]+)[AIFLW]P')) {
+            $this->device = AbstractDeviceParser::DEVICE_TYPE_SMARTPHONE;
+        }
+        /**
+         * All devices running Puffin Web Browser that contain letter 'T' are assumed to be tablets
+         */
+        if (null === $this->device && $this->matchUserAgent('Puffin/(?:\\d+[.\\d]+)[AILW]T')) {
+            $this->device = AbstractDeviceParser::DEVICE_TYPE_TABLET;
+        }
+        /**
          * All devices running Opera TV Store are assumed to be a tv
          */
         if ($this->matchUserAgent('Opera TV Store| OMI/')) {
             $this->device = AbstractDeviceParser::DEVICE_TYPE_TV;
         }
         /**
+         * All devices running Coolita OS are assumed to be a tv
+         */
+        if ('Coolita OS' === $osName) {
+            $this->device = AbstractDeviceParser::DEVICE_TYPE_TV;
+            $this->brand = 'coocaa';
+        }
+        /**
          * All devices that contain Andr0id in string are assumed to be a tv
          */
-        if ($this->matchUserAgent('Andr0id|(?:Android(?: UHD)?|Google) TV|\\(lite\\) TV|BRAVIA')) {
+        $hasDeviceTvType = \false === \in_array($this->device, [AbstractDeviceParser::DEVICE_TYPE_TV, AbstractDeviceParser::DEVICE_TYPE_PERIPHERAL]) && $this->matchUserAgent('Andr0id|(?:Android(?: UHD)?|Google) TV|\\(lite\\) TV|BRAVIA|Firebolt| TV$');
+        if ($hasDeviceTvType) {
             $this->device = AbstractDeviceParser::DEVICE_TYPE_TV;
         }
         /**

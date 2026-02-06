@@ -2,6 +2,7 @@ import {Controller} from "@hotwired/stimulus"
 import {downloadCSV} from '../download'
 import html2pdf from 'html2pdf.js';
 import {Chart} from 'chart.js'
+import {svgToPng} from "../utils/svg-to-png";
 
 class Report_Controller extends Controller {
     /**
@@ -25,7 +26,8 @@ class Report_Controller extends Controller {
         quickStats: Array,
         primaryChartMetricId: String,
         secondaryChartMetricId: String,
-        filters: Array
+        filters: Array,
+        filterLogic: String
     }
 
     tableType = undefined
@@ -35,6 +37,7 @@ class Report_Controller extends Controller {
     columns = undefined
     quickStats = undefined
     filters = []
+    filterLogic = undefined
     sortColumn = undefined
     sortDirection = undefined
     group = undefined
@@ -57,6 +60,7 @@ class Report_Controller extends Controller {
         this.primaryChartMetricId = this.primaryChartMetricIdValue
         this.secondaryChartMetricId = this.secondaryChartMetricIdValue
         this.filters = this.filtersValue
+        this.filterLogic = this.filterLogicValue
         this.tableType = jQuery('#data-table').data('table-name')
         document.addEventListener('iawp:changeDates', this.datesChanged)
         document.addEventListener('iawp:changeColumns', this.columnsChanged)
@@ -141,10 +145,12 @@ class Report_Controller extends Controller {
 
     filtersChanged = (e) => {
         this.filters = e.detail.filters
+        this.filterLogic = e.detail.filterLogic
         this.page = 1;
 
         this.emitChangedOption({
-            'filters': this.filters
+            'filters': this.filters,
+            'filter_logic': this.filterLogic,
         })
         this.fetch({showLoadingOverlay: e.detail.showLoadingOverlay})
     }
@@ -231,6 +237,7 @@ class Report_Controller extends Controller {
         const data = {
             ...iawpActions.filter,
             'filters': this.filters,
+            'filter_logic': this.filterLogic,
             'exact_start': this.exactStart,
             'exact_end': this.exactEnd,
             'is_new_date_range': newDateRange,
@@ -276,8 +283,7 @@ class Report_Controller extends Controller {
             this.filters = response.filters
             this.chartInterval = response.chartInterval
 
-            jQuery('#iawp-columns .row-number').text(response.totalNumberOfRows.toLocaleString());
-            document.getElementById('data-table').setAttribute('data-total-number-of-rows', response.totalNumberOfRows)
+
             document.dispatchEvent(
                 new CustomEvent('iawp:fetchedReport')
             )
@@ -312,7 +318,7 @@ class Report_Controller extends Controller {
             }
 
             if(isExaminer) {
-                jQuery('#table-toolbar').replaceWith(response.table_toolbar)
+                jQuery('#table-toolbar').replaceWith(response.tableToolbar)
             }
 
             if(isExaminer && isInitialFetch) {
@@ -349,7 +355,14 @@ class Report_Controller extends Controller {
                 this.loadMoreTarget.removeAttribute('disabled')
             }
 
+            jQuery('#iawp-columns .row-number').text(response.totalNumberOfRows.toLocaleString());
+            document.getElementById('data-table').setAttribute('data-total-number-of-rows', response.totalNumberOfRows)
+
             jQuery('#iawp-parent').removeClass('loading');
+
+            if(!isInitialFetch && response.groupId === 'journey') {
+                document.body.scrollIntoView({ behavior: 'instant', block: 'start' })
+            }
         });
     }
 
@@ -486,9 +499,9 @@ class Report_Controller extends Controller {
         this.exportPDFTarget.classList.add('sending')
         this.exportPDFTarget.setAttribute('disabled', 'disabled')
 
-        setTimeout(() => {
+        setTimeout(async () => {
             const charts = Object.values(Chart.instances)
-            const mapElements = window.mapInstances || []
+            const mapElements = window.iawpMaps || []
 
             // Assign a temporary unique id to every chart
             charts.forEach((chart) => {
@@ -522,13 +535,9 @@ class Report_Controller extends Controller {
                 delete chart.canvas.dataset.chartExportId
             })
 
-            mapElements.forEach((map) => {
-                // Get an image of the chart
-                const base64Image = map.getImageURI()
-
+            for (const map of mapElements) {
                 // Generate an image element to inline
-                const imageElement = document.createElement('img')
-                imageElement.src = base64Image
+                const imageElement = await svgToPng(map.mapImage);
                 imageElement.classList.add('chart-converted-to-image')
 
                 // Swap the chart for the image
@@ -537,7 +546,7 @@ class Report_Controller extends Controller {
 
                 // Remove the temporary export id
                 delete map.container.dataset.chartExportId
-            })
+            }
 
             // Prevent stimulus controllers from firing
             clonedPage.querySelectorAll('[data-controller]').forEach((element) => {
@@ -570,6 +579,7 @@ class Report_Controller extends Controller {
                     orientation: 'landscape',
                 },
             }
+
             html2pdf().set(options).from(clonedPage).toContainer().save().then(() => {
                 this.exportPDFTarget.classList.add('sent')
                 this.exportPDFTarget.classList.remove('sending')

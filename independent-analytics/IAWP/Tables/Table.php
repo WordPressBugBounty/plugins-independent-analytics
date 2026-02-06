@@ -64,6 +64,10 @@ abstract class Table
         }
         return $visible_columns;
     }
+    public function allow_downloading() : bool
+    {
+        return \true;
+    }
     public function group() : Group
     {
         return $this->group;
@@ -142,8 +146,8 @@ abstract class Table
             return Security::string(\date(WordPress_Site_Date_Format_Pattern::for_php(), \strtotime($row->date())));
         } elseif ($column_id == 'type' && \method_exists($row, 'icon') && \method_exists($row, 'type')) {
             return $row->icon(0) . ' ' . Security::string($row->type());
-        } elseif ($column_id == 'referrer' && $row->has_link()) {
-            return '<a href="' . \esc_url($row->referrer_url()) . '" target="_blank" class="external-link">' . Security::string($row->referrer()) . '<span class="dashicons dashicons-external"></span></a>';
+        } elseif ($column_id == 'referrer') {
+            return \IAWPSCOPED\iawp_render('tables.referrer-column', ['row' => $row]);
         } elseif ($column_id === 'device_type') {
             return Icon_Directory_Factory::device_types()->find($row->device_type()) . Security::string($row->device_type());
         } elseif ($column_id === 'browser') {
@@ -163,7 +167,7 @@ abstract class Table
             if (\is_string($value) && URL::new($value)->is_valid_url()) {
                 return '<a href="' . \esc_url($value) . '" target="_blank" class="external-link">' . \esc_url(\urldecode($value)) . '<span class="dashicons dashicons-external"></span></a>';
             }
-            return $value;
+            return Security::string($value);
         } else {
             return Security::string($row->{$column_id}());
         }
@@ -202,10 +206,12 @@ abstract class Table
         </div>
         <div class="filter-parent">
             <?php 
-        echo $this->filters()->get_filters_html($this->get_columns());
+        echo $this->filters()->get_filters_html($this->columns_that_can_be_filtered());
         ?>
         </div>
-        <div class="download-options-parent" data-controller="modal">
+        <div class="download-options-parent <?php 
+        echo $this->allow_downloading() ? "" : "hide";
+        ?>" data-controller="modal">
             <div class="modal-parent downloads">
                 <button id="download-options" data-modal-target="modalButton" data-action="click->modal#toggleModal" class="download-options">
                     <?php 
@@ -256,7 +262,7 @@ abstract class Table
     }
     public function filters_template_html() : string
     {
-        return $this->filters()->get_condition_html($this->get_columns());
+        return $this->filters()->get_condition_html($this->columns_that_can_be_filtered());
     }
     public function filters_condition_buttons_html(array $filters) : string
     {
@@ -329,11 +335,15 @@ abstract class Table
             return $this->sanitize_filter($filter);
         })->filter()->values()->all();
     }
+    public function resolve_filter_conflicts(array $filters, string $filter_logic) : array
+    {
+        return $filters;
+    }
     public function sanitize_filter(array $filter) : ?Filter
     {
         // column, inclusion, operator, operand
         $column = $this->get_column($filter['column']);
-        if (\is_null($column)) {
+        if ($column === null || !$column->can_be_filtered()) {
             return null;
         }
         $valid_inclusions = ['include', 'exclude'];
@@ -350,27 +360,16 @@ abstract class Table
         if (\strlen($operand) === 0) {
             return null;
         }
-        if ($column->database_column() === 'cached_url' && $filter['operator'] === 'exact') {
+        if ($column->id() === 'url' && $filter['operator'] === 'exact') {
             $url = new URL($filter['operand']);
             if (!$url->is_valid_url()) {
                 $filter['operand'] = \site_url($filter['operand']);
             }
         }
-        // Link rules can be archived and then deleted by the user. That means that there's a very
-        // reasonable chance that a report is filtering by an id for a rule that's since been
-        // removed. We need to check and make sure that filters link rules still exist.
-        if ($column->id() === 'link_name') {
-            $match = \false;
-            foreach ($column->options() as $option) {
-                if ((int) $option[0] === (int) $filter['operand']) {
-                    $match = \true;
-                }
-            }
-            if (!$match) {
-                return null;
-            }
+        if ($column->options() && !$column->options()->contains($filter['operand'])) {
+            return null;
         }
-        return new Filter(['inclusion' => Security::string($filter['inclusion']), 'column' => $column->id(), 'operator' => Security::string($filter['operator']), 'operand' => Security::string($filter['operand']), 'database_column' => $column->database_column()]);
+        return new Filter(['inclusion' => Security::string($filter['inclusion']), 'operator' => Security::string($filter['operator']), 'operand' => Security::string($filter['operand']), 'column' => $column]);
     }
     public function get_column(string $id) : ?Column
     {
@@ -385,14 +384,14 @@ abstract class Table
     }
     public function sanitize_sort_parameters(?string $sort_column = null, ?string $sort_direction = 'desc') : Sort_Configuration
     {
-        if (\is_null($sort_column)) {
-            return new Sort_Configuration($this->default_sorting_column);
+        if ($sort_column === null) {
+            $sort_column = $this->default_sorting_column;
         }
         $column = $this->get_column($sort_column);
-        if (\is_null($column) || !$column->is_enabled_for_group($this->group)) {
-            return new Sort_Configuration($this->default_sorting_column);
+        if ($column === null || !$column->is_enabled_for_group($this->group)) {
+            $column = $this->get_column($this->default_sorting_column);
         }
-        return new Sort_Configuration($sort_column, $sort_direction, $column->is_nullable());
+        return new Sort_Configuration($column, $sort_direction);
     }
     public function get_rendered_template(array $rows, bool $just_rows, string $sort_column, string $sort_direction)
     {
@@ -476,5 +475,9 @@ abstract class Table
     private function filters()
     {
         return $this->filters;
+    }
+    private function columns_that_can_be_filtered() : array
+    {
+        return Collection::make($this->get_columns())->filter(fn(Column $column) => $column->can_be_filtered())->all();
     }
 }

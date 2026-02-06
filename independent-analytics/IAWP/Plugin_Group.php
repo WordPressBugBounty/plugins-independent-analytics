@@ -94,21 +94,24 @@ class Plugin_Group
      */
     public static function get_plugin_groups() : array
     {
-        return [new self(['id' => 'general', 'name' => \__('General', 'independent-analytics')]), new self(['id' => 'ecommerce', 'name' => self::get_ecommerce_label(), 'requires_pro' => \true, 'has_active_group_plugins' => \IAWPSCOPED\iawp()->is_ecommerce_support_enabled(), 'upgrade_message' => \__('Upgrade to Independent Analytics Pro to get eCommerce stats.', 'independent-analytics'), 'upgrade_link' => 'https://independentwp.com/features/woocommerce-analytics/?utm_source=User+Dashboard&utm_medium=WP+Admin&utm_campaign=Stat+Toggle+Link', 'activate_message' => \__('Activate a supported eCommerce plugin to display these stats.', 'independent-analytics'), 'activate_link' => 'https://independentwp.com/knowledgebase/woocommerce/supported-ecommerce-plugins/']), new self(['id' => 'forms', 'name' => \__('Forms', 'independent-analytics'), 'requires_pro' => \true, 'has_active_group_plugins' => \IAWPSCOPED\iawp()->is_form_submission_support_enabled(), 'upgrade_message' => self::form_group_upgrade_message(), 'upgrade_link' => 'https://independentwp.com/features/form-tracking/?utm_source=User+Dashboard&utm_medium=WP+Admin&utm_campaign=Stat+Toggle+Link', 'activate_message' => \__('Activate a supported form plugin to display these stats.', 'independent-analytics'), 'activate_link' => 'https://independentwp.com/knowledgebase/form-tracking/track-form-submissions/', 'no_tracked_data_message' => \__('Your forms will show up here once a submission has been recorded.', 'independent-analytics')])];
+        return [new self(['id' => 'general', 'name' => \__('General', 'independent-analytics')]), new self(['id' => 'conversions', 'name' => \__('Conversions', 'independent-analytics')]), new self(['id' => 'campaigns', 'name' => \__('Campaigns', 'independent-analytics')]), new self(['id' => 'ecommerce', 'name' => self::get_ecommerce_label(), 'requires_pro' => \true, 'has_active_group_plugins' => \IAWPSCOPED\iawp()->is_ecommerce_support_enabled(), 'upgrade_message' => \__('Upgrade to Independent Analytics Pro to get eCommerce stats.', 'independent-analytics'), 'upgrade_link' => 'https://independentwp.com/features/woocommerce-analytics/?utm_source=User+Dashboard&utm_medium=WP+Admin&utm_campaign=Stat+Toggle+Link', 'activate_message' => \__('Activate a supported eCommerce plugin to display these stats.', 'independent-analytics'), 'activate_link' => 'https://independentwp.com/knowledgebase/woocommerce/supported-ecommerce-plugins/']), new self(['id' => 'forms', 'name' => \__('Forms', 'independent-analytics'), 'requires_pro' => \true, 'has_active_group_plugins' => \IAWPSCOPED\iawp()->is_form_submission_support_enabled(), 'upgrade_message' => self::form_group_upgrade_message(), 'upgrade_link' => 'https://independentwp.com/features/form-tracking/?utm_source=User+Dashboard&utm_medium=WP+Admin&utm_campaign=Stat+Toggle+Link', 'activate_message' => \__('Activate a supported form plugin to display these stats.', 'independent-analytics'), 'activate_link' => 'https://independentwp.com/knowledgebase/form-tracking/track-form-submissions/', 'no_tracked_data_message' => \__('Your forms will show up here once a submission has been recorded.', 'independent-analytics')])];
     }
     private static function get_ecommerce_label() : string
     {
-        if (\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_edd_support_enabled() && !\IAWPSCOPED\iawp()->is_pmpro_support_enabled()) {
+        if (\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_edd_support_enabled() && !\IAWPSCOPED\iawp()->is_pmpro_support_enabled() && !\IAWPSCOPED\iawp()->is_fluent_cart_support_enabled()) {
             return 'WooCommerce';
         }
-        if (\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_edd_support_enabled() && !\IAWPSCOPED\iawp()->is_pmpro_support_enabled()) {
+        if (\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_edd_support_enabled() && !\IAWPSCOPED\iawp()->is_pmpro_support_enabled() && !\IAWPSCOPED\iawp()->is_fluent_cart_support_enabled()) {
             return 'SureCart';
         }
-        if (\IAWPSCOPED\iawp()->is_edd_support_enabled() && !\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_pmpro_support_enabled()) {
+        if (\IAWPSCOPED\iawp()->is_edd_support_enabled() && !\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_pmpro_support_enabled() && !\IAWPSCOPED\iawp()->is_fluent_cart_support_enabled()) {
             return 'Easy Digital Downloads';
         }
-        if (\IAWPSCOPED\iawp()->is_pmpro_support_enabled() && !\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_edd_support_enabled()) {
+        if (\IAWPSCOPED\iawp()->is_pmpro_support_enabled() && !\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_edd_support_enabled() && !\IAWPSCOPED\iawp()->is_fluent_cart_support_enabled()) {
             return 'Paid Memberships Pro';
+        }
+        if (\IAWPSCOPED\iawp()->is_fluent_cart_support_enabled() && !\IAWPSCOPED\iawp()->is_woocommerce_support_enabled() && !\IAWPSCOPED\iawp()->is_surecart_support_enabled() && !\IAWPSCOPED\iawp()->is_edd_support_enabled() && !\IAWPSCOPED\iawp()->is_pmpro_support_enabled()) {
+            return 'FluentCart';
         }
         return \__('eCommerce', 'independent-analytics');
     }

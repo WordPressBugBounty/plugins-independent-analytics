@@ -11,6 +11,11 @@ use IAWP\Rows\Countries;
 use IAWP\Rows\Device_Types;
 use IAWP\Rows\Pages;
 use IAWP\Rows\Referrers;
+use IAWP\Tables\Table_Campaigns;
+use IAWP\Tables\Table_Devices;
+use IAWP\Tables\Table_Geo;
+use IAWP\Tables\Table_Pages;
+use IAWP\Tables\Table_Referrers;
 use IAWP\Utils\Singleton;
 /** @internal */
 class Real_Time
@@ -37,24 +42,28 @@ class Real_Time
         $five_minute_date_range = new Exact_Date_Range($five_minutes_ago, new DateTime(), \false);
         $current_traffic_finder = new \IAWP\Current_Traffic_Finder($five_minute_date_range);
         $current_traffic = $current_traffic_finder->fetch();
-        $views_sort_configuration = new \IAWP\Sort_Configuration('views');
-        $pages = new Pages($five_minute_date_range, 10, null, $views_sort_configuration);
+        $pages_table = new Table_Pages();
+        $pages = new Pages($five_minute_date_range, $pages_table->sanitize_sort_parameters(), 10);
         $page_rows = \array_map(function ($row, $index) {
             return ['id' => $row->id(), 'position' => $index + 1, 'title' => $row->title(), 'views' => $row->views(), 'subtitle' => $row->most_popular_subtitle()];
         }, $pages->rows(), \array_keys($pages->rows()));
-        $referrers = new Referrers($five_minute_date_range, 10, null, $views_sort_configuration);
+        $referrers_table = new Table_Referrers();
+        $referrers = new Referrers($five_minute_date_range, $referrers_table->sanitize_sort_parameters(), 10);
         $referrer_rows = \array_map(function ($row, $index) {
             return ['id' => $row->referrer(), 'position' => $index + 1, 'title' => $row->referrer(), 'views' => $row->views()];
         }, $referrers->rows(), \array_keys($referrers->rows()));
-        $countries = new Countries($five_minute_date_range, 10, null, $views_sort_configuration);
+        $geo_table = new Table_Geo();
+        $countries = new Countries($five_minute_date_range, $geo_table->sanitize_sort_parameters(), 10);
         $country_rows = \array_map(function ($row, $index) {
             return ['id' => $row->country(), 'position' => $index + 1, 'title' => $row->country(), 'views' => $row->views(), 'flag' => \IAWP\Icon_Directory_Factory::flags()->find($row->country_code())];
         }, $countries->rows(), \array_keys($countries->rows()));
-        $campaigns = new Campaigns($five_minute_date_range, 10, null, $views_sort_configuration);
+        $campaigns_table = new Table_Campaigns();
+        $campaigns = new Campaigns($five_minute_date_range, $campaigns_table->sanitize_sort_parameters(), 10);
         $campaign_rows = \array_map(function ($row, $index) {
             return ['id' => $row->params(), 'position' => $index + 1, 'title' => $row->utm_campaign(), 'views' => $row->views()];
         }, $campaigns->rows(), \array_keys($campaigns->rows()));
-        $device_types = new Device_Types($five_minute_date_range, 10, null, $views_sort_configuration);
+        $devices_table = new Table_Devices();
+        $device_types = new Device_Types($five_minute_date_range, $devices_table->sanitize_sort_parameters(), 10);
         $device_rows = \array_map(function ($row, $index) {
             return ['id' => $row->device_type(), 'position' => $index + 1, 'title' => $row->device_type(), 'views' => $row->views()];
         }, $device_types->rows(), \array_keys($device_types->rows()));

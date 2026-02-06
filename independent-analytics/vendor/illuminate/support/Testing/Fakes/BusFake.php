@@ -231,7 +231,7 @@ class BusFake implements QueueingDispatcher
      */
     protected function resetChainPropertiesToDefaults($job)
     {
-        return tap(clone $job, function ($job) {
+        return \IAWPSCOPED\tap(clone $job, function ($job) {
             $job->chainConnection = null;
             $job->chainQueue = null;
             $job->chainCatchCallbacks = null;

@@ -29,7 +29,7 @@ class Submission
     private function get_form_id() : int
     {
         $forms_table = Query::get_table_name(Query::FORMS);
-        Illuminate_Builder::new()->from($forms_table)->updateOrInsert(['plugin_id' => $this->plugin_id, 'plugin_form_id' => $this->plugin_form_id], ['cached_form_title' => $this->form_title]);
+        Illuminate_Builder::new()->from($forms_table)->updateOrInsert(['plugin_id' => $this->plugin_id, 'plugin_form_id' => $this->plugin_form_id], ['cached_form_title' => \substr($this->form_title, 0, 64)]);
         return Illuminate_Builder::new()->from($forms_table)->where(['plugin_id' => $this->plugin_id, 'plugin_form_id' => $this->plugin_form_id])->value('form_id');
     }
 }

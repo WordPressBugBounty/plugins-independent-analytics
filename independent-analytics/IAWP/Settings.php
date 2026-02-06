@@ -31,7 +31,7 @@ class Settings
                 $input_defaults[$i] = $saved[$i];
             }
             $interval = Interval_Factory::from_option();
-            echo \IAWPSCOPED\iawp_blade()->run('settings.email-reports', ['is_scheduled' => \wp_next_scheduled('iawp_send_email_report'), 'scheduled_date' => \IAWPSCOPED\iawp()->email_reports->next_email_at_for_humans(), 'interval' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_interval', 'monthly'), 'time' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_time', 9), 'emails' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_email_addresses', []), 'from' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_from_address', \get_option('admin_email')), 'reply_to' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_reply_to_address', \get_option('admin_email')), 'footer_text' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_footer', $this->email_footer()), 'default_colors' => $default_colors, 'input_default' => $input_defaults, 'timestamp' => $interval->next_interval_start()->getTimestamp()]);
+            echo \IAWPSCOPED\iawp_blade()->run('settings.email-reports', ['is_scheduled' => \wp_next_scheduled('iawp_send_email_report'), 'scheduled_date' => \IAWPSCOPED\iawp()->email_reports->next_email_at_for_humans(), 'is_paused' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_paused', '0') === '1', 'interval' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_interval', 'monthly'), 'time' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_time', 9), 'emails' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_email_addresses', []), 'from' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_from_address', \get_option('admin_email')), 'reply_to' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_reply_to_address', \get_option('admin_email')), 'footer_text' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_footer', $this->email_footer()), 'default_colors' => $default_colors, 'input_default' => $input_defaults, 'timestamp' => $interval->next_interval_start()->getTimestamp()]);
         }
         $ips = \IAWPSCOPED\iawp()->get_option('iawp_blocked_ips', []);
         echo \IAWPSCOPED\iawp_blade()->run('settings.block-ips', ['current_ip' => Request::ip(), 'ip_is_blocked' => Request::is_ip_address_blocked(), 'ips' => $ips]);
@@ -65,13 +65,19 @@ class Settings
         $boolean_options = ['type' => 'integer', 'default' => 0, 'sanitize_callback' => 'absint'];
         \register_setting('iawp_settings', 'iawp_dow', $boolean_options);
         \add_settings_field('iawp_dow', \esc_html__('First day of week', 'independent-analytics'), [$this, 'starting_dow_callback'], 'independent-analytics-settings', 'iawp-settings-section', ['class' => 'dow']);
-        $boolean_options = ['type' => 'boolean', 'default' => \false, 'sanitize_callback' => 'rest_sanitize_boolean'];
-        \register_setting('iawp_settings', 'iawp_refresh_salt', $boolean_options);
-        \add_settings_field('iawp_refresh_salt', \esc_html__('Salt refresh rate', 'independent-analytics'), [$this, 'refresh_salt_callback'], 'independent-analytics-settings', 'iawp-settings-section', ['class' => 'salt']);
+        // Salt refresh interval
+        \register_setting('iawp_settings', 'iawp_visitor_salt_refresh_interval', ['type' => 'int', 'default' => \IAWP\VisitorSaltRefreshInterval::default_interval(), 'sanitize_callback' => function ($input) {
+            return \array_key_exists($input, \IAWP\VisitorSaltRefreshInterval::options()) ? $input : \IAWP\VisitorSaltRefreshInterval::interval();
+        }]);
+        \add_settings_field('iawp_visitor_salt_refresh_interval', \esc_html__('Salt refresh rate', 'independent-analytics'), [$this, 'visitor_salt_refresh_interval_callback'], 'independent-analytics-settings', 'iawp-settings-section', ['class' => 'visitor_salt_refresh_interval']);
     }
     public function appearance_callback()
     {
         echo \IAWPSCOPED\iawp_blade()->run('settings.appearance', ['appearance' => \IAWP\Appearance::get_appearance(), 'options' => \IAWP\Appearance::options()]);
+    }
+    public function visitor_salt_refresh_interval_callback()
+    {
+        echo \IAWPSCOPED\iawp_blade()->run('settings.visitor-salt-refresh-interval', ['interval' => \IAWP\VisitorSaltRefreshInterval::interval(), 'options' => \IAWP\VisitorSaltRefreshInterval::options()]);
     }
     public function track_authenticated_users_callback()
     {
@@ -92,10 +98,6 @@ class Settings
     public function starting_dow_callback()
     {
         echo \IAWPSCOPED\iawp_blade()->run('settings.first-day-of-week', ['day_of_week' => \IAWPSCOPED\iawp()->get_option('iawp_dow', 0), 'days' => [0 => \esc_html__('Sunday', 'independent-analytics'), 1 => \esc_html__('Monday', 'independent-analytics'), 2 => \esc_html__('Tuesday', 'independent-analytics'), 3 => \esc_html__('Wednesday', 'independent-analytics'), 4 => \esc_html__('Thursday', 'independent-analytics'), 5 => \esc_html__('Friday', 'independent-analytics'), 6 => \esc_html__('Saturday', 'independent-analytics')]]);
-    }
-    public function refresh_salt_callback()
-    {
-        echo \IAWPSCOPED\iawp_blade()->run('settings.refresh-salt', ['refresh_salt' => \IAWPSCOPED\iawp()->get_option('iawp_refresh_salt', \false)]);
     }
     public function register_view_counter_settings()
     {

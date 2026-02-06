@@ -39,11 +39,8 @@
                     </g>
                 </svg>
                 <span data-real-time-target="visitorMessage" data-testid="real-time-title"><?php echo esc_html($visitor_message) ?></span>
-                <a class="learn-more" href="#">
+                <a class="learn-more" href="#" data-controller="tooltip" data-tooltip-text-value="Active Visitors is the number of people who have viewed a page within the last 5 minutes.">
                     <span class="dashicons dashicons-info-outline"></span>
-                    <div class="tooltip">
-                        <p><?php esc_html_e('Active Visitors is the number of people who have viewed a page within the last 5 minutes.', 'independent-analytics'); ?></p>
-                    </div>
                 </a>
             </div>
         </div>
