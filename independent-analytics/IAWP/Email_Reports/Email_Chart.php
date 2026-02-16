@@ -3,6 +3,7 @@
 namespace IAWP\Email_Reports;
 
 use IAWP\Statistics\Statistics;
+use IAWP\Utils\Format;
 use IAWPSCOPED\Proper\Number;
 /** @internal */
 class Email_Chart
@@ -41,7 +42,7 @@ class Email_Chart
         if ($interval == 'weekly') {
             $format = 'D';
         } elseif ($interval == 'daily') {
-            $format = \IAWPSCOPED\iawp()->get_option('time_format', 'g:i a');
+            $format = Format::time();
         }
         $all_x_labels = \array_map(function ($day) use($format) {
             return $day[0]->format($format);

@@ -27,7 +27,7 @@ class Visitor_Page extends \IAWP\Admin_Page\Admin_Page
     private function visitor_id() : ?int
     {
         $visitor_id = $_GET['visitor'] ?? null;
-        if (\ctype_digit($visitor_id)) {
+        if ($visitor_id !== null && \ctype_digit($visitor_id)) {
             return (int) $visitor_id;
         }
         return null;
@@ -35,7 +35,7 @@ class Visitor_Page extends \IAWP\Admin_Page\Admin_Page
     private function session_id() : ?int
     {
         $session_id = $_GET['session'] ?? null;
-        if (\ctype_digit($session_id)) {
+        if ($session_id !== null && \ctype_digit($session_id)) {
             return (int) $session_id;
         }
         return null;

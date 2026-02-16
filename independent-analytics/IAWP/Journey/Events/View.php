@@ -33,7 +33,7 @@ class View extends \IAWP\Journey\Events\Event
     }
     public function created_at() : ?CarbonImmutable
     {
-        return CarbonImmutable::parse($this->viewed_at)->timezone(Timezone::site_timezone());
+        return CarbonImmutable::parse($this->viewed_at, 'utc')->timezone(Timezone::site_timezone());
     }
     public function html() : string
     {
@@ -44,8 +44,8 @@ class View extends \IAWP\Journey\Events\Event
         if ($this->next_viewed_at === null) {
             return null;
         }
-        $date = CarbonImmutable::parse($this->viewed_at);
-        $next_date = CarbonImmutable::parse($this->next_viewed_at);
+        $date = CarbonImmutable::parse($this->viewed_at, 'utc');
+        $next_date = CarbonImmutable::parse($this->next_viewed_at, 'utc');
         $interval = $date->diffAsCarbonInterval($next_date);
         return $interval->cascade()->forHumans(['short' => \true]);
     }

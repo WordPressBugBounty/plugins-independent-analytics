@@ -2,6 +2,7 @@
 
 namespace IAWP\Favicon;
 
+use IAWP\Favicon\Converter\AbstractConverter;
 /** @internal */
 class FaviconDownloader
 {
@@ -39,85 +40,41 @@ class FaviconDownloader
         if ($favicon_url === null) {
             return;
         }
-        $save_path = \IAWPSCOPED\iawp_upload_path_to('iawp-favicons/' . $this->favicon->file_name());
-        $this->convertFaviconToPng($favicon_url, $save_path);
+        $path = \IAWPSCOPED\iawp_upload_path_to('iawp-favicons/' . $this->favicon->file_name());
+        $blob = $this->fetch($favicon_url);
+        if (!$blob) {
+            return;
+        }
+        $converter = AbstractConverter::make($blob, $path);
+        if (!$converter) {
+            return;
+        }
+        $converter->save();
     }
     private function fetch(string $url) : ?string
     {
-        if (!\extension_loaded('curl')) {
-            return null;
-        }
-        $handle = \curl_init();
-        \curl_setopt($handle, \CURLOPT_URL, $url);
-        \curl_setopt($handle, \CURLOPT_RETURNTRANSFER, 1);
-        \curl_setopt($handle, \CURLOPT_FOLLOWLOCATION, \true);
-        \curl_setopt($handle, \CURLOPT_MAXREDIRS, 10);
-        \curl_setopt($handle, \CURLOPT_TIMEOUT, 10);
-        \curl_setopt($handle, \CURLOPT_ENCODING, '');
-        // Handle compression automatically
-        // Mimic a real browser to bypass Cloudflare and other bot protections
-        \curl_setopt($handle, \CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
-        $headers = ['Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8', 'Accept-Language: en-US,en;q=0.9', 'Upgrade-Insecure-Requests: 1', 'Sec-Fetch-Dest: document', 'Sec-Fetch-Mode: navigate', 'Sec-Fetch-Site: none', 'Sec-Fetch-User: ?1'];
-        \curl_setopt($handle, \CURLOPT_HTTPHEADER, $headers);
-        $content = \curl_exec($handle);
-        $httpCode = \curl_getinfo($handle, \CURLINFO_HTTP_CODE);
-        \curl_close($handle);
-        if ($httpCode >= 400) {
-            return null;
-        }
-        return $content !== \false ? $content : null;
-    }
-    private function convertFaviconToPng(string $faviconUrl, string $savePath) : bool
-    {
-        // ... Imagick extension check ...
         try {
-            $imagick = new \Imagick();
-            $blob = $this->fetch($faviconUrl);
-            if ($blob === null) {
-                return \false;
+            $handle = \curl_init();
+            \curl_setopt($handle, \CURLOPT_URL, $url);
+            \curl_setopt($handle, \CURLOPT_RETURNTRANSFER, 1);
+            \curl_setopt($handle, \CURLOPT_FOLLOWLOCATION, \true);
+            \curl_setopt($handle, \CURLOPT_MAXREDIRS, 10);
+            \curl_setopt($handle, \CURLOPT_TIMEOUT, 10);
+            \curl_setopt($handle, \CURLOPT_ENCODING, '');
+            // Handle compression automatically
+            // Mimic a real browser to bypass Cloudflare and other bot protections
+            \curl_setopt($handle, \CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+            $headers = ['Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8', 'Accept-Language: en-US,en;q=0.9', 'Upgrade-Insecure-Requests: 1', 'Sec-Fetch-Dest: document', 'Sec-Fetch-Mode: navigate', 'Sec-Fetch-Site: none', 'Sec-Fetch-User: ?1'];
+            \curl_setopt($handle, \CURLOPT_HTTPHEADER, $headers);
+            $content = \curl_exec($handle);
+            $httpCode = \curl_getinfo($handle, \CURLINFO_HTTP_CODE);
+            \curl_close($handle);
+            if ($httpCode >= 400) {
+                return null;
             }
-            // $imagick->setResolution(96, 96);
-            try {
-                $imagick->readImageBlob($blob);
-            } catch (\Throwable $e) {
-                // Retry with ICO format if initial read fails (common for some ICO files)
-                $imagick = new \Imagick();
-                $imagick->setFormat('ico');
-                $imagick->readImageBlob($blob);
-            }
-            // Handle multi-frame files (like ICO) by selecting the best frame
-            if ($imagick->getNumberImages() > 1) {
-                $bestIndex = 0;
-                $maxArea = 0;
-                $numImages = $imagick->getNumberImages();
-                for ($i = 0; $i < $numImages; $i++) {
-                    $imagick->setIteratorIndex($i);
-                    $area = $imagick->getImageWidth() * $imagick->getImageHeight();
-                    if ($area > $maxArea) {
-                        $maxArea = $area;
-                        $bestIndex = $i;
-                    }
-                }
-                $imagick->setIteratorIndex($bestIndex);
-                $image = $imagick->getImage();
-                $imagick->clear();
-                $imagick = $image;
-            }
-            // 3. Set the output format to PNG. The rasterized SVG is saved as PNG.
-            $imagick->setImageFormat('png');
-            $max_size = 48;
-            if ($imagick->getImageWidth() > $max_size) {
-                $imagick->thumbnailImage($max_size, 0);
-            }
-            if ($imagick->getImageHeight() > $max_size) {
-                $imagick->thumbnailImage(0, $max_size);
-            }
-            $thumbnail_size = \min($imagick->getImageWidth(), $imagick->getImageHeight());
-            $imagick->cropThumbnailImage($thumbnail_size, $thumbnail_size);
-            $imagick->writeImage($savePath);
-            return \true;
+            return $content !== \false ? $content : null;
         } catch (\Throwable $e) {
-            return \false;
+            return null;
         }
     }
     private function extractFaviconUrl(string $html, string $baseUrl) : ?string
@@ -209,7 +166,7 @@ class FaviconDownloader
     }
     private function has_required_php_extensions() : bool
     {
-        return \extension_loaded('curl') && \extension_loaded('imagick');
+        return \extension_loaded('curl') && (\extension_loaded('gd') || \extension_loaded('imagick'));
     }
     public static function for(\IAWP\Favicon\Favicon $favicon) : self
     {

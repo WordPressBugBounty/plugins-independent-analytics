@@ -22,7 +22,7 @@ class Refresh_Modules extends \IAWP\AJAX\AJAX
      */
     protected function action_callback() : void
     {
-        Module::queue_full_module_refresh();
+        Module::queue_refresh_all_modules();
         $modules = \array_map(function (Module $module) {
             return ['id' => $module->id(), 'html' => $module->get_module_html()];
         }, Module::get_saved_modules());

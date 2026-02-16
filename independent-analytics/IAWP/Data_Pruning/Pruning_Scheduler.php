@@ -5,8 +5,8 @@ namespace IAWP\Data_Pruning;
 use IAWPSCOPED\Carbon\CarbonImmutable;
 use IAWP\Illuminate_Builder;
 use IAWP\Query;
+use IAWP\Utils\Format;
 use IAWP\Utils\Timezone;
-use IAWP\Utils\WordPress_Site_Date_Format_Pattern;
 /** @internal */
 class Pruning_Scheduler
 {
@@ -35,18 +35,18 @@ class Pruning_Scheduler
         if (!$this->is_enabled()) {
             return null;
         }
-        $scheduled_at = new \DateTime();
+        $scheduled_at = new \DateTime('now', Timezone::utc_timezone());
         $scheduled_at->setTimezone(Timezone::site_timezone());
         $scheduled_at->setTimestamp(\wp_next_scheduled('iawp_prune'));
-        $day = $scheduled_at->format(\get_option('date_format'));
-        $time = $scheduled_at->format(\IAWPSCOPED\iawp()->get_option('time_format', 'g:i a'));
+        $day = $scheduled_at->format(Format::date());
+        $time = $scheduled_at->format(Format::time());
         return \sprintf(\__('Next data pruning scheduled for %s at %s.', 'independent-analytics'), '<span>' . $day . '</span>', '<span>' . $time . '</span>');
     }
     public function get_pruning_description(string $cutoff) : string
     {
         $date = $this->convert_cutoff_to_date($cutoff, \true);
         $utc_date = $this->convert_cutoff_to_date($cutoff);
-        $formatted_date = $date->format(WordPress_Site_Date_Format_Pattern::for_php());
+        $formatted_date = $date->format(Format::date());
         $estimates = $this->get_pruning_estimates($utc_date);
         return \sprintf(\__("All data from before %1\$s will be deleted immediately. This will remove %2\$s of your %3\$s tracked sessions. \n\n This process will repeat daily at midnight.", 'independent-analytics'), $formatted_date, \number_format_i18n($estimates['sessions_to_be_deleted']), \number_format_i18n($estimates['sessions']));
     }

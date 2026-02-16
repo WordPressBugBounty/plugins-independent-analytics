@@ -2,6 +2,7 @@
 
 namespace IAWP;
 
+use IAWPSCOPED\Carbon\CarbonImmutable;
 use IAWP\Utils\Salt;
 use IAWP\Utils\Timezone;
 /** @internal */
@@ -20,7 +21,7 @@ class Cron_Manager
         if ($interval === 'never') {
             return;
         }
-        $refresh_time = new \DateTime('tomorrow midnight', Timezone::site_timezone());
+        $refresh_time = CarbonImmutable::tomorrow(Timezone::site_timezone())->startOfDay();
         \wp_schedule_event($refresh_time->getTimestamp(), $interval, 'iawp_refresh_salt');
     }
     public function handle()

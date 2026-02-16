@@ -27,7 +27,7 @@ class Favicon
     }
     public function exists() : bool
     {
-        return $this->url() !== null;
+        return \is_string($this->url());
     }
     public function url() : ?string
     {

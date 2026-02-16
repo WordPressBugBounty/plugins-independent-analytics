@@ -34,7 +34,7 @@ abstract class Cron_Job
     {
         // Run hourly intervals on the hour
         if ($this->interval === 'hourly') {
-            $now = CarbonImmutable::now()->startOfSecond();
+            $now = CarbonImmutable::now('utc')->startOfSecond();
             $next_hour = $now->addHour()->startOfHour();
             $seconds_until_next_hour = $next_hour->diffInSeconds($now);
             return \time() + $seconds_until_next_hour;

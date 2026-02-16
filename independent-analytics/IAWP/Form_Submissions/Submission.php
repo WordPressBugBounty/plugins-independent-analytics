@@ -5,6 +5,7 @@ namespace IAWP\Form_Submissions;
 use IAWP\Illuminate_Builder;
 use IAWP\Models\Visitor;
 use IAWP\Query;
+use IAWP\Utils\Timezone;
 /** @internal */
 class Submission
 {
@@ -24,7 +25,7 @@ class Submission
         if (!$visitor->has_recorded_session()) {
             return;
         }
-        Illuminate_Builder::new()->from($form_submissions_table)->insert(['form_id' => $this->get_form_id(), 'session_id' => $visitor->most_recent_session_id(), 'view_id' => $visitor->most_recent_view_id(), 'initial_view_id' => $visitor->most_recent_initial_view_id(), 'created_at' => (new \DateTime())->format('Y-m-d\\TH:i:s')]);
+        Illuminate_Builder::new()->from($form_submissions_table)->insert(['form_id' => $this->get_form_id(), 'session_id' => $visitor->most_recent_session_id(), 'view_id' => $visitor->most_recent_view_id(), 'initial_view_id' => $visitor->most_recent_initial_view_id(), 'created_at' => (new \DateTime('now', Timezone::utc_timezone()))->format('Y-m-d\\TH:i:s')]);
     }
     private function get_form_id() : int
     {

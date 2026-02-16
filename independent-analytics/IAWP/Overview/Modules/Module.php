@@ -6,10 +6,10 @@ use DateTime;
 use IAWP\Date_Range\Relative_Date_Range;
 use IAWP\Overview\Form_Field;
 use IAWP\Overview\Form_Field_Option;
-use IAWP\Overview\Sync_Module_Background_Job;
 use IAWP\Overview\WP_Options_Storage;
 use IAWP\Report;
 use IAWP\Report_Finder;
+use IAWP\Utils\Format;
 use IAWP\Utils\Security;
 use IAWP\Utils\Timezone;
 use IAWPSCOPED\Illuminate\Support\Arr;
@@ -62,7 +62,7 @@ abstract class Module
         $this->options_storage->insert($this->attributes);
         $this->report = $this->get_report($this->attributes);
         if (!$skip_sync) {
-            static::queue_dataset_refresh([$this]);
+            $this->refresh();
         }
         return \true;
     }
@@ -169,7 +169,7 @@ abstract class Module
         }
         return '';
     }
-    public function refresh_dataset()
+    public function refresh()
     {
         \delete_option($this->option_name());
         \update_option($this->option_name(), $this->calculate_dataset(), \false);
@@ -282,27 +282,6 @@ abstract class Module
             return new Form_Field($id, $this->report);
         })->all();
     }
-    /**
-     * Triggers a background job to refresh the module's dataset.
-     *
-     * @param Module[] $modules
-     *
-     * @return void
-     */
-    public static function queue_dataset_refresh(array $modules) : void
-    {
-        $ids = [];
-        foreach ($modules as $module) {
-            // Delete existing data
-            \delete_option($module->option_name());
-            // Add it to the list of modules to update
-            $ids[] = $module->id();
-        }
-        // Trigger a background job
-        $sync = new Sync_Module_Background_Job();
-        $sync->data(['ids' => $ids]);
-        $sync->dispatch();
-    }
     public static function last_refreshed_at() : string
     {
         $timestamp = \get_option('iawp_modules_refreshed_at', null);
@@ -314,10 +293,10 @@ abstract class Module
             return '';
         }
         try {
-            $date = DateTime::createFromFormat('U', $timestamp);
+            $date = DateTime::createFromFormat('U', $timestamp, Timezone::utc_timezone());
             $date->setTimezone(Timezone::site_timezone());
-            $format = \IAWPSCOPED\iawp()->get_option('time_format', 'g:i a');
-            return \sprintf(\_x('Last updated at %s.', 'The placeholder is a time of day', 'independent-analytics'), $date->format($format));
+            $text = $date->format(Format::time());
+            return \sprintf(\_x('Last updated at %s.', 'The placeholder is a time of day', 'independent-analytics'), $text);
         } catch (\Exception $e) {
             return '';
         }
@@ -366,7 +345,12 @@ abstract class Module
     public static function get_saved_modules() : array
     {
         $options_storage = new WP_Options_Storage('iawp_overview_modules');
-        $records = $options_storage->all();
+        $records = Collection::make($options_storage->all())->filter(function (array $module) {
+            if (\array_key_exists('report', $module) && $module['report'] === 'journeys') {
+                return \false;
+            }
+            return \true;
+        })->values()->all();
         // No records? Add the default modules.
         if (\count($records) === 0 && \IAWPSCOPED\iawp()->get_option('iawp_default_modules_added', \false) === \false) {
             \update_option('iawp_modules_refreshed_at', \time(), \true);
@@ -376,17 +360,26 @@ abstract class Module
                 $module->save(\true);
             }
             $records = $options_storage->all();
-            static::queue_full_module_refresh();
+            static::refresh_all_modules();
         }
         return \array_map(function ($record) {
             return self::new($record['module_type'], $record);
         }, $records);
     }
-    public static function queue_full_module_refresh() : void
+    public static function refresh_all_modules() : void
     {
-        $modules = self::get_saved_modules();
-        static::queue_dataset_refresh($modules);
+        foreach (self::get_saved_modules() as $module) {
+            $module->refresh();
+        }
         \update_option('iawp_modules_refreshed_at', \time(), \true);
+    }
+    public static function queue_refresh_all_modules() : void
+    {
+        foreach (self::get_saved_modules() as $module) {
+            \delete_option($module->option_name());
+        }
+        \wp_schedule_single_event(\time(), 'iawp_module_refresh_now');
+        \spawn_cron();
     }
     public static function get_saved_module(string $id) : ?self
     {

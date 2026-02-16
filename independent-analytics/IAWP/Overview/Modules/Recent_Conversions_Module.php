@@ -7,8 +7,8 @@ use IAWP\Icon_Directory_Factory;
 use IAWP\Illuminate_Builder;
 use IAWP\Tables;
 use IAWP\Utils\Currency;
+use IAWP\Utils\Format;
 use IAWP\Utils\Timezone;
-use IAWP\Utils\WordPress_Site_Date_Format_Pattern;
 /** @internal */
 class Recent_Conversions_Module extends \IAWP\Overview\Modules\Module
 {
@@ -37,11 +37,10 @@ class Recent_Conversions_Module extends \IAWP\Overview\Modules\Module
         $conversion_query = $recent_clicks_query->unionAll($recent_orders_query)->unionAll($recent_submissions_query);
         $query = Illuminate_Builder::new()->select(['conversions.view_id', 'conversions.created_at', 'conversions.conversion_type', 'conversions.name', 'countries.country_code', 'countries.country', 'device_types.device_type', 'device_browsers.device_browser AS browser'])->fromSub($conversion_query, 'conversions')->leftJoin("{$tables::views()} as views", 'conversions.view_id', '=', 'views.id')->leftJoin("{$tables::resources()} as resources", 'views.resource_id', '=', 'resources.id')->leftJoin("{$tables::sessions()} as sessions", 'views.session_id', '=', 'sessions.session_id')->leftJoin("{$tables::countries()} as countries", 'sessions.country_id', '=', 'countries.country_id')->leftJoin("{$tables::device_types()} as device_types", 'sessions.device_type_id', '=', 'device_types.device_type_id')->leftJoin("{$tables::device_browsers()} as device_browsers", 'sessions.device_browser_id', '=', 'device_browsers.device_browser_id')->whereIn('conversions.conversion_type', $this->attributes['recent_conversion_types'] ?? ['order', 'form_submission', 'click'])->orderByDesc('conversions.created_at')->limit(40);
         return $query->get()->map(function ($row) {
-            $date = CarbonImmutable::parse($row->created_at)->setTimezone(Timezone::site_timezone());
-            $time_format = \IAWPSCOPED\iawp()->get_option('time_format', 'g:i a');
-            $long_date_string = $date->format(WordPress_Site_Date_Format_Pattern::for_php() . ' ' . $time_format);
+            $date = CarbonImmutable::parse($row->created_at, 'utc')->setTimezone(Timezone::site_timezone());
+            $long_date_string = $date->format(Format::date_time());
             if ($date->isToday()) {
-                $short_date_string = $date->format($time_format);
+                $short_date_string = $date->format(Format::time());
             } elseif ($date->isYesterday()) {
                 $short_date_string = \__('Yesterday', 'independent-analytics');
             } else {

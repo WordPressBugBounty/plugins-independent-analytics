@@ -2,7 +2,7 @@
 
 namespace IAWP\Overview\Modules;
 
-use IAWPSCOPED\Carbon\Carbon;
+use IAWPSCOPED\Carbon\CarbonImmutable;
 use IAWPSCOPED\Carbon\CarbonInterface;
 use IAWP\Illuminate_Builder;
 use IAWP\Tables;
@@ -33,7 +33,7 @@ class Busiest_Day_Of_Week_Module extends \IAWP\Overview\Modules\Module
     {
         $days = $this->shift_to_start_of_week(\range(0, 6));
         return \array_map(function ($day) {
-            $date = Carbon::now()->startOfWeek(CarbonInterface::SUNDAY)->addDays($day);
+            $date = CarbonImmutable::now('utc')->startOfWeek(CarbonInterface::SUNDAY)->addDays($day);
             return \json_encode(['tick' => $date->format('l'), 'tooltipLabel' => $date->format('l')]);
         }, $days);
     }

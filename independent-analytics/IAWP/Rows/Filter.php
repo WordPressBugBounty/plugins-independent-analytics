@@ -3,7 +3,8 @@
 namespace IAWP\Rows;
 
 use IAWP\Tables\Columns\Column;
-use IAWP\Utils\WordPress_Site_Date_Format_Pattern;
+use IAWP\Utils\Format;
+use IAWP\Utils\Timezone;
 use IAWPSCOPED\Illuminate\Database\Query\Builder;
 use IAWPSCOPED\Illuminate\Support\Str;
 /** @internal */
@@ -80,8 +81,8 @@ class Filter
                 $condition_string = $this->column->options()->label_for($value);
             } elseif ($key == 'operand' && $condition['column'] == 'date') {
                 try {
-                    $date = \DateTime::createFromFormat('U', $value);
-                    $condition_string = $date->format(WordPress_Site_Date_Format_Pattern::for_php());
+                    $date = \DateTime::createFromFormat('U', $value, Timezone::utc_timezone());
+                    $condition_string = $date->format(Format::date());
                 } catch (\Throwable $e) {
                     $condition_string = $value;
                 }
@@ -177,7 +178,7 @@ class Filter
         // if ($this->column->id() === 'cached_date') {
         if ($this->column->id() === 'date') {
             try {
-                $date = \DateTime::createFromFormat('U', $this->operand);
+                $date = \DateTime::createFromFormat('U', $this->operand, Timezone::utc_timezone());
             } catch (\Throwable $e) {
                 $date = new \DateTime();
             }

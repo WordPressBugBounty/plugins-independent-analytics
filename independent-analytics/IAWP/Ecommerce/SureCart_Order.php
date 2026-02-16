@@ -5,6 +5,7 @@ namespace IAWP\Ecommerce;
 use IAWP\Illuminate_Builder;
 use IAWP\Models\Visitor;
 use IAWP\Query;
+use IAWP\Utils\Timezone;
 use IAWPSCOPED\Illuminate\Support\Collection;
 /** @internal */
 class SureCart_Order
@@ -42,7 +43,7 @@ class SureCart_Order
             return;
         }
         $orders_table = Query::get_table_name(Query::ORDERS);
-        Illuminate_Builder::new()->from($orders_table)->insertOrIgnore(['is_included_in_analytics' => $this->status === 'paid', 'surecart_order_id' => $this->order_id, 'surecart_order_status' => $this->status, 'view_id' => $visitor->most_recent_view_id(), 'initial_view_id' => $visitor->most_recent_initial_view_id(), 'total' => $this->total, 'total_refunded' => $this->total_refunded, 'total_refunds' => $this->total_refunds, 'is_discounted' => $this->is_discounted, 'created_at' => (new \DateTime())->format('Y-m-d H:i:s')]);
+        Illuminate_Builder::new()->from($orders_table)->insertOrIgnore(['is_included_in_analytics' => $this->status === 'paid', 'surecart_order_id' => $this->order_id, 'surecart_order_status' => $this->status, 'view_id' => $visitor->most_recent_view_id(), 'initial_view_id' => $visitor->most_recent_initial_view_id(), 'total' => $this->total, 'total_refunded' => $this->total_refunded, 'total_refunds' => $this->total_refunds, 'is_discounted' => $this->is_discounted, 'created_at' => (new \DateTime('now', Timezone::utc_timezone()))->format('Y-m-d H:i:s')]);
     }
     public function update() : void
     {

@@ -8,7 +8,7 @@ class Timezone
 {
     public static function utc_timezone() : DateTimeZone
     {
-        return new DateTimeZone('UTC');
+        return new DateTimeZone('utc');
     }
     public static function utc_offset() : string
     {

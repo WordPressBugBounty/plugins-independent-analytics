@@ -35,7 +35,7 @@ class Journey extends \IAWP\Models\Model
      */
     public function session_started_at() : string
     {
-        $created_at = CarbonImmutable::parse($this->created_at)->timezone(Timezone::site_timezone());
+        $created_at = CarbonImmutable::parse($this->created_at, 'utc')->timezone(Timezone::site_timezone());
         return $created_at->diffForHumans();
     }
     public function landing_page() : string

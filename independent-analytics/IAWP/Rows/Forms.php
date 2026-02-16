@@ -23,7 +23,7 @@ class Forms extends \IAWP\Rows\Rows
     {
         return 'form_title';
     }
-    private function query(?bool $skip_pagination = \false) : Builder
+    protected function query(?bool $skip_pagination = \false) : Builder
     {
         if ($skip_pagination) {
             $this->number_of_rows = null;

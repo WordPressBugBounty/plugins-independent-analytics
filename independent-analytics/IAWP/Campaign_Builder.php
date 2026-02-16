@@ -2,6 +2,7 @@
 
 namespace IAWP;
 
+use IAWPSCOPED\Carbon\CarbonImmutable;
 use IAWP\Utils\Singleton;
 use IAWP\Utils\String_Util;
 use IAWP\Utils\URL;
@@ -51,7 +52,7 @@ class Campaign_Builder
             return \IAWPSCOPED\iawp_blade()->run('campaign-builder', ['path' => $path, 'path_error' => $path_error, 'utm_source' => $source, 'utm_source_error' => $source_error, 'utm_medium' => $medium, 'utm_medium_error' => $medium_error, 'utm_campaign' => $campaign, 'utm_campaign_error' => $campaign_error, 'utm_term' => $term, 'utm_content' => $content, 'campaigns' => $this->get_previously_created_campaigns()]);
         }
         $campaign_urls_table = \IAWP\Query::get_table_name(\IAWP\Query::CAMPAIGN_URLS);
-        $wpdb->insert($campaign_urls_table, ['path' => $path, 'utm_source' => $source, 'utm_medium' => $medium, 'utm_campaign' => $campaign, 'utm_term' => $term, 'utm_content' => $content, 'created_at' => (new \DateTime())->format('Y-m-d H:i:s')]);
+        $wpdb->insert($campaign_urls_table, ['path' => $path, 'utm_source' => $source, 'utm_medium' => $medium, 'utm_campaign' => $campaign, 'utm_term' => $term, 'utm_content' => $content, 'created_at' => CarbonImmutable::now('utc')->format('Y-m-d H:i:s')]);
         $url = $this->build_url($path, $source, $medium, $campaign, $term, $content);
         return \IAWPSCOPED\iawp_blade()->run('campaign-builder', ['path' => $path, 'utm_source' => $source, 'utm_medium' => $medium, 'utm_campaign' => $campaign, 'utm_term' => $term, 'utm_content' => $content, 'new_campaign_url' => $url, 'campaigns' => $this->get_previously_created_campaigns()]);
     }
@@ -82,7 +83,7 @@ class Campaign_Builder
         $campaign_urls_table = \IAWP\Query::get_table_name(\IAWP\Query::CAMPAIGN_URLS);
         $results = $wpdb->get_results("\n            SELECT * FROM {$campaign_urls_table} ORDER BY created_at DESC LIMIT 100\n        ");
         return \array_map(function ($result) {
-            $created_at = Carbon::parse($result->created_at)->diffForHumans();
+            $created_at = Carbon::parse($result->created_at, 'utc')->diffForHumans();
             return ['campaign_url_id' => $result->campaign_url_id, 'result' => \json_encode((array) $result), 'created_at' => $created_at, 'url' => $this->build_url($result->path, $result->utm_source, $result->utm_medium, $result->utm_campaign, $result->utm_term, $result->utm_content)];
         }, $results);
     }

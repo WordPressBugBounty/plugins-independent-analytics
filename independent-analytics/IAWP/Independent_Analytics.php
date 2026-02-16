@@ -29,6 +29,8 @@ use IAWP\Form_Submissions\Submission_Listener;
 use IAWP\Journey\JourneyStatisticsJob;
 use IAWP\Migrations\Migrations;
 use IAWP\Overview\Module_Refresh_Job;
+use IAWP\Overview\Modules\Module;
+use IAWP\Utils\Format;
 use IAWP\Utils\Plugin;
 use IAWP\Utils\Request;
 use IAWP\Utils\Singleton;
@@ -83,6 +85,9 @@ class Independent_Analytics
             $this->email_reports = new Email_Reports();
             new \IAWP\Campaign_Builder();
             WooCommerceOrderMetaBox::register();
+            \add_action('iawp_module_refresh_now', function () {
+                Module::refresh_all_modules();
+            });
         }
         \add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts_and_styles'], 110);
         // Called at 110 to dequeue other scripts
@@ -548,7 +553,7 @@ class Independent_Analytics
     }
     public function prefers_24_hour_clock() : bool
     {
-        $time_format = \IAWPSCOPED\iawp()->get_option('time_format', 'g:i a');
+        $time_format = Format::time();
         if (Str::contains($time_format, 'a') || Str::contains($time_format, 'A')) {
             return \false;
         }

@@ -5,6 +5,7 @@ namespace IAWP\Ecommerce;
 use IAWP\Illuminate_Builder;
 use IAWP\Models\Visitor;
 use IAWP\Tables;
+use IAWP\Utils\Timezone;
 /** @internal */
 class Fluent_Cart_Order
 {
@@ -30,7 +31,7 @@ class Fluent_Cart_Order
         if (!$visitor->has_recorded_session()) {
             return;
         }
-        Illuminate_Builder::new()->from(Tables::orders())->insertOrIgnore(['is_included_in_analytics' => $this->is_included_in_analytics($this->status), 'fluent_cart_order_id' => $this->order_id, 'fluent_cart_order_status' => $this->status, 'view_id' => $visitor->most_recent_view_id(), 'initial_view_id' => $visitor->most_recent_initial_view_id(), 'total' => $this->total, 'total_refunded' => $this->total_refunded, 'total_refunds' => $this->total_refunds, 'is_discounted' => $this->is_discounted, 'created_at' => (new \DateTime())->format('Y-m-d H:i:s')]);
+        Illuminate_Builder::new()->from(Tables::orders())->insertOrIgnore(['is_included_in_analytics' => $this->is_included_in_analytics($this->status), 'fluent_cart_order_id' => $this->order_id, 'fluent_cart_order_status' => $this->status, 'view_id' => $visitor->most_recent_view_id(), 'initial_view_id' => $visitor->most_recent_initial_view_id(), 'total' => $this->total, 'total_refunded' => $this->total_refunded, 'total_refunds' => $this->total_refunds, 'is_discounted' => $this->is_discounted, 'created_at' => (new \DateTime('now', Timezone::utc_timezone()))->format('Y-m-d H:i:s')]);
     }
     public function update() : void
     {

@@ -9,11 +9,10 @@
             esc_html_e('Read Tutorial', 'independent-analytics'); ?>
         </a>
     </div>
-    <div class="schedule-notification <?php echo $pruner->is_enabled() ? 'is-scheduled' : ''; ?>"
+    <div class="schedule-notification <?php echo $pruner->is_enabled() ? 'is-scheduled' : 'is-hidden'; ?>"
          data-pruner-target="statusMessage"
          data-testid="data-pruner-notice">
         <span class="dashicons dashicons-yes-alt"></span>
-        <span class="dashicons dashicons-dismiss"></span>
         <p><?php
             $status_message = $pruner->status_message();
             if (!is_null($status_message)) {

@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - Independent Analytics &#8211; Google Analytics Alternative for WordPress - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-11-24 11:50:34+0000\n"
+"PO-Revision-Date: 2026-02-05 11:13:22+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,60 +11,254 @@ msgstr ""
 "Language: sv_SE\n"
 "Project-Id-Version: Plugins - Independent Analytics &#8211; Google Analytics Alternative for WordPress - Stable (latest release)\n"
 
-#: views/partials/sidebar.blade.php:66
+#: IAWP/Tables/Table_Journeys.php:73
+msgid "Page Title"
+msgstr "Sidrubrik"
+
+#: IAWP/Tables/Table_Journeys.php:73
+msgid "Landing Page Title"
+msgstr ""
+
+#: views/woocommerce-order-meta-box.blade.php:42
+msgid "View full journey"
+msgstr "Visa hela resan"
+
+#: views/settings/visitor-salt-refresh-interval.blade.php:9
+msgid "Enabling this option improves data privacy at the expense of unique visitor count accuracy."
+msgstr "När detta alternativ är aktiverat stärks integriteten, men antalet unika besökare blir något mindre noggrant."
+
+#: views/settings/email-reports.blade.php:26
+msgid "Resume Emails"
+msgstr "Återuppta e-postmeddelanden"
+
+#: views/settings/email-reports.blade.php:25
+msgid "Emails are currently paused."
+msgstr "E-postmeddelanden är pausade just nu."
+
+#: views/settings/email-reports.blade.php:20
+msgid "Pause Emails"
+msgstr "Pausa e-post"
+
+#: views/partials/sidebar.blade.php:178
+msgid "Get user journeys"
+msgstr "Se besökares vägar"
+
+#: views/journeys/timeline/view.blade.php:20
+msgid "Duration:"
+msgstr "Varaktighet:"
+
+#: views/journeys/timeline/view.blade.php:7
+#: views/journeys/timeline/view.blade.php:14
+msgid "Page:"
+msgstr "Sida:"
+
+#: views/journeys/timeline/submission.blade.php:10
+msgid "Form:"
+msgstr "Formulär:"
+
+#: views/journeys/timeline/submission.blade.php:6
+msgid "Plugin:"
+msgstr "Tillägg:"
+
+#: views/journeys/timeline/order.blade.php:28
+msgid "Status:"
+msgstr "Status:"
+
+#: views/journeys/timeline/order.blade.php:15
+#: views/journeys/timeline/order.blade.php:22
+msgid "Order ID:"
+msgstr "Beställnings-ID:"
+
+#: views/journeys/timeline/order.blade.php:6
+msgid "Revenue:"
+msgstr "Intäkt:"
+
+#: views/journeys/timeline/click.blade.php:21
+msgid "Target:"
+msgstr "Mål:"
+
+#: views/journeys/timeline/click.blade.php:16
+msgid "Link Pattern:"
+msgstr "Länkmönster:"
+
+#: views/journeys/timeline/click.blade.php:7
+msgid "Link Patterns:"
+msgstr "Länkmönster:"
+
+#: views/journeys/timeline.blade.php:69
+msgid "This session did not include any conversions."
+msgstr "Denna session skedde inga konverteringar."
+
+#: views/journeys/timeline.blade.php:61
+msgid "Exit"
+msgstr "Avsluta"
+
+#: views/journeys/timeline.blade.php:8
+msgid "Session Timeline"
+msgstr "Sessionens tidslinje"
+
+#: views/journeys/table-heading.blade.php:9
+msgid "Duration"
+msgstr "Varaktighet"
+
+#: views/journeys/table-heading.blade.php:8
+msgid "Pages Viewed"
+msgstr "Visade sidor"
+
+#: views/journeys/table-heading.blade.php:7
+msgid "UTM Source"
+msgstr "UTM-källa"
+
+#: views/journeys/rows.blade.php:74
+msgid "Expand Journey"
+msgstr "Expandera besökarens väg"
+
+#: views/journeys/rows.blade.php:49
+msgid "%s view"
+msgid_plural "%s views"
+msgstr[0] "%s visning"
+msgstr[1] "%s visningar"
+
+#: views/journeys/rows.blade.php:9
+msgid "No journeys found."
+msgstr "Inga vägar hittades."
+
+#: IAWP/VisitorSaltRefreshInterval.php:10
+msgid "Never"
+msgstr "Aldrig"
+
+#: IAWP/Tables/Table_Journeys.php:73
+msgid "Clicked Link"
+msgstr "Klickad länk"
+
+#: IAWP/Tables/Table_Journeys.php:73 views/journeys/table-heading.blade.php:4
+msgid "Session Start"
+msgstr "Sessionens start"
+
+#: IAWP/Report_Finder.php:206 IAWP/Tables/Table_Journeys.php:73
+msgid "Form Submission"
+msgstr "Formulärinskickning"
+
+#: IAWP/Report_Finder.php:118 IAWP/Tables/Table_Journeys.php:68
+#: views/partials/sidebar.blade.php:70 views/partials/sidebar.blade.php:175
+msgid "User Journeys"
+msgstr "Besökares vägar"
+
+#: IAWP/Plugin_Conflict_Detector.php:227
+msgid "The Falcon plugin has disabled the REST API for anonymous visitors, which Independent Analytics needs to record stats. Please visit the Settings > Falcon menu, open the Security section, and uncheck the \"Disable REST API for unauthenticated requests\" option to allow Independent Analytics to record stats."
+msgstr "Tillägget Falcon har inaktiverat REST API för anonyma besökare, men Independent Analytics behöver det för att kunna registrera statistik. Gå till menyn Inställningar > Falcon och avsnittet Säkerhet och avmarkera där alternativet ”Inaktivera REST API för oautentiserade förfrågningar” för att låta Independent Analytics registrera statistik."
+
+#: IAWP/Plugin_Conflict_Detector.php:211
+msgid "The Minify HTML plugin is preventing Independent Analytics from tracking visitors. Please visit the Settings > Minify HTML menu and disable the option called \"Minify inline JavaScript\" to resume tracking."
+msgstr "Tillägget Minify HTML hindrar Independent Analytics från att spåra besökare. Gå till menyn Inställningar > Minify HTML och inaktivera alternativet ”Minify inline JavaScript” för att kunna spåra igen."
+
+#: IAWP/Models/Journey.php:165
+msgid "Unknown browser"
+msgstr "Okänd webbläsare"
+
+#: IAWP/Models/Journey.php:156
+msgid "Unknown device type"
+msgstr "Okänd enhetstyp"
+
+#: IAWP/Models/Journey.php:143
+msgid "Unknown country"
+msgstr "Okänt land"
+
+#: IAWP/Journey/Timeline.php:39
+msgid "View all %d sessions for this visitor"
+msgstr "Visa alla %d sessioner för denna besökare"
+
+#: IAWP/Journey/Timeline.php:37
+msgid "No other sessions for this visitor"
+msgstr "Inga fler sessioner för denna besökare"
+
+#: IAWP/Journey/Events/Origin.php:57
+msgid "Origin"
+msgstr "Ursprung"
+
+#: IAWP/Independent_Analytics.php:312
+msgid "Journey"
+msgstr "Resa"
+
+#: IAWP/Form_Submissions/Newsletter.php:18
+msgid "Minimal Form"
+msgstr "Minimalistiskt formulär"
+
+#: IAWP/Form_Submissions/Newsletter.php:18
+msgid "Popup"
+msgstr "Popup"
+
+#: IAWP/Form_Submissions/Newsletter.php:18
+msgid "After Post Content"
+msgstr "Efter inläggsinnehåll"
+
+#: IAWP/Form_Submissions/Newsletter.php:18
+msgid "Standard Form"
+msgstr "Standardformulär"
+
+#: IAWP/ColumnOptions/Plugins/FormConversions.php:14
+#: IAWP/ColumnOptions/Plugins/LinkPatternConversions.php:14
+msgid "Any"
+msgstr "Valfri"
+
+#: IAWP/Admin_Page/Visitor_Page.php:25
+msgid "Visitor"
+msgstr "Besökare"
+
+#: views/partials/sidebar.blade.php:59
 msgid "Real-time report"
 msgstr "Realtidsrapport"
 
-#: views/partials/sidebar.blade.php:52
+#: views/partials/sidebar.blade.php:45
 msgid "Overview report"
 msgstr "Översiktsrapport"
 
-#: IAWP/Independent_Analytics.php:247
+#: IAWP/Independent_Analytics.php:253
 msgid "Rated %s and trusted by over 100,000+ WordPress websites."
 msgstr "Betyg %s och betrodd av över 100 000 WordPress-webbplatser."
 
-#: IAWP/Independent_Analytics.php:244
+#: IAWP/Independent_Analytics.php:250
 msgid "Security alerts"
 msgstr "Säkerhetsvarningar"
 
-#: IAWP/Independent_Analytics.php:243
+#: IAWP/Independent_Analytics.php:249
 msgid "New feature updates"
 msgstr "Nya funktionsuppdateringar"
 
-#: IAWP/Independent_Analytics.php:242
+#: IAWP/Independent_Analytics.php:248
 msgid "Subscriber-only sales announcements"
 msgstr "Försäljningsmeddelanden endast för prenumeranter"
 
-#: IAWP/Independent_Analytics.php:241
+#: IAWP/Independent_Analytics.php:247
 msgid "Free email tutorial series"
 msgstr "Kostnadsfria e-postkurs"
 
-#: IAWP/Independent_Analytics.php:239
+#: IAWP/Independent_Analytics.php:245
 msgctxt "What follows is a list of benefits"
 msgid "Subscribe now and you'll receive our:"
 msgstr "Prenumerera nu och få vår:"
 
-#: IAWP/Independent_Analytics.php:237
+#: IAWP/Independent_Analytics.php:243
 msgid "If you signup for our free email course, we’ll walk you through each feature in Independent Analytics, so you can learn how to analyze and optimize your website for growth."
 msgstr "Om du registrerar dig för vår kostnadsfria e-postkurs guidar vi dig genom varje funktion i Independent Analytics, så att du kan lära dig hur du analyserar och optimerar din webbplats för tillväxt."
 
-#: IAWP/Independent_Analytics.php:235
+#: IAWP/Independent_Analytics.php:241
 msgid "You've just taken the first step towards building a better website."
 msgstr "Du har just tagit första steget mot att bygga en bättre webbplats."
 
-#: IAWP/Independent_Analytics.php:231
+#: IAWP/Independent_Analytics.php:237
 msgid "Congratulations on Your New Analytics! 🎉"
 msgstr "Grattis till din nya Analytics! 🎉"
 
-#: IAWP/Independent_Analytics.php:98
+#: IAWP/Independent_Analytics.php:104
 msgid "No, thanks"
 msgstr "Nej tack"
 
-#: IAWP/Independent_Analytics.php:98
+#: IAWP/Independent_Analytics.php:104
 msgid "Subscribe & Go To Analytics"
 msgstr "Prenumerera och gå till Analytics"
 
-#: views/woocommerce-order-meta-box.blade.php:41
+#: views/woocommerce-order-meta-box.blade.php:46
 msgid "Powered by %s."
 msgstr "Drivs med %s."
 
@@ -84,22 +278,27 @@ msgstr "Tid för köp"
 msgid "Pages viewed"
 msgstr "Sidor visade"
 
+#: views/journeys/timeline/origin.blade.php:48
 #: views/woocommerce-order-meta-box.blade.php:17
 msgid "Content:"
 msgstr "Innehåll:"
 
+#: views/journeys/timeline/origin.blade.php:42
 #: views/woocommerce-order-meta-box.blade.php:14
 msgid "Term:"
 msgstr "Term:"
 
+#: views/journeys/timeline/origin.blade.php:36
 #: views/woocommerce-order-meta-box.blade.php:12
 msgid "Campaign:"
 msgstr "Kampanj:"
 
+#: views/journeys/timeline/origin.blade.php:30
 #: views/woocommerce-order-meta-box.blade.php:11
 msgid "Medium:"
 msgstr "Medium:"
 
+#: views/journeys/timeline/origin.blade.php:24
 #: views/woocommerce-order-meta-box.blade.php:10
 msgid "Source:"
 msgstr "Källa:"
@@ -130,7 +329,7 @@ msgstr "Om %s av villkoren tillämpas"
 
 #: IAWP/Filters.php:47
 msgid "any"
-msgstr "vilket som"
+msgstr "valfri"
 
 #: IAWP/Filters.php:46
 msgid "all"
@@ -169,18 +368,18 @@ msgid "The REST API Toolbox plugin has disabled the REST API, which Independent 
 msgstr "Tillägget REST API Toolbox har inaktiverat REST API, vilket Independent Analytics behöver för att registrera besökare. Gå till menyn Inställningar > REST API Toolbox och avmarkera alternativet \"Inaktivera REST API\" för att tillåta Independent Analytics att spåra dina besökare."
 
 #: IAWP/Utils/Link_Validator.php:13
-msgid "Id cannot contain special characters besides \"-\" and \"_\"."
-msgstr "Id får inte innehålla specialtecken förutom \"-\" och \"_\"."
+msgid "ID cannot contain special characters besides \"-\" and \"_\"."
+msgstr "ID får inte innehålla specialtecken förutom \"-\" och \"_\"."
 
 #: IAWP/Utils/Link_Validator.php:13
-msgid "Id cannot contain spaces."
-msgstr "Id får inte innehålla mellanslag."
+msgid "ID cannot contain spaces."
+msgstr "ID får inte innehålla mellanslag."
 
 #: IAWP/Utils/Link_Validator.php:13
-msgid "Id cannot start with a number or special character."
-msgstr "Id får inte börja med en siffra eller ett specialtecken."
+msgid "ID cannot start with a number or special character."
+msgstr "ID får inte börja med en siffra eller ett specialtecken."
 
-#: IAWP/Independent_Analytics.php:283
+#: IAWP/Independent_Analytics.php:289
 msgid "Integrations"
 msgstr "Integrationer"
 
@@ -220,7 +419,7 @@ msgstr "Dölj antal visningar om det är under detta värde."
 msgid "Migration started at:"
 msgstr "Migrering påbörjades:"
 
-#: IAWP/Settings.php:124
+#: IAWP/Settings.php:126
 msgid "Minimum views required"
 msgstr "Lägsta antal visningar måste anges"
 
@@ -251,22 +450,22 @@ msgstr "Inga data inom detta datumintervall."
 
 #: views/overview/modules/busiest-day-of-week.blade.php:26
 #: views/overview/modules/busiest-time-of-day.blade.php:26
-#: views/overview/modules/line-chart.blade.php:29
+#: views/overview/modules/line-chart.blade.php:30
 #: views/overview/modules/map.blade.php:24
 #: views/overview/modules/new-sessions.blade.php:23
 #: views/overview/modules/pie-chart.blade.php:22
-#: views/overview/modules/recent-conversions.blade.php:67
-#: views/overview/modules/recent-views.blade.php:69
+#: views/overview/modules/recent-conversions.blade.php:63
+#: views/overview/modules/recent-views.blade.php:65
 msgid "Loading data..."
 msgstr "Laddar in data …"
 
 #: views/overview/module-picker.blade.php:18
 msgid "Choose a module"
-msgstr "Välj modul"
+msgstr "Välj en modul"
 
 #: views/overview/module-editor.blade.php:15
 msgid "Change Module Type"
-msgstr "Ändra typ av modul"
+msgstr "Ändra modultyp"
 
 #: views/settings/delete.blade.php:30
 msgid "You are about to reset your modules on the overview report. All modules will be deleted and the default modules will be restored. This does not impact your analytics data."
@@ -277,13 +476,13 @@ msgstr "Du är på väg att återställa modulerna i din översiktsrapport. Alla
 msgid "Reset overview report"
 msgstr "Återställ översiktsrapporten"
 
-#: views/partials/sidebar.blade.php:155
+#: views/partials/sidebar.blade.php:163
 msgid "Get Overview"
 msgstr "Se översikt"
 
 #: views/overview/overview.blade.php:47
 msgid "Download report"
-msgstr "Ladda ned rapport"
+msgstr "Ladda ner rapport"
 
 #: views/overview/overview.blade.php:37
 msgid "Reorder Modules"
@@ -299,9 +498,9 @@ msgstr "Lägg till modul"
 msgid "Geo"
 msgstr "Geografi"
 
-#: IAWP/Report.php:37 IAWP/Report_Finder.php:116
-#: views/overview/overview.blade.php:10 views/partials/sidebar.blade.php:49
-#: views/partials/sidebar.blade.php:152
+#: IAWP/Report.php:37 IAWP/Report_Finder.php:120
+#: views/overview/overview.blade.php:10 views/partials/sidebar.blade.php:42
+#: views/partials/sidebar.blade.php:160
 msgid "Overview"
 msgstr "Översikt"
 
@@ -317,11 +516,15 @@ msgstr "En inställning i tillägget ”Autoptimize” blockerar spårning av be
 msgid "Top 10 List"
 msgstr "Topp 10-lista"
 
+#: IAWP/Journey/Events/Submission.php:31
 #: IAWP/Overview/Modules/Recent_Conversions_Module.php:80
+#: views/journeys/rows.blade.php:68
 msgid "Form"
 msgstr "Formulär"
 
+#: IAWP/Journey/Events/Order.php:40
 #: IAWP/Overview/Modules/Recent_Conversions_Module.php:78
+#: views/journeys/rows.blade.php:62
 msgid "Order"
 msgstr "Beställning"
 
@@ -359,7 +562,7 @@ msgstr "Cirkeldiagram"
 
 #: IAWP/Overview/Modules/New_Sessions_Module.php:34
 msgid "Returning Sessions"
-msgstr "Återbesök"
+msgstr "Återkommande sessioner"
 
 #: IAWP/Overview/Modules/New_Sessions_Module.php:34
 msgid "New Sessions"
@@ -431,7 +634,9 @@ msgstr "Timme under dygnet med flest besökare"
 msgid "Busiest Day of Week"
 msgstr "Veckodag med flest besök"
 
-#: IAWP/Overview/Form_Field.php:29
+#: IAWP/Overview/Form_Field.php:29 IAWP/Plugin_Group.php:97
+#: views/journeys/table-heading.blade.php:10
+#: views/journeys/timeline.blade.php:66
 msgid "Conversions"
 msgstr "Konverteringar"
 
@@ -471,7 +676,7 @@ msgstr "Rapport"
 msgid "Divi Contact Form"
 msgstr "Divi-kontaktformulär"
 
-#: views/settings/email-reports.blade.php:105
+#: views/settings/email-reports.blade.php:118
 msgid "Any replies to the email report will be delivered to this email address."
 msgstr "Eventuella svar på e-postrapporten kommer att skickas till denna e-postadress."
 
@@ -491,11 +696,11 @@ msgstr "Ok"
 msgid "Please empty your cache to ensure your newest changes are tracked properly."
 msgstr "Töm webbplatsens cache för att säkerställa att de senaste ändringarna spåras korrekt."
 
-#: views/settings/email-reports.blade.php:108
+#: views/settings/email-reports.blade.php:121
 msgid "Email footer text"
 msgstr "Sidfotstext för e-postmeddelande"
 
-#: views/settings/email-reports.blade.php:99
+#: views/settings/email-reports.blade.php:112
 msgid "Reply To email address"
 msgstr "E-postadress för svar"
 
@@ -503,15 +708,15 @@ msgstr "E-postadress för svar"
 msgid "Links"
 msgstr "Länkar"
 
-#: IAWP/Tables/Table.php:236
+#: IAWP/Tables/Table.php:242
 msgid "Download Daily Metrics CSV"
 msgstr "Ladda ned CSV med dagliga mätvärden"
 
-#: IAWP/Tables/Table.php:228
+#: IAWP/Tables/Table.php:234
 msgid "Download Table CSV"
 msgstr "Ladda ned CSV-tabell"
 
-#: IAWP/Independent_Analytics.php:216
+#: IAWP/Independent_Analytics.php:222
 msgid "Success"
 msgstr "Lyckades"
 
@@ -519,11 +724,11 @@ msgstr "Lyckades"
 msgid "External"
 msgstr "Externt"
 
-#: IAWP/Admin_Page/Analytics_Page.php:210
+#: IAWP/Admin_Page/Analytics_Page.php:289
 msgid "The \"Solid Security\" plugin is disabling PHP execution in the plugins folder, and this is preventing click tracking from working. Please visit the Security > Settings page, click on the Advanced section, click on System Tweaks Settings, uncheck the \"Disable PHP Plugins\" option, and then save."
 msgstr "Tillägget \"Solid Security\" inaktiverar PHP-körning i tilläggsmappen, och detta förhindrar att klickspårning fungerar. Gå till sidan Säkerhet > Inställningar, klicka på sektionen Avancerat, klicka på \"Inställningar för systemjusteringar\", avmarkera alternativet \"Inaktivera PHP-tillägg\" och spara sedan."
 
-#: views/settings/email-reports.blade.php:96
+#: views/settings/email-reports.blade.php:109
 msgid "The email address should come from this domain or your emails may not be delivered."
 msgstr "E-postadressen måste komma från den här domänen, annars kan det hända att dina e-postmeddelanden inte levereras."
 
@@ -590,7 +795,7 @@ msgstr "Lägg till länkmönster"
 msgid "Links matching the patterns below are being actively monitored for clicks."
 msgstr "Länkar som matchar mönstren nedan övervakas aktivt för klick."
 
-#: IAWP/Email_Reports/Email_Reports.php:190 IAWP/Tables/Table_Clicks.php:25
+#: IAWP/Email_Reports/Email_Reports.php:196 IAWP/Tables/Table_Clicks.php:25
 #: views/click-tracking/menu.blade.php:23
 msgid "Link Patterns"
 msgstr "Länkmönster"
@@ -625,11 +830,11 @@ msgstr "Exportera alla dina rapportinställningar så att de kan dupliceras på 
 msgid "Export Report Settings"
 msgstr "Inställningar för export av rapport"
 
-#: views/settings/email-reports.blade.php:90
+#: views/settings/email-reports.blade.php:103
 msgid "From email address"
 msgstr "”Från” e-postadress"
 
-#: views/partials/sidebar.blade.php:185
+#: views/partials/sidebar.blade.php:208
 msgid "Get click tracking"
 msgstr "Få klickspårning"
 
@@ -667,17 +872,19 @@ msgstr "Ogiltig typ."
 
 #: IAWP/Utils/Link_Validator.php:13
 msgid "Value cannot be empty."
-msgstr "Värdet kan inte vara tomt."
+msgstr "Värde kan inte vara tomt."
 
 #: IAWP/Utils/Link_Validator.php:13
 msgid "Name cannot be empty."
-msgstr "Namnet får inte vara tomt."
+msgstr "Namn kan inte vara tomt."
 
 #: IAWP/Tables/Table_Clicks.php:30
 msgid "Target"
 msgstr "Mål"
 
+#: IAWP/Journey/Events/Click.php:34
 #: IAWP/Overview/Modules/Recent_Conversions_Module.php:82
+#: views/journeys/rows.blade.php:65
 msgid "Click"
 msgstr "Klick"
 
@@ -685,14 +892,15 @@ msgstr "Klick"
 msgid "Link Pattern"
 msgstr "Länkmönster"
 
-#: IAWP/Admin_Page/Analytics_Page.php:238 IAWP/Overview/Form_Field.php:92
+#: IAWP/Admin_Page/Analytics_Page.php:317 IAWP/Overview/Form_Field.php:92
 #: IAWP/Report.php:37 IAWP/Report.php:105 IAWP/Report.php:114
-#: IAWP/Report_Finder.php:114 IAWP/Statistics/Click_Statistics.php:23
-#: IAWP/Statistics/Statistics.php:212 IAWP/Tables/Table_Campaigns.php:37
-#: IAWP/Tables/Table_Clicks.php:30 IAWP/Tables/Table_Devices.php:35
-#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Pages.php:29
-#: IAWP/Tables/Table_Referrers.php:30 views/email/email.blade.php:613
-#: views/partials/sidebar.blade.php:138 views/partials/sidebar.blade.php:182
+#: IAWP/Report_Finder.php:116 IAWP/Report_Finder.php:207
+#: IAWP/Statistics/Click_Statistics.php:23 IAWP/Statistics/Statistics.php:212
+#: IAWP/Tables/Table_Campaigns.php:37 IAWP/Tables/Table_Clicks.php:30
+#: IAWP/Tables/Table_Devices.php:35 IAWP/Tables/Table_Geo.php:28
+#: IAWP/Tables/Table_Pages.php:29 IAWP/Tables/Table_Referrers.php:30
+#: views/email/email.blade.php:613 views/partials/sidebar.blade.php:146
+#: views/partials/sidebar.blade.php:205
 msgid "Clicks"
 msgstr "Klick"
 
@@ -712,15 +920,15 @@ msgstr "ZIP-filer"
 msgid "PDFs"
 msgstr "PDF:er"
 
-#: IAWP/Independent_Analytics.php:386
+#: IAWP/Independent_Analytics.php:392
 msgid "Export Clicks"
 msgstr "Exportera klick"
 
-#: IAWP/Independent_Analytics.php:386
+#: IAWP/Independent_Analytics.php:392
 msgid "Exporting Clicks"
 msgstr "Exporterar klick"
 
-#: IAWP/Independent_Analytics.php:270 views/click-tracking/menu.blade.php:4
+#: IAWP/Independent_Analytics.php:276 views/click-tracking/menu.blade.php:4
 msgid "Click Tracking"
 msgstr "Spårning av klick"
 
@@ -742,31 +950,31 @@ msgstr "Utökning"
 
 #: IAWP/Click_Tracking.php:21
 msgid "Class"
-msgstr "Class"
+msgstr "Klass"
 
 #: IAWP/Admin_Page/Click_Tracking_Page.php:15
 msgid "You do not have permission to edit the click tracking settings."
 msgstr "Du har inte behörighet att redigera inställningarna för klickspårning."
 
-#: IAWP/Admin_Page/Analytics_Page.php:219
-#: IAWP/Admin_Page/Analytics_Page.php:226
+#: IAWP/Admin_Page/Analytics_Page.php:298
+#: IAWP/Admin_Page/Analytics_Page.php:305
 msgid "Dismiss"
 msgstr "Avfärda"
 
-#: IAWP/Admin_Page/Analytics_Page.php:226
+#: IAWP/Admin_Page/Analytics_Page.php:305
 msgid "Click data syncs every 60 seconds. Please allow for this delay when testing clicks on new links."
 msgstr "Klickdata synkroniseras var 60:e sekund. Ta hänsyn till denna fördröjning när du testar klick på nya länkar."
 
-#: IAWP/Admin_Page/Analytics_Page.php:219
+#: IAWP/Admin_Page/Analytics_Page.php:298
 msgid "We recommend you enable tracking for logged-in visitors."
 msgstr "Vi rekommenderar att du aktiverar spårning för inloggade besökare."
 
-#: IAWP/Admin_Page/Analytics_Page.php:219
+#: IAWP/Admin_Page/Analytics_Page.php:298
 msgctxt "Variable is the name of a plugin"
 msgid "%s compatibility:"
 msgstr "Kompabilitet med %s:"
 
-#: IAWP/Independent_Analytics.php:300
+#: IAWP/Independent_Analytics.php:306
 msgid "Independent Analytics Debug"
 msgstr "Independent Analytics felsökning"
 
@@ -787,7 +995,7 @@ msgid "First view recorded"
 msgstr "Första vyn registrerad"
 
 #: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:212
-#: IAWP/Tables/Table.php:426
+#: IAWP/Tables/Table.php:436
 msgid "Total Sales"
 msgstr "Total försäljning"
 
@@ -904,45 +1112,45 @@ msgstr "Ignorerade användarroller kan fortfarande komma åt webbplatsen, men de
 msgid "Ignore User Roles"
 msgstr "Ignorera användarroller"
 
-#: IAWP/Independent_Analytics.php:386 IAWP/Overview/Form_Field.php:91
+#: IAWP/Independent_Analytics.php:392 IAWP/Overview/Form_Field.php:91
 #: views/chart.blade.php:42
 msgid "No Comparison"
 msgstr "Ingen jämförelse"
 
-#: IAWP/Settings.php:133
+#: IAWP/Settings.php:135
 msgid "Display the label"
 msgstr "Visa etiketten"
 
-#: IAWP/Report_Finder.php:198
+#: IAWP/Report_Finder.php:202
 msgctxt "short for operating system"
 msgid "OS"
 msgstr "OS"
 
-#: IAWP/Report_Finder.php:196
+#: IAWP/Report_Finder.php:200
 msgid "European Countries"
 msgstr "Europeiska länder"
 
-#: IAWP/Report_Finder.php:193
+#: IAWP/Report_Finder.php:197
 msgid "Fastest-Growing Referrers"
 msgstr "Snabbast växande referenser"
 
-#: IAWP/Report_Finder.php:192
+#: IAWP/Report_Finder.php:196
 msgid "Social Media Traffic"
 msgstr "Trafik i sociala medier"
 
-#: IAWP/Report_Finder.php:191
+#: IAWP/Report_Finder.php:195
 msgid "Search Engine Traffic"
 msgstr "Trafik från sökmotorer"
 
-#: IAWP/Report_Finder.php:189
+#: IAWP/Report_Finder.php:193
 msgid "Fastest-Growing Pages"
 msgstr "Snabbast växande sidor"
 
-#: IAWP/Report_Finder.php:188
+#: IAWP/Report_Finder.php:192
 msgid "Top Landing Pages"
 msgstr "De bästa landningssidorna"
 
-#: IAWP/Report_Finder.php:187
+#: IAWP/Report_Finder.php:191
 msgid "Blog Posts"
 msgstr "Blogginlägg"
 
@@ -1007,11 +1215,11 @@ msgstr "Händelse"
 msgid "Appointment"
 msgstr "Möte"
 
-#: IAWP/Email_Reports/Email_Reports.php:198
+#: IAWP/Email_Reports/Email_Reports.php:204
 msgid "Exit Pages"
 msgstr "Utgångssidor"
 
-#: IAWP/Email_Reports/Email_Reports.php:194
+#: IAWP/Email_Reports/Email_Reports.php:200
 msgid "Landing Pages"
 msgstr "Landningssidor"
 
@@ -1033,8 +1241,8 @@ msgstr "Lär dig mer"
 msgid "You can also customize the icon display, label, and date range used by the shortcode."
 msgstr "Du kan också anpassa ikonvisningen, etiketten och det datumintervall som används av kortkoden."
 
-#: IAWP/Email_Reports/Email_Reports.php:183 IAWP/Tables/Table.php:430
-#: IAWP/Tables/Table.php:432 views/email/email.blade.php:615
+#: IAWP/Email_Reports/Email_Reports.php:189 IAWP/Tables/Table.php:440
+#: IAWP/Tables/Table.php:442 views/email/email.blade.php:615
 msgid "Submissions"
 msgstr "Inlämningar"
 
@@ -1069,7 +1277,7 @@ msgstr "Aktivera ett tillägg för formulär som stöds för att visa denna stat
 msgid "Upgrade to Independent Analytics Pro to track form submissions."
 msgstr "Uppgradera till Independent Analytics Pro för att spåra formulärinlämningar."
 
-#: IAWP/Email_Reports/Email_Reports.php:186 IAWP/Plugin_Group.php:97
+#: IAWP/Email_Reports/Email_Reports.php:192 IAWP/Plugin_Group.php:97
 msgid "Forms"
 msgstr "Formulär"
 
@@ -1085,7 +1293,7 @@ msgstr "Uppgradera till Independent Analytics Pro för att få statistik över e
 msgid "General"
 msgstr "Allmänt"
 
-#: IAWP/Independent_Analytics.php:290
+#: IAWP/Independent_Analytics.php:296
 msgid "New"
 msgstr "Nytt"
 
@@ -1106,27 +1314,27 @@ msgstr "Visningar per timme"
 msgid "Week of"
 msgstr "Vecka av"
 
-#: IAWP/Email_Reports/Email_Reports.php:149
+#: IAWP/Email_Reports/Email_Reports.php:155
 msgid "Analytics Report for"
 msgstr "Statistikrapport för"
 
-#: views/settings/email-reports.blade.php:153
+#: views/settings/email-reports.blade.php:166
 msgid "Preview email"
 msgstr "Förhandsgranskning av e-postmeddelande"
 
-#: views/settings/email-reports.blade.php:30
+#: views/settings/email-reports.blade.php:43
 msgid "The email will be delivered every day."
 msgstr "E-postmeddelandet kommer att levereras varje dag."
 
-#: views/settings/email-reports.blade.php:29
+#: views/settings/email-reports.blade.php:42
 msgid "The email will be delivered on the first day of the week (selected in the settings above)."
 msgstr "E-postmeddelandet kommer att levereras den första dagen i veckan (vald i inställningarna ovan)."
 
-#: views/settings/email-reports.blade.php:28
+#: views/settings/email-reports.blade.php:41
 msgid "The email will be delivered on the 1st of every month."
 msgstr "E-postmeddelandet kommer att skickas den 1:a varje månad."
 
-#: views/settings/email-reports.blade.php:22
+#: views/settings/email-reports.blade.php:35
 msgid "Delivery Interval"
 msgstr "Leveransintervall"
 
@@ -1134,11 +1342,11 @@ msgstr "Leveransintervall"
 msgid "Views column"
 msgstr "Kolumnen ”Visningar”"
 
-#: IAWP/Email_Reports/Email_Reports.php:71
+#: IAWP/Email_Reports/Email_Reports.php:74
 msgid "Next email scheduled for %s at %s."
 msgstr "Nästa e-postmeddelande är schemalagt till %s kl %s."
 
-#: IAWP/Email_Reports/Email_Reports.php:66
+#: IAWP/Email_Reports/Email_Reports.php:69
 msgid "There is no email scheduled."
 msgstr "Det finns inga schemalagda e-postmeddelanden."
 
@@ -1154,11 +1362,11 @@ msgstr "Exportera rapporter"
 msgid "Select all reports"
 msgstr "Välj alla rapporter"
 
-#: views/partials/sidebar.blade.php:33
+#: views/partials/sidebar.blade.php:241
 msgid "Expand sidebar"
-msgstr "Expandera sidofältet"
+msgstr "Expandera sidopanel"
 
-#: views/partials/sidebar.blade.php:31
+#: views/partials/sidebar.blade.php:239
 msgid "Collapse sidebar"
 msgstr "Minimera sidopanel"
 
@@ -1245,7 +1453,7 @@ msgstr "Visa alla uppdateringar"
 msgid "Newest Updates"
 msgstr "De senaste uppdateringarna"
 
-#: IAWP/Tables/Table.php:73 views/tables/table-toolbar.blade.php:4
+#: IAWP/Tables/Table.php:77 views/tables/table-toolbar.blade.php:4
 msgid "Toggle Columns"
 msgstr "Slå på/av kolumner"
 
@@ -1285,31 +1493,23 @@ msgstr "Tillåt manuell justering"
 msgid "Using the shortcode"
 msgstr "Använda kortkoden"
 
-#: views/settings/refresh-salt.blade.php:5
-msgid "This improves data privacy at the expense of unique visitor count accuracy."
-msgstr "Detta förbättrar dataintegriteten på bekostnad av noggrannheten i antalet unika besökare."
-
-#: views/settings/refresh-salt.blade.php:3
-msgid "Refresh the visitor salt every day"
-msgstr "Uppdatera besöksaltet varje dag"
-
 #: views/settings/export-reports.blade.php:56
 msgid "Import Custom Reports"
 msgstr "Importera anpassade rapporter"
 
-#: views/settings/email-reports.blade.php:83
+#: views/settings/email-reports.blade.php:96
 msgid "Footer background"
 msgstr "Sidfotens bakgrund"
 
-#: views/settings/email-reports.blade.php:79
+#: views/settings/email-reports.blade.php:92
 msgid "Outer background"
 msgstr "Yttre bakgrund"
 
-#: views/settings/email-reports.blade.php:75
+#: views/settings/email-reports.blade.php:88
 msgid "Metric background"
 msgstr "Metrisk bakgrund"
 
-#: views/settings/email-reports.blade.php:71
+#: views/settings/email-reports.blade.php:84
 msgid "Borders"
 msgstr "Ramar"
 
@@ -1346,12 +1546,12 @@ msgstr "Din IP-adress ignoreras inte:"
 msgid "Your IP address is ignored:"
 msgstr "Din IP-adress ignoreras:"
 
-#: IAWP/Report.php:37 views/partials/sidebar.blade.php:197
+#: IAWP/Report.php:37 views/partials/sidebar.blade.php:220
 #: views/real-time.blade.php:3
 msgid "Real-Time"
 msgstr "Realtid"
 
-#: views/partials/sidebar.blade.php:170
+#: views/partials/sidebar.blade.php:193
 msgid "Get Campaigns"
 msgstr "Hämta kampanjer"
 
@@ -1427,6 +1627,11 @@ msgstr "Datamigreringen misslyckades"
 msgid "Copy to Form"
 msgstr "Kopiera till formulär"
 
+#: views/journeys/timeline/origin.blade.php:7
+#: views/journeys/timeline/origin.blade.php:15
+msgid "Referrer:"
+msgstr "Hänvisare:"
+
 #: IAWP/View_Counter.php:94
 msgid "Increase count by:"
 msgstr "Öka antalet med:"
@@ -1447,38 +1652,38 @@ msgstr "Utgångar"
 msgid "Entrances"
 msgstr "Entréer"
 
-#: IAWP/Tables/Table.php:246 views/overview/overview.blade.php:53
+#: IAWP/Tables/Table.php:252 views/overview/overview.blade.php:53
 msgid "Download PDF"
-msgstr "Ladda ned PDF"
+msgstr "Ladda ner PDF"
 
-#: IAWP/Tables/Table.php:219
+#: IAWP/Tables/Table.php:225
 msgid "Choose a format"
 msgstr "Välj ett format"
 
-#: IAWP/Tables/Table.php:212 views/examiner/skeleton.blade.php:24
+#: IAWP/Tables/Table.php:218 views/examiner/skeleton.blade.php:24
 #: views/overview/overview.blade.php:42
 msgid "Download Report"
 msgstr "Ladda ner rapport"
 
-#: IAWP/Settings.php:143
+#: IAWP/Settings.php:145
 msgid "Allow manual adjustment?"
 msgstr "Tillåt manuell justering?"
 
-#: IAWP/Settings.php:140
+#: IAWP/Settings.php:142
 msgid "Make the view counter private?"
 msgstr "Gör visningsräknaren privat?"
 
-#: IAWP/Settings.php:116
+#: IAWP/Settings.php:118
 msgid "Date range to count views"
 msgstr "Datumintervall för att räkna visningar"
 
-#: IAWP/Settings.php:70
+#: IAWP/Settings.php:72
 msgid "Salt refresh rate"
 msgstr "Uppdateringsfrekvens för salt"
 
 #: IAWP/Settings.php:62
 msgid "Dashboard widget"
-msgstr "Widget för kontrollpanelen"
+msgstr "Adminpanel-widget"
 
 #: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:208
 msgid "Average Session Duration"
@@ -1508,27 +1713,27 @@ msgstr "Tillägget \"WP Cerber\" blockerar REST API, som Independent Analytics b
 msgid "Checkout Success"
 msgstr "Utcheckningen lyckades"
 
-#: IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
+#: IAWP/Admin_Bar_Stats.php:61
 msgid "All Time:"
 msgstr "Sedan starten:"
 
-#: IAWP/Independent_Analytics.php:386
+#: IAWP/Independent_Analytics.php:392
 msgid "Close menu"
 msgstr "Stäng meny"
 
-#: IAWP/Independent_Analytics.php:386 views/partials/sidebar.blade.php:38
+#: IAWP/Independent_Analytics.php:392 views/partials/sidebar.blade.php:31
 msgid "Open menu"
 msgstr "Öppna meny"
 
-#: IAWP/Independent_Analytics.php:386
+#: IAWP/Independent_Analytics.php:392
 msgid "This report archive is invalid. Please export your reports and try again."
 msgstr "Detta rapportarkiv är ogiltigt. Exportera dina rapporter och försök igen."
 
-#: IAWP/Independent_Analytics.php:289 IAWP/Independent_Analytics.php:291
+#: IAWP/Independent_Analytics.php:295 IAWP/Independent_Analytics.php:297
 msgid "Changelog"
 msgstr "Ändringslogg"
 
-#: IAWP/Independent_Analytics.php:277
+#: IAWP/Independent_Analytics.php:283
 msgid "Help & Support"
 msgstr "Hjälp och support"
 
@@ -1569,11 +1774,11 @@ msgstr "Senaste 60 dagarna"
 msgid "You do not have permission to view this page."
 msgstr "Du har inte behörighet att visa denna sida."
 
-#: IAWP/Admin_Page/Analytics_Page.php:222
+#: IAWP/Admin_Page/Analytics_Page.php:301
 msgid "There is no issue at this time, but you will need to enable the missing permissions before updating the plugin to a newer version to ensure an error is avoided. Please click this link to read our tutorial:"
 msgstr "Det finns inget problem just nu, men du måste aktivera de saknade behörigheterna innan du uppdaterar tillägget till en nyare version för att säkerställa att inget går fel. Klicka på den här länken för att läsa vår handledning:"
 
-#: IAWP/Admin_Page/Analytics_Page.php:222
+#: IAWP/Admin_Page/Analytics_Page.php:301
 msgid "Your site is missing the following critical database permissions:"
 msgstr "Din webbplats saknar följande kritiska databasbehörigheter:"
 
@@ -1581,31 +1786,31 @@ msgstr "Din webbplats saknar följande kritiska databasbehörigheter:"
 msgid "No device data found"
 msgstr "Inga enhetsdata hittades"
 
-#: views/settings/email-reports.blade.php:67
+#: views/settings/email-reports.blade.php:80
 msgid "Bar chart accent"
 msgstr "Stapeldiagram accent"
 
-#: views/settings/email-reports.blade.php:63
+#: views/settings/email-reports.blade.php:76
 msgid "Bar chart"
 msgstr "Stapeldiagram"
 
-#: views/settings/email-reports.blade.php:59
+#: views/settings/email-reports.blade.php:72
 msgid "Sub-header text"
 msgstr "Underrubrikstext"
 
-#: views/settings/email-reports.blade.php:55
+#: views/settings/email-reports.blade.php:68
 msgid "Sub-header background"
 msgstr "Underrubrikernas bakgrund"
 
-#: views/settings/email-reports.blade.php:51
+#: views/settings/email-reports.blade.php:64
 msgid "Header text"
 msgstr "Text i rubriken"
 
-#: views/settings/email-reports.blade.php:47
+#: views/settings/email-reports.blade.php:60
 msgid "Header background"
 msgstr "Bakgrund för sidhuvud"
 
-#: views/settings/email-reports.blade.php:44
+#: views/settings/email-reports.blade.php:57
 msgid "Customize the colors"
 msgstr "Anpassa färgerna"
 
@@ -1645,11 +1850,12 @@ msgstr "Operativsystem"
 msgid "Type"
 msgstr "Typ"
 
-#: IAWP/Report_Finder.php:197
+#: IAWP/Report_Finder.php:201
 msgid "Browsers"
 msgstr "Webbläsare"
 
 #: IAWP/Tables/Table_Devices.php:30 IAWP/Tables/Table_Devices.php:35
+#: IAWP/Tables/Table_Journeys.php:73
 msgid "Browser"
 msgstr "Webbläsare"
 
@@ -1657,7 +1863,7 @@ msgstr "Webbläsare"
 msgid "OS"
 msgstr "OS"
 
-#: IAWP/Tables/Table_Devices.php:28
+#: IAWP/Tables/Table_Devices.php:28 IAWP/Tables/Table_Journeys.php:73
 msgid "Device Type"
 msgstr "Enhetstyp"
 
@@ -1665,27 +1871,27 @@ msgstr "Enhetstyp"
 msgid "Device Types"
 msgstr "Enhetstyper"
 
-#: IAWP/Independent_Analytics.php:386
+#: IAWP/Independent_Analytics.php:392
 msgid "Exporting Devices..."
 msgstr "Exporterar enheter …"
 
-#: IAWP/Independent_Analytics.php:386
+#: IAWP/Independent_Analytics.php:392
 msgid "Export Devices"
 msgstr "Exportera enheter"
 
-#: IAWP/Admin_Page/Analytics_Page.php:238
-#: IAWP/Email_Reports/Email_Reports.php:176
+#: IAWP/Admin_Page/Analytics_Page.php:317
+#: IAWP/Email_Reports/Email_Reports.php:182
 #: IAWP/Overview/Modules/Module.php:424 IAWP/Report.php:37
-#: IAWP/Report_Finder.php:110 views/partials/sidebar.blade.php:112
+#: IAWP/Report_Finder.php:112 views/partials/sidebar.blade.php:119
 msgid "Devices"
 msgstr "Enheter"
 
 #: views/campaign-builder.blade.php:216 views/click-tracking/link.blade.php:105
 #: views/click-tracking/menu.blade.php:80
 msgid "Delete"
-msgstr "Delete"
+msgstr "Ta bort"
 
-#: IAWP/Report_Finder.php:195
+#: IAWP/Report_Finder.php:199
 msgid "Cities"
 msgstr "Orter"
 
@@ -1693,7 +1899,7 @@ msgstr "Orter"
 msgid "The \"NinjaFirewall\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the NinjaFirewall > Firewall Policies menu and uncheck the \"Block any access to the API\" checkbox to allow Independent Analytics to track your visitors."
 msgstr "Tillägget \"NinjaFirewall\" blockerar REST API, som Independent Analytics behöver för att registrera visningar. Gå till menyn NinjaFirewall > Brandväggspolicyer och avmarkera kryssrutan \"Blockera all åtkomst till API\" för att tillåta Independent Analytics att spåra dina besökare."
 
-#: IAWP/Email_Reports/Email_Reports.php:122 IAWP/Settings.php:374
+#: IAWP/Email_Reports/Email_Reports.php:128 IAWP/Settings.php:376
 msgid "This email was generated and delivered by %s"
 msgstr "Detta e-postmeddelande genererades och levererades av %s"
 
@@ -1714,12 +1920,14 @@ msgid "Website Analytics Report"
 msgstr "Rapport om webbplatsstatistik"
 
 #: IAWP/Statistics/Intervals/Weekly.php:14
-#: views/settings/email-reports.blade.php:25
+#: IAWP/VisitorSaltRefreshInterval.php:10
+#: views/settings/email-reports.blade.php:38
 msgid "Weekly"
 msgstr "En gång i veckan"
 
 #: IAWP/Statistics/Intervals/Monthly.php:14
-#: views/settings/email-reports.blade.php:24
+#: IAWP/VisitorSaltRefreshInterval.php:10
+#: views/settings/email-reports.blade.php:37
 msgid "Monthly"
 msgstr "En gång i månaden"
 
@@ -1728,7 +1936,8 @@ msgid "Hourly"
 msgstr "En gång i timmen"
 
 #: IAWP/Statistics/Intervals/Daily.php:14
-#: views/settings/email-reports.blade.php:26
+#: IAWP/VisitorSaltRefreshInterval.php:10
+#: views/settings/email-reports.blade.php:39
 msgid "Daily"
 msgstr "En gång om dagen"
 
@@ -1757,27 +1966,27 @@ msgstr "Statistik för adminverktygsfältet"
 msgid "Bounce Rate"
 msgstr "Avvisningsfrekvens"
 
-#: IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
+#: IAWP/Admin_Bar_Stats.php:61
 msgid "Last 30 Days:"
 msgstr "De senaste 30 dagarna:"
 
-#: IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
+#: IAWP/Admin_Bar_Stats.php:61
 msgid "Yesterday:"
 msgstr "Igår:"
 
-#: IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
+#: IAWP/Admin_Bar_Stats.php:61
 msgid "Today:"
 msgstr "Idag:"
 
-#: IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
+#: IAWP/Admin_Bar_Stats.php:61
 msgid "Date"
 msgstr "Datum"
 
-#: IAWP/Independent_Analytics.php:386
+#: IAWP/Independent_Analytics.php:392
 msgid "Apply Relative Dates"
 msgstr "Tillämpa relativa datum"
 
-#: IAWP/Independent_Analytics.php:386
+#: IAWP/Independent_Analytics.php:392
 msgid "Apply Exact Dates"
 msgstr "Tillämpa exakta datum"
 
@@ -1786,11 +1995,12 @@ msgid "View Duration"
 msgstr "Varaktighet för visning"
 
 #: IAWP/Tables/Table_Campaigns.php:37 IAWP/Tables/Table_Devices.php:35
-#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Referrers.php:30
+#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Journeys.php:73
+#: IAWP/Tables/Table_Referrers.php:30
 msgid "Session Duration"
 msgstr "Sessionslängd"
 
-#: IAWP/Independent_Analytics.php:386
+#: IAWP/Independent_Analytics.php:392
 msgid "Exporting Geolocations..."
 msgstr "Exportera geolokaliseringar ..."
 
@@ -1802,19 +2012,19 @@ msgstr "Tillägget \"WordPress REST API Authentication\" blockerar REST API, som
 msgid "The \"WP Hardening\" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Hardening > Security Fixers menu and turn off the \"Disable WP API JSON\" option, so Independent Analytics can track your visitors."
 msgstr "Tillägget \"WP Hardening\" blockerar REST API, som Independent Analytics behöver för att registrera visningar. Besök menyn ”WP Hardening > Security Fixers” och stäng av alternativet \"Disable WP API JSON\", så att Independent Analytics kan spåra dina besökare."
 
-#: IAWP/Independent_Analytics.php:386
+#: IAWP/Independent_Analytics.php:392
 msgid "Export Campaigns"
 msgstr "Exportera kampanjer"
 
-#: IAWP/Independent_Analytics.php:386
+#: IAWP/Independent_Analytics.php:392
 msgid "Export Geolocations"
 msgstr "Exportera geolokaliseringar"
 
-#: IAWP/Independent_Analytics.php:386
+#: IAWP/Independent_Analytics.php:392
 msgid "Export Referrers"
 msgstr "Exportera hänvisningar"
 
-#: IAWP/Independent_Analytics.php:386
+#: IAWP/Independent_Analytics.php:392
 msgid "Export Pages"
 msgstr "Exportera sidor"
 
@@ -1826,27 +2036,27 @@ msgstr "Butik"
 msgid "Comments"
 msgstr "Kommentarer"
 
-#: IAWP/Independent_Analytics.php:386
+#: IAWP/Independent_Analytics.php:392
 msgid "Exporting Campaigns..."
 msgstr "Exporterar kampanjer …"
 
-#: IAWP/Independent_Analytics.php:386
+#: IAWP/Independent_Analytics.php:392
 msgid "Exporting Pages..."
 msgstr "Exporterar sidor …"
 
-#: IAWP/Independent_Analytics.php:386
+#: IAWP/Independent_Analytics.php:392
 msgid "Exporting Referrers..."
 msgstr "Exporterar hänvisningar ..."
 
-#: IAWP/Independent_Analytics.php:386
+#: IAWP/Independent_Analytics.php:392
 msgid "Copied"
 msgstr "Kopierad"
 
-#: IAWP/Email_Reports/Email_Reports.php:147
+#: IAWP/Email_Reports/Email_Reports.php:153
 msgid "[Test]"
 msgstr "[Test]"
 
-#: IAWP/Independent_Analytics.php:386
+#: IAWP/Independent_Analytics.php:392
 #: IAWP/Overview/Modules/New_Sessions_Module.php:34 IAWP/Report.php:105
 #: IAWP/Statistics/Click_Statistics.php:23 IAWP/Statistics/Statistics.php:208
 #: IAWP/Tables/Table_Campaigns.php:37 IAWP/Tables/Table_Devices.php:35
@@ -1857,23 +2067,23 @@ msgstr "[Test]"
 msgid "Sessions"
 msgstr "Sessioner"
 
-#: IAWP/Independent_Analytics.php:265
+#: IAWP/Independent_Analytics.php:271
 msgid "Campaign Builder"
 msgstr "Kampanjbyggare"
 
 #: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:212
-#: IAWP/Tables/Table.php:426
+#: IAWP/Tables/Table.php:436
 msgid "Average Order Volume"
 msgstr "Genomsnittlig ordervolym"
 
 #: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:212
-#: IAWP/Tables/Table.php:426
+#: IAWP/Tables/Table.php:436
 msgid "Earnings Per Visitor"
 msgstr "Vinst per besökare"
 
 #: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:212
-#: IAWP/Tables/Table.php:426 IAWP/Tables/Table.php:430
-#: IAWP/Tables/Table.php:433
+#: IAWP/Tables/Table.php:436 IAWP/Tables/Table.php:440
+#: IAWP/Tables/Table.php:443
 msgid "Conversion Rate"
 msgstr "Konverteringsgrad"
 
@@ -1881,36 +2091,36 @@ msgstr "Konverteringsgrad"
 msgid "Newer database version found"
 msgstr "Nyare databasversion hittades"
 
-#: views/settings/email-reports.blade.php:154
+#: views/settings/email-reports.blade.php:167
 msgid "Send test email"
 msgstr "Skicka testmeddelande"
 
-#: views/settings/email-reports.blade.php:152
+#: views/settings/email-reports.blade.php:165
 msgid "Save settings"
 msgstr "Spara inställningar"
 
-#: views/settings/email-reports.blade.php:138
+#: views/settings/email-reports.blade.php:151
 msgid "Sending to these addresses"
 msgstr "Skicka till dessa adresser"
 
-#: views/settings/email-reports.blade.php:135
+#: views/settings/email-reports.blade.php:148
 msgid "This email already exists"
 msgstr "Detta e-postmeddelande finns redan"
 
-#: views/settings/email-reports.blade.php:131
-#: views/settings/email-reports.blade.php:146
+#: views/settings/email-reports.blade.php:144
+#: views/settings/email-reports.blade.php:159
 msgid "Remove email"
 msgstr "Ta bort e-post"
 
-#: views/settings/email-reports.blade.php:122
+#: views/settings/email-reports.blade.php:135
 msgid "Add email"
 msgstr "Lägg till e-post"
 
-#: views/settings/email-reports.blade.php:118
+#: views/settings/email-reports.blade.php:131
 msgid "Add new email addresses"
 msgstr "Lägg till nya e-postadresser"
 
-#: views/settings/email-reports.blade.php:33
+#: views/settings/email-reports.blade.php:46
 msgid "Delivery Time"
 msgstr "Leveranstid"
 
@@ -1927,7 +2137,7 @@ msgid "This user role is already blocked"
 msgstr "Denna användarroll är redan blockerad"
 
 #: views/settings/block-by-role.blade.php:63
-#: views/settings/refresh-salt.blade.php:5
+#: views/settings/visitor-salt-refresh-interval.blade.php:9
 msgid "Learn more."
 msgstr "Lär dig mer."
 
@@ -1952,30 +2162,31 @@ msgid "Update running"
 msgstr "Uppdatering körs"
 
 #: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:212
-#: IAWP/Tables/Table.php:426
+#: IAWP/Tables/Table.php:436
 msgid "Refunded Amount"
 msgstr "Återbetalat belopp"
 
 #: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:212
-#: IAWP/Tables/Table.php:426
+#: IAWP/Tables/Table.php:436
 msgid "Refunds"
 msgstr "Återbetalning"
 
 #: IAWP/Report.php:105 IAWP/Statistics/Statistics.php:212
-#: IAWP/Tables/Table.php:426
+#: IAWP/Tables/Table.php:436 IAWP/Tables/Table_Journeys.php:73
 msgid "Gross Sales"
 msgstr "Bruttoförsäljning"
 
 #: IAWP/Overview/Form_Field.php:92 IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:212 IAWP/Tables/Table.php:426
+#: IAWP/Report_Finder.php:208 IAWP/Statistics/Statistics.php:212
+#: IAWP/Tables/Table.php:436
 msgid "Orders"
 msgstr "Beställningar"
 
-#: IAWP/Settings.php:221
+#: IAWP/Settings.php:223
 msgid "Block by User Role"
 msgstr "Blockera efter användarroll"
 
-#: IAWP/Settings.php:209
+#: IAWP/Settings.php:211
 msgid "Scheduled Email Reports"
 msgstr "Schemalagda e-postrapporter"
 
@@ -1983,15 +2194,15 @@ msgstr "Schemalagda e-postrapporter"
 msgid "The \"All-In-One Intranet\" plugin needs to be deactivated because it is disabling the REST API, which Independent Analytics uses to record visits. You may want to try the \"My Private Site\" plugin instead."
 msgstr "Tillägget \"All-In-One Intranet\" måste inaktiveras eftersom det inaktiverar REST API, som Independent Analytics använder för att registrera besök. Du kanske vill prova tillägget \"My Private Site\" istället."
 
-#: views/notices/notice.blade.php:9
+#: views/notices/notice.blade.php:12
 msgid "Learn More"
 msgstr "Lär dig mer"
 
-#: IAWP/Admin_Page/Analytics_Page.php:216
+#: IAWP/Admin_Page/Analytics_Page.php:295
 msgid "I've cleared the cache"
 msgstr "Jag har rensat cacheminnet"
 
-#: IAWP/Admin_Page/Analytics_Page.php:216
+#: IAWP/Admin_Page/Analytics_Page.php:295
 msgid "Please clear your cache to ensure tracking works properly."
 msgstr "Rensa din cache för att säkerställa att spårningen fungerar korrekt."
 
@@ -2019,21 +2230,17 @@ msgstr "Tillägget \"Disable WP REST API\" måste inaktiveras eftersom Independe
 msgid "White-label for non-admins"
 msgstr "White-label för icke-administratörer"
 
-#: views/real-time.blade.php:110
+#: views/real-time.blade.php:107
 msgid "No results in the last 5 minutes."
 msgstr "Inga resultat under de senaste 5 minuterna."
 
-#: views/real-time.blade.php:74
+#: views/real-time.blade.php:71
 msgid "The Last 30 Minutes"
 msgstr "De sista 30 minuterna"
 
-#: views/real-time.blade.php:63
+#: views/real-time.blade.php:60
 msgid "The Last 5 Minutes"
 msgstr "De sista 5 minuterna"
-
-#: views/real-time.blade.php:45
-msgid "Active Visitors is the number of people who have viewed a page within the last 5 minutes."
-msgstr "Aktiva besökare är antalet personer som har tittat på en sida under de senaste 5 minuterna."
 
 #: IAWP/Tables/Table_Campaigns.php:37 IAWP/Tables/Table_Devices.php:35
 #: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Pages.php:29
@@ -2063,7 +2270,7 @@ msgstr "Aktiva hänvisare"
 msgid "Active Pages"
 msgstr "Aktiva sidor"
 
-#: IAWP/Email_Reports/Email_Reports.php:172 IAWP/Real_Time.php:73
+#: IAWP/Email_Reports/Email_Reports.php:178 IAWP/Real_Time.php:73
 msgid "Countries"
 msgstr "Länder"
 
@@ -2074,6 +2281,10 @@ msgstr "Aktiva besökare"
 #: IAWP/Real_Time.php:86
 msgid "Active Visitor"
 msgstr "Aktiv besökare"
+
+#: IAWP/Journey/Events/View.php:32
+msgid "View"
+msgstr "Visa"
 
 #: IAWP/Interval/Ten_Second_Interval.php:34
 msgid "seconds ago"
@@ -2103,11 +2314,11 @@ msgstr "min"
 msgid "now"
 msgstr "nu"
 
-#: views/partials/sidebar.blade.php:200
+#: views/partials/sidebar.blade.php:223
 msgid "Get Real-time analytics"
 msgstr "Få statistik i realtid"
 
-#: IAWP/Report_Finder.php:118 views/partials/sidebar.blade.php:63
+#: IAWP/Report_Finder.php:122 views/partials/sidebar.blade.php:56
 msgid "Real-time"
 msgstr "Realtid"
 
@@ -2115,17 +2326,17 @@ msgstr "Realtid"
 msgid "PRO"
 msgstr "PRO"
 
-#: IAWP/Admin_Page/Analytics_Page.php:238
-#: IAWP/Email_Reports/Email_Reports.php:180 IAWP/Report.php:37
-#: IAWP/Report_Finder.php:112 views/partials/sidebar.blade.php:125
-#: views/partials/sidebar.blade.php:167
+#: IAWP/Admin_Page/Analytics_Page.php:317
+#: IAWP/Email_Reports/Email_Reports.php:186 IAWP/Plugin_Group.php:97
+#: IAWP/Report.php:37 IAWP/Report_Finder.php:114
+#: views/partials/sidebar.blade.php:132 views/partials/sidebar.blade.php:190
 msgid "Campaigns"
 msgstr "Kampanjer"
 
-#: IAWP/Admin_Page/Analytics_Page.php:238
-#: IAWP/Email_Reports/Email_Reports.php:164 IAWP/Real_Time.php:71
-#: IAWP/Report.php:37 IAWP/Report_Finder.php:104
-#: views/partials/sidebar.blade.php:76
+#: IAWP/Admin_Page/Analytics_Page.php:317
+#: IAWP/Email_Reports/Email_Reports.php:170 IAWP/Real_Time.php:71
+#: IAWP/Report.php:37 IAWP/Report_Finder.php:106
+#: views/partials/sidebar.blade.php:83
 msgid "Pages"
 msgstr "Sidor"
 
@@ -2155,7 +2366,7 @@ msgstr "Användarbehörigheter"
 
 #: views/settings/block-by-role.blade.php:68
 #: views/settings/block-ips.blade.php:59
-#: views/settings/email-reports.blade.php:155
+#: views/settings/email-reports.blade.php:168
 msgid "Unsaved changes"
 msgstr "Osparade ändringar"
 
@@ -2169,11 +2380,11 @@ msgstr "Denna IP är redan blockerad"
 
 #: views/settings/block-by-role.blade.php:38
 #: views/settings/block-ips.blade.php:38
-#: views/settings/email-reports.blade.php:134
+#: views/settings/email-reports.blade.php:147
 msgid "Input is empty"
 msgstr "Inmatningen är tom"
 
-#: IAWP/Settings.php:202
+#: IAWP/Settings.php:204
 msgid "Block IP Addresses"
 msgstr "Blockera IP-adresser"
 
@@ -2197,7 +2408,7 @@ msgstr "Skapa din första kampanj"
 msgid "No campaign data found"
 msgstr "Ingen kampanjdata hittades"
 
-#: IAWP/Independent_Analytics.php:118 views/partials/sidebar.blade.php:22
+#: IAWP/Independent_Analytics.php:124 views/partials/sidebar.blade.php:22
 msgid "Upgrade to Pro"
 msgstr "Uppgradera till Pro"
 
@@ -2286,43 +2497,46 @@ msgstr "Lär dig hur du skapar kampanjer"
 msgid "Campaign URL Builder"
 msgstr "URL-byggare för kampanj"
 
-#: IAWP/Tables/Table_Campaigns.php:37 views/campaign-builder.blade.php:129
+#: IAWP/Tables/Table_Campaigns.php:37 IAWP/Tables/Table_Journeys.php:73
+#: views/campaign-builder.blade.php:129
 msgid "Content"
 msgstr "Innehåll"
 
-#: IAWP/Tables/Table_Campaigns.php:37 views/campaign-builder.blade.php:115
+#: IAWP/Tables/Table_Campaigns.php:37 IAWP/Tables/Table_Journeys.php:73
+#: views/campaign-builder.blade.php:115
 msgid "Term"
 msgstr "Term"
 
 #: IAWP/Tables/Table_Campaigns.php:32 IAWP/Tables/Table_Campaigns.php:37
-#: views/campaign-builder.blade.php:97
+#: IAWP/Tables/Table_Journeys.php:73 views/campaign-builder.blade.php:97
 msgid "Campaign"
 msgstr "Kampanj"
 
 #: IAWP/Tables/Table_Campaigns.php:31 IAWP/Tables/Table_Campaigns.php:37
-#: views/campaign-builder.blade.php:78
+#: IAWP/Tables/Table_Journeys.php:73 views/campaign-builder.blade.php:78
 msgid "Medium"
 msgstr "Medium"
 
 #: IAWP/Tables/Table_Campaigns.php:30 IAWP/Tables/Table_Campaigns.php:37
-#: views/campaign-builder.blade.php:59
+#: IAWP/Tables/Table_Journeys.php:73 views/campaign-builder.blade.php:59
 msgid "Source"
 msgstr "Källa"
 
 #: IAWP/Tables/Table_Campaigns.php:29 IAWP/Tables/Table_Campaigns.php:37
+#: views/journeys/table-heading.blade.php:5
 #: views/woocommerce-order-meta-box.blade.php:22
 msgid "Landing Page"
 msgstr "Landningssida"
 
-#: IAWP/Independent_Analytics.php:297
+#: IAWP/Independent_Analytics.php:303
 msgid "Upgrade to Pro &rarr;"
 msgstr "Uppgradera till Pro &rarr;"
 
-#: views/tables/table.blade.php:94
+#: views/journeys/table.blade.php:44 views/tables/table.blade.php:94
 msgid "Load Next %d Rows"
 msgstr "Ladda nästa %d rader"
 
-#: views/tables/table.blade.php:91
+#: views/journeys/table.blade.php:41 views/tables/table.blade.php:91
 msgid "Showing All Rows"
 msgstr "Visar alla rader"
 
@@ -2354,46 +2568,46 @@ msgstr "Ange ID:n för de sidor som du vill utesluta med kommatecken, t.ex. 32,7
 msgid "You can output the view counter in a custom location using the shortcode:"
 msgstr "Du kan lägga ut visningsräknaren på en anpassad plats med hjälp av kortkoden:"
 
-#: IAWP/Settings.php:126 IAWP/Settings.php:181 IAWP/View_Counter.php:51
+#: IAWP/Settings.php:128 IAWP/Settings.php:183 IAWP/View_Counter.php:51
 #: IAWP/View_Counter.php:70
 msgid "Views:"
 msgstr "Visningar:"
 
-#: IAWP/Settings.php:159
+#: IAWP/Settings.php:161
 msgid "Uncheck all boxes to only show view count manually. See shortcode documentation below for details."
 msgstr "Avmarkera alla rutor för att bara visa visningsantal manuellt. Se kortkodsdokumentationen nedan för detaljer."
 
-#: IAWP/Settings.php:137
+#: IAWP/Settings.php:139
 msgid "Display the icon"
 msgstr "Visa ikonen"
 
-#: IAWP/Settings.php:129
+#: IAWP/Settings.php:131
 msgid "Edit the label"
 msgstr "Redigera etiketten"
 
-#: IAWP/Settings.php:120
+#: IAWP/Settings.php:122
 msgid "Exclude these pages"
 msgstr "Exkludera dessa sidor"
 
-#: IAWP/Settings.php:113
+#: IAWP/Settings.php:115
 msgid "Show it in this location"
 msgstr "Visa den på denna plats"
 
-#: IAWP/Settings.php:109
+#: IAWP/Settings.php:111
 msgid "Display on these post types"
 msgstr "Visa på dessa inläggstyper"
 
-#: IAWP/Settings.php:106 views/settings/view-counter/enable.blade.php:3
+#: IAWP/Settings.php:108 views/settings/view-counter/enable.blade.php:3
 msgid "Enable the view counter"
 msgstr "Aktivera visningsräknaren"
 
-#: IAWP/Settings.php:102
+#: IAWP/Settings.php:104
 msgid "Public View Counter"
 msgstr "Offentlig visningsräknare"
 
 #: IAWP/Dashboard_Widget.php:31
 msgid "Open Dashboard"
-msgstr "Öppna kontrollpanelen"
+msgstr "Öppna adminpanel"
 
 #: views/tables/rows.blade.php:16
 msgid "No geographic data found"
@@ -2405,7 +2619,7 @@ msgstr "Förra året"
 
 #: IAWP/Date_Range/Relative_Date_Range.php:160
 msgid "This Year"
-msgstr "I år"
+msgstr "Detta år"
 
 #: IAWP/Date_Range/Relative_Date_Range.php:127
 msgid "Last Month"
@@ -2425,7 +2639,7 @@ msgstr "Förra veckan"
 msgid "This Week"
 msgstr "Denna vecka"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:67 IAWP/Report_Finder.php:194
+#: IAWP/Date_Range/Relative_Date_Range.php:67 IAWP/Report_Finder.php:198
 #: views/settings/view-counter/views-to-count.blade.php:8
 msgid "Last 7 Days"
 msgstr "Senaste 7 dagarna"
@@ -2437,7 +2651,7 @@ msgstr "Senaste 7 dagarna"
 msgid "Yesterday"
 msgstr "Igår"
 
-#: IAWP/Date_Range/Relative_Date_Range.php:54 IAWP/Report_Finder.php:190
+#: IAWP/Date_Range/Relative_Date_Range.php:54 IAWP/Report_Finder.php:194
 #: views/settings/view-counter/views-to-count.blade.php:4
 msgid "Today"
 msgstr "Idag"
@@ -2451,7 +2665,7 @@ msgid "Subdivision"
 msgstr "Indelning"
 
 #: IAWP/Real_Time.php:73 IAWP/Tables/Table_Geo.php:22
-#: IAWP/Tables/Table_Geo.php:28
+#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Journeys.php:73
 msgid "Country"
 msgstr "Land"
 
@@ -2459,13 +2673,13 @@ msgstr "Land"
 msgid "Continent"
 msgstr "Kontinent"
 
-#: IAWP/Admin_Page/Analytics_Page.php:191
+#: IAWP/Admin_Page/Analytics_Page.php:270
 msgctxt "Following text is a noun: DB-IP"
 msgid "Geolocation data powered by"
 msgstr "Geolokaliseringsdata drivs av"
 
-#: IAWP/Admin_Page/Analytics_Page.php:238 IAWP/Report_Finder.php:108
-#: views/partials/sidebar.blade.php:100
+#: IAWP/Admin_Page/Analytics_Page.php:317 IAWP/Report_Finder.php:110
+#: views/partials/sidebar.blade.php:107
 msgid "Geographic"
 msgstr "Geografiskt"
 
@@ -2508,7 +2722,7 @@ msgstr "Farlig zon"
 msgid "First day of week"
 msgstr "Första dagen i veckan"
 
-#: IAWP/Independent_Analytics.php:386 IAWP/Report.php:105
+#: IAWP/Independent_Analytics.php:392 IAWP/Report.php:105
 #: IAWP/Statistics/Click_Statistics.php:23 IAWP/Statistics/Statistics.php:208
 #: IAWP/Tables/Table_Campaigns.php:37 IAWP/Tables/Table_Devices.php:35
 #: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Pages.php:29
@@ -2520,43 +2734,43 @@ msgstr "Besökare"
 msgid "Last 30 Days"
 msgstr "Senaste 30 dagarna"
 
-#: IAWP/Independent_Analytics.php:406 IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
+#: IAWP/Admin_Bar_Stats.php:61 IAWP/Independent_Analytics.php:412
 msgid "Analytics Dashboard"
-msgstr "Statistik-kontrollpanel"
+msgstr "Analys-adminpanel"
 
 #: IAWP/Tables/Table_Pages.php:29
 msgid "Post Category"
 msgstr "Inläggskategori"
 
-#: IAWP/Settings.php:94
+#: IAWP/Settings.php:100
 msgid "Saturday"
 msgstr "Lördag"
 
-#: IAWP/Settings.php:94
+#: IAWP/Settings.php:100
 msgid "Friday"
 msgstr "Fredag"
 
-#: IAWP/Settings.php:94
+#: IAWP/Settings.php:100
 msgid "Thursday"
 msgstr "Torsdag"
 
-#: IAWP/Settings.php:94
+#: IAWP/Settings.php:100
 msgid "Wednesday"
 msgstr "Onsdag"
 
-#: IAWP/Settings.php:94
+#: IAWP/Settings.php:100
 msgid "Tuesday"
 msgstr "Tisdag"
 
-#: IAWP/Settings.php:94
+#: IAWP/Settings.php:100
 msgid "Monday"
 msgstr "Måndag"
 
-#: IAWP/Settings.php:94
+#: IAWP/Settings.php:100
 msgid "Sunday"
 msgstr "Söndag"
 
-#: IAWP/Tables/Table.php:104
+#: IAWP/Tables/Table.php:108
 msgid "(deleted)"
 msgstr "(borttaget)"
 
@@ -2594,7 +2808,7 @@ msgstr "Spåra inloggade användare"
 
 #: IAWP/Models/Page_Search.php:32
 msgid "Search:"
-msgstr "Search:"
+msgstr "Sök:"
 
 #: IAWP/Models/Page_Home.php:37 IAWP/Models/Page_Home.php:48
 msgid "Blog"
@@ -2619,23 +2833,23 @@ msgstr "Datumarkiv (år)"
 msgid "Archive"
 msgstr "Arkiv"
 
-#: IAWP/Filters.php:284 IAWP/Rows/Filter.php:68
+#: IAWP/Filters.php:284 IAWP/Rows/Filter.php:66
 msgid "On"
 msgstr "På"
 
-#: IAWP/Filters.php:284 IAWP/Rows/Filter.php:72
+#: IAWP/Filters.php:284 IAWP/Rows/Filter.php:70
 msgid "After"
 msgstr "Efter"
 
-#: IAWP/Filters.php:284 IAWP/Rows/Filter.php:70
+#: IAWP/Filters.php:284 IAWP/Rows/Filter.php:68
 msgid "Before"
 msgstr "Före"
 
-#: IAWP/Filters.php:282 IAWP/Rows/Filter.php:80
+#: IAWP/Filters.php:282 IAWP/Rows/Filter.php:78
 msgid "Isn't"
 msgstr "Är inte"
 
-#: IAWP/Filters.php:282 IAWP/Rows/Filter.php:78
+#: IAWP/Filters.php:282 IAWP/Rows/Filter.php:76
 msgid "Is"
 msgstr "Är"
 
@@ -2651,11 +2865,11 @@ msgstr "Mindre än"
 msgid "Greater than"
 msgstr "Större än"
 
-#: IAWP/Filters.php:278 IAWP/Rows/Filter.php:76
+#: IAWP/Filters.php:278 IAWP/Rows/Filter.php:74
 msgid "Exactly matches"
 msgstr "Är exakt lika med"
 
-#: IAWP/Filters.php:278 IAWP/Rows/Filter.php:74
+#: IAWP/Filters.php:278 IAWP/Rows/Filter.php:72
 msgid "Contains"
 msgstr "Innehåller"
 
@@ -2706,7 +2920,8 @@ msgid "Direct"
 msgstr "Direkt"
 
 #: IAWP/ColumnOptions/Plugins/ReferrerTypes.php:12 IAWP/Real_Time.php:72
-#: IAWP/Tables/Table_Referrers.php:24 IAWP/Tables/Table_Referrers.php:30
+#: IAWP/Tables/Table_Journeys.php:73 IAWP/Tables/Table_Referrers.php:24
+#: IAWP/Tables/Table_Referrers.php:30 views/journeys/table-heading.blade.php:6
 #: views/woocommerce-order-meta-box.blade.php:4
 msgid "Referrer"
 msgstr "Hänvisare"
@@ -2724,11 +2939,11 @@ msgstr "Sök"
 msgid "Choose a column"
 msgstr "Välj en kolumn"
 
-#: IAWP/Filters.php:161 IAWP/Rows/Filter.php:60
+#: IAWP/Filters.php:161 IAWP/Rows/Filter.php:58
 msgid "Exclude"
 msgstr "Exkludera"
 
-#: IAWP/Filters.php:160 IAWP/Rows/Filter.php:58
+#: IAWP/Filters.php:160 IAWP/Rows/Filter.php:56
 msgid "Include"
 msgstr "Inkludera"
 
@@ -2744,33 +2959,34 @@ msgstr "Tillämpa"
 msgid "+ Add another condition"
 msgstr "+ lägg till ytterligare ett villkor"
 
-#: IAWP/Independent_Analytics.php:259
+#: IAWP/Independent_Analytics.php:265
 msgid "Settings"
 msgstr "Inställningar"
 
-#: IAWP/Admin_Page/Analytics_Page.php:238
-#: IAWP/Email_Reports/Email_Reports.php:168 IAWP/Real_Time.php:72
-#: IAWP/Report.php:37 IAWP/Report_Finder.php:106
-#: views/partials/sidebar.blade.php:88
+#: IAWP/Admin_Page/Analytics_Page.php:317
+#: IAWP/Email_Reports/Email_Reports.php:174 IAWP/Real_Time.php:72
+#: IAWP/Report.php:37 IAWP/Report_Finder.php:108
+#: views/partials/sidebar.blade.php:95
 msgid "Referrers"
 msgstr "Hänvisare"
 
+#: IAWP/Admin_Bar_Stats.php:61
 #: IAWP/Custom_WordPress_Columns/Views_Column.php:35
-#: IAWP/Independent_Analytics.php:386 IAWP/Menu_Bar_Stats/Menu_Bar_Stats.php:65
-#: IAWP/Report.php:105 IAWP/Statistics/Click_Statistics.php:23
-#: IAWP/Statistics/Statistics.php:208 IAWP/Tables/Table_Campaigns.php:37
-#: IAWP/Tables/Table_Devices.php:35 IAWP/Tables/Table_Geo.php:28
+#: IAWP/Independent_Analytics.php:392 IAWP/Report.php:105
+#: IAWP/Statistics/Click_Statistics.php:23 IAWP/Statistics/Statistics.php:208
+#: IAWP/Tables/Table_Campaigns.php:37 IAWP/Tables/Table_Devices.php:35
+#: IAWP/Tables/Table_Geo.php:28 IAWP/Tables/Table_Journeys.php:73
 #: IAWP/Tables/Table_Pages.php:29 IAWP/Tables/Table_Referrers.php:30
-#: views/email/email.blade.php:621 views/real-time.blade.php:88
+#: views/email/email.blade.php:621 views/real-time.blade.php:85
 msgid "Views"
 msgstr "Visningar"
 
-#: IAWP/Independent_Analytics.php:125
+#: IAWP/Independent_Analytics.php:131
 msgid "Knowledge Base"
 msgstr "Kunskapsbas"
 
-#: IAWP/Dashboard_Widget.php:24 IAWP/Independent_Analytics.php:253
-#: IAWP/Independent_Analytics.php:254 IAWP/Interrupt.php:19
+#: IAWP/Dashboard_Widget.php:24 IAWP/Independent_Analytics.php:259
+#: IAWP/Independent_Analytics.php:260 IAWP/Interrupt.php:19
 #: IAWP/Interrupt.php:20
 msgid "Analytics"
 msgstr "Statistik"

@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 2.14.1
+Stable tag: 2.14.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -184,14 +184,24 @@ Yes, Independent Analytics will run smoothly and won't create any errors even if
 
 == Changelog ==
 
-= 2.14.1 - January 27th, 2025 =
+= 2.14.2 - February 16th, 2026 =
+
+* **Fix:** The Overview report wouldn't load in some server environments
+* **Fix:** Prevent User Journeys reports from being selected in Overview modules
+* **Fix:** Clicks were not getting tracked if the server used a timezone other than UTC+0
+* **Fix:** Tracking clicks on form submission buttons could lead to form submission events getting overcounted
+* **Fix:** Pausing email delivery could break the status message in the data deletion setting
+* **Fix:** Favicons generation didn't work for sites without the imagick PHP extension
+* **Fix:** Fixed edge cases where Quick Stats might not show filtered values
+
+= 2.14.1 - January 27th, 2026 =
 
 * **Fix:** User Journey cron job would fail
 * **Fix:** Visitors growth and views growth could be inaccurate in Solo Reports
 * **Fix:** Loading Solo Reports was much slower on Firefox
 * **Fix:** Favicons added to /wp-content/uploads/ weren't getting removed via the option to delete all plugin data
 
-= 2.14.0 - January 19th, 2025 =
+= 2.14.0 - January 19th, 2026 =
 
 * **Feature:** Added User Journeys to Independent Analytics Pro! View full timelines for each session, including clicks, form submissions, and eCommerce orders.
 * **Feature:** Added form tracking for the following plugins: MailChimp for WordPress (MC4WP), Kadence Blocks forms, Newsletter, and Everest Forms.

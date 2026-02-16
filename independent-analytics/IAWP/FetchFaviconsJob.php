@@ -24,7 +24,7 @@ class FetchFaviconsJob extends \IAWP\Cron_Job
         if (!\file_exists($directory)) {
             \wp_mkdir_p($directory);
         }
-        $query = \IAWP\Illuminate_Builder::new()->select(['sessions.referrer_id', 'referrers.domain'])->selectRaw('COUNT(*) AS total')->from(\IAWP\Tables::sessions(), 'sessions')->join(\IAWP\Tables::referrers() . ' AS referrers', 'sessions.referrer_id', '=', 'referrers.id')->where('sessions.created_at', '>=', CarbonImmutable::now()->subDays(30)->toDate())->groupBy('referrer_id')->orderByDesc('total')->limit(200);
+        $query = \IAWP\Illuminate_Builder::new()->select(['sessions.referrer_id', 'referrers.domain'])->selectRaw('COUNT(*) AS total')->from(\IAWP\Tables::sessions(), 'sessions')->join(\IAWP\Tables::referrers() . ' AS referrers', 'sessions.referrer_id', '=', 'referrers.id')->where('sessions.created_at', '>=', CarbonImmutable::now('utc')->subDays(30)->toDate())->groupBy('referrer_id')->orderByDesc('total')->limit(200);
         $favicons = $query->get()->map(fn($item) => Favicon::for($item->domain));
         $required_files = $favicons->map(fn($favicon) => $favicon->file_name());
         $current_paths = \glob($directory . "/*.png");

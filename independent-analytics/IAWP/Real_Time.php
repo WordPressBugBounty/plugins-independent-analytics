@@ -17,6 +17,7 @@ use IAWP\Tables\Table_Geo;
 use IAWP\Tables\Table_Pages;
 use IAWP\Tables\Table_Referrers;
 use IAWP\Utils\Singleton;
+use IAWP\Utils\Timezone;
 /** @internal */
 class Real_Time
 {
@@ -26,11 +27,11 @@ class Real_Time
     }
     public function get_real_time_analytics()
     {
-        $thirty_minutes_ago = new DateTime('-30 minutes');
+        $thirty_minutes_ago = new DateTime('-30 minutes', Timezone::utc_timezone());
         $thirty_minutes_ago = $this->round_up_by_seconds($thirty_minutes_ago, 60);
-        $five_minutes_ago = new DateTime('-5 minutes');
+        $five_minutes_ago = new DateTime('-5 minutes', Timezone::utc_timezone());
         $five_minutes_ago = $this->round_up_by_seconds($five_minutes_ago, 10);
-        $now = new DateTime();
+        $now = new DateTime('now', Timezone::utc_timezone());
         $end_minutes = $this->round_up_by_seconds($now, 60);
         $end_seconds = $this->round_up_by_seconds($now, 10);
         $visitors_by_minute_date_range = new Exact_Date_Range($thirty_minutes_ago, $end_minutes, \false);
@@ -39,7 +40,7 @@ class Real_Time
         $visitors_by_second_date_range = new Exact_Date_Range($five_minutes_ago, $end_seconds, \false);
         $visitors_by_second_finder = new \IAWP\Views_Over_Time_Finder($visitors_by_second_date_range, new Ten_Second_Interval());
         $visitors_by_second = $visitors_by_second_finder->fetch();
-        $five_minute_date_range = new Exact_Date_Range($five_minutes_ago, new DateTime(), \false);
+        $five_minute_date_range = new Exact_Date_Range($five_minutes_ago, new DateTime('now', Timezone::utc_timezone()), \false);
         $current_traffic_finder = new \IAWP\Current_Traffic_Finder($five_minute_date_range);
         $current_traffic = $current_traffic_finder->fetch();
         $pages_table = new Table_Pages();

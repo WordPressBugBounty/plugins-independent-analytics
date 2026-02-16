@@ -3,8 +3,8 @@
 namespace IAWP;
 
 use IAWP\Tables\Columns\Column;
+use IAWP\Utils\Format;
 use IAWP\Utils\Security;
-use IAWP\Utils\WordPress_Site_Date_Format_Pattern;
 /** @internal */
 class Filters
 {
@@ -224,7 +224,7 @@ class Filters
                         data-column="' . \esc_attr($column->id()) . '"
                         data-controller="easepick"
                         data-css="' . \esc_url(\IAWPSCOPED\iawp_url_to('dist/styles/easepick/datepicker.css')) . '" data-dow="' . \absint(\IAWPSCOPED\iawp()->get_option('iawp_dow', 1)) . '"
-                        data-format="' . \esc_attr(WordPress_Site_Date_Format_Pattern::for_javascript()) . '"
+                        data-format="' . \esc_attr(Format::date_for_javascript()) . '"
                         data-testid="' . \esc_attr($column->id()) . '-operand" />';
                     break;
                 case 'select':

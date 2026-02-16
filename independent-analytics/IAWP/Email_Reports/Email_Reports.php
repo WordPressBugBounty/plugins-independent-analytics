@@ -20,6 +20,7 @@ use IAWP\Tables\Table_Devices;
 use IAWP\Tables\Table_Geo;
 use IAWP\Tables\Table_Pages;
 use IAWP\Tables\Table_Referrers;
+use IAWP\Utils\Format;
 use IAWP\Utils\Timezone;
 use IAWP\Utils\URL;
 /** @internal */
@@ -58,7 +59,7 @@ class Email_Reports
         if (!\wp_next_scheduled('iawp_send_email_report')) {
             return null;
         }
-        $date = new DateTime();
+        $date = new DateTime('now', Timezone::utc_timezone());
         $date->setTimezone(Timezone::site_timezone());
         $date->setTimestamp(\wp_next_scheduled('iawp_send_email_report'));
         return $date;
@@ -69,8 +70,8 @@ class Email_Reports
             return \esc_html__('There is no email scheduled.', 'independent-analytics');
         }
         $date = $this->interval()->next_interval_start();
-        $day = $date->format(\get_option('date_format'));
-        $time = $date->format(\IAWPSCOPED\iawp()->get_option('time_format', 'g:i a'));
+        $day = $date->format(Format::date());
+        $time = $date->format(Format::time());
         return \sprintf(\__('Next email scheduled for %s at %s.', 'independent-analytics'), '<span>' . $day . '</span>', '<span>' . $time . '</span>');
     }
     public function maybe_reschedule()

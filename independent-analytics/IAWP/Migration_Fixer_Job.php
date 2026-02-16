@@ -21,7 +21,7 @@ class Migration_Fixer_Job extends \IAWP\Cron_Job
             return;
         }
         // Running for less than an hour? Bail.
-        $date = CarbonImmutable::createFromTimestamp($timestamp);
+        $date = CarbonImmutable::createFromTimestamp($timestamp, 'utc');
         $minutes_running = $date->diffInMinutes();
         if ($minutes_running < 60) {
             return;

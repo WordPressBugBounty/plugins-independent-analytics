@@ -46,7 +46,7 @@
                 <h3><?php esc_html_e('Delivery Time', 'independent-analytics'); ?></h3>
                 <select id="iawp_email_report_time" name="iawp_email_report_time">
                     <?php for ($i = 0; $i < 24; $i++) {
-                        $readable_time = new DateTime(date('Y-m-d') . ' ' . $i . ':00:00');
+                        $readable_time = new DateTime(date('Y-m-d') . ' ' . $i . ':00:00', new \DateTimeZone('utc'));
                         $readable_time = $readable_time->format(iawp()->get_option('time_format', 'g:i a')); ?>
                         <option value="<?php echo esc_attr($i); ?>" <?php selected($time, $i, true); ?>><?php echo esc_html($readable_time); ?></option>
                     <?php

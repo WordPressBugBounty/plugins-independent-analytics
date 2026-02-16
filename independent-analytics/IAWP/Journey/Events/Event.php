@@ -3,6 +3,7 @@
 namespace IAWP\Journey\Events;
 
 use IAWPSCOPED\Carbon\CarbonImmutable;
+use IAWP\Utils\Format;
 /** @internal */
 abstract class Event
 {
@@ -16,7 +17,6 @@ abstract class Event
         if ($created_at === null) {
             return '';
         }
-        $format = \IAWPSCOPED\iawp()->get_option('time_format', 'g:i a');
-        return $created_at->format($format);
+        return $created_at->format(Format::time());
     }
 }

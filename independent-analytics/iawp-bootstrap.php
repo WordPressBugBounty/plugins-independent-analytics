@@ -24,7 +24,6 @@ use IAWP\Migration_Fixer_Job;
 use IAWP\Migrations;
 use IAWP\Overview\Module_Refresh_Job;
 use IAWP\Overview\Modules\Module;
-use IAWP\Overview\Sync_Module_Background_Job;
 use IAWP\Patch;
 use IAWP\Public_API\Analytics;
 use IAWP\Public_API\Singular_Analytics;
@@ -34,7 +33,7 @@ use IAWP\Utils\BladeOne;
 use IAWP\WP_Option_Cache_Bust;
 \define( 'IAWP_DIRECTORY', \rtrim( \plugin_dir_path( __FILE__ ), \DIRECTORY_SEPARATOR ) );
 \define( 'IAWP_URL', \rtrim( \plugin_dir_url( __FILE__ ), '/' ) );
-\define( 'IAWP_VERSION', '2.14.1' );
+\define( 'IAWP_VERSION', '2.14.2' );
 \define( 'IAWP_DATABASE_VERSION', '52' );
 \define( 'IAWP_LANGUAGES_DIRECTORY', \dirname( \plugin_basename( __FILE__ ) ) . '/languages' );
 \define( 'IAWP_PLUGIN_FILE', __DIR__ . '/iawp.php' );
@@ -390,7 +389,7 @@ function iawp() {
     }
     if ( \get_option( 'iawp_should_refresh_modules', '0' ) === '1' ) {
         \update_option( 'iawp_should_refresh_modules', '0', \true );
-        Module::queue_full_module_refresh();
+        Module::refresh_all_modules();
     }
     if ( \get_option( 'iawp_has_added_journey_default_reports', '0' ) === '0' ) {
         \update_option( 'iawp_has_added_journey_default_reports', '1', \true );
@@ -400,6 +399,5 @@ function iawp() {
         }
     }
 } );
-new Sync_Module_Background_Job();
 Views_Column::initialize();
 MainWP::initialize();

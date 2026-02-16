@@ -6,6 +6,7 @@ use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableControlle
 use IAWPSCOPED\Carbon\CarbonImmutable;
 use IAWP\Illuminate_Builder;
 use IAWP\Tables;
+use IAWP\Utils\Format;
 use IAWP\Utils\Timezone;
 use IAWPSCOPED\Illuminate\Database\Query\JoinClause;
 /** @internal */
@@ -89,9 +90,8 @@ class WooCommerceOrderMetaBox
     private function format_date(string $value) : string
     {
         try {
-            $date = CarbonImmutable::parse($value)->setTimezone(Timezone::site_timezone());
-            $format = \IAWPSCOPED\iawp()->get_option('time_format', 'g:i a');
-            return $date->format($format);
+            $date = CarbonImmutable::parse($value, 'utc')->setTimezone(Timezone::site_timezone());
+            return $date->format(Format::time());
         } catch (\Throwable $e) {
             return $value;
         }

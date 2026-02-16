@@ -14,6 +14,7 @@ use IAWP\Query;
 use IAWP\Tables;
 use IAWP\Utils\Device;
 use IAWP\Utils\String_Util;
+use IAWP\Utils\Timezone;
 use IAWP\Utils\URL;
 use IAWPSCOPED\Illuminate\Database\Query\JoinClause;
 /** @internal */
@@ -39,7 +40,7 @@ class View
         $this->referrer_url = \is_null($referrer_url) ? '' : \trim($referrer_url);
         $this->visitor = $visitor;
         $this->campaign_parameters = $campaign_parameters;
-        $this->viewed_at = $viewed_at instanceof \DateTime ? $viewed_at : new \DateTime();
+        $this->viewed_at = $viewed_at instanceof \DateTime ? $viewed_at : new \DateTime('now', Timezone::utc_timezone());
         $this->resource = $this->fetch_or_create_resource();
         // If a resource can't be found or created, a view cannot be recorded
         if (\is_null($this->resource)) {

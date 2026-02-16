@@ -10,7 +10,7 @@
         <span class="count"
                 test-value="<?php echo esc_attr(strip_tags($formatted_value)); ?>">
             <?php echo wp_kses($formatted_value, ['span' => []]);
-            if ($formatted_unfiltered_value) : ?>
+            if (!is_null($formatted_unfiltered_value)) : ?>
                 <span class="unfiltered"> / <?php echo wp_kses($formatted_unfiltered_value, ['span' => []]); ?></span>
             <?php endif; ?>
         </span>

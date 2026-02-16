@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Independent Analytics 2.14.1\n"
+"Project-Id-Version: Independent Analytics 2.14.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/independent-analytics-production\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-01-26T17:36:43+00:00\n"
+"POT-Creation-Date: 2026-02-16T14:02:41+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: independent-analytics\n"
@@ -33,10 +33,10 @@ msgstr ""
 
 #: IAWP/Admin_Bar_Stats.php:61
 #: IAWP/Custom_WordPress_Columns/Views_Column.php:35
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 #: IAWP/Report.php:105
 #: IAWP/Statistics/Click_Statistics.php:23
-#: IAWP/Statistics/Statistics.php:208
+#: IAWP/Statistics/Statistics.php:197
 #: IAWP/Tables/Table_Campaigns.php:37
 #: IAWP/Tables/Table_Devices.php:35
 #: IAWP/Tables/Table_Geo.php:28
@@ -69,7 +69,7 @@ msgid "All Time:"
 msgstr ""
 
 #: IAWP/Admin_Bar_Stats.php:61
-#: IAWP/Independent_Analytics.php:412
+#: IAWP/Independent_Analytics.php:417
 msgid "Analytics Dashboard"
 msgstr ""
 
@@ -117,8 +117,8 @@ msgid "Click data syncs every 60 seconds. Please allow for this delay when testi
 msgstr ""
 
 #: IAWP/Admin_Page/Analytics_Page.php:317
-#: IAWP/Email_Reports/Email_Reports.php:170
-#: IAWP/Real_Time.php:71
+#: IAWP/Email_Reports/Email_Reports.php:171
+#: IAWP/Real_Time.php:72
 #: IAWP/Report.php:37
 #: IAWP/Report_Finder.php:106
 #: views/partials/sidebar.blade.php:83
@@ -126,8 +126,8 @@ msgid "Pages"
 msgstr ""
 
 #: IAWP/Admin_Page/Analytics_Page.php:317
-#: IAWP/Email_Reports/Email_Reports.php:174
-#: IAWP/Real_Time.php:72
+#: IAWP/Email_Reports/Email_Reports.php:175
+#: IAWP/Real_Time.php:73
 #: IAWP/Report.php:37
 #: IAWP/Report_Finder.php:108
 #: views/partials/sidebar.blade.php:95
@@ -141,8 +141,8 @@ msgid "Geographic"
 msgstr ""
 
 #: IAWP/Admin_Page/Analytics_Page.php:317
-#: IAWP/Email_Reports/Email_Reports.php:182
-#: IAWP/Overview/Modules/Module.php:424
+#: IAWP/Email_Reports/Email_Reports.php:183
+#: IAWP/Overview/Modules/Module.php:417
 #: IAWP/Report.php:37
 #: IAWP/Report_Finder.php:112
 #: views/partials/sidebar.blade.php:119
@@ -150,7 +150,7 @@ msgid "Devices"
 msgstr ""
 
 #: IAWP/Admin_Page/Analytics_Page.php:317
-#: IAWP/Email_Reports/Email_Reports.php:186
+#: IAWP/Email_Reports/Email_Reports.php:187
 #: IAWP/Plugin_Group.php:97
 #: IAWP/Report.php:37
 #: IAWP/Report_Finder.php:114
@@ -160,14 +160,14 @@ msgid "Campaigns"
 msgstr ""
 
 #: IAWP/Admin_Page/Analytics_Page.php:317
-#: IAWP/Overview/Form_Field.php:92
+#: IAWP/Overview/Form_Field.php:98
 #: IAWP/Report.php:37
 #: IAWP/Report.php:105
 #: IAWP/Report.php:114
 #: IAWP/Report_Finder.php:116
 #: IAWP/Report_Finder.php:207
 #: IAWP/Statistics/Click_Statistics.php:23
-#: IAWP/Statistics/Statistics.php:212
+#: IAWP/Statistics/Statistics.php:201
 #: IAWP/Tables/Table_Campaigns.php:37
 #: IAWP/Tables/Table_Clicks.php:30
 #: IAWP/Tables/Table_Devices.php:35
@@ -270,7 +270,7 @@ msgstr ""
 
 #: IAWP/ColumnOptions/Plugins/PageTypes.php:14
 #: IAWP/Models/Page_Virtual.php:63
-#: IAWP/Real_Time.php:71
+#: IAWP/Real_Time.php:72
 #: IAWP/Tables/Table_Pages.php:24
 msgid "Page"
 msgstr ""
@@ -322,7 +322,7 @@ msgid "AI"
 msgstr ""
 
 #: IAWP/ColumnOptions/Plugins/ReferrerTypes.php:12
-#: IAWP/Real_Time.php:72
+#: IAWP/Real_Time.php:73
 #: IAWP/Tables/Table_Journeys.php:73
 #: IAWP/Tables/Table_Referrers.php:24
 #: IAWP/Tables/Table_Referrers.php:30
@@ -340,8 +340,8 @@ msgid "Direct"
 msgstr ""
 
 #: IAWP/Dashboard_Widget.php:24
-#: IAWP/Independent_Analytics.php:259
-#: IAWP/Independent_Analytics.php:260
+#: IAWP/Independent_Analytics.php:264
+#: IAWP/Independent_Analytics.php:265
 #: IAWP/Interrupt.php:19
 #: IAWP/Interrupt.php:20
 msgid "Analytics"
@@ -369,8 +369,8 @@ msgid "Today"
 msgstr ""
 
 #: IAWP/Date_Range/Relative_Date_Range.php:60
-#: IAWP/Overview/Modules/Recent_Conversions_Module.php:46
-#: IAWP/Overview/Modules/Recent_Views_Module.php:37
+#: IAWP/Overview/Modules/Recent_Conversions_Module.php:45
+#: IAWP/Overview/Modules/Recent_Views_Module.php:36
 #: views/settings/view-counter/views-to-count.blade.php:5
 msgid "Yesterday"
 msgstr ""
@@ -435,55 +435,55 @@ msgstr ""
 msgid "All Time"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:69
+#: IAWP/Email_Reports/Email_Reports.php:70
 msgid "There is no email scheduled."
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:74
+#: IAWP/Email_Reports/Email_Reports.php:75
 msgid "Next email scheduled for %s at %s."
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:128
+#: IAWP/Email_Reports/Email_Reports.php:129
 #: IAWP/Settings.php:376
 msgid "This email was generated and delivered by %s"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:153
+#: IAWP/Email_Reports/Email_Reports.php:154
 msgid "[Test]"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:155
+#: IAWP/Email_Reports/Email_Reports.php:156
 msgid "Analytics Report for"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:178
-#: IAWP/Real_Time.php:73
+#: IAWP/Email_Reports/Email_Reports.php:179
+#: IAWP/Real_Time.php:74
 msgid "Countries"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:189
+#: IAWP/Email_Reports/Email_Reports.php:190
 #: IAWP/Tables/Table.php:440
 #: IAWP/Tables/Table.php:442
 #: views/email/email.blade.php:615
 msgid "Submissions"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:192
+#: IAWP/Email_Reports/Email_Reports.php:193
 #: IAWP/Plugin_Group.php:97
 msgid "Forms"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:196
+#: IAWP/Email_Reports/Email_Reports.php:197
 #: IAWP/Tables/Table_Clicks.php:25
 #: views/click-tracking/menu.blade.php:23
 msgid "Link Patterns"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:200
+#: IAWP/Email_Reports/Email_Reports.php:201
 msgid "Landing Pages"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:204
+#: IAWP/Email_Reports/Email_Reports.php:205
 msgid "Exit Pages"
 msgstr ""
 
@@ -534,22 +534,22 @@ msgid "+%d More"
 msgstr ""
 
 #: IAWP/Filters.php:160
-#: IAWP/Rows/Filter.php:56
+#: IAWP/Rows/Filter.php:57
 msgid "Include"
 msgstr ""
 
 #: IAWP/Filters.php:161
-#: IAWP/Rows/Filter.php:58
+#: IAWP/Rows/Filter.php:59
 msgid "Exclude"
 msgstr ""
 
 #: IAWP/Filters.php:278
-#: IAWP/Rows/Filter.php:72
+#: IAWP/Rows/Filter.php:73
 msgid "Contains"
 msgstr ""
 
 #: IAWP/Filters.php:278
-#: IAWP/Rows/Filter.php:74
+#: IAWP/Rows/Filter.php:75
 msgid "Exactly matches"
 msgstr ""
 
@@ -566,27 +566,27 @@ msgid "Equal to"
 msgstr ""
 
 #: IAWP/Filters.php:282
-#: IAWP/Rows/Filter.php:76
+#: IAWP/Rows/Filter.php:77
 msgid "Is"
 msgstr ""
 
 #: IAWP/Filters.php:282
-#: IAWP/Rows/Filter.php:78
+#: IAWP/Rows/Filter.php:79
 msgid "Isn't"
 msgstr ""
 
 #: IAWP/Filters.php:284
-#: IAWP/Rows/Filter.php:68
+#: IAWP/Rows/Filter.php:69
 msgid "Before"
 msgstr ""
 
 #: IAWP/Filters.php:284
-#: IAWP/Rows/Filter.php:70
+#: IAWP/Rows/Filter.php:71
 msgid "After"
 msgstr ""
 
 #: IAWP/Filters.php:284
-#: IAWP/Rows/Filter.php:66
+#: IAWP/Rows/Filter.php:67
 msgid "On"
 msgstr ""
 
@@ -618,102 +618,102 @@ msgstr ""
 msgid "Divi Contact Form"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:104
+#: IAWP/Independent_Analytics.php:109
 msgid "Subscribe & Go To Analytics"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:104
+#: IAWP/Independent_Analytics.php:109
 msgid "No, thanks"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:124
+#: IAWP/Independent_Analytics.php:129
 #: views/partials/sidebar.blade.php:22
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:131
+#: IAWP/Independent_Analytics.php:136
 msgid "Knowledge Base"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:222
+#: IAWP/Independent_Analytics.php:227
 msgid "Success"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:237
+#: IAWP/Independent_Analytics.php:242
 msgid "Congratulations on Your New Analytics! 🎉"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:241
+#: IAWP/Independent_Analytics.php:246
 msgid "You've just taken the first step towards building a better website."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:243
+#: IAWP/Independent_Analytics.php:248
 msgid "If you signup for our free email course, we’ll walk you through each feature in Independent Analytics, so you can learn how to analyze and optimize your website for growth."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:245
+#: IAWP/Independent_Analytics.php:250
 msgctxt "What follows is a list of benefits"
 msgid "Subscribe now and you'll receive our:"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:247
+#: IAWP/Independent_Analytics.php:252
 msgid "Free email tutorial series"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:248
+#: IAWP/Independent_Analytics.php:253
 msgid "Subscriber-only sales announcements"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:249
+#: IAWP/Independent_Analytics.php:254
 msgid "New feature updates"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:250
+#: IAWP/Independent_Analytics.php:255
 msgid "Security alerts"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:253
+#: IAWP/Independent_Analytics.php:258
 msgid "Rated %s and trusted by over 100,000+ WordPress websites."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:265
+#: IAWP/Independent_Analytics.php:270
 msgid "Settings"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:271
+#: IAWP/Independent_Analytics.php:276
 msgid "Campaign Builder"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:276
+#: IAWP/Independent_Analytics.php:281
 #: views/click-tracking/menu.blade.php:4
 msgid "Click Tracking"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:283
+#: IAWP/Independent_Analytics.php:288
 msgid "Help & Support"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:289
+#: IAWP/Independent_Analytics.php:294
 msgid "Integrations"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:295
-#: IAWP/Independent_Analytics.php:297
+#: IAWP/Independent_Analytics.php:300
+#: IAWP/Independent_Analytics.php:302
 msgid "Changelog"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:296
+#: IAWP/Independent_Analytics.php:301
 msgid "New"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:303
+#: IAWP/Independent_Analytics.php:308
 msgid "Upgrade to Pro &rarr;"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 #: IAWP/Report.php:105
 #: IAWP/Statistics/Click_Statistics.php:23
-#: IAWP/Statistics/Statistics.php:208
+#: IAWP/Statistics/Statistics.php:197
 #: IAWP/Tables/Table_Campaigns.php:37
 #: IAWP/Tables/Table_Devices.php:35
 #: IAWP/Tables/Table_Geo.php:28
@@ -722,11 +722,11 @@ msgstr ""
 msgid "Visitors"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 #: IAWP/Overview/Modules/New_Sessions_Module.php:34
 #: IAWP/Report.php:105
 #: IAWP/Statistics/Click_Statistics.php:23
-#: IAWP/Statistics/Statistics.php:208
+#: IAWP/Statistics/Statistics.php:197
 #: IAWP/Tables/Table_Campaigns.php:37
 #: IAWP/Tables/Table_Devices.php:35
 #: IAWP/Tables/Table_Geo.php:28
@@ -737,81 +737,81 @@ msgstr ""
 msgid "Sessions"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 msgid "Apply Exact Dates"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 msgid "Apply Relative Dates"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 msgid "Copied"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 msgid "Exporting Pages..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 msgid "Export Pages"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 msgid "Exporting Referrers..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 msgid "Export Referrers"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 msgid "Exporting Geolocations..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 msgid "Export Geolocations"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 msgid "Exporting Devices..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 msgid "Export Devices"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 msgid "Exporting Campaigns..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 msgid "Export Campaigns"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 msgid "Exporting Clicks"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 msgid "Export Clicks"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 msgid "This report archive is invalid. Please export your reports and try again."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 #: views/partials/sidebar.blade.php:31
 msgid "Open menu"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
+#: IAWP/Independent_Analytics.php:397
 msgid "Close menu"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:392
-#: IAWP/Overview/Form_Field.php:91
+#: IAWP/Independent_Analytics.php:397
+#: IAWP/Overview/Form_Field.php:97
 #: views/chart.blade.php:42
 msgid "No Comparison"
 msgstr ""
@@ -821,13 +821,13 @@ msgid "now"
 msgstr ""
 
 #: IAWP/Journey/Events/Click.php:34
-#: IAWP/Overview/Modules/Recent_Conversions_Module.php:82
+#: IAWP/Overview/Modules/Recent_Conversions_Module.php:81
 #: views/journeys/rows.blade.php:65
 msgid "Click"
 msgstr ""
 
 #: IAWP/Journey/Events/Order.php:40
-#: IAWP/Overview/Modules/Recent_Conversions_Module.php:78
+#: IAWP/Overview/Modules/Recent_Conversions_Module.php:77
 #: views/journeys/rows.blade.php:62
 msgid "Order"
 msgstr ""
@@ -837,7 +837,7 @@ msgid "Origin"
 msgstr ""
 
 #: IAWP/Journey/Events/Submission.php:31
-#: IAWP/Overview/Modules/Recent_Conversions_Module.php:80
+#: IAWP/Overview/Modules/Recent_Conversions_Module.php:79
 #: views/journeys/rows.blade.php:68
 msgid "Form"
 msgstr ""
@@ -969,27 +969,27 @@ msgstr ""
 msgid "Conversions"
 msgstr ""
 
-#: IAWP/Overview/Form_Field.php:92
+#: IAWP/Overview/Form_Field.php:98
 #: IAWP/Report.php:105
 #: IAWP/Report_Finder.php:208
-#: IAWP/Statistics/Statistics.php:212
+#: IAWP/Statistics/Statistics.php:201
 #: IAWP/Tables/Table.php:436
 msgid "Orders"
 msgstr ""
 
-#: IAWP/Overview/Form_Field.php:92
+#: IAWP/Overview/Form_Field.php:98
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:212
+#: IAWP/Statistics/Statistics.php:201
 msgid "Form Submissions"
 msgstr ""
 
 #: IAWP/Overview/Modules/Busiest_Day_Of_Week_Module.php:20
-#: IAWP/Overview/Modules/Module.php:424
+#: IAWP/Overview/Modules/Module.php:417
 msgid "Busiest Day of Week"
 msgstr ""
 
 #: IAWP/Overview/Modules/Busiest_Time_Of_Day_Module.php:19
-#: IAWP/Overview/Modules/Module.php:424
+#: IAWP/Overview/Modules/Module.php:417
 msgid "Busiest Time of Day"
 msgstr ""
 
@@ -1009,43 +1009,43 @@ msgstr ""
 msgid "Last %s Days"
 msgstr ""
 
-#: IAWP/Overview/Modules/Module.php:320
+#: IAWP/Overview/Modules/Module.php:299
 msgctxt "The placeholder is a time of day"
 msgid "Last updated at %s."
 msgstr ""
 
-#: IAWP/Overview/Modules/Module.php:424
+#: IAWP/Overview/Modules/Module.php:417
 msgid "Site Traffic"
 msgstr ""
 
-#: IAWP/Overview/Modules/Module.php:424
+#: IAWP/Overview/Modules/Module.php:417
 msgid "Top 10 Pages"
 msgstr ""
 
-#: IAWP/Overview/Modules/Module.php:424
+#: IAWP/Overview/Modules/Module.php:417
 msgid "Geographic Traffic"
 msgstr ""
 
-#: IAWP/Overview/Modules/Module.php:424
+#: IAWP/Overview/Modules/Module.php:417
 #: IAWP/Overview/Modules/New_Sessions_Module.php:19
 msgid "New vs. Returning Sessions"
 msgstr ""
 
-#: IAWP/Overview/Modules/Module.php:424
+#: IAWP/Overview/Modules/Module.php:417
 msgid "Site Metrics"
 msgstr ""
 
-#: IAWP/Overview/Modules/Module.php:424
+#: IAWP/Overview/Modules/Module.php:417
 #: IAWP/Overview/Modules/Recent_Views_Module.php:20
 msgid "Recent Views"
 msgstr ""
 
-#: IAWP/Overview/Modules/Module.php:424
+#: IAWP/Overview/Modules/Module.php:417
 #: IAWP/Overview/Modules/Recent_Conversions_Module.php:21
 msgid "Recent Conversions"
 msgstr ""
 
-#: IAWP/Overview/Modules/Module.php:424
+#: IAWP/Overview/Modules/Module.php:417
 msgid "Top Traffic Sources"
 msgstr ""
 
@@ -1074,18 +1074,18 @@ msgstr ""
 msgid "Most Recent"
 msgstr ""
 
-#: IAWP/Overview/Modules/Recent_Conversions_Module.php:55
-#: IAWP/Overview/Modules/Recent_Views_Module.php:41
+#: IAWP/Overview/Modules/Recent_Conversions_Module.php:54
+#: IAWP/Overview/Modules/Recent_Views_Module.php:40
 msgid "Unknown Country"
 msgstr ""
 
-#: IAWP/Overview/Modules/Recent_Conversions_Module.php:55
-#: IAWP/Overview/Modules/Recent_Views_Module.php:41
+#: IAWP/Overview/Modules/Recent_Conversions_Module.php:54
+#: IAWP/Overview/Modules/Recent_Views_Module.php:40
 msgid "Unknown Device Type"
 msgstr ""
 
-#: IAWP/Overview/Modules/Recent_Conversions_Module.php:55
-#: IAWP/Overview/Modules/Recent_Views_Module.php:41
+#: IAWP/Overview/Modules/Recent_Conversions_Module.php:54
+#: IAWP/Overview/Modules/Recent_Views_Module.php:40
 msgid "Unknown Browser"
 msgstr ""
 
@@ -1206,38 +1206,38 @@ msgstr ""
 msgid "Upgrade to Independent Analytics Pro to track form submissions."
 msgstr ""
 
-#: IAWP/Real_Time.php:73
+#: IAWP/Real_Time.php:74
 #: IAWP/Tables/Table_Geo.php:22
 #: IAWP/Tables/Table_Geo.php:28
 #: IAWP/Tables/Table_Journeys.php:73
 msgid "Country"
 msgstr ""
 
-#: IAWP/Real_Time.php:74
+#: IAWP/Real_Time.php:75
 msgid "Active Pages"
 msgstr ""
 
-#: IAWP/Real_Time.php:74
+#: IAWP/Real_Time.php:75
 msgid "Active Referrers"
 msgstr ""
 
-#: IAWP/Real_Time.php:74
+#: IAWP/Real_Time.php:75
 msgid "Active Countries"
 msgstr ""
 
-#: IAWP/Real_Time.php:74
+#: IAWP/Real_Time.php:75
 msgid "Active Campaigns"
 msgstr ""
 
-#: IAWP/Real_Time.php:74
+#: IAWP/Real_Time.php:75
 msgid "Device Types"
 msgstr ""
 
-#: IAWP/Real_Time.php:86
+#: IAWP/Real_Time.php:87
 msgid "Active Visitor"
 msgstr ""
 
-#: IAWP/Real_Time.php:86
+#: IAWP/Real_Time.php:87
 msgid "Active Visitors"
 msgstr ""
 
@@ -1260,12 +1260,12 @@ msgid "Geo"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:208
+#: IAWP/Statistics/Statistics.php:197
 msgid "Average Session Duration"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:208
+#: IAWP/Statistics/Statistics.php:197
 #: IAWP/Tables/Table_Campaigns.php:37
 #: IAWP/Tables/Table_Devices.php:35
 #: IAWP/Tables/Table_Geo.php:28
@@ -1275,7 +1275,7 @@ msgid "Bounce Rate"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:210
+#: IAWP/Statistics/Statistics.php:199
 #: IAWP/Tables/Table_Campaigns.php:37
 #: IAWP/Tables/Table_Devices.php:35
 #: IAWP/Tables/Table_Geo.php:28
@@ -1284,32 +1284,32 @@ msgid "Views Per Session"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:212
+#: IAWP/Statistics/Statistics.php:201
 #: IAWP/Tables/Table.php:436
 #: IAWP/Tables/Table_Journeys.php:73
 msgid "Gross Sales"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:212
+#: IAWP/Statistics/Statistics.php:201
 #: IAWP/Tables/Table.php:436
 msgid "Refunds"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:212
+#: IAWP/Statistics/Statistics.php:201
 #: IAWP/Tables/Table.php:436
 msgid "Refunded Amount"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:212
+#: IAWP/Statistics/Statistics.php:201
 #: IAWP/Tables/Table.php:436
 msgid "Total Sales"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:212
+#: IAWP/Statistics/Statistics.php:201
 #: IAWP/Tables/Table.php:436
 #: IAWP/Tables/Table.php:440
 #: IAWP/Tables/Table.php:443
@@ -1317,30 +1317,30 @@ msgid "Conversion Rate"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:212
+#: IAWP/Statistics/Statistics.php:201
 #: IAWP/Tables/Table.php:436
 msgid "Earnings Per Visitor"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:212
+#: IAWP/Statistics/Statistics.php:201
 #: IAWP/Tables/Table.php:436
 msgid "Average Order Volume"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:212
+#: IAWP/Statistics/Statistics.php:201
 msgid "Form Conversion Rate"
 msgstr ""
 
 #: IAWP/Report.php:110
-#: IAWP/Statistics/Statistics.php:219
+#: IAWP/Statistics/Statistics.php:208
 msgctxt "Title of the contact form"
 msgid "%s Submissions"
 msgstr ""
 
 #: IAWP/Report.php:111
-#: IAWP/Statistics/Statistics.php:220
+#: IAWP/Statistics/Statistics.php:209
 msgctxt "Title of the contact form"
 msgid "%s Conversion Rate"
 msgstr ""
@@ -1541,7 +1541,7 @@ msgstr ""
 msgid "Daily"
 msgstr ""
 
-#: IAWP/Statistics/Intervals/Hourly.php:14
+#: IAWP/Statistics/Intervals/Hourly.php:15
 msgid "Hourly"
 msgstr ""
 
@@ -1839,7 +1839,7 @@ msgstr ""
 msgid "Never"
 msgstr ""
 
-#: IAWP/WooCommerceOrderMetaBox/WooCommerceOrderMetaBox.php:26
+#: IAWP/WooCommerceOrderMetaBox/WooCommerceOrderMetaBox.php:27
 msgid "Customer Journey"
 msgstr ""
 
@@ -1947,8 +1947,8 @@ msgstr ""
 #: views/click-tracking/link.blade.php:92
 #: views/overview/module-editor.blade.php:42
 #: views/partials/report-header.blade.php:54
-#: views/settings/pruner.blade.php:37
-#: views/settings/pruner.blade.php:42
+#: views/settings/pruner.blade.php:36
+#: views/settings/pruner.blade.php:41
 #: views/settings/woocommerce.blade.php:38
 msgid "Save"
 msgstr ""
@@ -1961,7 +1961,7 @@ msgstr ""
 #: views/settings/delete.blade.php:39
 #: views/settings/delete.blade.php:59
 #: views/settings/delete.blade.php:82
-#: views/settings/pruner.blade.php:78
+#: views/settings/pruner.blade.php:77
 msgid "Cancel"
 msgstr ""
 
@@ -2899,24 +2899,24 @@ msgstr ""
 msgid "Automatically Delete Old Data"
 msgstr ""
 
-#: views/settings/pruner.blade.php:38
+#: views/settings/pruner.blade.php:37
 msgid "Saving..."
 msgstr ""
 
-#: views/settings/pruner.blade.php:51
+#: views/settings/pruner.blade.php:50
 msgid "Enable automatic data deletion"
 msgstr ""
 
-#: views/settings/pruner.blade.php:54
+#: views/settings/pruner.blade.php:53
 msgid "This will delete all data older then the selected timeframe, reducing the size of the database tables that Independent Analytics uses."
 msgstr ""
 
-#: views/settings/pruner.blade.php:66
-#: views/settings/pruner.blade.php:71
+#: views/settings/pruner.blade.php:65
+#: views/settings/pruner.blade.php:70
 msgid "Enable Automatic Data Deletion"
 msgstr ""
 
-#: views/settings/pruner.blade.php:67
+#: views/settings/pruner.blade.php:66
 msgid "Enabling Automatic Data Deletion..."
 msgstr ""
 

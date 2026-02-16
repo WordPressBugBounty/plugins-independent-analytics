@@ -25,7 +25,7 @@ class Migration_Status extends \IAWP\AJAX\AJAX
             $migration_started_at_timestamp = \get_option('iawp_migration_started_at', \false);
             try {
                 if (\is_string($migration_started_at_timestamp) && \ctype_digit($migration_started_at_timestamp)) {
-                    $date = CarbonImmutable::createFromTimestamp($migration_started_at_timestamp)->setTimezone('America/New_York');
+                    $date = CarbonImmutable::createFromTimestamp($migration_started_at_timestamp, 'utc')->setTimezone('America/New_York');
                     $migration_started_at = $date->format('c') . ' (' . $date->diffForHumans() . ')';
                 } else {
                     $migration_started_at = \__('Unknown', 'independent-analytics');

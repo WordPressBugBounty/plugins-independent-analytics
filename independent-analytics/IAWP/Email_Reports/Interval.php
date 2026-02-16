@@ -35,7 +35,7 @@ class Interval
             $prefix .= ' ';
         }
         $start = $this->date_range()->start()->setTimezone(Timezone::site_timezone());
-        $formatted_date = Carbon::parse($start)->translatedFormat($this->datetime_format_pattern);
+        $formatted_date = Carbon::parse($start, 'utc')->translatedFormat($this->datetime_format_pattern);
         return $prefix . $formatted_date;
     }
     public function chart_title() : string

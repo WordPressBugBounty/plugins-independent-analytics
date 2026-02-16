@@ -23,7 +23,7 @@ class JourneyStatisticsJob extends Cron_Job
     }
     private function calculate_average_views_cutoff() : void
     {
-        $thiry_days_ago = CarbonImmutable::now()->subDays(30);
+        $thiry_days_ago = CarbonImmutable::now('utc')->subDays(30);
         $sessions = Illuminate_Builder::new()->from(Tables::sessions())->where('total_views', '>', 1)->where('created_at', '>', $thiry_days_ago)->count();
         if ($sessions < 25) {
             return;
@@ -34,7 +34,7 @@ class JourneyStatisticsJob extends Cron_Job
     }
     private function calculate_duration_cutoffs() : void
     {
-        $thiry_days_ago = CarbonImmutable::now()->subDays(30);
+        $thiry_days_ago = CarbonImmutable::now('utc')->subDays(30);
         $sessions = Illuminate_Builder::new()->from(Tables::sessions())->whereNotNull('ended_at')->where('created_at', '>', $thiry_days_ago)->count();
         if ($sessions < 25) {
             return;

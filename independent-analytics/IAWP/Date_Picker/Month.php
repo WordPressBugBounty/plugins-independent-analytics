@@ -2,6 +2,7 @@
 
 namespace IAWP\Date_Picker;
 
+use IAWP\Utils\Timezone;
 /** @internal */
 class Month
 {
@@ -42,7 +43,7 @@ class Month
     }
     public function month_class() : string
     {
-        $now = new \DateTime('now');
+        $now = new \DateTime('now', Timezone::utc_timezone());
         $month = clone $this->date;
         $class = 'iawp-calendar-month';
         if ($month->format('Y-m') === $this->first_month->format('Y-m')) {

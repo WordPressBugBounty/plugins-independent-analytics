@@ -72,7 +72,7 @@ class Origin extends \IAWP\Journey\Events\Event
     }
     public function created_at() : ?CarbonImmutable
     {
-        return CarbonImmutable::parse($this->created_at)->timezone(Timezone::site_timezone());
+        return CarbonImmutable::parse($this->created_at, 'utc')->timezone(Timezone::site_timezone());
     }
     public function html() : string
     {

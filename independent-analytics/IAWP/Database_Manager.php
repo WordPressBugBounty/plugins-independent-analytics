@@ -29,7 +29,7 @@ class Database_Manager
         $this->delete_all_post_meta();
         $this->delete_cached_favicons();
     }
-    private function delete_all_iawp_options() : void
+    public function delete_all_iawp_options() : void
     {
         global $wpdb;
         $options = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->options} WHERE option_name LIKE %s", 'iawp_%'));
@@ -37,7 +37,7 @@ class Database_Manager
             \delete_option($option->option_name);
         }
     }
-    private function delete_overview_report_data() : void
+    public function delete_overview_report_data() : void
     {
         global $wpdb;
         $options = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->options} WHERE option_name LIKE %s", 'iawp_module_%'));
@@ -45,7 +45,7 @@ class Database_Manager
             \delete_option($option->option_name);
         }
     }
-    private function delete_all_iawp_user_metadata() : void
+    public function delete_all_iawp_user_metadata() : void
     {
         global $wpdb;
         $metadata = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->usermeta} WHERE meta_key LIKE %s", 'iawp_%'));
@@ -53,21 +53,21 @@ class Database_Manager
             \delete_user_meta($metadata->user_id, $metadata->meta_key);
         }
     }
-    private function delete_cached_favicons() : void
+    public function delete_cached_favicons() : void
     {
         try {
             Dir::delete(\IAWPSCOPED\iawp_upload_path_to('iawp-favicons/'));
         } catch (\Throwable $error) {
         }
     }
-    private function delete_all_iawp_tables() : void
+    public function delete_all_iawp_tables() : void
     {
         $this->get_tables()->each(function ($table) {
             global $wpdb;
             $wpdb->query('DROP TABLE ' . $table['name']);
         });
     }
-    private function get_tables() : Collection
+    public function get_tables() : Collection
     {
         global $wpdb;
         $rows = $wpdb->get_results($wpdb->prepare("SELECT table_name AS name FROM information_schema.tables WHERE TABLE_SCHEMA = %s AND table_name LIKE %s", $wpdb->dbname, $wpdb->prefix . 'independent_analytics_%'));
@@ -77,7 +77,7 @@ class Database_Manager
         });
         return $tables;
     }
-    private function delete_all_post_meta() : void
+    public function delete_all_post_meta() : void
     {
         \delete_post_meta_by_key(Views_Column::$meta_key);
     }
@@ -89,8 +89,21 @@ class Database_Manager
         });
         \add_action('iawp_reset_database', function () {
             $db_version = \intval(\get_option('iawp_db_version', '0'));
-            $manager = new self();
-            $manager->delete_all_data();
+            $database_manager = new \IAWP\Database_Manager();
+            $database_manager->delete_all_iawp_options();
+            $database_manager->delete_all_iawp_user_metadata();
+            $database_manager->delete_all_iawp_tables();
+            $database_manager->delete_cached_favicons();
+            \IAWP\Capability_Manager::reset_capabilities();
+            \update_option('iawp_db_version', $db_version);
+        });
+        \add_action('iawp_reset_meta', function () {
+            $db_version = \intval(\get_option('iawp_db_version', '0'));
+            $database_manager = new \IAWP\Database_Manager();
+            $database_manager->delete_all_iawp_options();
+            $database_manager->delete_all_iawp_user_metadata();
+            $database_manager->delete_all_post_meta();
+            \IAWP\Capability_Manager::reset_capabilities();
             \update_option('iawp_db_version', $db_version);
         });
     }

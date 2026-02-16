@@ -2,6 +2,7 @@
 
 namespace IAWP\Statistics\Intervals;
 
+use IAWP\Utils\Format;
 /** @internal */
 class Hourly extends \IAWP\Statistics\Intervals\Interval
 {
@@ -26,7 +27,7 @@ class Hourly extends \IAWP\Statistics\Intervals\Interval
     public function get_label_for(\DateTime $date_time) : array
     {
         $date_format = 'F jS';
-        $time_format = \IAWPSCOPED\iawp()->get_option('time_format', 'g:i a');
+        $time_format = Format::time();
         $in_one_hour = (clone $date_time)->add(new \DateInterval('PT1H'));
         return ['tick' => $this->format($date_time, $time_format), 'tooltipLabel' => $this->format($date_time, $time_format) . " - " . $this->format($in_one_hour, $time_format) . $this->format($date_time, ' (' . $date_format . ')')];
     }

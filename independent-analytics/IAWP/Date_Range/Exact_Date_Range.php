@@ -3,6 +3,8 @@
 namespace IAWP\Date_Range;
 
 use DateTime;
+use IAWP\Utils\Format;
+use IAWP\Utils\Timezone;
 /** @internal */
 class Exact_Date_Range extends \IAWP\Date_Range\Date_Range
 {
@@ -24,8 +26,8 @@ class Exact_Date_Range extends \IAWP\Date_Range\Date_Range
      */
     public function label() : string
     {
-        $formatted_start = \IAWPSCOPED\iawp()->date_i18n(\get_option('date_format'), $this->start);
-        $formatted_end = \IAWPSCOPED\iawp()->date_i18n(\get_option('date_format'), $this->end);
+        $formatted_start = \IAWPSCOPED\iawp()->date_i18n(Format::date(), $this->start);
+        $formatted_end = \IAWPSCOPED\iawp()->date_i18n(Format::date(), $this->end);
         return $formatted_start . ' - ' . $formatted_end;
     }
     /**
@@ -35,6 +37,6 @@ class Exact_Date_Range extends \IAWP\Date_Range\Date_Range
      */
     public static function comprehensive_range() : \IAWP\Date_Range\Exact_Date_Range
     {
-        return new \IAWP\Date_Range\Exact_Date_Range(new DateTime('1991-01-06'), new DateTime());
+        return new \IAWP\Date_Range\Exact_Date_Range(new DateTime('1991-01-06', Timezone::utc_timezone()), new DateTime('now', Timezone::utc_timezone()));
     }
 }

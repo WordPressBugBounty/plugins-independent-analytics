@@ -16,8 +16,8 @@ class Number_Formatter
      */
     public static function second_to_minute_timestamp(int $seconds) : string
     {
-        $unix_epoch = new DateTime("@0");
-        $now = new DateTime("@{$seconds}");
+        $unix_epoch = new DateTime("@0", \IAWP\Utils\Timezone::utc_timezone());
+        $now = new DateTime("@{$seconds}", \IAWP\Utils\Timezone::utc_timezone());
         $interval = $unix_epoch->diff($now);
         return $interval->format('%i:%S');
     }

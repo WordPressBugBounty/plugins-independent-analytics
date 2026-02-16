@@ -2,6 +2,7 @@
 
 namespace IAWP\AJAX;
 
+use IAWPSCOPED\Carbon\CarbonImmutable;
 use IAWP\Capability_Manager;
 use IAWP\Click_Tracking;
 use IAWP\Illuminate_Builder;
@@ -57,7 +58,7 @@ class Edit_Link extends \IAWP\AJAX\AJAX
         if ($link_rule) {
             Illuminate_Builder::new()->from(Tables::link_rules())->where('link_rule_id', '=', $link_id)->update($link_properties);
         } else {
-            $link_properties['created_at'] = (new \DateTime())->format('Y-m-d H:i:s');
+            $link_properties['created_at'] = CarbonImmutable::now('utc')->format('Y-m-d H:i:s');
             $link_id = Illuminate_Builder::new()->from(Tables::link_rules())->insertGetId($link_properties);
         }
         // Fetch a fresh copy

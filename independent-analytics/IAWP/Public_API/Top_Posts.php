@@ -57,18 +57,18 @@ class Top_Posts
         if (\array_key_exists('from', $options) && $options['from'] instanceof \DateTime) {
             $from = CarbonImmutable::instance($options['from']);
         } else {
-            $from = CarbonImmutable::now()->subtract('days', 30);
+            $from = CarbonImmutable::now('utc')->subtract('days', 30);
         }
         // To
         if (\array_key_exists('to', $options) && $options['to'] instanceof \DateTime) {
             $to = CarbonImmutable::instance($options['to']);
         } else {
-            $to = CarbonImmutable::now();
+            $to = CarbonImmutable::now('utc');
         }
         // Is date range valid?
         if ($from->greaterThanOrEqualTo($to)) {
-            $from = CarbonImmutable::now()->subtract('days', 30);
-            $to = CarbonImmutable::now();
+            $from = CarbonImmutable::now('utc')->subtract('days', 30);
+            $to = CarbonImmutable::now('utc');
         }
         // Sort by
         $valid_sorting_options = ['views', 'visitors', 'sessions'];

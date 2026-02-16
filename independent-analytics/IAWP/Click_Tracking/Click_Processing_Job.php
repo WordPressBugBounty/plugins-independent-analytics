@@ -2,6 +2,7 @@
 
 namespace IAWP\Click_Tracking;
 
+use IAWPSCOPED\Carbon\CarbonImmutable;
 use IAWP\Cron_Job;
 use IAWP\Models\Visitor;
 use IAWP\Payload_Validator;
@@ -54,7 +55,7 @@ class Click_Processing_Job extends Cron_Job
             $event['href'] = \sanitize_url($event['href']);
             $event['classes'] = Security::string($event['classes']);
             $event['ids'] = Security::string($event['ids']);
-            $click = \IAWP\Click_Tracking\Click::new(['href' => $event['href'], 'classes' => $event['classes'], 'ids' => $event['ids'], 'resource_id' => $payload_validator->resource()['id'], 'visitor_id' => Visitor::fetch_visitor_id_by_hash($event['visitor_token']), 'created_at' => \DateTime::createFromFormat('U', $event['created_at'])]);
+            $click = \IAWP\Click_Tracking\Click::new(['href' => $event['href'], 'classes' => $event['classes'], 'ids' => $event['ids'], 'resource_id' => $payload_validator->resource()['id'], 'visitor_id' => Visitor::fetch_visitor_id_by_hash($event['visitor_token']), 'created_at' => CarbonImmutable::createFromTimestamp($event['created_at'], 'utc')]);
             $click->track();
         }
         \fclose($job_handle);

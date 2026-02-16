@@ -41,7 +41,7 @@ class Order extends \IAWP\Journey\Events\Event
     }
     public function created_at() : ?CarbonImmutable
     {
-        return CarbonImmutable::parse($this->created_at)->timezone(Timezone::site_timezone());
+        return CarbonImmutable::parse($this->created_at, 'utc')->timezone(Timezone::site_timezone());
     }
     public function html() : string
     {
@@ -100,37 +100,40 @@ class Order extends \IAWP\Journey\Events\Event
     }
     private function calculate_admin_url() : ?string
     {
-        if ($this->platform === 'fluent_cart' && \IAWPSCOPED\iawp()->is_fluent_cart_support_enabled()) {
-            $order = \FluentCart\App\Models\Order::find($this->order_id);
-            if ($order === null) {
-                return null;
+        try {
+            if ($this->platform === 'fluent_cart' && \IAWPSCOPED\iawp()->is_fluent_cart_support_enabled()) {
+                $order = \FluentCart\App\Models\Order::find($this->order_id);
+                if ($order === null) {
+                    return null;
+                }
+                return $order->getViewURL('admin');
             }
-            return $order->getViewURL('admin');
-        }
-        if ($this->platform === 'woocommerce' && \IAWPSCOPED\iawp()->is_woocommerce_support_enabled()) {
-            $order = wc_get_order($this->order_id);
-            if ($order === null) {
-                return null;
+            if ($this->platform === 'woocommerce' && \IAWPSCOPED\iawp()->is_woocommerce_support_enabled()) {
+                $order = wc_get_order($this->order_id);
+                if ($order === null) {
+                    return null;
+                }
+                return $order->get_edit_order_url();
             }
-            return $order->get_edit_order_url();
-        }
-        if ($this->platform === 'surecart' && \IAWPSCOPED\iawp()->is_surecart_support_enabled()) {
-            $admin_url = \admin_url('admin.php');
-            $args = ['page' => 'sc-orders', 'action' => 'edit', 'id' => $this->order_id];
-            $url = \add_query_arg($args, $admin_url);
-            return $url;
-        }
-        if ($this->platform === 'edd' && \IAWPSCOPED\iawp()->is_edd_support_enabled()) {
-            $admin_url = \admin_url('edit.php');
-            $args = ['page' => 'edd-payment-history', 'post_type' => 'download', 'view' => 'view-order-details', 'id' => $this->order_id];
-            $url = \add_query_arg($args, $admin_url);
-            return $url;
-        }
-        if ($this->platform === 'pmpro' && \IAWPSCOPED\iawp()->is_pmpro_support_enabled()) {
-            $admin_url = \admin_url('admin.php');
-            $args = ['page' => 'pmpro-orders', 'id' => $this->order_id];
-            $url = \add_query_arg($args, $admin_url);
-            return $url;
+            if ($this->platform === 'surecart' && \IAWPSCOPED\iawp()->is_surecart_support_enabled()) {
+                $admin_url = \admin_url('admin.php');
+                $args = ['page' => 'sc-orders', 'action' => 'edit', 'id' => $this->order_id];
+                $url = \add_query_arg($args, $admin_url);
+                return $url;
+            }
+            if ($this->platform === 'edd' && \IAWPSCOPED\iawp()->is_edd_support_enabled()) {
+                $admin_url = \admin_url('edit.php');
+                $args = ['page' => 'edd-payment-history', 'post_type' => 'download', 'view' => 'view-order-details', 'id' => $this->order_id];
+                $url = \add_query_arg($args, $admin_url);
+                return $url;
+            }
+            if ($this->platform === 'pmpro' && \IAWPSCOPED\iawp()->is_pmpro_support_enabled()) {
+                $admin_url = \admin_url('admin.php');
+                $args = ['page' => 'pmpro-orders', 'id' => $this->order_id];
+                $url = \add_query_arg($args, $admin_url);
+                return $url;
+            }
+        } catch (\Throwable $error) {
         }
         return null;
     }

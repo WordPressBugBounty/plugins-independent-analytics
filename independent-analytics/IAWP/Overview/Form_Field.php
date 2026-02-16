@@ -70,7 +70,13 @@ class Form_Field
     public function supported_values() : array
     {
         $report_details = self::get_report_details_by_id($this->report->id());
-        $report_values = Collection::make(Report_Finder::new()->get_reports())->map(function (Report $report) {
+        $report_values = Collection::make(Report_Finder::new()->get_reports())->filter(function (Report $report) {
+            // User Journey reports do not make sense for the Overview Report
+            if ($report->type() === 'journeys') {
+                return \false;
+            }
+            return \true;
+        })->values()->map(function (Report $report) {
             return \IAWP\Overview\Form_Field_Option::new($report->id(), $report->name(), $report->type_label());
         })->all();
         $geo_report_values = Collection::make(Report_Finder::new()->get_reports())->filter(function (Report $report) {

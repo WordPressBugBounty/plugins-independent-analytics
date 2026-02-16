@@ -8,8 +8,8 @@ use IAWP\Journey\Events\Order;
 use IAWP\Journey\Events\Origin;
 use IAWP\Journey\Events\Submission;
 use IAWP\Journey\Events\View;
+use IAWP\Utils\Format;
 use IAWP\Utils\Timezone;
-use IAWP\Utils\WordPress_Site_Date_Format_Pattern;
 use IAWPSCOPED\Illuminate\Support\Collection;
 /** @internal */
 class Timeline
@@ -41,7 +41,7 @@ class Timeline
     }
     public function created_at_for_humans() : string
     {
-        return $this->origin->created_at()->timezone(Timezone::site_timezone())->format(WordPress_Site_Date_Format_Pattern::for_php());
+        return $this->origin->created_at()->timezone(Timezone::site_timezone())->format(Format::date());
     }
     public function events()
     {
