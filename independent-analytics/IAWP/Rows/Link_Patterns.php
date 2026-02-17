@@ -12,7 +12,7 @@ class Link_Patterns extends \IAWP\Rows\Rows
 {
     public function attach_filters(Builder $query) : void
     {
-        $query->joinSub($this->get_filter_query(), 'click_rows', function (JoinClause $join) {
+        $query->joinSub($this->query(\true), 'click_rows', function (JoinClause $join) {
             $join->on('click_rows.link_rule_id', '=', 'link_rules.link_rule_id');
         });
     }
@@ -27,7 +27,7 @@ class Link_Patterns extends \IAWP\Rows\Rows
     {
         return 'link_name';
     }
-    protected function query(?bool $skip_pagination = \false) : Builder
+    private function query(?bool $skip_pagination = \false) : Builder
     {
         if ($skip_pagination) {
             $this->number_of_rows = null;

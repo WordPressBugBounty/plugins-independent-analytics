@@ -16,7 +16,7 @@ class Pages extends \IAWP\Rows\Rows
     private static $has_wp_comments_table = null;
     public function attach_filters(Builder $query) : void
     {
-        $query->joinSub($this->get_filter_query(), 'page_rows', function (JoinClause $join) {
+        $query->joinSub($this->query(\true), 'page_rows', function (JoinClause $join) {
             $join->on('page_rows.id', '=', 'views.resource_id');
         });
     }
@@ -31,7 +31,16 @@ class Pages extends \IAWP\Rows\Rows
     {
         return 'cached_title';
     }
-    protected function query(?bool $skip_pagination = \false) : Builder
+    private function has_wp_comments_table() : bool
+    {
+        if (\is_bool(self::$has_wp_comments_table)) {
+            return self::$has_wp_comments_table;
+        }
+        global $wpdb;
+        self::$has_wp_comments_table = Database::has_table($wpdb->prefix . 'comments');
+        return self::$has_wp_comments_table;
+    }
+    private function query(?bool $skip_pagination = \false) : Builder
     {
         if ($skip_pagination) {
             $this->number_of_rows = null;
@@ -43,18 +52,12 @@ class Pages extends \IAWP\Rows\Rows
                 $sort_column = $value;
             }
         }
-        $orders_subquery = Illuminate_Builder::new()->selectRaw('orders.view_id')->selectRaw('COUNT(*) as order_count')->selectRaw('IFNULL(SUM(orders.total), 0) as total')->selectRaw('IFNULL(SUM(orders.total_refunded), 0) as total_refunded')->selectRaw('IFNULL(SUM(orders.total_refunds), 0) as total_refunds')->from(Tables::orders() . " AS orders")->where('orders.is_included_in_analytics', '=', \true)->whereBetween('orders.created_at', $this->get_current_period_iso_range())->groupBy('orders.view_id');
-        $form_submissions_subquery = Illuminate_Builder::new()->select(['submissions.view_id'])->selectRaw('COUNT(*) as form_submissions')->tap(function (Builder $query) {
+        $orders_query = Illuminate_Builder::new()->select(['sessions.initial_view_id AS view_id'])->selectRaw('IFNULL(COUNT(DISTINCT orders.order_id), 0) AS wc_orders')->selectRaw('IFNULL(ROUND(CAST(SUM(orders.total) AS SIGNED)), 0) AS wc_gross_sales')->selectRaw('IFNULL(ROUND(CAST(SUM(orders.total_refunded) AS SIGNED)), 0) AS wc_refunded_amount')->selectRaw('IFNULL(SUM(orders.total_refunds), 0) AS wc_refunds')->from(Tables::orders(), 'orders')->leftJoin(Tables::views() . ' AS views', 'orders.view_id', '=', 'views.id')->leftJoin(Tables::sessions() . ' AS sessions', 'views.session_id', '=', 'sessions.session_id')->where('orders.is_included_in_analytics', '=', \true)->whereBetween('orders.created_at', $this->get_current_period_iso_range())->groupBy('orders.view_id');
+        $pages_query = Illuminate_Builder::new()->select('resources.*')->selectRaw('COUNT(DISTINCT views.id)  AS views')->selectRaw('COUNT(DISTINCT sessions.visitor_id)  AS visitors')->selectRaw('COUNT(DISTINCT IF(initial_view.resource_id = resources.id, sessions.visitor_id, NULL))  AS landing_page_visitors')->selectRaw('COUNT(DISTINCT sessions.session_id)  AS sessions')->selectRaw('COUNT(DISTINCT IF(sessions.final_view_id IS NULL, sessions.session_id, NULL))  AS bounces')->selectRaw('AVG(TIMESTAMPDIFF(SECOND, views.viewed_at, views.next_viewed_at))  AS average_view_duration')->selectRaw('COUNT(DISTINCT IF(resources.id = initial_view.resource_id, sessions.session_id, NULL))  AS entrances')->selectRaw('COUNT(DISTINCT IF((resources.id = final_view.resource_id OR (resources.id = initial_view.resource_id AND sessions.final_view_id IS NULL)), sessions.session_id, NULL))  AS exits')->selectRaw('COUNT(DISTINCT clicks.click_id)  AS clicks')->selectRaw('IFNULL(SUM(the_orders.wc_orders), 0) AS wc_orders')->selectRaw('IFNULL(SUM(the_orders.wc_gross_sales), 0) AS wc_gross_sales')->selectRaw('IFNULL(SUM(the_orders.wc_refunded_amount), 0) AS wc_refunded_amount')->selectRaw('IFNULL(SUM(wc_refunds), 0) AS wc_refunds')->selectRaw('IFNULL(SUM(form_submissions.form_submissions), 0) AS form_submissions')->tap(function (Builder $query) {
             foreach (Form::get_forms() as $form) {
-                $query->selectRaw('SUM(submissions.form_id = ?) as ' . $form->submissions_column(), [$form->id()]);
+                $query->selectRaw("SUM(IF(form_submissions.form_id = ?, form_submissions.form_submissions, 0)) AS {$form->submissions_column()}", [$form->id()]);
             }
-        })->from(Tables::form_submissions(), 'submissions')->whereBetween('submissions.created_at', $this->get_current_period_iso_range())->groupBy('submissions.view_id');
-        $clicks_subquery = Illuminate_Builder::new()->select('clicks.view_id')->selectRaw('COUNT(*) AS clicks')->from(Tables::clicks(), 'clicks')->whereBetween('clicks.created_at', $this->get_current_period_iso_range())->groupBy('clicks.view_id');
-        $pages_query = Illuminate_Builder::new()->select('resources.*')->selectRaw('COUNT(DISTINCT sessions.visitor_id)  AS visitors')->selectRaw('COUNT(DISTINCT IF(initial_view.resource_id = resources.id, sessions.visitor_id, NULL))  AS landing_page_visitors')->selectRaw('COUNT(DISTINCT sessions.session_id)  AS sessions')->selectRaw('COUNT(DISTINCT IF(sessions.final_view_id IS NULL, sessions.session_id, NULL))  AS bounces')->selectRaw('AVG(TIMESTAMPDIFF(SECOND, views.viewed_at, views.next_viewed_at))  AS average_view_duration')->selectRaw('COUNT(DISTINCT IF(resources.id = initial_view.resource_id, sessions.session_id, NULL))  AS entrances')->selectRaw('COUNT(DISTINCT IF((resources.id = final_view.resource_id OR (resources.id = initial_view.resource_id AND sessions.final_view_id IS NULL)), sessions.session_id, NULL))  AS exits')->selectRaw('COUNT(*) AS views')->selectRaw('SUM(IFNULL(clicks.clicks, 0))  AS clicks')->selectRaw('SUM(IFNULL(order_stats.order_count, 0)) AS wc_orders')->selectRaw('SUM(IFNULL(order_stats.total, 0)) AS wc_gross_sales')->selectRaw('SUM(IFNULL(order_stats.total_refunded, 0)) AS wc_refunded_amount')->selectRaw('SUM(IFNULL(order_stats.total_refunds, 0)) AS wc_refunds')->selectRaw('SUM(IFNULL(form_submissions.form_submissions, 0)) AS form_submissions')->tap(function (Builder $query) {
-            foreach (Form::get_forms() as $form) {
-                $query->selectRaw("SUM(IFNULL(form_submissions.{$form->submissions_column()}, 0)) AS {$form->submissions_column()}");
-            }
-        })->from(Tables::views(), 'views')->leftJoin(Tables::sessions() . ' AS sessions', 'views.session_id', '=', 'sessions.session_id')->leftJoin(Tables::resources() . ' AS resources', 'views.resource_id', '=', 'resources.id')->leftJoin(Tables::views() . ' AS initial_view', 'sessions.initial_view_id', '=', 'initial_view.id')->leftJoin(Tables::views() . ' AS final_view', 'sessions.final_view_id', '=', 'final_view.id')->leftJoinSub($orders_subquery, 'order_stats', 'views.id', '=', 'order_stats.view_id')->leftJoinSub($form_submissions_subquery, 'form_submissions', 'views.id', '=', 'form_submissions.view_id')->leftJoinSub($clicks_subquery, 'clicks', 'views.id', '=', 'clicks.view_id')->tap(Query_Taps::tap_related_to_examined_record($this->examiner_config))->tap(Query_Taps::tap_authored_content_check(\false))->when($this->has_wp_comments_table(), function (Builder $query) {
+        })->from(Tables::views(), 'views')->leftJoin(Tables::sessions() . ' AS sessions', 'views.session_id', '=', 'sessions.session_id')->leftJoin(Tables::resources() . ' AS resources', 'views.resource_id', '=', 'resources.id')->leftJoin(Tables::views() . ' AS initial_view', 'sessions.initial_view_id', '=', 'initial_view.id')->leftJoin(Tables::views() . ' AS final_view', 'sessions.final_view_id', '=', 'final_view.id')->leftJoin(Tables::clicks() . ' AS clicks', 'clicks.view_id', '=', 'views.id')->leftJoinSub($orders_query, 'the_orders', 'the_orders.view_id', '=', 'views.id')->leftJoinSub($this->get_form_submissions_query(), 'form_submissions', 'form_submissions.view_id', '=', 'views.id')->tap(Query_Taps::tap_related_to_examined_record($this->examiner_config))->tap(Query_Taps::tap_authored_content_check(\false))->when($this->has_wp_comments_table(), function (Builder $query) {
             $query->selectRaw('IFNULL(comments.comments, 0) AS comments');
             $query->leftJoinSub($this->get_comments_query(), 'comments', 'comments.resource_id', '=', 'resources.id');
         }, function (Builder $query) {
@@ -79,15 +82,6 @@ class Pages extends \IAWP\Rows\Rows
             $outer_query = Illuminate_Builder::new()->select('*')->fromSub($og_outer_query, 'records')->tap(fn(Builder $query) => $this->apply_or_filters($query))->tap(fn(Builder $query) => $this->apply_order_and_limit($query, $sort_column));
         }
         return $outer_query;
-    }
-    private function has_wp_comments_table() : bool
-    {
-        if (\is_bool(self::$has_wp_comments_table)) {
-            return self::$has_wp_comments_table;
-        }
-        global $wpdb;
-        self::$has_wp_comments_table = Database::has_table($wpdb->prefix . 'comments');
-        return self::$has_wp_comments_table;
     }
     private function get_comments_query() : Builder
     {

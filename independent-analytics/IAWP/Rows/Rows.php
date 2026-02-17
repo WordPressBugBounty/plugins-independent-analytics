@@ -4,9 +4,8 @@ namespace IAWP\Rows;
 
 use IAWP\Date_Range\Date_Range;
 use IAWP\Examiner_Config;
-use IAWP\Form_Submissions\Form;
 use IAWP\Illuminate_Builder;
-use IAWP\Query_Taps;
+use IAWP\Query;
 use IAWP\Sort_Configuration;
 use IAWP\Tables;
 use IAWPSCOPED\Illuminate\Database\Query\Builder;
@@ -23,7 +22,6 @@ abstract class Rows
     protected $solo_record_id = null;
     protected $examiner_config = null;
     private $rows = null;
-    private $cached_filter_query = null;
     public function __construct(Date_Range $date_range, Sort_Configuration $sort_configuration, ?int $number_of_rows = null, ?array $filters = null, ?string $filter_logic = null)
     {
         $this->date_range = $date_range;
@@ -34,7 +32,6 @@ abstract class Rows
     }
     protected abstract function fetch_rows() : array;
     public abstract function attach_filters(Builder $query) : void;
-    protected abstract function query(?bool $skip_pagination = \false) : Builder;
     protected abstract function sort_tie_breaker_column() : string;
     /**
      * Used to limit the rows to just a single record. This is useful if you want a single page,
@@ -59,13 +56,6 @@ abstract class Rows
         }
         $this->rows = $this->fetch_rows();
         return $this->rows;
-    }
-    protected function get_filter_query() : Builder
-    {
-        if ($this->cached_filter_query === null) {
-            $this->cached_filter_query = $this->query(\true);
-        }
-        return clone $this->cached_filter_query;
     }
     protected function only_filtering_by_record_columns() : bool
     {
@@ -123,6 +113,11 @@ abstract class Rows
     protected function get_previous_period_iso_range() : array
     {
         return [$this->date_range->previous_period()->iso_start(), $this->date_range->previous_period()->iso_end()];
+    }
+    protected function get_form_submissions_query() : Builder
+    {
+        $form_submissions_table = Query::get_table_name(Query::FORM_SUBMISSIONS);
+        return Illuminate_Builder::new()->select(['form_id', 'view_id'])->selectRaw('COUNT(*) AS form_submissions')->from($form_submissions_table, 'form_submissions')->whereBetween('created_at', $this->get_current_period_iso_range())->groupBy(['form_id', 'view_id']);
     }
     protected function apply_record_filters(Builder $query) : void
     {
@@ -190,23 +185,6 @@ abstract class Rows
             $query->orderByRaw("CASE WHEN {$sort_column} IS NULL THEN 1 ELSE 0 END");
         })->orderBy($sort_column, $this->sort_configuration->direction())->orderBy($this->sort_tie_breaker_column())->when(\is_int($this->number_of_rows), function (Builder $query) {
             $query->limit($this->number_of_rows);
-        });
-    }
-    protected function session_statistics_query() : Builder
-    {
-        $orders_subquery = Illuminate_Builder::new()->selectRaw('views.session_id')->selectRaw('COUNT(*) as order_count')->selectRaw('IFNULL(SUM(orders.total), 0) as total')->selectRaw('IFNULL(SUM(orders.total_refunded), 0) as total_refunded')->selectRaw('IFNULL(SUM(orders.total_refunds), 0) as total_refunds')->from(Tables::orders() . " AS orders")->join(Tables::views() . " AS views", 'orders.initial_view_id', '=', 'views.id')->where('orders.is_included_in_analytics', '=', \true)->whereBetween('orders.created_at', $this->get_current_period_iso_range())->groupBy('views.session_id');
-        $form_submissions_subquery = Illuminate_Builder::new()->select(['views.session_id'])->selectRaw('COUNT(*) as form_submissions')->tap(function (Builder $query) {
-            foreach (Form::get_forms() as $form) {
-                $query->selectRaw('SUM(submissions.form_id = ?) as ' . $form->submissions_column(), [$form->id()]);
-            }
-        })->from(Tables::form_submissions(), 'submissions')->leftJoin(Tables::views() . ' AS views', 'views.id', '=', 'submissions.view_id')->whereBetween('submissions.created_at', $this->get_current_period_iso_range())->groupBy('views.session_id');
-        $views_subquery = Illuminate_Builder::new()->select('views.session_id')->selectRaw('COUNT(DISTINCT views.id) AS views')->selectRaw('COUNT(DISTINCT clicks.click_id) AS clicks')->from(Tables::views(), 'views')->leftJoin(Tables::clicks() . ' AS clicks', 'clicks.view_id', '=', 'views.id')->whereBetween('views.viewed_at', $this->get_current_period_iso_range())->groupBy('views.session_id');
-        return Illuminate_Builder::new()->select('sessions.*')->selectRaw('views.views AS views')->selectRaw('views.clicks AS clicks')->selectRaw('IFNULL(order_stats.order_count, 0) AS wc_orders')->selectRaw('IFNULL(order_stats.total, 0) AS wc_gross_sales')->selectRaw('IFNULL(order_stats.total_refunded, 0) AS wc_refunded_amount')->selectRaw('IFNULL(order_stats.total_refunds, 0) AS wc_refunds')->selectRaw('IFNULL(form_submissions.form_submissions, 0) AS form_submissions')->tap(function (Builder $query) {
-            foreach (Form::get_forms() as $form) {
-                $query->selectRaw("IFNULL(form_submissions.{$form->submissions_column()}, 0) AS {$form->submissions_column()}");
-            }
-        })->from(Tables::sessions(), 'sessions')->joinSub($views_subquery, 'views', 'sessions.session_id', '=', 'views.session_id')->leftJoinSub($orders_subquery, 'order_stats', 'sessions.session_id', '=', 'order_stats.session_id')->leftJoinSub($form_submissions_subquery, 'form_submissions', 'sessions.session_id', '=', 'form_submissions.session_id')->tap(Query_Taps::tap_authored_content_check())->tap(Query_Taps::tap_related_to_examined_record($this->examiner_config))->when(!$this->appears_to_be_for_real_time_analytics(), function (Builder $query) {
-            $query->whereBetween('sessions.created_at', $this->get_current_period_iso_range());
         });
     }
 }

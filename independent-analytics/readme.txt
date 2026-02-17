@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 2.14.2
+Stable tag: 2.14.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -183,6 +183,15 @@ Yes, Independent Analytics will run smoothly and won't create any errors even if
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.14.4 - February 17th, 2026 =
+
+* **Fix:** Fixed errors triggering for non-admin analytics viewers
+* **Fix:** Fixed errors for some Solo Reports
+
+= 2.14.3 - February 16th, 2026 =
+
+* **Fix:** Clicks report could fail if no click data was present
 
 = 2.14.2 - February 16th, 2026 =
 
