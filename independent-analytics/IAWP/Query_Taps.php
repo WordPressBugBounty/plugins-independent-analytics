@@ -36,9 +36,9 @@ class Query_Taps
             $query->where('resources.cached_author_id', '=', \get_current_user_id());
         };
     }
-    public static function tap_related_to_examined_record(?\IAWP\Examiner_Config $config)
+    public static function tap_related_to_examined_record(?\IAWP\Examiner_Config $config, array $tables = [])
     {
-        return function (Builder $query) use($config) {
+        return function (Builder $query) use($config, $tables) {
             if (!$config) {
                 return;
             }
@@ -54,6 +54,9 @@ class Query_Taps
                 $query->leftJoin(\IAWP\Tables::campaigns() . ' AS campaigns', 'sessions.campaign_id', '=', 'campaigns.campaign_id');
             }
             if ($config->group() === 'link' || $config->group() === 'link_pattern') {
+                if (!\in_array('clicks', $tables)) {
+                    $query->leftJoin(\IAWP\Tables::clicks() . ' AS clicks', 'clicks.view_id', '=', 'views.id');
+                }
                 $query->leftJoin(\IAWP\Tables::clicked_links() . ' AS clicked_links', 'clicked_links.click_id', '=', 'clicks.click_id');
                 $query->leftJoin(\IAWP\Tables::links() . ' AS links', 'links.id', '=', 'clicked_links.link_id');
             }

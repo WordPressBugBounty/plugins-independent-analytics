@@ -6,7 +6,6 @@ use IAWP\Date_Range\Date_Range;
 use IAWP\Date_Range\Relative_Date_Range;
 use IAWP\Utils\Number_Formatter;
 use IAWPSCOPED\Illuminate\Database\Query\Builder;
-use IAWPSCOPED\Illuminate\Database\Query\JoinClause;
 /** @internal */
 class Admin_Bar_Stats
 {
@@ -62,17 +61,19 @@ class Admin_Bar_Stats
     }
     private function get_views_in_date_range(Date_Range $date_range) : int
     {
-        $resources_table = \IAWP\Query::get_table_name(\IAWP\Query::RESOURCES);
-        $views_table = \IAWP\Query::get_table_name(\IAWP\Query::VIEWS);
-        $resource_statistics_query = \IAWP\Illuminate_Builder::new();
         $resource = $this->current_resource_identifier;
-        $resource_statistics_query->selectRaw('COUNT(*) AS views')->from("{$resources_table} as resources")->join("{$views_table} AS views", function (JoinClause $join) {
-            $join->on('resources.id', '=', 'views.resource_id');
-        })->where('resource', '=', $resource->type())->when($resource->has_meta(), function (Builder $query) use($resource) {
+        $view_query = \IAWP\Illuminate_Builder::new()->selectRaw('COUNT(*) AS views')->from(\IAWP\Tables::resources() . ' AS resources')->join(\IAWP\Tables::views() . ' AS views', 'views.resource_id', '=', 'resources.id')->where('resource', '=', $resource->type())->when($resource->has_meta(), function (Builder $query) use($resource) {
             $query->where($resource->meta_key(), '=', $resource->meta_value());
         })->whereBetween('views.viewed_at', [$date_range->iso_start(), $date_range->iso_end()]);
-        $resource_statistics = $resource_statistics_query->get()->first();
-        return $resource_statistics->views ?? 0;
+        $views = $view_query->value('views');
+        if (\is_string($views)) {
+            if (\is_numeric($views)) {
+                $views = \intval($views);
+            } else {
+                $views = null;
+            }
+        }
+        return $views ?? 0;
     }
     public static function is_option_enabled() : bool
     {

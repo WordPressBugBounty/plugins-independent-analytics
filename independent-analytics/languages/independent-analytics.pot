@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Independent Analytics 2.14.4\n"
+"Project-Id-Version: Independent Analytics 2.14.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/independent-analytics-production\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-17T17:50:12+00:00\n"
+"POT-Creation-Date: 2026-03-18T14:00:06+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: independent-analytics\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "User-friendly website analytics built for WordPress"
 msgstr ""
 
-#: IAWP/Admin_Bar_Stats.php:61
+#: IAWP/Admin_Bar_Stats.php:60
 #: IAWP/Custom_WordPress_Columns/Views_Column.php:35
 #: IAWP/Independent_Analytics.php:397
 #: IAWP/Report.php:105
@@ -48,27 +48,27 @@ msgstr ""
 msgid "Views"
 msgstr ""
 
-#: IAWP/Admin_Bar_Stats.php:61
+#: IAWP/Admin_Bar_Stats.php:60
 msgid "Date"
 msgstr ""
 
-#: IAWP/Admin_Bar_Stats.php:61
+#: IAWP/Admin_Bar_Stats.php:60
 msgid "Today:"
 msgstr ""
 
-#: IAWP/Admin_Bar_Stats.php:61
+#: IAWP/Admin_Bar_Stats.php:60
 msgid "Yesterday:"
 msgstr ""
 
-#: IAWP/Admin_Bar_Stats.php:61
+#: IAWP/Admin_Bar_Stats.php:60
 msgid "Last 30 Days:"
 msgstr ""
 
-#: IAWP/Admin_Bar_Stats.php:61
+#: IAWP/Admin_Bar_Stats.php:60
 msgid "All Time:"
 msgstr ""
 
-#: IAWP/Admin_Bar_Stats.php:61
+#: IAWP/Admin_Bar_Stats.php:60
 #: IAWP/Independent_Analytics.php:417
 msgid "Analytics Dashboard"
 msgstr ""

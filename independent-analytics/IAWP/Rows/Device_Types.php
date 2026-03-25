@@ -5,8 +5,8 @@ namespace IAWP\Rows;
 use IAWP\Form_Submissions\Form;
 use IAWP\Illuminate_Builder;
 use IAWP\Models\Device;
-use IAWP\Query;
 use IAWP\Query_Taps;
+use IAWP\Tables;
 use IAWPSCOPED\Illuminate\Database\Query\Builder;
 use IAWPSCOPED\Illuminate\Database\Query\JoinClause;
 /** @internal */
@@ -34,48 +34,39 @@ class Device_Types extends \IAWP\Rows\Rows
         if ($skip_pagination) {
             $this->number_of_rows = null;
         }
-        $views_table = Query::get_table_name(Query::VIEWS);
-        $sessions_table = Query::get_table_name(Query::SESSIONS);
-        $orders_table = Query::get_table_name(Query::ORDERS);
-        $device_types_table = Query::get_table_name(Query::DEVICE_TYPES);
-        $session_statistics = Illuminate_Builder::new();
-        $session_statistics->select('sessions.*')->selectRaw('COUNT(DISTINCT views.id) AS views')->selectRaw('COUNT(DISTINCT clicks.click_id) AS clicks')->selectRaw('COUNT(DISTINCT orders.order_id) AS wc_orders')->selectRaw('IFNULL(CAST(SUM(orders.total) AS SIGNED), 0) AS wc_gross_sales')->selectRaw('IFNULL(CAST(SUM(orders.total_refunded) AS SIGNED), 0) AS wc_refunded_amount')->selectRaw('IFNULL(CAST(SUM(orders.total_refunds) AS SIGNED), 0) AS wc_refunds')->selectRaw('IFNULL(SUM(form_submissions.form_submissions), 0) AS form_submissions')->tap(function (Builder $query) {
-            foreach (Form::get_forms() as $form) {
-                $query->selectRaw("SUM(IF(form_submissions.form_id = ?, form_submissions.form_submissions, 0)) AS {$form->submissions_column()}", [$form->id()]);
-            }
-        })->from("{$sessions_table} AS sessions")->join("{$views_table} AS views", function (JoinClause $join) {
-            $join->on('sessions.session_id', '=', 'views.session_id');
-        })->leftJoin("{$orders_table} AS orders", function (JoinClause $join) {
-            $join->on('views.id', '=', 'orders.initial_view_id')->where('orders.is_included_in_analytics', '=', \true);
-        })->leftJoin("{$this->tables::clicks()} AS clicks", function (JoinClause $join) {
-            $join->on('views.id', '=', 'clicks.view_id');
-        })->tap(Query_Taps::tap_authored_content_check())->tap(Query_Taps::tap_related_to_examined_record($this->examiner_config))->when(!$this->appears_to_be_for_real_time_analytics(), function (Builder $query) {
+        $clicks_subquery = Illuminate_Builder::new()->select('sessions.device_type_id')->selectRaw('COUNT(*) AS clicks')->from(Tables::clicks(), 'clicks')->join(Tables::views() . ' AS views', 'clicks.view_id', '=', 'views.id')->join(Tables::sessions() . ' AS sessions', 'views.session_id', '=', 'sessions.session_id')->tap(Query_Taps::tap_authored_content_check())->tap(Query_Taps::tap_related_to_examined_record($this->examiner_config, ['clicks']))->whereBetween('views.viewed_at', $this->get_current_period_iso_range())->when(!$this->appears_to_be_for_real_time_analytics(), function (Builder $query) {
             $query->whereBetween('sessions.created_at', $this->get_current_period_iso_range());
-        })->whereBetween('views.viewed_at', $this->get_current_period_iso_range())->leftJoinSub($this->get_form_submissions_query(), 'form_submissions', function (JoinClause $join) {
-            $join->on('form_submissions.view_id', '=', 'views.id');
-        })->whereNotNull('sessions.device_type_id')->groupBy('sessions.session_id');
-        $device_types_query = Illuminate_Builder::new();
-        $device_types_query->select('device_types.device_type_id', 'device_types.device_type')->selectRaw('IFNULL(CAST(SUM(sessions.views) AS SIGNED), 0) AS views')->selectRaw('COUNT(DISTINCT sessions.visitor_id)  AS visitors')->selectRaw('COUNT(DISTINCT sessions.session_id)  AS sessions')->selectRaw('ROUND(AVG( TIMESTAMPDIFF(SECOND, sessions.created_at, sessions.ended_at))) AS average_session_duration')->selectRaw('COUNT(DISTINCT IF(sessions.final_view_id IS NULL, sessions.session_id, NULL))  AS bounces')->selectRaw('SUM(sessions.clicks)  AS clicks')->selectRaw('SUM(sessions.wc_orders) AS wc_orders')->selectRaw('SUM(sessions.wc_gross_sales) AS wc_gross_sales')->selectRaw('SUM(sessions.wc_refunded_amount) AS wc_refunded_amount')->selectRaw('SUM(sessions.wc_refunds) AS wc_refunds')->selectRaw('SUM(sessions.form_submissions) AS form_submissions')->tap(function (Builder $query) {
+        })->groupBy('sessions.device_type_id');
+        $orders_subquery = Illuminate_Builder::new()->select('sessions.device_type_id')->selectRaw('COUNT(*) AS orders')->selectRaw('IFNULL(CAST(SUM(total) AS SIGNED), 0) AS gross_sales')->selectRaw('IFNULL(CAST(SUM(total_refunded) AS SIGNED), 0) AS total_refunded')->selectRaw('IFNULL(CAST(SUM(total_refunds) AS SIGNED), 0) AS total_refunds')->selectRaw('IFNULL(CAST(SUM(total - total_refunded) AS SIGNED), 0) AS net_sales')->from(Tables::orders(), 'orders')->join(Tables::views() . ' AS views', 'orders.initial_view_id', '=', 'views.id')->join(Tables::sessions() . ' AS sessions', 'views.session_id', '=', 'sessions.session_id')->where('is_included_in_analytics', '=', \true)->tap(Query_Taps::tap_authored_content_check())->tap(Query_Taps::tap_related_to_examined_record($this->examiner_config))->whereBetween('views.viewed_at', $this->get_current_period_iso_range())->when(!$this->appears_to_be_for_real_time_analytics(), function (Builder $query) {
+            $query->whereBetween('sessions.created_at', $this->get_current_period_iso_range());
+        })->groupBy('sessions.device_type_id');
+        $form_submissions_subquery = Illuminate_Builder::new()->select('sessions.device_type_id')->selectRaw('COUNT(*) AS form_submissions')->tap(function (Builder $query) {
             foreach (Form::get_forms() as $form) {
-                $query->selectRaw("SUM(sessions.{$form->submissions_column()}) AS {$form->submissions_column()}");
+                $query->selectRaw('CAST(SUM(IF(form_id = ?, 1, 0)) AS SIGNED) AS ' . $form->submissions_column(), [$form->id()]);
             }
-        })->fromSub($session_statistics, 'sessions')->join($device_types_query->raw($device_types_table . ' AS device_types'), function (JoinClause $join) {
-            $join->on('sessions.device_type_id', '=', 'device_types.device_type_id');
-        })->when(!$this->appears_to_be_for_real_time_analytics(), function (Builder $query) {
+        })->from(Tables::form_submissions(), 'form_submissions')->join(Tables::views() . ' AS views', 'form_submissions.view_id', '=', 'views.id')->join(Tables::sessions() . ' AS sessions', 'views.session_id', '=', 'sessions.session_id')->tap(Query_Taps::tap_authored_content_check())->tap(Query_Taps::tap_related_to_examined_record($this->examiner_config))->whereBetween('views.viewed_at', $this->get_current_period_iso_range())->when(!$this->appears_to_be_for_real_time_analytics(), function (Builder $query) {
+            $query->whereBetween('sessions.created_at', $this->get_current_period_iso_range());
+        })->groupBy('sessions.device_type_id');
+        $session_duration_query = Illuminate_Builder::new()->select(['sessions.device_type_id'])->selectRaw('AVG(TIMESTAMPDIFF(SECOND, sessions.created_at, sessions.ended_at)) AS average_session_duration')->from(Tables::sessions(), 'sessions')->whereIn('sessions.session_id', function ($subquery) {
+            $subquery->select('views.session_id')->from(Tables::views(), 'views')->join(Tables::sessions() . ' AS sessions', 'views.session_id', '=', 'sessions.session_id')->tap(Query_Taps::tap_authored_content_check())->tap(Query_Taps::tap_related_to_examined_record($this->examiner_config))->whereBetween('views.viewed_at', $this->get_current_period_iso_range())->when(!$this->appears_to_be_for_real_time_analytics(), function (Builder $query) {
+                $query->whereBetween('sessions.created_at', $this->get_current_period_iso_range());
+            });
+        })->groupBy('sessions.device_type_id');
+        $device_types_query = Illuminate_Builder::new()->select('device_types.device_type_id', 'device_types.device_type')->selectRaw('COUNT(DISTINCT views.id) AS views')->selectRaw('COUNT(DISTINCT sessions.visitor_id) AS visitors')->selectRaw('COUNT(DISTINCT sessions.session_id) AS sessions')->selectRaw('MAX(session_durations.average_session_duration) AS average_session_duration')->selectRaw('COUNT(DISTINCT IF(sessions.final_view_id IS NULL, sessions.session_id, NULL)) AS bounces')->from(Tables::sessions() . ' AS sessions')->leftJoin(Tables::views() . ' AS views', 'sessions.session_id', '=', 'views.session_id')->leftJoin(Tables::device_types() . ' AS device_types', 'sessions.device_type_id', '=', 'device_types.device_type_id')->leftJoinSub($session_duration_query, 'session_durations', 'sessions.device_type_id', '=', 'session_durations.device_type_id')->tap(Query_Taps::tap_authored_content_check())->tap(Query_Taps::tap_related_to_examined_record($this->examiner_config))->whereNotNull('sessions.device_type_id')->groupBy('sessions.device_type_id')->having('views', '>', 0)->tap(fn(Builder $query) => $this->apply_record_filters($query))->whereBetween('views.viewed_at', $this->get_current_period_iso_range())->when(!$this->appears_to_be_for_real_time_analytics(), function (Builder $query) {
             $query->whereBetween('sessions.created_at', $this->get_current_period_iso_range());
         })->when(\is_int($this->solo_record_id), function (Builder $query) {
             $query->where('device_types.device_type_id', '=', $this->solo_record_id);
-        })->groupBy('device_types.device_type_id')->having('views', '>', 0)->tap(fn(Builder $query) => $this->apply_record_filters($query))->when($this->can_order_and_limit_at_record_level(), function (Builder $query) {
+        })->when($this->can_order_and_limit_at_record_level(), function (Builder $query) {
             $query->tap(fn(Builder $query) => $this->apply_order_and_limit($query, $this->sort_configuration->column()));
         });
-        $previous_period_query = Illuminate_Builder::new();
-        $previous_period_query->select(['sessions.device_type_id'])->selectRaw('SUM(sessions.total_views) AS previous_period_views')->selectRaw('COUNT(DISTINCT sessions.visitor_id) AS previous_period_visitors')->from($sessions_table, 'sessions')->tap(Query_Taps::tap_related_to_examined_record_for_previous_period($this->examiner_config, ['sessions']))->whereBetween('sessions.created_at', $this->get_previous_period_iso_range())->groupBy('sessions.device_type_id');
-        $outer_query = Illuminate_Builder::new();
-        $outer_query->selectRaw('device_types.*')->selectRaw('IF(sessions = 0, 0, views / sessions) AS views_per_session')->selectRaw('IFNULL((views - previous_period_views) / previous_period_views * 100, 0) AS views_growth')->selectRaw('IFNULL((visitors - previous_period_visitors) / previous_period_visitors * 100, 0) AS visitors_growth')->selectRaw('IFNULL(bounces / sessions * 100, 0) AS bounce_rate')->selectRaw('ROUND(CAST(wc_gross_sales - wc_refunded_amount AS SIGNED)) AS wc_net_sales')->selectRaw('IF(visitors = 0, 0, (wc_orders / visitors) * 100) AS wc_conversion_rate')->selectRaw('IF(visitors = 0, 0, (wc_gross_sales - wc_refunded_amount) / visitors) AS wc_earnings_per_visitor')->selectRaw('IF(wc_orders = 0, 0, ROUND(CAST(wc_gross_sales / wc_orders AS SIGNED))) AS wc_average_order_volume')->selectRaw('IF(visitors = 0, 0, (form_submissions / visitors) * 100) AS form_conversion_rate')->tap(function (Builder $query) {
+        $previous_period_query = Illuminate_Builder::new()->select('sessions.device_type_id')->selectRaw('COUNT(DISTINCT views.id) AS previous_period_views')->selectRaw('COUNT(DISTINCT sessions.visitor_id) AS previous_period_visitors')->from(Tables::views(), 'views')->leftJoin(Tables::sessions() . ' AS sessions', 'views.session_id', '=', 'sessions.session_id')->tap(Query_Taps::tap_related_to_examined_record_for_previous_period($this->examiner_config, ['views', 'sessions']))->whereNotNull('sessions.device_type_id')->whereBetween('sessions.created_at', $this->get_previous_period_iso_range())->groupBy('sessions.device_type_id');
+        $outer_query = Illuminate_Builder::new()->selectRaw('device_types.*')->selectRaw('IF(sessions = 0, 0, views / sessions) AS views_per_session')->selectRaw('IFNULL((views - previous_period_views) / previous_period_views * 100, 0) AS views_growth')->selectRaw('IFNULL((visitors - previous_period_visitors) / previous_period_visitors * 100, 0) AS visitors_growth')->selectRaw('IFNULL(bounces / sessions * 100, 0) AS bounce_rate')->selectRaw('IFNULL(click_stats.clicks, 0) AS clicks')->selectRaw('IFNULL(order_stats.orders, 0) AS wc_orders')->selectRaw('IFNULL(order_stats.gross_sales, 0) AS wc_gross_sales')->selectRaw('IFNULL(order_stats.total_refunded, 0) AS wc_refunded_amount')->selectRaw('IFNULL(order_stats.total_refunds, 0) AS wc_refunds')->selectRaw('ROUND(CAST(IFNULL(order_stats.gross_sales, 0) - IFNULL(order_stats.total_refunded, 0) AS SIGNED)) AS wc_net_sales')->selectRaw('IF(visitors = 0, 0, (IFNULL(order_stats.orders, 0) / visitors) * 100) AS wc_conversion_rate')->selectRaw('IF(visitors = 0, 0, (IFNULL(order_stats.gross_sales, 0) - IFNULL(order_stats.total_refunded, 0)) / visitors) AS wc_earnings_per_visitor')->selectRaw('IF(IFNULL(order_stats.orders, 0) = 0, 0, ROUND(CAST(IFNULL(order_stats.gross_sales, 0) / order_stats.orders AS SIGNED))) AS wc_average_order_volume')->selectRaw('IFNULL(form_submission_stats.form_submissions, 0) AS form_submissions')->selectRaw('IF(visitors = 0, 0, (IFNULL(form_submission_stats.form_submissions, 0) / visitors) * 100) AS form_conversion_rate')->tap(function (Builder $query) {
             foreach (Form::get_forms() as $form) {
-                $query->selectRaw("IF(visitors = 0, 0, ({$form->submissions_column()} / visitors) * 100) AS {$form->conversion_rate_column()}");
+                $column = $form->submissions_column();
+                $query->selectRaw("IFNULL(form_submission_stats.{$column}, 0) AS {$column}");
+                $query->selectRaw("IF(visitors = 0, 0, (IFNULL(form_submission_stats.{$column}, 0) / visitors) * 100) AS {$form->conversion_rate_column()}");
             }
-        })->fromSub($device_types_query, 'device_types')->leftJoinSub($previous_period_query, 'previous_period_stats', 'device_types.device_type_id', '=', 'previous_period_stats.device_type_id')->tap(fn(Builder $query) => $this->apply_aggregate_filters($query))->when(!$this->can_order_and_limit_at_record_level() && !($this->using_logical_or_operator() && $this->filtering_by_mixed_columns()), function (Builder $query) {
+        })->fromSub($device_types_query, 'device_types')->leftJoinSub($clicks_subquery, 'click_stats', 'click_stats.device_type_id', '=', 'device_types.device_type_id')->leftJoinSub($orders_subquery, 'order_stats', 'order_stats.device_type_id', '=', 'device_types.device_type_id')->leftJoinSub($form_submissions_subquery, 'form_submission_stats', 'form_submission_stats.device_type_id', '=', 'device_types.device_type_id')->leftJoinSub($previous_period_query, 'previous_period_stats', 'previous_period_stats.device_type_id', '=', 'device_types.device_type_id')->tap(fn(Builder $query) => $this->apply_aggregate_filters($query))->when(!$this->can_order_and_limit_at_record_level() && !($this->using_logical_or_operator() && $this->filtering_by_mixed_columns()), function (Builder $query) {
             $query->tap(fn(Builder $query) => $this->apply_order_and_limit($query, $this->sort_configuration->column()));
         });
         if ($this->using_logical_or_operator() && $this->filtering_by_mixed_columns()) {

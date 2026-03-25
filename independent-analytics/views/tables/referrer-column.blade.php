@@ -9,7 +9,7 @@
 <?php endif; ?>
 
 <?php if($row->has_link()): ?>
-    <a href="<?php echo esc_url($row->referrer()); ?>" class="external-link" target="_blank"><?php echo esc_html($row->referrer()); ?><span class="dashicons dashicons-external"></span></a>
+    <a href="<?php echo esc_url($row->referrer_url()); ?>" class="external-link" target="_blank"><?php echo esc_html($row->referrer()); ?><span class="dashicons dashicons-external"></span></a>
 <?php else: ?>
     <span><?php echo esc_html($row->referrer()); ?></span>
 <?php endif; ?>

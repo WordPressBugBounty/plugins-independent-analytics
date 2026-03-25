@@ -4,7 +4,7 @@
  * Plugin Name:       Independent Analytics
  * Plugin URI:        https://independentwp.com/
  * Description:       User-friendly website analytics built for WordPress
- * Version:           2.14.4
+ * Version:           2.14.6
  * Requires at least: 5.9
  * Tested up to:      6.9
  * Requires PHP:      7.4
@@ -34,22 +34,23 @@ if ( function_exists( 'IAWP_FS' ) ) {
                 // Include Freemius SDK.
                 require_once dirname( __FILE__ ) . '/freemius/start.php';
                 $ia_fs = fs_dynamic_init( [
-                    'id'             => '9944',
-                    'slug'           => 'independent-analytics',
-                    'premium_slug'   => 'independent-analytics-pro',
-                    'type'           => 'plugin',
-                    'public_key'     => 'pk_c228acaa28759b55d58766b1076d4',
-                    'is_premium'     => false,
-                    'premium_suffix' => 'Pro',
-                    'has_addons'     => false,
-                    'has_paid_plans' => true,
-                    'menu'           => [
+                    'id'               => '9944',
+                    'slug'             => 'independent-analytics',
+                    'premium_slug'     => 'independent-analytics-pro',
+                    'type'             => 'plugin',
+                    'public_key'       => 'pk_c228acaa28759b55d58766b1076d4',
+                    'is_premium'       => false,
+                    'premium_suffix'   => 'Pro',
+                    'has_addons'       => false,
+                    'has_paid_plans'   => true,
+                    'menu'             => [
                         'slug'    => 'independent-analytics',
                         'contact' => false,
                         'support' => false,
                         'pricing' => false,
                     ],
-                    'is_live'        => true,
+                    'is_live'          => true,
+                    'is_org_compliant' => true,
                 ] );
             }
             return $ia_fs;

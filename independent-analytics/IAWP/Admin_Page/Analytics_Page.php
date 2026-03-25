@@ -308,7 +308,7 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         }
         ?>
         </div><?php 
-        if (\get_option('iawp_show_gsg') === '1' && !\get_option('iawp_need_clear_cache') && !$show_logged_in_tracking_notice && !$plugin_conflict_detector->has_conflict() && (Env::get_tab() !== 'clicks' || Env::get_tab() === 'clicks' && \get_option('iawp_clicks_sync_notice'))) {
+        if (\get_option('iawp_show_gsg') === '1' && !\get_option('iawp_need_clear_cache') && !$show_logged_in_tracking_notice && !$plugin_conflict_detector->has_conflict() && (Env::get_tab() !== 'clicks' || Env::get_tab() === 'clicks' && \get_option('iawp_clicks_sync_notice')) && Capability_Manager::show_branded_ui()) {
             echo \IAWPSCOPED\iawp_blade()->run('notices.getting-started');
         }
     }

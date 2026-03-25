@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 2.14.4
+Stable tag: 2.14.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -183,6 +183,15 @@ Yes, Independent Analytics will run smoothly and won't create any errors even if
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.14.6 - March 16th, 2026 =
+
+* **Fix:** Fixed an error when viewing analytics with the "View analytics for authored content" permission
+
+= 2.14.5 - March 16th, 2026 =
+
+* **Fix:** Stopped showing Getting Started popup for white-labeled users
+* **Fix:** Fixed external referrer links in Referrers report
 
 = 2.14.4 - February 17th, 2026 =
 
