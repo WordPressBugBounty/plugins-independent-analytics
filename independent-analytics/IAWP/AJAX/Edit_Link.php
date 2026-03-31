@@ -19,6 +19,10 @@ class Edit_Link extends \IAWP\AJAX\AJAX
     {
         return \true;
     }
+    protected function requires_write_access() : bool
+    {
+        return \true;
+    }
     protected function action_callback() : void
     {
         if (!Capability_Manager::can_edit()) {
@@ -63,6 +67,6 @@ class Edit_Link extends \IAWP\AJAX\AJAX
         }
         // Fetch a fresh copy
         $link_rule = Click_Tracking\Link_Rule::find($link_id);
-        \wp_send_json_success(['shouldShowCacheMessage' => \get_option('iawp_click_tracking_cache_cleared') === \false, 'html' => \IAWPSCOPED\iawp_blade()->run('click-tracking.link', ['link' => $link_rule->to_array(), 'types' => Click_Tracking::types(), 'extensions' => Click_Tracking::extensions(), 'protocols' => Click_Tracking::protocols()])]);
+        \wp_send_json_success(['shouldShowCacheMessage' => \get_option('iawp_click_tracking_cache_cleared') === \false, 'html' => \IAWPSCOPED\iawp_render('click-tracking.link', ['link' => $link_rule->to_array(), 'types' => Click_Tracking::types(), 'extensions' => Click_Tracking::extensions(), 'protocols' => Click_Tracking::protocols()])]);
     }
 }

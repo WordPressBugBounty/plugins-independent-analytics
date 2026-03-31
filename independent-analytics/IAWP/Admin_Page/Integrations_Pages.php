@@ -11,7 +11,7 @@ class Integrations_Pages extends \IAWP\Admin_Page\Admin_Page
     {
         $integrations = new Integrations();
         if (Capability_Manager::show_branded_ui()) {
-            echo \IAWPSCOPED\iawp_blade()->run('integrations.integrations', ['integrations' => $integrations]);
+            echo \IAWPSCOPED\iawp_render('integrations.integrations', ['integrations' => $integrations]);
         } else {
             echo '<p class="permission-blocked">' . \esc_html__('You do not have permission to view this page.', 'independent-analytics') . '</p>';
         }

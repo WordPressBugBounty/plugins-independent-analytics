@@ -5,7 +5,7 @@
 
 <div id="quick-stats" data-controller="quick-stats" class="<?php echo esc_attr($quick_stats_html_class); ?>"><?php 
     if (!$is_dashboard_widget) {
-        echo iawp_blade()->run('plugin-group-options', [
+        echo iawp_render('plugin-group-options', [
             'option_type'   => 'quick_stats',
             'option_name'   => __('Toggle Stats', 'independent-analytics'),
             'option_icon'   => 'visibility',
@@ -23,7 +23,7 @@
             if(!$statistic->is_group_plugin_enabled()) {
                 continue;
             }
-            echo iawp_blade()->run('quick-stat', [
+            echo iawp_render('quick-stat', [
                 'id'     => $statistic->id(),
                 'name'   => $statistic->name(),
                 'formatted_value' => $statistic->formatted_value(),

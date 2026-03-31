@@ -38,12 +38,11 @@ abstract class AJAX
      */
     public function intercept_ajax() : void
     {
-        // Todo - Should this be can_edit() instead?
+        \check_ajax_referer($this->action_name(), 'nonce');
         $is_not_migrating = $this->allowed_during_migrations() || !Migrations\Migrations::is_migrating();
         $valid_fields = !$this->missing_fields();
-        $can_view = Capability_Manager::can_view();
-        \check_ajax_referer($this->action_name(), 'nonce');
-        if ($is_not_migrating && $valid_fields && $can_view) {
+        $has_permission = $this->requires_write_access() ? Capability_Manager::can_edit() : Capability_Manager::can_view();
+        if ($is_not_migrating && $valid_fields && $has_permission) {
             Server::increase_max_execution_time();
             $this->action_callback();
         } else {
@@ -78,6 +77,10 @@ abstract class AJAX
         return \false;
     }
     protected function requires_pro() : bool
+    {
+        return \false;
+    }
+    protected function requires_write_access() : bool
     {
         return \false;
     }

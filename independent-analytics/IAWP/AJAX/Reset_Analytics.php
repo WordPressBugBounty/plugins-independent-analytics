@@ -11,6 +11,10 @@ class Reset_Analytics extends \IAWP\AJAX\AJAX
     {
         return 'iawp_reset_analytics';
     }
+    protected function requires_write_access() : bool
+    {
+        return \true;
+    }
     protected function action_callback() : void
     {
         if (!Capability_Manager::can_edit()) {

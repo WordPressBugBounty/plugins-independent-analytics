@@ -65,7 +65,7 @@
         endif;
 
         if (!$render_skeleton) {
-            echo iawp_blade()->run('tables.rows', [
+            echo iawp_render('tables.rows', [
                 'table'                => $table,
                 'all_columns'          => $all_columns,
                 'visible_column_count' => $visible_column_count,

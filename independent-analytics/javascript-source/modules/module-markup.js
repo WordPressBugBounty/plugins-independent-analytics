@@ -40,11 +40,12 @@ function fetchMarkup() {
     }
 
     jQuery.post(ajaxurl, data, (response) => {
-        if(!Array.isArray(response.data)) {
+        if(!Array.isArray(response.data.modules)) {
             return
         }
 
-        response.data.forEach(module => {
+        document.getElementById('iawp-modules-refreshed-at').innerText = response.data.modulesRefreshedAt
+        response.data.modules.forEach(module => {
             if(module.hasDataset) {
                 dispatchEvent(module.id, module.moduleHtml)
                 requestedModules.delete(module.id)

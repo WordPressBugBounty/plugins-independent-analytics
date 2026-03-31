@@ -26,6 +26,6 @@ class Refresh_Modules extends \IAWP\AJAX\AJAX
         $modules = \array_map(function (Module $module) {
             return ['id' => $module->id(), 'html' => $module->get_module_html()];
         }, Module::get_saved_modules());
-        \wp_send_json_success(['modulesRefreshedAt' => Module::last_refreshed_at(), 'modules' => $modules]);
+        \wp_send_json_success(['modules' => $modules, 'modulesRefreshedAt' => Module::last_refreshed_at()]);
     }
 }

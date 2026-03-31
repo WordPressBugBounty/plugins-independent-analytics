@@ -38,7 +38,7 @@
                 <div id="sortable-tracked-links-list">
                     <?php
                     foreach($active_links as $link) {
-                        echo iawp_blade()->run('click-tracking.link', [
+                        echo iawp_render('click-tracking.link', [
                             'link' => $link,
                             'types' => $types,
                             'extensions' => $extensions,
@@ -49,7 +49,7 @@
             </div>
             <p class="tracked-links-empty-message <?php echo count($active_links) === 0 ? "show" : ""; ?>"><?php esc_html_e('No link patterns found', 'independent-analytics'); ?></p>
             <div id="blueprint-link" class="blueprint-link"><?php 
-                echo iawp_blade()->run('click-tracking.link', [
+                echo iawp_render('click-tracking.link', [
                     'link' => [
                         'id' => null,
                         'name' => '',
@@ -81,7 +81,7 @@
                 </div>
                 <div id="archived-links-list" class="archived-links-list"><?php
                     foreach($inactive_links as $link) {
-                        echo iawp_blade()->run('click-tracking.link', [
+                        echo iawp_render('click-tracking.link', [
                             'link' => $link,
                             'types' => $types,
                             'extensions' => $extensions,

@@ -17,6 +17,10 @@ class Archive_Link extends \IAWP\AJAX\AJAX
     {
         return \true;
     }
+    protected function requires_write_access() : bool
+    {
+        return \true;
+    }
     protected function action_callback() : void
     {
         if (!Capability_Manager::can_edit()) {
@@ -32,7 +36,7 @@ class Archive_Link extends \IAWP\AJAX\AJAX
         Illuminate_Builder::new()->from(Tables::link_rules())->where('is_active', '=', $link_rule->is_active() ? 1 : 0)->increment('position');
         Illuminate_Builder::new()->from(Tables::link_rules())->where('link_rule_id', '=', $link_rule->id())->update(['position' => 0]);
         // Send response
-        $response = \IAWPSCOPED\iawp_blade()->run('click-tracking.link', ['link' => $link_rule->to_array(), 'types' => Click_Tracking::types(), 'extensions' => Click_Tracking::extensions(), 'protocols' => Click_Tracking::protocols()]);
+        $response = \IAWPSCOPED\iawp_render('click-tracking.link', ['link' => $link_rule->to_array(), 'types' => Click_Tracking::types(), 'extensions' => Click_Tracking::extensions(), 'protocols' => Click_Tracking::protocols()]);
         echo \wp_json_encode($response);
     }
 }

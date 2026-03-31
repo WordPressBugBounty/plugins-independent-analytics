@@ -40,10 +40,10 @@ class Interrupt
         ?>
         <div id="iawp-parent" class="iawp-parent">
             <?php 
-        echo \IAWPSCOPED\iawp_blade()->run('partials.interrupt-header');
+        echo \IAWPSCOPED\iawp_render('partials.interrupt-header');
         ?>
             <?php 
-        echo \IAWPSCOPED\iawp_blade()->run($this->template, $options);
+        echo \IAWPSCOPED\iawp_render($this->template, $options);
         ?>
         </div>
         <?php 

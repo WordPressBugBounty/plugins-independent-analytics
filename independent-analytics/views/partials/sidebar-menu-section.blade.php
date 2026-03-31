@@ -9,14 +9,14 @@
 
 <div class="menu-section <?php echo esc_attr($report_type); ?> <?php echo $env->is_currently_viewed($report_type) ? 'current' : ''; ?> <?php echo $reports == null ? 'no-sub-items' : ''; ?> <?php echo $upgrade ? 'upgrade' : ''; ?> <?php echo $external ? 'external' : ''; ?>">
     <span class="collapsed-icon" data-testid="collapsed-icon-<?php echo esc_attr($report_type); ?>"><?php
-        echo iawp_blade()->run('icons.' . $report_type); ?>
+        echo iawp_render('icons.' . $report_type); ?>
     </span>
     <div class="report-inner">
         <h3 class="report-name <?php echo (!$upgrade && $env->is_favorite($report_type)) ? 'favorite' : '' ; ?>"
             data-report-type="<?php echo esc_attr($report_type); ?>">
             <span class="icon-container">
                 <span class="report-icon"><?php
-                    echo iawp_blade()->run('icons.' . $report_type); ?>
+                    echo iawp_render('icons.' . $report_type); ?>
                 </span>
             </span>
             <a href="<?php echo esc_url($url) ?>"

@@ -27,6 +27,10 @@ class Reorder_Modules extends \IAWP\AJAX\AJAX
     /**
      * @inheritDoc
      */
+    protected function requires_write_access() : bool
+    {
+        return \true;
+    }
     protected function action_callback() : void
     {
         $module_ids = $this->get_array_field('module_ids');

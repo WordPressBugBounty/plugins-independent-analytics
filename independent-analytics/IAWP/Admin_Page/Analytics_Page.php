@@ -83,7 +83,7 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         $options = Dashboard_Options::getInstance();
         $table = new Table_Journeys();
         $sort_configuration = $table->sanitize_sort_parameters('created_at', 'DESC');
-        $header = \IAWPSCOPED\iawp_blade()->run('partials.report-header', ['report' => Report_Finder::new()->fetch_current_report(), 'can_edit' => Capability_Manager::can_edit()]);
+        $header = \IAWPSCOPED\iawp_render('partials.report-header', ['report' => Report_Finder::new()->fetch_current_report(), 'can_edit' => Capability_Manager::can_edit()]);
         ?>
         <div data-controller="report"
              data-report-is-examiner-value="<?php 
@@ -160,7 +160,7 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
     {
         $options = Dashboard_Options::getInstance();
         $sort_configuration = $table->sanitize_sort_parameters($options->sort_column(), $options->sort_direction());
-        $header = \IAWPSCOPED\iawp_blade()->run('partials.report-header', ['report' => Report_Finder::new()->fetch_current_report(), 'can_edit' => Capability_Manager::can_edit()]);
+        $header = \IAWPSCOPED\iawp_render('partials.report-header', ['report' => Report_Finder::new()->fetch_current_report(), 'can_edit' => Capability_Manager::can_edit()]);
         $examiner_tabs = '';
         if ($examiner_model) {
             $header = Header::html($table, $examiner_model);
@@ -168,7 +168,7 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
                 return $table['table_type'] !== $examiner_model->table_type();
             })->values()->all();
             $current = Arr::first($available_tabs);
-            $examiner_tabs = \IAWPSCOPED\iawp_blade()->run('examiner.table-tabs', ['tables' => $available_tabs, 'active' => $current['table_type']]);
+            $examiner_tabs = \IAWPSCOPED\iawp_render('examiner.table-tabs', ['tables' => $available_tabs, 'active' => $current['table_type']]);
             $table_class = Env::get_table($current['table_type']);
             $table = new $table_class();
         }
@@ -256,7 +256,7 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
                     <div role="dialog" aria-modal="true" class="mm__container examiner examiner--loading">
                         <div data-examiner-target="content" class="examiner-content"></div>
                         <?php 
-            echo \IAWPSCOPED\iawp_blade()->run('examiner.skeleton');
+            echo \IAWPSCOPED\iawp_render('examiner.skeleton');
             ?>
                     </div>
                 </div>
@@ -280,36 +280,36 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         ?><div class="iawp-notices"><?php 
         if (Capability_Manager::can_edit()) {
             if ($plugin_conflict_detector->has_conflict()) {
-                echo \IAWPSCOPED\iawp_blade()->run('notices.notice', ['notice_text' => $plugin_conflict_detector->get_error(), 'button_text' => \false, 'id' => 'plugin-conflict', 'notice' => 'iawp-error', 'plugin' => $plugin_conflict_detector->get_plugin(), 'url' => 'https://independentwp.com/knowledgebase/tracking/secure-rest-api/']);
+                echo \IAWPSCOPED\iawp_render('notices.notice', ['notice_text' => $plugin_conflict_detector->get_error(), 'button_text' => \false, 'id' => 'plugin-conflict', 'notice' => 'iawp-error', 'plugin' => $plugin_conflict_detector->get_plugin(), 'url' => 'https://independentwp.com/knowledgebase/tracking/secure-rest-api/']);
             } elseif (\IAWPSCOPED\iawp_is_pro() && \is_plugin_active('better-wp-security/better-wp-security.php')) {
                 $settings = \get_option('itsec-storage');
                 if (\array_key_exists('system-tweaks', $settings)) {
                     if (\array_key_exists('plugins_php', $settings['system-tweaks'])) {
                         if ($settings['system-tweaks']['plugins_php']) {
-                            echo \IAWPSCOPED\iawp_blade()->run('notices.notice', ['notice_text' => \__('The "Solid Security" plugin is disabling PHP execution in the plugins folder, and this is preventing click tracking from working. Please visit the Security > Settings page, click on the Advanced section, click on System Tweaks Settings, uncheck the "Disable PHP Plugins" option, and then save.', 'independent-analytics'), 'button_text' => \false, 'id' => 'plugin-conflict', 'notice' => 'iawp-error', 'url' => 'https://independentwp.com/knowledgebase/click-tracking/allow-php-execution-plugins-folder/']);
+                            echo \IAWPSCOPED\iawp_render('notices.notice', ['notice_text' => \__('The "Solid Security" plugin is disabling PHP execution in the plugins folder, and this is preventing click tracking from working. Please visit the Security > Settings page, click on the Advanced section, click on System Tweaks Settings, uncheck the "Disable PHP Plugins" option, and then save.', 'independent-analytics'), 'button_text' => \false, 'id' => 'plugin-conflict', 'notice' => 'iawp-error', 'url' => 'https://independentwp.com/knowledgebase/click-tracking/allow-php-execution-plugins-folder/']);
                         }
                     }
                 }
             }
             if (\get_option('iawp_need_clear_cache')) {
-                echo \IAWPSCOPED\iawp_blade()->run('notices.notice', ['notice_text' => \__('Please clear your cache to ensure tracking works properly.', 'independent-analytics'), 'button_text' => \__('I\'ve cleared the cache', 'independent-analytics'), 'id' => 'iawp_need_clear_cache', 'notice' => 'iawp-warning', 'url' => 'https://independentwp.com/knowledgebase/common-questions/views-not-recording/']);
+                echo \IAWPSCOPED\iawp_render('notices.notice', ['notice_text' => \__('Please clear your cache to ensure tracking works properly.', 'independent-analytics'), 'button_text' => \__('I\'ve cleared the cache', 'independent-analytics'), 'id' => 'iawp_need_clear_cache', 'notice' => 'iawp-warning', 'url' => 'https://independentwp.com/knowledgebase/common-questions/views-not-recording/']);
             }
             if ($show_logged_in_tracking_notice) {
-                echo \IAWPSCOPED\iawp_blade()->run('notices.notice', ['notice_text' => '<strong>' . \sprintf(\_x('%s compatibility:', 'Variable is the name of a plugin', 'independent-analytics'), $requires_logged_in_tracking) . '</strong> ' . \__('We recommend you enable tracking for logged-in visitors.', 'independent-analytics'), 'button_text' => \__('Dismiss', 'independent-analytics'), 'id' => 'enable-logged-in-tracking', 'notice' => 'iawp-warning', 'url' => 'https://independentwp.com/knowledgebase/tracking/how-to-track-logged-in-visitors/']);
+                echo \IAWPSCOPED\iawp_render('notices.notice', ['notice_text' => '<strong>' . \sprintf(\_x('%s compatibility:', 'Variable is the name of a plugin', 'independent-analytics'), $requires_logged_in_tracking) . '</strong> ' . \__('We recommend you enable tracking for logged-in visitors.', 'independent-analytics'), 'button_text' => \__('Dismiss', 'independent-analytics'), 'id' => 'enable-logged-in-tracking', 'notice' => 'iawp-warning', 'url' => 'https://independentwp.com/knowledgebase/tracking/how-to-track-logged-in-visitors/']);
             }
             if (\IAWPSCOPED\iawp_db_version() > 0 && !Database::has_correct_database_privileges()) {
-                echo \IAWPSCOPED\iawp_blade()->run('notices.notice', ['notice_text' => \__('Your site is missing the following critical database permissions:', 'independent-analytics') . ' ' . \implode(', ', Database::missing_database_privileges()) . '. ' . \__('There is no issue at this time, but you will need to enable the missing permissions before updating the plugin to a newer version to ensure an error is avoided. Please click this link to read our tutorial:', 'independent-analytics'), 'button_text' => \false, 'id' => 'missing-permissions', 'notice' => 'iawp-error', 'url' => 'https://independentwp.com/knowledgebase/common-questions/missing-database-permissions/']);
+                echo \IAWPSCOPED\iawp_render('notices.notice', ['notice_text' => \__('Your site is missing the following critical database permissions:', 'independent-analytics') . ' ' . \implode(', ', Database::missing_database_privileges()) . '. ' . \__('There is no issue at this time, but you will need to enable the missing permissions before updating the plugin to a newer version to ensure an error is avoided. Please click this link to read our tutorial:', 'independent-analytics'), 'button_text' => \false, 'id' => 'missing-permissions', 'notice' => 'iawp-error', 'url' => 'https://independentwp.com/knowledgebase/common-questions/missing-database-permissions/']);
             }
             if (Env::get_tab() === 'clicks') {
                 if (!\get_option('iawp_clicks_sync_notice')) {
-                    echo \IAWPSCOPED\iawp_blade()->run('notices.notice', ['notice_text' => \__('Click data syncs every 60 seconds. Please allow for this delay when testing clicks on new links.', 'independent-analytics'), 'button_text' => \__('Dismiss', 'independent-analytics'), 'id' => 'iawp_clicks_sync_notice', 'notice' => 'iawp-warning', 'url' => 'https://independentwp.com/knowledgebase/click-tracking/click-tracking-update-process/']);
+                    echo \IAWPSCOPED\iawp_render('notices.notice', ['notice_text' => \__('Click data syncs every 60 seconds. Please allow for this delay when testing clicks on new links.', 'independent-analytics'), 'button_text' => \__('Dismiss', 'independent-analytics'), 'id' => 'iawp_clicks_sync_notice', 'notice' => 'iawp-warning', 'url' => 'https://independentwp.com/knowledgebase/click-tracking/click-tracking-update-process/']);
                 }
             }
         }
         ?>
         </div><?php 
         if (\get_option('iawp_show_gsg') === '1' && !\get_option('iawp_need_clear_cache') && !$show_logged_in_tracking_notice && !$plugin_conflict_detector->has_conflict() && (Env::get_tab() !== 'clicks' || Env::get_tab() === 'clicks' && \get_option('iawp_clicks_sync_notice')) && Capability_Manager::show_branded_ui()) {
-            echo \IAWPSCOPED\iawp_blade()->run('notices.getting-started');
+            echo \IAWPSCOPED\iawp_render('notices.getting-started');
         }
     }
     private function examiner_tabs() : array

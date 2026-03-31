@@ -74,15 +74,15 @@ abstract class Table
     }
     public function column_picker_html() : string
     {
-        return \IAWPSCOPED\iawp_blade()->run('plugin-group-options', ['option_type' => 'columns', 'option_name' => \__('Toggle Columns', 'independent-analytics'), 'option_icon' => 'columns', 'plugin_groups' => Plugin_Group::get_plugin_groups(), 'options' => $this->get_columns(\true)]);
+        return \IAWPSCOPED\iawp_render('plugin-group-options', ['option_type' => 'columns', 'option_name' => \__('Toggle Columns', 'independent-analytics'), 'option_icon' => 'columns', 'plugin_groups' => Plugin_Group::get_plugin_groups(), 'options' => $this->get_columns(\true)]);
     }
     public function get_table_toolbar_markup()
     {
-        return \IAWPSCOPED\iawp_blade()->run('tables.table-toolbar', ['plugin_groups' => Plugin_Group::get_plugin_groups(), 'columns' => $this->get_columns(\true), 'groups' => $this->groups(), 'current_group' => $this->group()]);
+        return \IAWPSCOPED\iawp_render('tables.table-toolbar', ['plugin_groups' => Plugin_Group::get_plugin_groups(), 'columns' => $this->get_columns(\true), 'groups' => $this->groups(), 'current_group' => $this->group()]);
     }
     public function get_table_markup(string $sort_column, string $sort_direction)
     {
-        return \IAWPSCOPED\iawp_blade()->run('tables.table', ['table' => $this, 'all_columns' => $this->get_columns(), 'visible_column_count' => $this->visible_column_count(), 'number_of_shown_rows' => 0, 'rows' => [], 'render_skeleton' => \true, 'page_size' => \IAWPSCOPED\iawp()->pagination_page_size(), 'sort_column' => $sort_column, 'sort_direction' => $sort_direction, 'has_campaigns' => Campaign_Builder::has_campaigns()]);
+        return \IAWPSCOPED\iawp_render('tables.table', ['table' => $this, 'all_columns' => $this->get_columns(), 'visible_column_count' => $this->visible_column_count(), 'number_of_shown_rows' => 0, 'rows' => [], 'render_skeleton' => \true, 'page_size' => \IAWPSCOPED\iawp()->pagination_page_size(), 'sort_column' => $sort_column, 'sort_direction' => $sort_direction, 'has_campaigns' => Campaign_Builder::has_campaigns()]);
     }
     public function set_statistics(Statistics $statistics)
     {
@@ -396,9 +396,9 @@ abstract class Table
     public function get_rendered_template(array $rows, bool $just_rows, string $sort_column, string $sort_direction)
     {
         if ($just_rows) {
-            return \IAWPSCOPED\iawp_blade()->run('tables.rows', ['table' => $this, 'all_columns' => $this->get_columns(), 'visible_column_count' => $this->visible_column_count(), 'number_of_shown_rows' => \count($rows), 'rows' => $rows, 'render_skeleton' => \false, 'page_size' => \IAWPSCOPED\iawp()->pagination_page_size(), 'sort_column' => $sort_column, 'sort_direction' => $sort_direction, 'has_campaigns' => Campaign_Builder::has_campaigns()]);
+            return \IAWPSCOPED\iawp_render('tables.rows', ['table' => $this, 'all_columns' => $this->get_columns(), 'visible_column_count' => $this->visible_column_count(), 'number_of_shown_rows' => \count($rows), 'rows' => $rows, 'render_skeleton' => \false, 'page_size' => \IAWPSCOPED\iawp()->pagination_page_size(), 'sort_column' => $sort_column, 'sort_direction' => $sort_direction, 'has_campaigns' => Campaign_Builder::has_campaigns()]);
         }
-        return \IAWPSCOPED\iawp_blade()->run('tables.table', ['table' => $this, 'all_columns' => $this->get_columns(), 'visible_column_count' => $this->visible_column_count(), 'number_of_shown_rows' => \count($rows), 'rows' => $rows, 'render_skeleton' => \false, 'page_size' => \IAWPSCOPED\iawp()->pagination_page_size(), 'sort_column' => $sort_column, 'sort_direction' => $sort_direction, 'has_campaigns' => Campaign_Builder::has_campaigns()]);
+        return \IAWPSCOPED\iawp_render('tables.table', ['table' => $this, 'all_columns' => $this->get_columns(), 'visible_column_count' => $this->visible_column_count(), 'number_of_shown_rows' => \count($rows), 'rows' => $rows, 'render_skeleton' => \false, 'page_size' => \IAWPSCOPED\iawp()->pagination_page_size(), 'sort_column' => $sort_column, 'sort_direction' => $sort_direction, 'has_campaigns' => Campaign_Builder::has_campaigns()]);
     }
     /**
      * @return Column[]
@@ -416,18 +416,18 @@ abstract class Table
         if (\is_null($this->visible_columns) || \count($this->visible_columns) === 0) {
             return $columns_for_group;
         }
-        if (!$this->is_new_group) {
+        if ($this->is_new_group) {
             return \array_map(function ($column) {
-                $column->set_visibility(\in_array($column->id(), $this->visible_columns));
+                if ($column->is_group_dependent()) {
+                    $column->set_visibility(\true);
+                } else {
+                    $column->set_visibility(\in_array($column->id(), $this->visible_columns));
+                }
                 return $column;
             }, $columns_for_group);
         }
         return \array_map(function ($column) {
-            if ($column->is_group_dependent()) {
-                $column->set_visibility(\true);
-            } elseif (!\in_array($column->id(), $this->visible_columns)) {
-                $column->set_visibility(\false);
-            }
+            $column->set_visibility(\in_array($column->id(), $this->visible_columns));
             return $column;
         }, $columns_for_group);
     }

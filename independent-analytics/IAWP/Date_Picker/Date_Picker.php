@@ -21,7 +21,7 @@ class Date_Picker
     }
     public function calendar_html()
     {
-        return \IAWPSCOPED\iawp_blade()->run('date-picker.date-picker', ['months' => $this->months(), 'start_date' => $this->start, 'end_date' => $this->end, 'relative_range' => $this->relative_range, 'date_ranges' => Relative_Date_Range::ranges(), 'timezone' => Timezone::site_timezone(), 'user_format' => Format::date(), 'first_data' => $this->first_data->format('Y-m-d'), 'site_offset_in_seconds' => Timezone::site_offset_in_seconds($this->start)]);
+        return \IAWPSCOPED\iawp_render('date-picker.date-picker', ['months' => $this->months(), 'start_date' => $this->start, 'end_date' => $this->end, 'relative_range' => $this->relative_range, 'date_ranges' => Relative_Date_Range::ranges(), 'timezone' => Timezone::site_timezone(), 'user_format' => Format::date(), 'first_data' => $this->first_data->format('Y-m-d'), 'site_offset_in_seconds' => Timezone::site_offset_in_seconds($this->start)]);
     }
     private function months() : array
     {

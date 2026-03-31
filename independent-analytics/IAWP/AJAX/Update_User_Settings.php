@@ -9,6 +9,10 @@ class Update_User_Settings extends \IAWP\AJAX\AJAX
     {
         return 'iawp_update_user_settings';
     }
+    protected function requires_write_access() : bool
+    {
+        return \true;
+    }
     protected function action_callback() : void
     {
         $is_sidebar_collapsed = $this->get_boolean_field('is_sidebar_collapsed');

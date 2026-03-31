@@ -289,7 +289,7 @@ abstract class Module
         if (\is_int($timestamp)) {
             $timestamp = \strval($timestamp);
         }
-        if (!\ctype_digit($timestamp)) {
+        if (!\is_string($timestamp) || !\ctype_digit($timestamp)) {
             return '';
         }
         try {
@@ -345,12 +345,7 @@ abstract class Module
     public static function get_saved_modules() : array
     {
         $options_storage = new WP_Options_Storage('iawp_overview_modules');
-        $records = Collection::make($options_storage->all())->filter(function (array $module) {
-            if (\array_key_exists('report', $module) && $module['report'] === 'journeys') {
-                return \false;
-            }
-            return \true;
-        })->values()->all();
+        $records = $options_storage->all();
         // No records? Add the default modules.
         if (\count($records) === 0 && \IAWPSCOPED\iawp()->get_option('iawp_default_modules_added', \false) === \false) {
             \update_option('iawp_modules_refreshed_at', \time(), \true);

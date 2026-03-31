@@ -23,6 +23,10 @@ class Create_Report extends \IAWP\AJAX\AJAX
     /**
      * @inheritDoc
      */
+    protected function requires_write_access() : bool
+    {
+        return \true;
+    }
     protected function action_callback() : void
     {
         $report = Report_Finder::new()->insert_report(['name' => 'New Report', 'type' => $this->get_field('type')]);

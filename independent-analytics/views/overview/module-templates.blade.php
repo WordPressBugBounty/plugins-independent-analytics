@@ -5,7 +5,7 @@
 
 {{-- Template to reshow the module picker --}}
 <template id="module-picker-template"><?php
-    echo iawp_blade()->run('overview.module-picker', [ 
+    echo iawp_render('overview.module-picker', [ 
         'show_list' => true,
         'template_modules' => $template_modules, 
     ]); ?>
@@ -15,7 +15,7 @@
 <?php
 foreach($template_modules as $module) : ?>
     <template id="<?php echo esc_attr($module->module_type()) . '-module-template'; ?>"><?php 
-        echo iawp_blade()->run('overview.module-editor', [
+        echo iawp_render('overview.module-editor', [
             'module' => $module
         ]); ?>
     </template><?php

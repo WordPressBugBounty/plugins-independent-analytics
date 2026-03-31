@@ -52,6 +52,9 @@ $utm_content        = $utm_content ?? null;
                                    value="<?php echo esc_attr($path) ?>"
                             />
                             <p class="description"><?php esc_html_e('Leave empty to use your homepage', 'independent-analytics'); ?></p>
+                            <?php if (isset($path_error)): ?>
+                                <p class="error"><?php echo esc_html($path_error) ?></p>
+                            <?php endif; ?>
                         </td>
                     </tr>
                     <tr>

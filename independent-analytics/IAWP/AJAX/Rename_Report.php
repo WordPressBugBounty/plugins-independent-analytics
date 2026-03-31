@@ -24,6 +24,10 @@ class Rename_Report extends \IAWP\AJAX\AJAX
     /**
      * @return void
      */
+    protected function requires_write_access() : bool
+    {
+        return \true;
+    }
     protected function action_callback() : void
     {
         $reports_table = Query::get_table_name(Query::REPORTS);

@@ -48,7 +48,7 @@
     </div>
     <div id="iawp-calendars" class="iawp-calendars"><?php
         foreach($months as $month) {
-            echo iawp_blade()->run('date-picker.calendar-month', [
+            echo iawp_render('date-picker.calendar-month', [
                 'month' => $month,
                 'start_date' => $start_date->format('Y-m-d'),
                 'end_date' => $end_date->format('Y-m-d'),

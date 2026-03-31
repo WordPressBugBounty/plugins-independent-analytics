@@ -30,13 +30,13 @@ class Get_Markup_For_Modules extends \IAWP\AJAX\AJAX
     protected function action_callback() : void
     {
         $ids = $this->get_array_field('ids');
-        $response = [];
+        $modules = [];
         foreach ($ids as $id) {
             $module = Module::get_saved_module($id);
             if ($module) {
-                $response[] = ['id' => $id, 'editorHtml' => $module->get_editor_html(), 'moduleHtml' => $module->get_module_html(), 'hasDataset' => $module->has_dataset()];
+                $modules[] = ['id' => $id, 'editorHtml' => $module->get_editor_html(), 'moduleHtml' => $module->get_module_html(), 'hasDataset' => $module->has_dataset()];
             }
         }
-        \wp_send_json_success($response);
+        \wp_send_json_success(['modules' => $modules, 'modulesRefreshedAt' => Module::last_refreshed_at()]);
     }
 }

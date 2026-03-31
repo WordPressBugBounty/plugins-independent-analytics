@@ -28,8 +28,8 @@
         </div>
     </div>
     <div class="loading-message-container">
-        <p class="loading-message"><?php echo iawp_blade()->run('icons.download'); ?> <?php esc_html_e('Fetching data', 'independent-analytics'); ?></p>
-        <p class="loading-message delay-1"><?php echo iawp_blade()->run('icons.preparing-report'); ?> <?php esc_html_e('Preparing report', 'independent-analytics'); ?></p>
-        <p class="loading-message delay-2"><?php echo iawp_blade()->run('icons.complete'); ?> <?php esc_html_e('Almost ready', 'independent-analytics'); ?></p>
+        <p class="loading-message"><?php echo iawp_render('icons.download'); ?> <?php esc_html_e('Fetching data', 'independent-analytics'); ?></p>
+        <p class="loading-message delay-1"><?php echo iawp_render('icons.preparing-report'); ?> <?php esc_html_e('Preparing report', 'independent-analytics'); ?></p>
+        <p class="loading-message delay-2"><?php echo iawp_render('icons.complete'); ?> <?php esc_html_e('Almost ready', 'independent-analytics'); ?></p>
     </div>
 </div>

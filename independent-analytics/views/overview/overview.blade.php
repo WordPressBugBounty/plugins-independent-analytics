@@ -33,8 +33,10 @@
     </div>
     <div id="toolbar" class="toolbar">
         <div class="overview-toolbar-buttons">
-            <button data-controller="add-module" data-action="add-module#addModule" class="iawp-button add-module-toolbar-button"><span class="dashicons dashicons-plus"></span> <?php esc_html_e('Add Module', 'independent-analytics'); ?></button>
-            <button data-controller="reorder-modules" data-action="reorder-modules#toggleReordering" class="iawp-button reorder-modules-button"><span class="dashicons dashicons-sort"></span> <?php esc_html_e('Reorder Modules', 'independent-analytics'); ?></button>
+            <?php if($env->can_write()): ?>
+                <button data-controller="add-module" data-action="add-module#addModule" class="iawp-button add-module-toolbar-button"><span class="dashicons dashicons-plus"></span> <?php esc_html_e('Add Module', 'independent-analytics'); ?></button>
+                <button data-controller="reorder-modules" data-action="reorder-modules#toggleReordering" class="iawp-button reorder-modules-button"><span class="dashicons dashicons-sort"></span> <?php esc_html_e('Reorder Modules', 'independent-analytics'); ?></button>
+            <?php endif; ?>
         </div>
         <div class="download-options-parent" data-controller="modal">
             <div class="modal-parent downloads">
@@ -62,11 +64,13 @@
         foreach($saved_modules as $module) {
             echo $module->get_module_html();
         }
-        echo iawp_blade()->run('overview.module-picker', [
-            'template_modules' => $template_modules
-        ]); ?>
+        if($env->can_write()) {
+            echo iawp_render('overview.module-picker', [
+                'template_modules' => $template_modules
+            ]);
+        } ?>
     </div><?php
-    echo iawp_blade()->run('overview.module-templates', [
+    echo iawp_render('overview.module-templates', [
         'template_modules' => $template_modules
     ]); ?>
 </div>

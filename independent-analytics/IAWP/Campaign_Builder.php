@@ -17,7 +17,7 @@ class Campaign_Builder
     }
     public function render_campaign_builder()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('campaign-builder', ['campaigns' => $this->get_previously_created_campaigns()]);
+        echo \IAWPSCOPED\iawp_render('campaign-builder', ['campaigns' => $this->get_previously_created_campaigns()]);
     }
     public function create_campaign($path, $source, $medium, $campaign, $term, $content)
     {
@@ -31,30 +31,34 @@ class Campaign_Builder
         $term = \strlen($term) > 0 ? $term : null;
         $content = \strlen($content) > 0 ? $content : null;
         $path = String_Util::str_starts_with($path, '/') ? \substr($path, 1) : $path;
+        $is_path_a_url = (new URL($path))->is_valid_url();
         $url = new URL(\trailingslashit(\site_url()) . $path);
-        if (!$url->is_valid_url()) {
+        if ($is_path_a_url) {
             $has_errors = \true;
-            $path_error = 'path invalid';
+            $path_error = \esc_html__('Path should not be a full URL', 'independent-analytics');
+        } elseif (!$url->is_valid_url()) {
+            $has_errors = \true;
+            $path_error = \esc_html__('Path invalid', 'independent-analytics');
         }
         if (\strlen($source) === 0) {
             $has_errors = \true;
-            $source_error = 'Source is required';
+            $source_error = \esc_html__('Source is required', 'independent-analytics');
         }
         if (\strlen($medium) === 0) {
             $has_errors = \true;
-            $medium_error = 'Medium is required';
+            $medium_error = \esc_html__('Medium is required', 'independent-analytics');
         }
         if (\strlen($campaign) === 0) {
             $has_errors = \true;
-            $campaign_error = 'Campaign is required';
+            $campaign_error = \esc_html__('Campaign is required', 'independent-analytics');
         }
         if ($has_errors) {
-            return \IAWPSCOPED\iawp_blade()->run('campaign-builder', ['path' => $path, 'path_error' => $path_error, 'utm_source' => $source, 'utm_source_error' => $source_error, 'utm_medium' => $medium, 'utm_medium_error' => $medium_error, 'utm_campaign' => $campaign, 'utm_campaign_error' => $campaign_error, 'utm_term' => $term, 'utm_content' => $content, 'campaigns' => $this->get_previously_created_campaigns()]);
+            return \IAWPSCOPED\iawp_render('campaign-builder', ['path' => $path, 'path_error' => $path_error, 'utm_source' => $source, 'utm_source_error' => $source_error, 'utm_medium' => $medium, 'utm_medium_error' => $medium_error, 'utm_campaign' => $campaign, 'utm_campaign_error' => $campaign_error, 'utm_term' => $term, 'utm_content' => $content, 'campaigns' => $this->get_previously_created_campaigns()]);
         }
         $campaign_urls_table = \IAWP\Query::get_table_name(\IAWP\Query::CAMPAIGN_URLS);
         $wpdb->insert($campaign_urls_table, ['path' => $path, 'utm_source' => $source, 'utm_medium' => $medium, 'utm_campaign' => $campaign, 'utm_term' => $term, 'utm_content' => $content, 'created_at' => CarbonImmutable::now('utc')->format('Y-m-d H:i:s')]);
         $url = $this->build_url($path, $source, $medium, $campaign, $term, $content);
-        return \IAWPSCOPED\iawp_blade()->run('campaign-builder', ['path' => $path, 'utm_source' => $source, 'utm_medium' => $medium, 'utm_campaign' => $campaign, 'utm_term' => $term, 'utm_content' => $content, 'new_campaign_url' => $url, 'campaigns' => $this->get_previously_created_campaigns()]);
+        return \IAWPSCOPED\iawp_render('campaign-builder', ['path' => $path, 'utm_source' => $source, 'utm_medium' => $medium, 'utm_campaign' => $campaign, 'utm_term' => $term, 'utm_content' => $content, 'new_campaign_url' => $url, 'campaigns' => $this->get_previously_created_campaigns()]);
     }
     public function build_url($path, $source, $medium, $campaign, $term = null, $content = null) : string
     {

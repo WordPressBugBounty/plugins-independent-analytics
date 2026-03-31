@@ -10,7 +10,7 @@ class Click_Tracking
     public static function render_menu()
     {
         $show_click_tracking_cache_message = \get_option('iawp_click_tracking_cache_cleared', \false) === \false;
-        echo \IAWPSCOPED\iawp_blade()->run('click-tracking.menu', ['active_links' => Link_Rule_Finder::active_link_rules()->map(function ($link_rule) {
+        echo \IAWPSCOPED\iawp_render('click-tracking.menu', ['active_links' => Link_Rule_Finder::active_link_rules()->map(function ($link_rule) {
             return $link_rule->to_array();
         })->all(), 'inactive_links' => Link_Rule_Finder::inactive_link_rules()->map(function ($link_rule) {
             return $link_rule->to_array();

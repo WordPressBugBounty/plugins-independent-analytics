@@ -1,12 +1,12 @@
 <div id="table-toolbar" class="table-toolbar"><?php 
-    echo iawp_blade()->run('plugin-group-options', [
+    echo iawp_render('plugin-group-options', [
         'option_type' => 'columns',
         'option_name' => __('Toggle Columns', 'independent-analytics'),
         'option_icon' => 'columns',
         'plugin_groups' => $plugin_groups,
         'options' => $columns,
     ]); 
-    echo iawp_blade()->run('tables.group-select', [
+    echo iawp_render('tables.group-select', [
         'groups' => $groups,
         'current_group' => $current_group,
     ]); ?>

@@ -7,7 +7,7 @@
      data-module-editor-reports-value="<?php echo esc_attr(json_encode($module->get_report_details())); ?>">
     <header class="module-header">
         <div class="module-icon"><?php 
-            echo iawp_blade()->run('icons.overview.' . $module->module_type()); ?>
+            echo iawp_render('icons.overview.' . $module->module_type()); ?>
         </div>
         <div class="module-title-container">
             <h2><?php echo esc_html($module->module_name()); ?></h2>

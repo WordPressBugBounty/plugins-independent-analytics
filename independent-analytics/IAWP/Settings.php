@@ -21,7 +21,7 @@ class Settings
     }
     public function render_settings()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('settings.index');
+        echo \IAWPSCOPED\iawp_render('settings.index');
         if (\IAWPSCOPED\iawp_is_pro()) {
             $default_colors = $this->email_report_colors();
             $saved = \IAWPSCOPED\iawp()->get_option('iawp_email_report_colors', $default_colors);
@@ -31,19 +31,19 @@ class Settings
                 $input_defaults[$i] = $saved[$i];
             }
             $interval = Interval_Factory::from_option();
-            echo \IAWPSCOPED\iawp_blade()->run('settings.email-reports', ['is_scheduled' => \wp_next_scheduled('iawp_send_email_report'), 'scheduled_date' => \IAWPSCOPED\iawp()->email_reports->next_email_at_for_humans(), 'is_paused' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_paused', '0') === '1', 'interval' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_interval', 'monthly'), 'time' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_time', 9), 'emails' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_email_addresses', []), 'from' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_from_address', \get_option('admin_email')), 'reply_to' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_reply_to_address', \get_option('admin_email')), 'footer_text' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_footer', $this->email_footer()), 'default_colors' => $default_colors, 'input_default' => $input_defaults, 'timestamp' => $interval->next_interval_start()->getTimestamp()]);
+            echo \IAWPSCOPED\iawp_render('settings.email-reports', ['is_scheduled' => \wp_next_scheduled('iawp_send_email_report'), 'scheduled_date' => \IAWPSCOPED\iawp()->email_reports->next_email_at_for_humans(), 'is_paused' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_paused', '0') === '1', 'interval' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_interval', 'monthly'), 'time' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_time', 9), 'emails' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_email_addresses', []), 'from' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_from_address', \get_option('admin_email')), 'reply_to' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_reply_to_address', \get_option('admin_email')), 'footer_text' => \IAWPSCOPED\iawp()->get_option('iawp_email_report_footer', $this->email_footer()), 'default_colors' => $default_colors, 'input_default' => $input_defaults, 'timestamp' => $interval->next_interval_start()->getTimestamp()]);
         }
         $ips = \IAWPSCOPED\iawp()->get_option('iawp_blocked_ips', []);
-        echo \IAWPSCOPED\iawp_blade()->run('settings.block-ips', ['current_ip' => Request::ip(), 'ip_is_blocked' => Request::is_ip_address_blocked(), 'ips' => $ips]);
-        echo \IAWPSCOPED\iawp_blade()->run('settings.block-by-role', ['roles' => \wp_roles()->roles, 'blocked' => \IAWPSCOPED\iawp()->get_option('iawp_blocked_roles', ['administrator']), 'ignore_cookie' => \IAWPSCOPED\iawp()->get_option('iawp_ignore_via_cookie', \false)]);
-        echo \IAWPSCOPED\iawp_blade()->run('settings.capabilities', ['editable_roles' => $this->get_editable_roles(), 'capabilities' => \IAWP\Capability_Manager::all_capabilities()]);
-        echo \IAWPSCOPED\iawp_blade()->run('settings.view-counter');
+        echo \IAWPSCOPED\iawp_render('settings.block-ips', ['current_ip' => Request::ip(), 'ip_is_blocked' => Request::is_ip_address_blocked(), 'ips' => $ips]);
+        echo \IAWPSCOPED\iawp_render('settings.block-by-role', ['roles' => \wp_roles()->roles, 'blocked' => \IAWPSCOPED\iawp()->get_option('iawp_blocked_roles', ['administrator']), 'ignore_cookie' => \IAWPSCOPED\iawp()->get_option('iawp_ignore_via_cookie', \false)]);
+        echo \IAWPSCOPED\iawp_render('settings.capabilities', ['editable_roles' => $this->get_editable_roles(), 'capabilities' => \IAWP\Capability_Manager::all_capabilities()]);
+        echo \IAWPSCOPED\iawp_render('settings.view-counter');
         if (\IAWPSCOPED\iawp()->is_woocommerce_support_enabled()) {
-            echo \IAWPSCOPED\iawp_blade()->run('settings.woocommerce', ['statuses' => new WooCommerce_Status_Manager()]);
+            echo \IAWPSCOPED\iawp_render('settings.woocommerce', ['statuses' => new WooCommerce_Status_Manager()]);
         }
-        echo \IAWPSCOPED\iawp_blade()->run('settings.export-reports', ['report_finder' => \IAWP\Report_Finder::new()]);
-        echo \IAWPSCOPED\iawp_blade()->run('settings.pruner', ['pruner' => new Pruning_Scheduler()]);
-        echo \IAWPSCOPED\iawp_blade()->run('settings.delete', ['site_name' => \get_bloginfo('name'), 'site_url' => \site_url(), 'is_pro' => \IAWPSCOPED\iawp_is_pro()]);
+        echo \IAWPSCOPED\iawp_render('settings.export-reports', ['report_finder' => \IAWP\Report_Finder::new()]);
+        echo \IAWPSCOPED\iawp_render('settings.pruner', ['pruner' => new Pruning_Scheduler()]);
+        echo \IAWPSCOPED\iawp_render('settings.delete', ['site_name' => \get_bloginfo('name'), 'site_url' => \site_url(), 'is_pro' => \IAWPSCOPED\iawp_is_pro()]);
     }
     public function register_settings()
     {
@@ -73,31 +73,31 @@ class Settings
     }
     public function appearance_callback()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('settings.appearance', ['appearance' => \IAWP\Appearance::get_appearance(), 'options' => \IAWP\Appearance::options()]);
+        echo \IAWPSCOPED\iawp_render('settings.appearance', ['appearance' => \IAWP\Appearance::get_appearance(), 'options' => \IAWP\Appearance::options()]);
     }
     public function visitor_salt_refresh_interval_callback()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('settings.visitor-salt-refresh-interval', ['interval' => \IAWP\VisitorSaltRefreshInterval::interval(), 'options' => \IAWP\VisitorSaltRefreshInterval::options()]);
+        echo \IAWPSCOPED\iawp_render('settings.visitor-salt-refresh-interval', ['interval' => \IAWP\VisitorSaltRefreshInterval::interval(), 'options' => \IAWP\VisitorSaltRefreshInterval::options()]);
     }
     public function track_authenticated_users_callback()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('settings.track-authenticated-users', ['track_authenticated_users' => \IAWPSCOPED\iawp()->get_option('iawp_track_authenticated_users', \false)]);
+        echo \IAWPSCOPED\iawp_render('settings.track-authenticated-users', ['track_authenticated_users' => \IAWPSCOPED\iawp()->get_option('iawp_track_authenticated_users', \false)]);
     }
     public function disable_admin_toolbar_analytics_callback()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('settings.disable-admin-toolbar-analytics', ['value' => \IAWPSCOPED\iawp()->get_option('iawp_disable_admin_toolbar_analytics', \false)]);
+        echo \IAWPSCOPED\iawp_render('settings.disable-admin-toolbar-analytics', ['value' => \IAWPSCOPED\iawp()->get_option('iawp_disable_admin_toolbar_analytics', \false)]);
     }
     public function disable_widget_callback()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('settings.disable-widget', ['value' => \IAWPSCOPED\iawp()->get_option('iawp_disable_widget', \false)]);
+        echo \IAWPSCOPED\iawp_render('settings.disable-widget', ['value' => \IAWPSCOPED\iawp()->get_option('iawp_disable_widget', \false)]);
     }
     public function disable_views_column_callback() : void
     {
-        echo \IAWPSCOPED\iawp_blade()->run('settings.disable-views-column', ['value' => \IAWPSCOPED\iawp()->get_option('iawp_disable_views_column', \false)]);
+        echo \IAWPSCOPED\iawp_render('settings.disable-views-column', ['value' => \IAWPSCOPED\iawp()->get_option('iawp_disable_views_column', \false)]);
     }
     public function starting_dow_callback()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('settings.first-day-of-week', ['day_of_week' => \IAWPSCOPED\iawp()->get_option('iawp_dow', 0), 'days' => [0 => \esc_html__('Sunday', 'independent-analytics'), 1 => \esc_html__('Monday', 'independent-analytics'), 2 => \esc_html__('Tuesday', 'independent-analytics'), 3 => \esc_html__('Wednesday', 'independent-analytics'), 4 => \esc_html__('Thursday', 'independent-analytics'), 5 => \esc_html__('Friday', 'independent-analytics'), 6 => \esc_html__('Saturday', 'independent-analytics')]]);
+        echo \IAWPSCOPED\iawp_render('settings.first-day-of-week', ['day_of_week' => \IAWPSCOPED\iawp()->get_option('iawp_dow', 0), 'days' => [0 => \esc_html__('Sunday', 'independent-analytics'), 1 => \esc_html__('Monday', 'independent-analytics'), 2 => \esc_html__('Tuesday', 'independent-analytics'), 3 => \esc_html__('Wednesday', 'independent-analytics'), 4 => \esc_html__('Thursday', 'independent-analytics'), 5 => \esc_html__('Friday', 'independent-analytics'), 6 => \esc_html__('Saturday', 'independent-analytics')]]);
     }
     public function register_view_counter_settings()
     {
@@ -146,14 +146,14 @@ class Settings
     }
     public function view_counter_enable_callback()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('settings.view-counter.enable', ['enable' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_enable', \false)]);
+        echo \IAWPSCOPED\iawp_render('settings.view-counter.enable', ['enable' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_enable', \false)]);
     }
     public function view_counter_post_types_callback()
     {
         $site_post_types = \get_post_types(['public' => \true], 'objects');
         $counter = 0;
         foreach ($site_post_types as $post_type) {
-            echo \IAWPSCOPED\iawp_blade()->run('settings.view-counter.post-types', ['counter' => $counter, 'post_type' => $post_type, 'saved' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_post_types', [])]);
+            echo \IAWPSCOPED\iawp_render('settings.view-counter.post-types', ['counter' => $counter, 'post_type' => $post_type, 'saved' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_post_types', [])]);
             $counter++;
         }
         ?>
@@ -164,40 +164,40 @@ class Settings
     }
     public function view_counter_position_callback()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('settings.view-counter.position', ['position' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_position', 'after')]);
+        echo \IAWPSCOPED\iawp_render('settings.view-counter.position', ['position' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_position', 'after')]);
     }
     public function view_counter_views_to_count_callback()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('settings.view-counter.views-to-count', ['value' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_views_to_count', 'total')]);
+        echo \IAWPSCOPED\iawp_render('settings.view-counter.views-to-count', ['value' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_views_to_count', 'total')]);
     }
     public function view_counter_exclude_callback()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('settings.view-counter.exclude', ['exclude' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_exclude', '')]);
+        echo \IAWPSCOPED\iawp_render('settings.view-counter.exclude', ['exclude' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_exclude', '')]);
     }
     public function view_counter_threshold_callback()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('settings.view-counter.threshold', ['threshold' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_threshold', 0)]);
+        echo \IAWPSCOPED\iawp_render('settings.view-counter.threshold', ['threshold' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_threshold', 0)]);
     }
     public function view_counter_label_callback()
     {
         $default = \function_exists('IAWPSCOPED\\pll__') ? pll__('Views:', 'independent-analytics') : \__('Views:', 'independent-analytics');
-        echo \IAWPSCOPED\iawp_blade()->run('settings.view-counter.label', ['label' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_label', $default)]);
+        echo \IAWPSCOPED\iawp_render('settings.view-counter.label', ['label' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_label', $default)]);
     }
     public function view_counter_label_show_callback()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('settings.view-counter.label-show', ['show' => \get_option('iawp_view_counter_label_show', \true)]);
+        echo \IAWPSCOPED\iawp_render('settings.view-counter.label-show', ['show' => \get_option('iawp_view_counter_label_show', \true)]);
     }
     public function view_counter_icon_callback()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('settings.view-counter.icon', ['icon' => \get_option('iawp_view_counter_icon', \true)]);
+        echo \IAWPSCOPED\iawp_render('settings.view-counter.icon', ['icon' => \get_option('iawp_view_counter_icon', \true)]);
     }
     public function view_counter_private_callback()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('settings.view-counter.private', ['private' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_private', \false)]);
+        echo \IAWPSCOPED\iawp_render('settings.view-counter.private', ['private' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_private', \false)]);
     }
     public function view_counter_manual_adjustment_callback()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('settings.view-counter.manual-adjustment', ['value' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_manual_adjustment', \false)]);
+        echo \IAWPSCOPED\iawp_render('settings.view-counter.manual-adjustment', ['value' => \IAWPSCOPED\iawp()->get_option('iawp_view_counter_manual_adjustment', \false)]);
     }
     public function register_blocked_ip_settings()
     {

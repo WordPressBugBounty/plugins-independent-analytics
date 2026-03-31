@@ -192,7 +192,7 @@ class Filters
             }
             \array_push($column_sections[$section_name]['columns'], $column);
         }
-        echo \IAWPSCOPED\iawp_blade()->run('partials.filter-column-select', ['column_sections' => $column_sections]);
+        echo \IAWPSCOPED\iawp_render('partials.filter-column-select', ['column_sections' => $column_sections]);
     }
     private function get_all_operator_selects()
     {

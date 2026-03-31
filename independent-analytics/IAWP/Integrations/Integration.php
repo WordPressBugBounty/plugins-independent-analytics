@@ -65,7 +65,7 @@ class Integration
     }
     public function html() : string
     {
-        return \IAWPSCOPED\iawp_blade()->run('integrations.integration', ['integration' => $this]);
+        return \IAWPSCOPED\iawp_render('integrations.integration', ['integration' => $this]);
     }
     private function activated_plugin() : bool
     {

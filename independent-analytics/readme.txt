@@ -3,9 +3,9 @@ Contributors: bensibley, andrewmead
 Tags: analytics, wordpress analytics, google analytics, analytics dashboard, statistics
 Donate link: https://independentwp.com
 Requires at least: 5.9
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.14.6
+Stable tag: 2.14.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -183,6 +183,14 @@ Yes, Independent Analytics will run smoothly and won't create any errors even if
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.14.7 - March 30th, 2026 =
+
+* **Feature:** Added integration with the Complianz plugin
+* **Enhancement:** Allow read-only users to set a default report
+* **Fix:** Changing the grouping in the data table was resetting the columns
+* **Fix:** Fixed chart display in Safari for RTL websites
+* **Fix:** White-labeling wasn't working for non-admins with manage_options permission
 
 = 2.14.6 - March 16th, 2026 =
 

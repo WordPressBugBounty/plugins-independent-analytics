@@ -76,7 +76,7 @@ class Real_Time
     }
     public function render_real_time_analytics()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('real-time', $this->get_real_time_analytics());
+        echo \IAWPSCOPED\iawp_render('real-time', $this->get_real_time_analytics());
     }
     private function get_count_message(int $count, string $singular, string $plural) : string
     {

@@ -7,7 +7,7 @@
 if ($is_loaded) : ?>
     <div class="iawp-stats total-of-<?php echo count($dataset); ?>"><?php
         foreach ($dataset as $quick_stat) {
-            echo iawp_blade()->run('quick-stat', [
+            echo iawp_render('quick-stat', [
                 'id'     => $quick_stat['id'],
                 'name'   => $quick_stat['name'],
                 'formatted_value' => $quick_stat['formatted_value'],
@@ -23,7 +23,7 @@ if ($is_loaded) : ?>
 else : ?>
     <div class="iawp-stats total-of-<?php echo count($module->selected_stats()); ?>"><?php
         foreach ($module->selected_stats() as $quick_stat) {
-            echo iawp_blade()->run('quick-stat-loading', [
+            echo iawp_render('quick-stat-loading', [
                 'id'     => $quick_stat['id'],
                 'name'   => $quick_stat['name'],
                 'icon'   => $quick_stat['icon'] ?? null

@@ -6,7 +6,7 @@
             <!-- Skeleton -->
             <?php if ($render_skeleton) : ?>
                 <div id="iawp-rows">
-                    <?php echo iawp_blade()->run('journeys.table-heading'); ?>
+                    <?php echo iawp_render('journeys.table-heading'); ?>
                     <?php for ($journey = 0; $journey < 50; $journey++) : ?>
                         <div class="journey">
                             <div class="journey-preview">
@@ -24,7 +24,7 @@
 
             <!-- Card -->
             <?php if (!$render_skeleton) : ?>
-                <?php echo iawp_blade()->run('tables.rows', [
+                <?php echo iawp_render('tables.rows', [
                     'table' => $table,
                     'rows'  => $rows,
                 ]); ?>

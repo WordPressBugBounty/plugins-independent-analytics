@@ -11,6 +11,10 @@ class Configure_Pruner extends \IAWP\AJAX\AJAX
     {
         return 'iawp_configure_pruner';
     }
+    protected function requires_write_access() : bool
+    {
+        return \true;
+    }
     protected function action_callback() : void
     {
         $cutoff = $this->get_field('pruningCutoff');

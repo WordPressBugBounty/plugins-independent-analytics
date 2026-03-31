@@ -24,6 +24,10 @@ class Import_Reports extends \IAWP\AJAX\AJAX
     /**
      * @inheritDoc
      */
+    protected function requires_write_access() : bool
+    {
+        return \true;
+    }
     protected function action_callback() : void
     {
         $report_archive = \json_decode(\stripslashes($_POST['json']), \true);

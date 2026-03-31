@@ -8,7 +8,7 @@
                     data-action="report#changeTable"
                     disabled="disabled"
                     class="examiner-table-tab <?php echo $table['table_type'] === $active ? 'active' : ''; ?>"
-            ><?php echo iawp_blade()->run('icons.' . $table['table_type']); ?> <?php echo esc_html($table['name']); ?></button>
+            ><?php echo iawp_render('icons.' . $table['table_type']); ?> <?php echo esc_html($table['name']); ?></button>
         </li><?php
     endforeach; ?>
 </ol>

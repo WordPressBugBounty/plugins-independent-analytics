@@ -24,7 +24,7 @@
                 <li>
                     <button data-action="module-picker#showModule"
                             data-module-id="<?php echo esc_attr($module->module_type()); ?>">
-                        <span class="module-icon"><?php echo iawp_blade()->run('icons.overview.' . $module->module_type()); ?></span>
+                        <span class="module-icon"><?php echo iawp_render('icons.overview.' . $module->module_type()); ?></span>
                         <span class="module-name"><?php echo esc_html($module->module_name()); ?></span>
                         <span class="dashicons dashicons-arrow-right-alt2"></span>
                     </button>

@@ -15,6 +15,10 @@ class Pause_Email_Reports extends \IAWP\AJAX\AJAX
     /**
      * @return void
      */
+    protected function requires_write_access() : bool
+    {
+        return \true;
+    }
     protected function action_callback() : void
     {
         $paused = $this->get_boolean_field('paused') === \true;

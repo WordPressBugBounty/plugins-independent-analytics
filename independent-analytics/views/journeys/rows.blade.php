@@ -4,7 +4,7 @@
 @endphp
 
 <div id="iawp-rows" class="journey-rows">
-    <?php echo iawp_blade()->run('journeys.table-heading'); ?>
+    <?php echo iawp_render('journeys.table-heading'); ?>
     <?php if(count($rows) === 0): ?>
         <p class="no-journeys"><?php esc_html_e('No journeys found.', 'independent-analytics'); ?></p>
     <?php endif; ?>

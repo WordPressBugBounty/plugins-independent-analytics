@@ -33,7 +33,7 @@ class Migration_Status extends \IAWP\AJAX\AJAX
             } catch (\Throwable $e) {
                 $migration_started_at = \__('Unable to parse timestamp', 'independent-analytics');
             }
-            $response['errorHtml'] = \IAWPSCOPED\iawp_blade()->run('interrupt.migration-error', ['plugin_version' => \IAWP_VERSION, 'migration_db_version' => \intval(\get_option('iawp_db_version', 0)) + 1, 'migration_step' => \intval(\get_option('iawp_last_finished_migration_step', 0)) + 1, 'migration_started_at' => $migration_started_at, 'migration_error' => \get_option('iawp_migration_error', null), 'migration_error_query' => \get_option('iawp_migration_error_query', null)]);
+            $response['errorHtml'] = \IAWPSCOPED\iawp_render('interrupt.migration-error', ['plugin_version' => \IAWP_VERSION, 'migration_db_version' => \intval(\get_option('iawp_db_version', 0)) + 1, 'migration_step' => \intval(\get_option('iawp_last_finished_migration_step', 0)) + 1, 'migration_started_at' => $migration_started_at, 'migration_error' => \get_option('iawp_migration_error', null), 'migration_error_query' => \get_option('iawp_migration_error_query', null)]);
         }
         \wp_send_json_success($response);
     }

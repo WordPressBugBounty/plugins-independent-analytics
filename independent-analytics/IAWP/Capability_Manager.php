@@ -38,7 +38,7 @@ class Capability_Manager
             foreach (self::all_capabilities() as $possible_capability => $label) {
                 $user_role->remove_cap($possible_capability);
             }
-            if (\array_key_exists($capability, self::all_capabilities())) {
+            if ($capability && \array_key_exists($capability, self::all_capabilities())) {
                 $user_role->add_cap($capability);
             }
         }
@@ -83,10 +83,9 @@ class Capability_Manager
     }
     public static function show_branded_ui() : bool
     {
-        if (self::is_admin_user()) {
-            return \true;
-        }
-        if (\get_option('iawp_white_label') === '1') {
+        $is_admin = \in_array('administrator', \wp_get_current_user()->roles);
+        $is_white_labeled = \get_option('iawp_white_label') === '1';
+        if ($is_white_labeled && !$is_admin) {
             return \false;
         }
         return \true;

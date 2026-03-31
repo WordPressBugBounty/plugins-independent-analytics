@@ -10,6 +10,10 @@ class Set_WooCommerce_Statuses_To_Track extends \IAWP\AJAX\AJAX
     {
         return 'iawp_set_woocommerce_statuses_to_track';
     }
+    protected function requires_write_access() : bool
+    {
+        return \true;
+    }
     protected function action_callback() : void
     {
         $statuses_to_track = $this->get_field('statusesToTrack');

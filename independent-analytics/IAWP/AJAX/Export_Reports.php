@@ -23,6 +23,10 @@ class Export_Reports extends \IAWP\AJAX\AJAX
     /**
      * @inheritDoc
      */
+    protected function requires_write_access() : bool
+    {
+        return \true;
+    }
     protected function action_callback() : void
     {
         $ids = $this->get_field('ids');
@@ -37,6 +41,6 @@ class Export_Reports extends \IAWP\AJAX\AJAX
             }
             $reports[] = $report->to_array();
         }
-        \wp_send_json_success(['json' => \json_encode(['plugin_version' => '2.14.6', 'database_version' => '52', 'export_version' => '1', 'reports' => $reports])]);
+        \wp_send_json_success(['json' => \json_encode(['plugin_version' => '2.14.7', 'database_version' => '52', 'export_version' => '1', 'reports' => $reports])]);
     }
 }

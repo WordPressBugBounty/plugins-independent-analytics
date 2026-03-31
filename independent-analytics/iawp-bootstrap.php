@@ -2,12 +2,12 @@
 
 namespace IAWPSCOPED;
 
+use IAWP\ActivationLifecycle;
 use IAWP\Click_Tracking\Click_Processing_Job;
 use IAWP\Click_Tracking\Config_File_Manager;
-use IAWP\Cron\Unscheduler;
+use IAWP\ComplianzIntegration;
 use IAWP\Custom_WordPress_Columns\Views_Column;
 use IAWP\Dashboard_Options;
-use IAWP\Data_Pruning\Pruning_Scheduler;
 use IAWP\Database;
 use IAWP\Date_Range\Exact_Date_Range;
 use IAWP\Ecommerce\SureCart_Event_Sync_Job;
@@ -15,7 +15,6 @@ use IAWP\Ecommerce\SureCart_Store;
 use IAWP\Env;
 use IAWP\FetchFaviconsJob;
 use IAWP\Geo_Database_Health_Check_Job;
-use IAWP\Geo_Database_Manager;
 use IAWP\Independent_Analytics;
 use IAWP\Interrupt;
 use IAWP\Journey\JourneyStatisticsJob;
@@ -33,7 +32,7 @@ use IAWP\Utils\BladeOne;
 use IAWP\WP_Option_Cache_Bust;
 \define( 'IAWP_DIRECTORY', \rtrim( \plugin_dir_path( __FILE__ ), \DIRECTORY_SEPARATOR ) );
 \define( 'IAWP_URL', \rtrim( \plugin_dir_url( __FILE__ ), '/' ) );
-\define( 'IAWP_VERSION', '2.14.6' );
+\define( 'IAWP_VERSION', '2.14.7' );
 \define( 'IAWP_DATABASE_VERSION', '52' );
 \define( 'IAWP_LANGUAGES_DIRECTORY', \dirname( \plugin_basename( __FILE__ ) ) . '/languages' );
 \define( 'IAWP_PLUGIN_FILE', __DIR__ . '/iawp.php' );
@@ -153,33 +152,24 @@ function iawp_dashboard_url(  array $query_arguments = []  ) : string {
 }
 
 /** @internal */
-function iawp_blade() {
-    if ( !\file_exists( \IAWPSCOPED\iawp_temp_path_to( 'template-cache' ) ) ) {
-        \wp_mkdir_p( \IAWPSCOPED\iawp_temp_path_to( 'template-cache' ) );
-    }
-    $blade = BladeOne::create();
-    $blade->share( 'env', new Env() );
-    $blade->share( 'is_pro', \IAWPSCOPED\iawp_is_pro() );
-    $blade->share( 'security', new \IAWP\Utils\Security() );
-    return $blade;
-}
-
-/** @internal */
 function iawp_render(  string $view, array $variables = []  ) : string {
-    if ( !\file_exists( \IAWPSCOPED\iawp_temp_path_to( 'template-cache' ) ) ) {
-        \wp_mkdir_p( \IAWPSCOPED\iawp_temp_path_to( 'template-cache' ) );
+    static $blade = null;
+    if ( $blade === null ) {
+        if ( !\file_exists( \IAWPSCOPED\iawp_temp_path_to( 'template-cache' ) ) ) {
+            \wp_mkdir_p( \IAWPSCOPED\iawp_temp_path_to( 'template-cache' ) );
+        }
+        $blade = BladeOne::create();
+        $blade->share( 'env', new Env() );
+        $blade->share( 'is_pro', \IAWPSCOPED\iawp_is_pro() );
+        $blade->share( 'security', new \IAWP\Utils\Security() );
     }
-    $blade = BladeOne::create();
-    $blade->share( 'env', new Env() );
-    $blade->share( 'is_pro', \IAWPSCOPED\iawp_is_pro() );
-    $blade->share( 'security', new \IAWP\Utils\Security() );
     return $blade->run( $view, $variables );
 }
 
 /** @internal */
 function iawp_icon(  string $icon  ) : string {
     try {
-        return \IAWPSCOPED\iawp_blade()->run( 'icons.plugins.' . $icon );
+        return \IAWPSCOPED\iawp_render( 'icons.plugins.' . $icon );
     } catch ( \Throwable $e ) {
         return '';
     }
@@ -308,6 +298,7 @@ WP_Option_Cache_Bust::register( 'iawp_is_database_downloading' );
 WP_Option_Cache_Bust::register( 'iawp_db_version' );
 WP_Option_Cache_Bust::register( 'iawp_geo_database_version' );
 WP_Option_Cache_Bust::register( 'iawp_overview_modules' );
+WP_Option_Cache_Bust::register( 'iawp_modules_refreshed_at' );
 WP_Option_Cache_Bust::register( 'iawp_default_modules_added' );
 /** @internal */
 function iawp() {
@@ -315,36 +306,36 @@ function iawp() {
 }
 
 \IAWPSCOPED\iawp();
+// This fires when either the free or pro plugin versions are activated. This does not fire
+// when transitioning from free-to-pro or pro-to-free via Freemius. The hooks below
+// take care of that.
+//
+// What's up with the transient option iawp_activation_ran? The goal is to prevent
 \register_activation_hook( \IAWP_PLUGIN_FILE, function () {
-    \wp_mkdir_p( \IAWPSCOPED\iawp_temp_path_to( 'template-cache' ) );
-    if ( \IAWPSCOPED\iawp_db_version() === 0 ) {
-        // If there is no database installed, run migration on current process
-        Migrations\Migrations::create_or_migrate();
-    } else {
-        // If there is a database, run migration in a background process
-        Migrations\Migration_Job::maybe_dispatch();
+    \set_transient( 'iawp_activation_ran', \true, 60 );
+    ActivationLifecycle::handle_activation();
+} );
+// This fires when transitioning from pro-to-free via Freemius. In that case, register_activation_hook
+// will not fire. This hook is essential to make sure the free activation code runs.
+\IAWP_FS()->add_action( 'after_free_version_reactivation', function () {
+    if ( \get_transient( 'iawp_activation_ran' ) ) {
+        return;
     }
-    ( new Geo_Database_Manager() )->health_check();
-    \update_option( 'iawp_need_clear_cache', \true, \true );
-    if ( \get_option( 'iawp_show_gsg' ) == '' ) {
-        \update_option( 'iawp_show_gsg', '1', \true );
+    \set_transient( 'iawp_activation_ran', \true, 60 );
+    ActivationLifecycle::handle_activation();
+} );
+// This fires when transitioning from free-to-pro via Freemius. In that case, register_activation_hook
+// will not fire. This hook is essential to make sure the pro activation code runs.
+\IAWP_FS()->add_action( 'after_premium_version_activation', function () {
+    if ( \get_transient( 'iawp_activation_ran' ) ) {
+        return;
     }
-    \IAWPSCOPED\iawp()->cron_manager->schedule();
-    ( new Pruning_Scheduler() )->schedule();
-    if ( \IAWPSCOPED\iawp_is_pro() ) {
-        \IAWPSCOPED\iawp()->email_reports->schedule();
-    }
-    // Set current version for changelog notifications
-    \update_option( 'iawp_last_update_viewed', \IAWP_VERSION, \true );
-    if ( \IAWPSCOPED\iawp_db_version() > 0 && Database::is_missing_all_tables() ) {
-        \update_option( 'iawp_missing_tables', '1', \true );
-    }
+    \set_transient( 'iawp_activation_ran', \true, 60 );
+    ActivationLifecycle::handle_activation();
 } );
 \register_deactivation_hook( \IAWP_PLUGIN_FILE, function () {
-    Unscheduler::unschedule_all_events();
-    ( new Geo_Database_Manager() )->delete_database();
-    \wp_delete_file( \trailingslashit( \WPMU_PLUGIN_DIR ) . 'iawp-performance-boost.php' );
-    \delete_option( 'iawp_must_use_directory_not_writable' );
+    \delete_transient( 'iawp_activation_ran' );
+    ActivationLifecycle::handle_deactivation();
 } );
 // This fires for the original version of the plugin and not the updated version of the plugin
 \add_action( 'upgrader_process_complete', function () {
@@ -401,3 +392,4 @@ function iawp() {
 } );
 Views_Column::initialize();
 MainWP::initialize();
+ComplianzIntegration::initialize();

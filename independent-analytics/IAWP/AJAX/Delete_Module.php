@@ -27,6 +27,10 @@ class Delete_Module extends \IAWP\AJAX\AJAX
     /**
      * @inheritDoc
      */
+    protected function requires_write_access() : bool
+    {
+        return \true;
+    }
     protected function action_callback() : void
     {
         $module = Module::get_saved_module($this->get_field('module_id'));

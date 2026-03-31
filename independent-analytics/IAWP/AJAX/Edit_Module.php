@@ -27,6 +27,10 @@ class Edit_Module extends \IAWP\AJAX\AJAX
     /**
      * @inheritDoc
      */
+    protected function requires_write_access() : bool
+    {
+        return \true;
+    }
     protected function action_callback() : void
     {
         $module_attributes = $this->get_array_field('fields');

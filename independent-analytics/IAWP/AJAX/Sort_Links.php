@@ -25,6 +25,10 @@ class Sort_Links extends \IAWP\AJAX\AJAX
     /**
      * @return void
      */
+    protected function requires_write_access() : bool
+    {
+        return \true;
+    }
     protected function action_callback() : void
     {
         if (!Capability_Manager::can_edit()) {

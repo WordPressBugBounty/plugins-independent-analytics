@@ -37,7 +37,7 @@
                 <?php
                 // OVERVIEW
                 if ($env->is_pro() && $can_view_all_analytics) {
-                    echo iawp_blade()->run('partials.sidebar-menu-section', [
+                    echo iawp_render('partials.sidebar-menu-section', [
                         'can_edit_settings' => $can_edit_settings,
                         'report_name'       => esc_html__('Overview', 'independent-analytics'),
                         'report_type'       => 'overview',
@@ -51,7 +51,7 @@
                 }
                 // REAL-TIME
                 if ($env->is_pro()) {
-                    echo iawp_blade()->run('partials.sidebar-menu-section', [
+                    echo iawp_render('partials.sidebar-menu-section', [
                         'can_edit_settings' => $can_edit_settings,
                         'report_name'       => esc_html__('Real-time', 'independent-analytics'),
                         'report_type'       => 'real-time',
@@ -65,7 +65,7 @@
                 }
                 // JOURNEYS
                 if ($env->is_pro() && $can_view_all_analytics) {
-                    echo iawp_blade()->run('partials.sidebar-menu-section', [
+                    echo iawp_render('partials.sidebar-menu-section', [
                         'can_edit_settings' => $can_edit_settings,
                         'report_name'       => esc_html__('User Journeys', 'independent-analytics'),
                         'report_type'       => 'journeys',
@@ -78,7 +78,7 @@
                     ]);
                 }
                 // PAGES
-                echo iawp_blade()->run('partials.sidebar-menu-section', [
+                echo iawp_render('partials.sidebar-menu-section', [
                     'can_edit_settings' => $can_edit_settings,
                     'report_name'       => esc_html__('Pages', 'independent-analytics'),
                     'report_type'       => 'views',
@@ -90,7 +90,7 @@
                     'upgrade'           => false
                 ]);
                 // REFERRERS
-                echo iawp_blade()->run('partials.sidebar-menu-section', [
+                echo iawp_render('partials.sidebar-menu-section', [
                     'can_edit_settings' => $can_edit_settings,
                     'report_name'       => esc_html__('Referrers', 'independent-analytics'),
                     'report_type'       => 'referrers',
@@ -102,7 +102,7 @@
                     'upgrade'           => false
                 ]);
                 // GEOGRAPHIC
-                echo iawp_blade()->run('partials.sidebar-menu-section', [
+                echo iawp_render('partials.sidebar-menu-section', [
                     'can_edit_settings' => $can_edit_settings,
                     'report_name'       => esc_html__('Geographic', 'independent-analytics'),
                     'report_type'       => 'geo',
@@ -114,7 +114,7 @@
                     'upgrade'           => false
                 ]);
                 // DEVICES
-                echo iawp_blade()->run('partials.sidebar-menu-section', [
+                echo iawp_render('partials.sidebar-menu-section', [
                     'can_edit_settings' => $can_edit_settings,
                     'report_name'       => esc_html__('Devices', 'independent-analytics'),
                     'report_type'       => 'devices',
@@ -127,7 +127,7 @@
                 ]);
                 // CAMPAIGNS
                 if ($env->is_pro()) {
-                    echo iawp_blade()->run('partials.sidebar-menu-section', [
+                    echo iawp_render('partials.sidebar-menu-section', [
                         'can_edit_settings' => $can_edit_settings,
                         'report_name'       => esc_html__('Campaigns', 'independent-analytics'),
                         'report_type'       => 'campaigns',
@@ -141,7 +141,7 @@
                 }
                 // CLICKS
                 if ($env->is_pro()) {
-                    echo iawp_blade()->run('partials.sidebar-menu-section', [
+                    echo iawp_render('partials.sidebar-menu-section', [
                         'can_edit_settings' => $can_edit_settings,
                         'report_name'       => esc_html__('Clicks', 'independent-analytics'),
                         'report_type'       => 'clicks',
@@ -155,7 +155,7 @@
                 }
                 if ($env->is_free() && ! $env->is_white_labeled()) {
                     // OVERVIEW UPGRADE
-                    echo iawp_blade()->run('partials.sidebar-menu-section', [
+                    echo iawp_render('partials.sidebar-menu-section', [
                         'can_edit_settings' => $can_edit_settings,
                         'report_name'       => esc_html__('Overview', 'independent-analytics'),
                         'report_type'       => 'overview',
@@ -170,7 +170,7 @@
                         'upgrade'           => true
                     ]);
                     // USER JOURNEYS UPGRADE
-                    echo iawp_blade()->run('partials.sidebar-menu-section', [
+                    echo iawp_render('partials.sidebar-menu-section', [
                         'can_edit_settings' => $can_edit_settings,
                         'report_name'       => esc_html__('User Journeys', 'independent-analytics'),
                         'report_type'       => 'journeys',
@@ -185,7 +185,7 @@
                         'upgrade'           => true
                     ]);
                     // CAMPAIGNS UPGRADE
-                    echo iawp_blade()->run('partials.sidebar-menu-section', [
+                    echo iawp_render('partials.sidebar-menu-section', [
                         'can_edit_settings' => $can_edit_settings,
                         'report_name'       => esc_html__('Campaigns', 'independent-analytics'),
                         'report_type'       => 'campaigns',
@@ -200,7 +200,7 @@
                         'upgrade'           => true
                     ]);
                     // CLICKS UPGRADE
-                    echo iawp_blade()->run('partials.sidebar-menu-section', [
+                    echo iawp_render('partials.sidebar-menu-section', [
                         'can_edit_settings' => $can_edit_settings,
                         'report_name'       => esc_html__('Clicks', 'independent-analytics'),
                         'report_type'       => 'clicks',
@@ -215,7 +215,7 @@
                         'upgrade'           => true
                     ]);
                     // REAL-TIME UPGRADE
-                    echo iawp_blade()->run('partials.sidebar-menu-section', [
+                    echo iawp_render('partials.sidebar-menu-section', [
                         'can_edit_settings' => $can_edit_settings,
                         'report_name'       => esc_html__('Real-Time', 'independent-analytics'),
                         'report_type'       => 'real-time-free',

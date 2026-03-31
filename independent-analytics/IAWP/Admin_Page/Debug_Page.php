@@ -8,7 +8,7 @@ class Debug_Page extends \IAWP\Admin_Page\Admin_Page
 {
     protected function render_page()
     {
-        echo \IAWPSCOPED\iawp_blade()->run('debug', ['detected_ip' => Request::ip(), 'custom_ip_header' => $this->custom_ip_header(), 'header_details' => $this->header_details()]);
+        echo \IAWPSCOPED\iawp_render('debug', ['detected_ip' => Request::ip(), 'custom_ip_header' => $this->custom_ip_header(), 'header_details' => $this->header_details()]);
     }
     private function custom_ip_header() : string
     {
