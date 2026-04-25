@@ -3,6 +3,7 @@
 namespace IAWP\Integrations;
 
 use Error;
+use IAWP\Form_Submissions\Form;
 use IAWPSCOPED\Illuminate\Support\Collection;
 use IAWPSCOPED\Illuminate\Support\Str;
 /** @internal */
@@ -77,7 +78,7 @@ class Integration
             $slugs = [$slugs];
         }
         return Collection::make($slugs)->contains(function ($slug) {
-            return \is_plugin_active($slug);
+            return Form::is_plugin_slug_active($slug);
         });
     }
     private function activated_theme() : bool

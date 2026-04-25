@@ -20,7 +20,7 @@ class View extends \IAWP\Journey\Events\Event
         $this->session_id = $record->session_id;
         $this->viewed_at = $record->viewed_at;
         $this->next_viewed_at = $record->next_viewed_at ?? null;
-        $this->cached_title = $record->cached_title;
+        $this->cached_title = $record->cached_title ?? '(' . \__('Untitled', 'independent-analytics') . ')';
         $this->cached_url = $record->cached_url ?? null;
     }
     public function type() : string

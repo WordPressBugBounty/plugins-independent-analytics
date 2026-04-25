@@ -2,6 +2,7 @@
 
 namespace IAWP\Statistics;
 
+use IAWP\Capability_Manager;
 use IAWP\Dashboard_Options;
 use IAWP\Plugin_Group_Option;
 use IAWP\Utils\Currency;
@@ -87,7 +88,7 @@ class Statistic implements Plugin_Group_Option
             case "ecommerce":
                 return \IAWPSCOPED\iawp()->is_ecommerce_support_enabled();
             case "forms":
-                return \IAWPSCOPED\iawp()->is_form_submission_support_enabled();
+                return \IAWPSCOPED\iawp()->is_form_submission_support_enabled() && (\get_current_user_id() === 0 || Capability_Manager::can_view_all_analytics());
             default:
                 return \true;
         }

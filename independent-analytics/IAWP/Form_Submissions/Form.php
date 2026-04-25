@@ -19,7 +19,8 @@ class Form
     private $plugin_id;
     private static $forms = null;
     private static $is_plugin_active_cache = [];
-    private static $plugins = [['id' => 1, 'name' => 'Fluent Forms', 'plugin_slugs' => ['fluentform/fluentform.php']], ['id' => 2, 'name' => 'WPForms', 'plugin_slugs' => ['wpforms-lite/wpforms.php', 'wpforms/wpforms.php']], ['id' => 3, 'name' => 'Contact Form 7', 'plugin_slugs' => ['contact-form-7/wp-contact-form-7.php']], ['id' => 4, 'name' => 'Gravity Forms', 'plugin_slugs' => ['gravityforms/gravityforms.php']], ['id' => 5, 'name' => 'Ninja Forms', 'plugin_slugs' => ['ninja-forms/ninja-forms.php']], ['id' => 6, 'name' => 'MailOptin', 'plugin_slugs' => ['mailoptin/mailoptin.php']], ['id' => 7, 'name' => 'Convert Pro', 'plugin_slugs' => ['convertpro/convertpro.php']], ['id' => 8, 'name' => 'Elementor Pro', 'plugin_slugs' => ['elementor-pro/elementor-pro.php']], ['id' => 9, 'name' => 'JetFormBuilder', 'plugin_slugs' => ['jetformbuilder/jet-form-builder.php']], ['id' => 10, 'name' => 'Formidable Forms', 'plugin_slugs' => ['formidable/formidable.php']], ['id' => 11, 'name' => 'WS Form', 'plugin_slugs' => ['ws-form/ws-form.php', 'ws-form-pro/ws-form.php']], ['id' => 12, 'name' => 'Amelia', 'plugin_slugs' => ['ameliabooking/ameliabooking.php']], ['id' => 13, 'name' => 'Bricks Builder', 'theme' => 'bricks'], ['id' => 14, 'name' => 'ARForms', 'plugin_slugs' => ['arforms-form-builder/arforms-form-builder.php']], ['id' => 15, 'name' => 'Custom form submissions'], ['id' => 16, 'name' => 'Bit Form', 'plugin_slugs' => ['bit-form/bitforms.php']], ['id' => 17, 'name' => 'Forminator', 'plugin_slugs' => ['forminator/forminator.php']], ['id' => 18, 'name' => 'Hustle', 'plugin_slugs' => ['wordpress-popup/popover.php', 'hustle/opt-in.php']], ['id' => 19, 'name' => 'Avada', 'plugin_slugs' => ['fusion-builder/fusion-builder.php', 'fusion-core/fusion-core.php']], ['id' => 20, 'name' => 'WP Store Locator', 'plugin_slugs' => ['wp-store-locator/wp-store-locator.php']], ['id' => 21, 'name' => 'Thrive Leads', 'plugin_slugs' => ['thrive-leads/thrive-leads.php']], ['id' => 22, 'name' => 'SureForms', 'plugin_slugs' => ['sureforms/sureforms.php']], ['id' => 23, 'name' => 'Kali Forms', 'plugin_slugs' => ['kali-forms/kali-forms.php']], ['id' => 24, 'name' => 'Divi', 'theme' => 'Divi'], ['id' => 25, 'name' => 'MailPoet', 'plugin_slugs' => ['mailpoet/mailpoet.php']], ['id' => 26, 'name' => 'Mailchimp', 'plugin_slugs' => ['mailchimp-for-wp/mailchimp-for-wp.php']], ['id' => 27, 'name' => 'Kadence', 'plugin_slugs' => ['kadence-blocks/kadence-blocks.php']], ['id' => 29, 'name' => 'Newsletter', 'plugin_slugs' => ['newsletter/plugin.php']], ['id' => 30, 'name' => 'Everest Forms', 'plugin_slugs' => ['everest-forms/everest-forms.php']]];
+    private static $active_plugin_basenames = null;
+    private static $plugins = [['id' => 1, 'name' => 'Fluent Forms', 'plugin_slugs' => ['fluentform/fluentform.php']], ['id' => 2, 'name' => 'WPForms', 'plugin_slugs' => ['wpforms-lite/wpforms.php', 'wpforms/wpforms.php']], ['id' => 3, 'name' => 'Contact Form 7', 'plugin_slugs' => ['contact-form-7/wp-contact-form-7.php']], ['id' => 4, 'name' => 'Gravity Forms', 'plugin_slugs' => ['gravityforms/gravityforms.php']], ['id' => 5, 'name' => 'Ninja Forms', 'plugin_slugs' => ['ninja-forms/ninja-forms.php']], ['id' => 6, 'name' => 'MailOptin', 'plugin_slugs' => ['mailoptin/mailoptin.php']], ['id' => 7, 'name' => 'Convert Pro', 'plugin_slugs' => ['convertpro/convertpro.php']], ['id' => 8, 'name' => 'Elementor Pro', 'plugin_slugs' => ['elementor-pro/elementor-pro.php']], ['id' => 9, 'name' => 'JetFormBuilder', 'plugin_slugs' => ['jetformbuilder/jet-form-builder.php']], ['id' => 10, 'name' => 'Formidable Forms', 'plugin_slugs' => ['formidable/formidable.php']], ['id' => 11, 'name' => 'WS Form', 'plugin_slugs' => ['ws-form/ws-form.php', 'ws-form-pro/ws-form.php']], ['id' => 12, 'name' => 'Amelia', 'plugin_slugs' => ['ameliabooking/ameliabooking.php']], ['id' => 13, 'name' => 'Bricks Builder', 'theme' => 'bricks'], ['id' => 14, 'name' => 'ARForms', 'plugin_slugs' => ['arforms-form-builder/arforms-form-builder.php']], ['id' => 15, 'name' => 'Custom form submissions'], ['id' => 16, 'name' => 'Bit Form', 'plugin_slugs' => ['bit-form/bitforms.php']], ['id' => 17, 'name' => 'Forminator', 'plugin_slugs' => ['forminator/forminator.php']], ['id' => 18, 'name' => 'Hustle', 'plugin_slugs' => ['wordpress-popup/popover.php', 'hustle/opt-in.php']], ['id' => 19, 'name' => 'Avada', 'plugin_slugs' => ['fusion-builder/fusion-builder.php', 'fusion-core/fusion-core.php']], ['id' => 20, 'name' => 'WP Store Locator', 'plugin_slugs' => ['wp-store-locator/wp-store-locator.php']], ['id' => 21, 'name' => 'Thrive Leads', 'plugin_slugs' => ['thrive-leads/thrive-leads.php']], ['id' => 22, 'name' => 'SureForms', 'plugin_slugs' => ['sureforms/sureforms.php']], ['id' => 23, 'name' => 'Kali Forms', 'plugin_slugs' => ['kali-forms/kali-forms.php']], ['id' => 24, 'name' => 'Divi', 'theme' => 'Divi'], ['id' => 25, 'name' => 'MailPoet', 'plugin_slugs' => ['mailpoet/mailpoet.php']], ['id' => 26, 'name' => 'Mailchimp', 'plugin_slugs' => ['mailchimp-for-wp/mailchimp-for-wp.php']], ['id' => 27, 'name' => 'Kadence', 'plugin_slugs' => ['kadence-blocks/kadence-blocks.php']], ['id' => 29, 'name' => 'Newsletter', 'plugin_slugs' => ['newsletter/plugin.php']], ['id' => 30, 'name' => 'Everest Forms', 'plugin_slugs' => ['everest-forms/everest-forms.php']], ['id' => 31, 'name' => 'Request a Quote for WooCommerce', 'plugin_slugs' => ['*/class-addify-request-for-quote.php']]];
     /**
      * @var array A key/value pair (plugin_id/bool) of plugin IDs
      */
@@ -121,6 +122,19 @@ class Form
         }
         return null;
     }
+    public static function is_plugin_slug_active(string $slug) : bool
+    {
+        if (Str::startsWith($slug, '*/')) {
+            $suffix = \strtolower(Str::after($slug, '*'));
+            foreach (self::active_plugin_basenames() as $active_plugin_basename) {
+                if (Str::endsWith(\strtolower($active_plugin_basename), $suffix)) {
+                    return \true;
+                }
+            }
+            return \false;
+        }
+        return \is_plugin_active($slug);
+    }
     private static function has_any_tracked_submissions(int $plugin_id) : bool
     {
         if (\array_key_exists($plugin_id, self::$has_any_tracked_submissions_cache)) {
@@ -161,7 +175,7 @@ class Form
         }
         if (\array_key_exists('plugin_slugs', $plugin)) {
             foreach ($plugin['plugin_slugs'] as $slug) {
-                if (\is_plugin_active($slug)) {
+                if (self::is_plugin_slug_active($slug)) {
                     self::$is_plugin_active_cache[$plugin_id] = \true;
                     return \true;
                 }
@@ -169,5 +183,15 @@ class Form
         }
         self::$is_plugin_active_cache[$plugin_id] = \false;
         return \false;
+    }
+    private static function active_plugin_basenames() : array
+    {
+        if (\is_array(self::$active_plugin_basenames)) {
+            return self::$active_plugin_basenames;
+        }
+        $site_active_plugins = (array) \get_option('active_plugins', []);
+        $network_active_plugins = \array_keys((array) \get_site_option('active_sitewide_plugins', []));
+        self::$active_plugin_basenames = \array_values(\array_unique(\array_merge($site_active_plugins, $network_active_plugins)));
+        return self::$active_plugin_basenames;
     }
 }

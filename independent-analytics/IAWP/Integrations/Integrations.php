@@ -123,6 +123,7 @@ class Integrations
             ['name' => 'Amelia', 'category' => 'form', 'plugin' => ['ameliabooking/ameliabooking.php']],
             ['name' => 'ARForms', 'category' => 'form', 'plugin' => ['arforms-form-builder/arforms-form-builder.php']],
             ['name' => 'WP Store Locator', 'category' => 'form', 'plugin' => ['wp-store-locator/wp-store-locator.php']],
+            ['name' => 'Request a Quote for WooCommerce', 'category' => 'form', 'plugin' => ['*/class-addify-request-for-quote.php']],
         ]);
     }
 }

@@ -467,7 +467,7 @@ class Independent_Analytics
     public function is_form_submission_support_enabled() : bool
     {
         if (!\is_bool($this->is_form_submission_support_enabled)) {
-            $this->is_form_submission_support_enabled = \IAWPSCOPED\iawp_is_pro() && Form::has_active_form_plugin() && \IAWP\Capability_Manager::can_view_all_analytics();
+            $this->is_form_submission_support_enabled = \IAWPSCOPED\iawp_is_pro() && Form::has_active_form_plugin();
         }
         return $this->is_form_submission_support_enabled;
     }

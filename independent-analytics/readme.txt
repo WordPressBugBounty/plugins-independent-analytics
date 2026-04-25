@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.14.8
+Stable tag: 2.14.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -186,6 +186,15 @@ Yes, Independent Analytics will run smoothly and won't create any errors even if
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.14.9 - April 25th, 2026 =
+
+* **Enhancement:** Updated the device detection library
+* **Fix:** Resolved $post is null PHP notice
+
+= 2.14.8 - April 6th, 2026 =
+
+* Updated the readme.txt file used for the plugin description on wordpress.org
 
 = 2.14.7 - March 30th, 2026 =
 

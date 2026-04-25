@@ -358,6 +358,14 @@ class Submission_Listener
             } catch (\Throwable $e) {
             }
         }, 10, 4);
+        // Addify Request a Quote for WooCommerce
+        \add_action('addify_quote_created', function ($quote_id) {
+            try {
+                $submission = new \IAWP\Form_Submissions\Submission(31, \intval(1), Security::string('Request a Quote for WooCommerce'));
+                $submission->record_submission();
+            } catch (\Throwable $e) {
+            }
+        }, 10, 1);
         // Template
         // add_action('iawp_some_form_callback', function () {
         //     try {

@@ -292,7 +292,7 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
                 }
             }
             if (\get_option('iawp_need_clear_cache')) {
-                echo \IAWPSCOPED\iawp_render('notices.notice', ['notice_text' => \__('Please clear your cache to ensure tracking works properly.', 'independent-analytics'), 'button_text' => \__('I\'ve cleared the cache', 'independent-analytics'), 'id' => 'iawp_need_clear_cache', 'notice' => 'iawp-warning', 'url' => 'https://independentwp.com/knowledgebase/common-questions/views-not-recording/']);
+                echo \IAWPSCOPED\iawp_render('notices.notice', ['notice_text' => \__('Please clear your cache to ensure tracking works properly.', 'independent-analytics'), 'button_text' => \__('I\'ve cleared the cache', 'independent-analytics'), 'id' => 'iawp_need_clear_cache', 'notice' => 'iawp-warning', 'url' => 'https://independentwp.com/knowledgebase/common-questions/why-clear-cache/']);
             }
             if ($show_logged_in_tracking_notice) {
                 echo \IAWPSCOPED\iawp_render('notices.notice', ['notice_text' => '<strong>' . \sprintf(\_x('%s compatibility:', 'Variable is the name of a plugin', 'independent-analytics'), $requires_logged_in_tracking) . '</strong> ' . \__('We recommend you enable tracking for logged-in visitors.', 'independent-analytics'), 'button_text' => \__('Dismiss', 'independent-analytics'), 'id' => 'enable-logged-in-tracking', 'notice' => 'iawp-warning', 'url' => 'https://independentwp.com/knowledgebase/tracking/how-to-track-logged-in-visitors/']);
