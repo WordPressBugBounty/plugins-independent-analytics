@@ -61,6 +61,7 @@ class Export_Report_Statistics extends \IAWP\AJAX\AJAX
         } else {
             $statistics = new $statistics_class($date_range, $rows_query, $chart_interval);
         }
+        $statistics->fetch();
         \wp_send_json_success(['csv' => $statistics->get_statistics_as_csv()->to_string()]);
     }
     /**

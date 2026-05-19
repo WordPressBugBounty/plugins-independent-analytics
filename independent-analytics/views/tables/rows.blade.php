@@ -60,15 +60,13 @@
                     >
                         <div class="row-number">
                             <span><?php echo $index + 1; ?></span>
-                            <?php if($is_pro): ?>
-                                <button class="open-examiner-button"
-                                        data-action="report#showExaminer"
-                                        data-url="<?php echo esc_url($row->examiner_url()); ?>"
-                                        data-title="<?php echo esc_html($row->examiner_title()); ?>"
-                                >
-                                <span class="dashicons dashicons-search"></span>
-                                </button>
-                            <?php endif; ?>
+                            <button class="open-examiner-button"
+                                    data-action="<?php echo $is_pro ? 'report#showExaminer' : 'report#showUpsell'; ?>"
+                                    data-url="<?php echo esc_url($row->examiner_url()); ?>"
+                                    data-title="<?php echo esc_html($row->examiner_title()); ?>"
+                            >
+                            <span class="dashicons dashicons-search"></span>
+                            </button>
                         </div>
                         <span class="cell-content"><?php echo wp_kses_post($table->get_cell_content($row, $column)); ?></span>
                         <span class="animator"></span>

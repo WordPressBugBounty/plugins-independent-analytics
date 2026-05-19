@@ -73,6 +73,7 @@ class Filter extends \IAWP\AJAX\AJAX
         } else {
             $statistics = new $statistics_class($date_range, $rows_query, $chart_interval);
         }
+        $statistics->fetch();
         $total_number_of_rows = $statistics->total_number_of_rows();
         $table->set_statistics($statistics);
         $quick_stat_statistics = $statistics;
@@ -88,6 +89,7 @@ class Filter extends \IAWP\AJAX\AJAX
             $rows_query = new $examiner_rows_class($date_range, $examiner_table->sanitize_sort_parameters());
             $rows_query->limit_to($examiner_config->id());
             $quick_stat_statistics = new $examiner_statistics_class($date_range, $rows_query, $chart_interval);
+            $quick_stat_statistics->fetch();
             $hide_unfiltered_statistics = \true;
             $table->set_statistics($quick_stat_statistics);
         }

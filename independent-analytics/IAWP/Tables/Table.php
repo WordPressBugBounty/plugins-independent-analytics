@@ -360,6 +360,10 @@ abstract class Table
         if (\strlen($operand) === 0) {
             return null;
         }
+        $utm_columns = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+        if (\in_array($column->id(), $utm_columns)) {
+            $filter['operand'] = \str_replace('+', ' ', $filter['operand']);
+        }
         if ($column->id() === 'url' && $filter['operator'] === 'exact') {
             $url = new URL($filter['operand']);
             if (!$url->is_valid_url()) {

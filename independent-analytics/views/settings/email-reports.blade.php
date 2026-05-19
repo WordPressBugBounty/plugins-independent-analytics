@@ -96,6 +96,10 @@
                         <p class="element-name"><?php esc_html_e('Footer background', 'independent-analytics'); ?></p>
                         <input type="text" class="iawp-color-picker" value="<?php echo sanitize_hex_color($input_default[9]); ?>" data-default-color="<?php echo sanitize_hex_color($default_colors[9]); ?>" />
                     </div>
+                    <div class="custom-color">
+                        <p class="element-name"><?php esc_html_e('Footer text', 'independent-analytics'); ?></p>
+                        <input type="text" class="iawp-color-picker" value="<?php echo sanitize_hex_color($input_default[10]); ?>" data-default-color="<?php echo sanitize_hex_color($default_colors[10]); ?>" />
+                    </div>
                 </div>
                 <input type="hidden" id="iawp_email_report_colors" name="iawp_email_report_colors" value="<?php echo implode(',', $input_default); ?>" />
             </div>
@@ -169,6 +173,22 @@
             </div>
         </div>
     </form>
+</div>
+<div id="email-test-modal" class="email-test-modal">
+    <div class="title-med"><?php esc_html_e('Send Test Email', 'independent-analytics'); ?></div>
+    <legend><?php esc_html_e('Choose email recipients:', 'independent-analytics'); ?></legend> 
+    <label for="first">
+            <input type="radio" id="first" name="email-recipient" value="first" checked />
+            <?php esc_html_e('First email address only', 'independent-analytics'); ?>
+        </label>
+    <label for="all">
+        <input type="radio" id="all" name="email-recipient" value="all" /> 
+        <?php esc_html_e('All email addresses', 'independent-analytics'); ?>
+    </label>
+    <div class="buttons">
+        <button id="send-test-email" class="send-test-email iawp-button purple"><?php esc_html_e('Send test email', 'independent-analytics'); ?></button>
+        <button id="cancel-test-email" class="cancel-test-email iawp-button ghost-purple"><?php esc_html_e('Cancel', 'independent-analytics'); ?></button>
+    </div>
 </div>
 <div id="email-preview-container" class="email-preview-container">
     <div id="email-preview" class="email-preview"></div>

@@ -310,12 +310,7 @@ class Report_Controller extends Controller {
 
             jQuery('#quick-stats .iawp-stats').replaceWith(statsDocument.querySelector('.iawp-stats'))
             jQuery('#quick-stats').removeClass('skeleton-ui');
-
-            if (isInitialFetch && this.filtersValue.length === 0) {
-                // Do not update the chart if there are no filters and it's the initial load
-            } else {
-                jQuery('#independent-analytics-chart').closest('.chart-container').replaceWith(response.chart);
-            }
+            jQuery('#independent-analytics-chart').closest('.chart-container').replaceWith(response.chart);
 
             if(isExaminer) {
                 jQuery('#table-toolbar').replaceWith(response.tableToolbar)
@@ -364,6 +359,13 @@ class Report_Controller extends Controller {
                 document.body.scrollIntoView({ behavior: 'instant', block: 'start' })
             }
         });
+    }
+
+    showUpsell(event) {
+
+        document.dispatchEvent(
+            new CustomEvent('iawp:showUpsell', {})
+        )
     }
 
     showExaminer(event) {

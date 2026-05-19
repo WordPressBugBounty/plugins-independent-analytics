@@ -55,7 +55,7 @@ class Request
         if (\is_null($url)) {
             $url = self::url();
         }
-        $site_url = \site_url();
+        $site_url = \home_url();
         if ($url == $site_url) {
             return '/';
         } elseif (\substr($url, 0, \strlen($site_url)) == $site_url) {

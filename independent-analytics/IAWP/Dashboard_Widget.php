@@ -41,6 +41,7 @@ class Dashboard_Widget
     {
         $date_range = new Relative_Date_Range('LAST_THIRTY');
         $statistics = new Page_Statistics($date_range);
+        $statistics->fetch();
         $chart = new \IAWP\Chart($statistics, \true);
         $stats = new \IAWP\Quick_Stats($statistics, \true);
         echo $chart->get_html();

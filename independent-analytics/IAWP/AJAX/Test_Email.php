@@ -23,7 +23,11 @@ class Test_Email extends \IAWP\AJAX\AJAX
         if (!Capability_Manager::can_edit()) {
             return;
         }
-        $sent = \IAWPSCOPED\iawp()->email_reports->send_email_report(\true);
+        $recipient = $this->get_field('recipient');
+        if (!\in_array($recipient, ['first', 'all'])) {
+            return;
+        }
+        $sent = \IAWPSCOPED\iawp()->email_reports->send_email_report(\true, $recipient);
         echo \rest_sanitize_boolean($sent);
     }
 }

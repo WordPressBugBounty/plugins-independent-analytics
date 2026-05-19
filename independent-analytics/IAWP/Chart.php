@@ -35,10 +35,6 @@ class Chart
         }, $primary_statistic->statistic_over_time());
         $data = [];
         foreach ($this->statistics->get_statistics() as $statistic) {
-            if ($this->is_showing_skeleton_ui) {
-                $data[$statistic->id()] = [];
-                continue;
-            }
             $data[$statistic->id()] = \array_map(function ($data_point) {
                 return $data_point[1];
             }, $statistic->statistic_over_time());
@@ -47,7 +43,7 @@ class Chart
         foreach ($this->statistics->get_grouped_statistics() as $group) {
             $total_chart_statistics += \count($group['items']);
         }
-        return \IAWPSCOPED\iawp_render('chart', ['chart' => $this, 'intervals' => Intervals::all(), 'current_interval' => $this->statistics->chart_interval(), 'available_datasets' => $this->statistics->get_grouped_statistics(), 'primary_chart_metric_id' => $primary_statistic->id(), 'secondary_chart_metric_id' => \is_null($secondary_statistic) ? null : $secondary_statistic->id(), 'stimulus_values' => ['locale' => \get_bloginfo('language'), 'currency' => \IAWPSCOPED\iawp()->get_currency_code(), 'is-preview' => $this->is_preview() ? '1' : '0', 'disable-dark-mode' => $this->is_preview() ? '1' : '0', 'primary-chart-metric-id' => $primary_statistic->id(), 'primary-chart-metric-name' => $primary_statistic->name(), 'secondary-chart-metric-id' => \is_null($secondary_statistic) ? null : $secondary_statistic->id(), 'secondary-chart-metric-name' => \is_null($secondary_statistic) ? null : $secondary_statistic->name(), 'labels' => $labels, 'data' => $data, 'has-multiple-datasets' => $total_chart_statistics > 1 ? 1 : 0]]);
+        return \IAWPSCOPED\iawp_render('chart', ['chart' => $this, 'intervals' => Intervals::all(), 'current_interval' => $this->statistics->chart_interval(), 'available_datasets' => $this->statistics->get_grouped_statistics(), 'primary_chart_metric_id' => $primary_statistic->id(), 'secondary_chart_metric_id' => \is_null($secondary_statistic) ? null : $secondary_statistic->id(), 'stimulus_values' => ['locale' => \get_bloginfo('language'), 'currency' => \IAWPSCOPED\iawp()->get_currency_code(), 'is-skeleton' => $this->is_showing_skeleton_ui ? '1' : '0', 'is-preview' => $this->is_preview() ? '1' : '0', 'disable-dark-mode' => $this->is_preview() ? '1' : '0', 'primary-chart-metric-id' => $primary_statistic->id(), 'primary-chart-metric-name' => $primary_statistic->name(), 'secondary-chart-metric-id' => \is_null($secondary_statistic) ? null : $secondary_statistic->id(), 'secondary-chart-metric-name' => \is_null($secondary_statistic) ? null : $secondary_statistic->name(), 'labels' => $labels, 'data' => $data, 'has-multiple-datasets' => $total_chart_statistics > 1 ? 1 : 0]]);
     }
     public function is_preview() : bool
     {

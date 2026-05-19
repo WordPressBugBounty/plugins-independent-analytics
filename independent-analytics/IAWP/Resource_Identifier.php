@@ -87,7 +87,7 @@ class Resource_Identifier
             $type = 'search';
             $meta_key = 'search_query';
             $meta_value = \get_search_query();
-        } elseif (\is_post_type_archive()) {
+        } elseif (\is_post_type_archive() && !\is_tax()) {
             $type = 'post_type_archive';
             $meta_key = 'post_type';
             $meta_value = \get_queried_object()->name;

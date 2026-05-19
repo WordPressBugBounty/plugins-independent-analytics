@@ -479,7 +479,10 @@ class REST_API
         if (\is_string($this->decode_or_nullify($request['fbclid'])) && ($url->get_domain() === 'facebook.com' || Str::endsWith($url->get_domain(), '.facebook.com'))) {
             $referrer_url = 'https://facebookads.iawp';
         }
-        if (\is_null($referrer_url)) {
+        if ($referrer_url === null || $url->get_domain() === null) {
+            return null;
+        }
+        if (Str::endsWith($url->get_domain(), '.local')) {
             return null;
         }
         return $referrer_url;

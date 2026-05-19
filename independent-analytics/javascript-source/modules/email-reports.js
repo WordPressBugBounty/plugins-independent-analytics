@@ -35,7 +35,21 @@ const EmailReports = {
         });
         $('#test-email').on('click', function(e){
             e.preventDefault();
-            self.sendTestEmail();
+            self.toggleModal();
+        });
+        $('.modal-background').on('click', function() {
+            if ($('#email-test-modal').hasClass('show')) {
+                self.toggleModal();
+            }
+        });
+        $('#cancel-test-email').on('click', function() {
+            self.toggleModal();
+        });
+        $('#send-test-email').on('click', function(e){
+            e.preventDefault();
+            var recipient = $('input[name="email-recipient"]:checked').val();
+            self.sendTestEmail(recipient);
+            self.toggleModal();
         });
         $('#preview-email').on('click', function(e){
             e.preventDefault();
@@ -52,9 +66,10 @@ const EmailReports = {
             $('#test-email').attr('disabled', true);
         }
     },
-    sendTestEmail: function() {
+    sendTestEmail: function(recipient) {
         const data = {
-            ...iawpActions.test_email
+            ...iawpActions.test_email,
+            'recipient': recipient
         };
 
         $('#test-email').addClass('sending');
@@ -96,7 +111,17 @@ const EmailReports = {
             }, 1000)
 
         });
-    }
+    },
+    toggleModal: function() {
+        $('#email-test-modal').toggleClass('show');
+        $('#iawp-layout').toggleClass('modal-open');
+
+        if ($('#email-test-modal').hasClass('show')) {
+            $('#test-email').addClass('modal-opened');
+        } else {
+            $('#test-email').removeClass('modal-opened');
+        }
+    },
 }
 
 export { EmailReports };

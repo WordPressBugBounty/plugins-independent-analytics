@@ -127,7 +127,12 @@ $plugin_groups = array_filter($plugin_groups, function ($plugin_group) use ($opt
                             </div>
                         <?php elseif(!$plugin_group->has_tracked_data()) : ?>
                             <div class="required-plugin-note">
-                                <p><?php echo esc_html($plugin_group->no_tracked_data_message()); ?></p>
+                                <p><?php echo esc_html($plugin_group->no_tracked_data_message()); ?></p> 
+                                <p>
+                                    <a class="link-purple" target="_blank" href="https://independentwp.com/knowledgebase/form-tracking/why-arent-forms-showing/"> 
+                                        <?php esc_html_e('Learn more', 'independent-analytics'); ?>
+                                    </a>
+                                </p>
                             </div>
                         <?php endif; ?>
                     </div>

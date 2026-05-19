@@ -22,7 +22,7 @@ class Click_Tracking
     }
     public static function extensions()
     {
-        return ['aif', 'aifc', 'aiff', 'avi', 'csv', 'doc', 'docx', 'epub', 'exe', 'gif', 'jpeg', 'jpg', 'mov', 'mp3', 'mp4', 'm4a', 'pdf', 'png', 'ppt', 'pptx', 'psd', 'rtf', 'txt', 'wav', 'wmv', 'xls', 'xlsx', 'zip'];
+        return ['aac', 'ai', 'aif', 'aifc', 'aiff', 'avi', 'csv', 'dmg', 'doc', 'docx', 'eps', 'epub', 'exe', 'gif', 'gz', 'jpeg', 'jpg', 'mov', 'mp3', 'mp4', 'msi', 'm4a', 'pdf', 'png', 'ppt', 'pptx', 'psd', 'rar', 'rtf', 'sketch', 'tar', 'txt', 'wav', 'wmv', 'xls', 'xlsx', 'zip'];
     }
     public static function protocols()
     {

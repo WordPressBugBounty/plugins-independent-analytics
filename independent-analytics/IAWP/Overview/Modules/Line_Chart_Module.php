@@ -37,6 +37,7 @@ class Line_Chart_Module extends \IAWP\Overview\Modules\Module
         $statistics_class = $table->group()->statistics_class();
         /** @var Statistics $statistics */
         $statistics = new $statistics_class($date_range, $this->report()->has_filters() ? $rows_query : null, $chart_interval);
+        $statistics->fetch();
         $chart_data = new Chart_Data($statistics);
         return ['labels' => $chart_data->labels(), 'primary_dataset_id' => $this->attributes['primary_metric'], 'primary_dataset_name' => $this->get_field_option_name('primary_metric'), 'primary_dataset' => $chart_data->metric_dataset($this->attributes['primary_metric']), 'secondary_dataset_id' => $this->attributes['secondary_metric'] ?? null, 'secondary_dataset_name' => $this->get_field_option_name('secondary_metric'), 'secondary_dataset' => $chart_data->metric_dataset($this->attributes['secondary_metric'])];
     }

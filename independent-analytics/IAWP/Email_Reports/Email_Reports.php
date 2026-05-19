@@ -84,7 +84,7 @@ class Email_Reports
         }
         $this->schedule();
     }
-    public function send_email_report(bool $is_test_email = \false)
+    public function send_email_report(bool $is_test_email = \false, string $recipient = 'all')
     {
         // Email reports should be scheduled every time. CRON jobs run on a fixed interval which cannot
         // account for daylight saving times changes, causing them to send at the wrong hour as daylight
@@ -101,12 +101,15 @@ class Email_Reports
         $from = \IAWPSCOPED\iawp()->get_option('iawp_email_report_from_address', \get_option('admin_email'));
         $reply_to = \IAWPSCOPED\iawp()->get_option('iawp_email_report_reply_to_address', \get_option('admin_email'));
         $body = $this->get_email_body();
-        if (\count($to) > 1) {
-            for ($i = 0; $i < \count($to); $i++) {
-                if ($i == 0) {
-                    continue;
+        // Sends To first email and BCCs to the rest
+        if ($recipient == 'all') {
+            if (\count($to) > 1) {
+                for ($i = 0; $i < \count($to); $i++) {
+                    if ($i == 0) {
+                        continue;
+                    }
+                    $headers[] = 'Bcc: ' . $to[$i];
                 }
-                $headers[] = 'Bcc: ' . $to[$i];
             }
         }
         $headers[] = 'From: ' . \get_bloginfo('name') . ' <' . \esc_attr($from) . '>';
@@ -118,18 +121,18 @@ class Email_Reports
         });
         return \wp_mail($to[0], $this->subject_line($is_test_email), $body, $headers);
     }
-    public function get_email_body($colors = '')
+    public function get_email_body(array $preview_colors = [])
     {
         $statistics = new Page_Statistics($this->interval()->date_range());
+        $statistics->fetch();
         $quick_stats = \array_values(\array_filter($statistics->get_statistics(), function (Statistic $statistics) {
             return $statistics->is_visible() && $statistics->is_group_plugin_enabled();
         }));
         $chart = new \IAWP\Email_Reports\Email_Chart($statistics);
-        $colors = $colors == '' ? \IAWPSCOPED\iawp()->get_option('iawp_email_report_colors', ['#5123a0', '#fafafa', '#3a1e6b', '#fafafa', '#5123a0', '#a985e6', '#ece9f2', '#f7f5fa', '#ece9f2', '#dedae6']) : \explode(',', $colors);
-        $footer_text = \IAWPSCOPED\iawp()->get_option('iawp_email_report_footer', \sprintf(\esc_html__('This email was generated and delivered by %s', 'independent-analytics'), \esc_url(\get_site_url())));
+        $footer_text = \IAWPSCOPED\iawp()->get_option('iawp_email_report_footer', \sprintf(\esc_html__('This email was generated and delivered by %s', 'independent-analytics'), \esc_url(\get_home_url())));
         return \IAWPSCOPED\iawp_render('email.email', [
             'site_title' => \get_bloginfo('name'),
-            'site_url' => URL::new(\get_site_url())->get_domain(),
+            'site_url' => URL::new(\get_home_url())->get_domain(),
             'date' => $this->interval()->report_time_period_for_humans(),
             // The value that needs to change
             'stats' => $quick_stats,
@@ -139,9 +142,19 @@ class Email_Reports
             'most_views' => $chart->most_views,
             'y_labels' => $chart->y_labels,
             'x_labels' => $chart->x_labels,
-            'colors' => $colors,
+            'colors' => $this->get_email_colors($preview_colors),
             'footer_text' => $footer_text,
         ]);
+    }
+    // Note: looping over the defaults to prevent missing array key errors if new colors are added
+    private function get_email_colors(array $preview_colors) : array
+    {
+        $colors = ['#5123a0', '#fafafa', '#3a1e6b', '#fafafa', '#5123a0', '#a985e6', '#ece9f2', '#f7f5fa', '#ece9f2', '#dedae6', '#000000'];
+        $saved_colors = !empty($preview_colors) ? $preview_colors : \IAWPSCOPED\iawp()->get_option('iawp_email_report_colors', $colors);
+        for ($i = 0; $i < \count($saved_colors); $i++) {
+            $colors[$i] = $saved_colors[$i];
+        }
+        return $colors;
     }
     private function interval() : \IAWP\Email_Reports\Interval
     {

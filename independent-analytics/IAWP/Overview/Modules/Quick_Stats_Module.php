@@ -39,6 +39,7 @@ class Quick_Stats_Module extends \IAWP\Overview\Modules\Module
         $statistics_class = $table->group()->statistics_class();
         /** @var Statistics $statistics */
         $statistics = new $statistics_class($date_range, $this->report()->has_filters() ? $rows_query : null, $chart_interval);
+        $statistics->fetch();
         return Collection::make($this->attributes['statistics'] ?? [])->map(function (string $statistic_id) use($statistics) {
             return $statistics->get_statistic($statistic_id);
         })->filter(function (?Statistic $statistic) {

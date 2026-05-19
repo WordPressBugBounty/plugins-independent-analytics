@@ -178,6 +178,7 @@
         .footer,
         .footer-outlook {
             background-color: <?php echo $colors['9']; ?> !important;
+            color: <?php echo $colors['10']; ?> !important;
         }
 
         @media all and (max-width: 599px) {
@@ -664,7 +665,7 @@ endforeach; ?>
                                             <td align="center"
                                                 style="font-size:0px;padding:10px 25px;word-break:break-word;">
                                                 <div
-                                                    style="font-family:-apple-system,BlinkMacSystemFont,avenir next,avenir,helvetica neue,helvetica,ubuntu,roboto,noto,segoe ui,arial,sans-serif;font-size:13px;line-height:1.5;text-align:center;color:#000000;">
+                                                    style="font-family:-apple-system,BlinkMacSystemFont,avenir next,avenir,helvetica neue,helvetica,ubuntu,roboto,noto,segoe ui,arial,sans-serif;font-size:13px;line-height:1.5;text-align:center;">
                                                     <mj-raw><?php
                                                     echo esc_html($footer_text);
                                                     ?></mj-raw></div>

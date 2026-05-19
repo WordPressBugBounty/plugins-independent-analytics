@@ -35,8 +35,6 @@ abstract class Statistics
     private $previous_period_statistics;
     private $statistics_grouped_by_date_interval;
     private $unfiltered_statistics;
-    private $previous_period_unfiltered_statistic;
-    private $unfiltered_statistics_grouped_by_date_interval;
     private $statistic_instances;
     // The biggest flaw here is that it requires two queries for the stats (current and previous) when
     // that could be one. I think it would also be possible to reuse the rows query and not limit
@@ -47,13 +45,18 @@ abstract class Statistics
         $this->date_range = $date_range;
         $this->rows = $rows;
         $this->chart_interval = $chart_interval ?? Intervals::default_for($date_range->number_of_days());
-        if ($rows instanceof Rows) {
-            $this->statistics = $this->query($this->date_range, $rows);
-            $this->previous_period_statistics = $this->query($this->date_range->previous_period(), $rows);
-            $this->statistics_grouped_by_date_interval = $this->query($this->date_range, $rows, \true);
+        $this->statistic_instances = $this->make_statistic_instances();
+        $this->statistic_instances = \array_filter($this->statistic_instances, function (\IAWP\Statistics\Statistic $statistic) {
+            return $statistic->is_enabled();
+        });
+    }
+    public function fetch() : void
+    {
+        if ($this->rows instanceof Rows) {
+            $this->statistics = $this->query($this->date_range, $this->rows);
+            $this->previous_period_statistics = $this->query($this->date_range->previous_period(), $this->rows);
+            $this->statistics_grouped_by_date_interval = $this->query($this->date_range, $this->rows, \true);
             $this->unfiltered_statistics = $this->query($this->date_range);
-            $this->previous_period_unfiltered_statistic = $this->query($this->date_range->previous_period());
-            $this->unfiltered_statistics_grouped_by_date_interval = $this->query($this->date_range, null, \true);
         } else {
             $this->statistics = $this->query($this->date_range);
             $this->previous_period_statistics = $this->query($this->date_range->previous_period());
@@ -227,15 +230,19 @@ abstract class Statistics
     protected function make_statistic(array $attributes) : \IAWP\Statistics\Statistic
     {
         $statistic_id = $attributes['id'];
-        if (!\array_key_exists('compute', $attributes)) {
-            $attributes['compute'] = function ($statistics, $statistic_id) {
-                return $statistics->{$statistic_id};
-            };
+        if ($this->statistics) {
+            if (!\array_key_exists('compute', $attributes)) {
+                $attributes['compute'] = function ($statistics, $statistic_id) {
+                    return $statistics->{$statistic_id};
+                };
+            }
+            $attributes['statistic'] = $attributes['compute']($this->statistics, $statistic_id);
+            $attributes['previous_period_statistic'] = $attributes['compute']($this->previous_period_statistics, $statistic_id);
+            $attributes['statistic_over_time'] = $this->fill_in_partial_day_range($this->statistics_grouped_by_date_interval, $attributes);
+            $attributes['unfiltered_statistic'] = $this->has_filters() ? $attributes['compute']($this->unfiltered_statistics, $statistic_id) : null;
+        } else {
+            $attributes['statistic_over_time'] = $this->fill_in_partial_day_range([], []);
         }
-        $attributes['statistic'] = $attributes['compute']($this->statistics, $statistic_id);
-        $attributes['previous_period_statistic'] = $attributes['compute']($this->previous_period_statistics, $statistic_id);
-        $attributes['statistic_over_time'] = $this->fill_in_partial_day_range($this->statistics_grouped_by_date_interval, $attributes);
-        $attributes['unfiltered_statistic'] = $this->has_filters() ? $attributes['compute']($this->unfiltered_statistics, $statistic_id) : null;
         return new \IAWP\Statistics\Statistic($attributes);
     }
     protected function query(Date_Range $range, ?Rows $rows = null, bool $is_grouped_by_date_interval = \false)

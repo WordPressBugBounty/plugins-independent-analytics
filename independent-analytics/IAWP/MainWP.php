@@ -33,6 +33,7 @@ class MainWP
             $date_range = new Relative_Date_Range('LAST_THIRTY');
             $chart_interval = Intervals::default_for($date_range->number_of_days());
             $statistics = new $statistics_class($date_range, null, $chart_interval);
+            $statistics->fetch();
             $views = $statistics->get_statistic('views');
             $visitors = $statistics->get_statistic('visitors');
             $labels = \array_map(function ($data_point) use($statistics) {

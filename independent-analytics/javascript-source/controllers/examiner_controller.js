@@ -14,12 +14,18 @@ class ExaminerController extends Controller {
 
     connect() {
         document.addEventListener('iawp:showExaminer', this.showExaminer)
+        document.addEventListener('iawp:showUpsell', this.showUpsell)
         window.addEventListener('message', this.processMessage)
     }
 
     disconnect() {
         document.removeEventListener('iawp:showExaminer', this.showExaminer)
+        document.removeEventListener('iawp:showUpsell', this.showUpsell)
         window.removeEventListener('message', this.processMessage)
+    }
+
+    showUpsell = (event) => {
+        MicroModal.show('iawp-solo-report-upsell-modal', {})
     }
 
     showExaminer = (event) => {
@@ -99,6 +105,10 @@ class ExaminerController extends Controller {
 
     close() {
         MicroModal.close('iawp-examiner-modal')
+    }
+
+    closeUpsell() {
+        MicroModal.close('iawp-solo-report-upsell-modal')
     }
 
     cleanUp() {

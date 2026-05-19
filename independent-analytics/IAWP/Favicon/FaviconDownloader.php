@@ -3,6 +3,7 @@
 namespace IAWP\Favicon;
 
 use IAWP\Favicon\Converter\AbstractConverter;
+use IAWP\Utils\URL;
 /** @internal */
 class FaviconDownloader
 {
@@ -27,13 +28,16 @@ class FaviconDownloader
         if ($this->favicon->exists()) {
             return;
         }
-        $url = \sanitize_url($this->favicon->domain);
-        $content = $this->fetch($url);
+        $url = new URL(\sanitize_url($this->favicon->domain));
+        if ($url->is_valid_url() === \false || $url->get_domain() === null) {
+            return;
+        }
+        $content = $this->fetch($url->get_url());
         if ($content === null) {
             return;
         }
         try {
-            $favicon_url = $this->extractFaviconUrl($content, $url);
+            $favicon_url = $this->extractFaviconUrl($content, $url->get_url());
         } catch (\Throwable $e) {
             return;
         }
@@ -53,29 +57,11 @@ class FaviconDownloader
     }
     private function fetch(string $url) : ?string
     {
-        try {
-            $handle = \curl_init();
-            \curl_setopt($handle, \CURLOPT_URL, $url);
-            \curl_setopt($handle, \CURLOPT_RETURNTRANSFER, 1);
-            \curl_setopt($handle, \CURLOPT_FOLLOWLOCATION, \true);
-            \curl_setopt($handle, \CURLOPT_MAXREDIRS, 10);
-            \curl_setopt($handle, \CURLOPT_TIMEOUT, 10);
-            \curl_setopt($handle, \CURLOPT_ENCODING, '');
-            // Handle compression automatically
-            // Mimic a real browser to bypass Cloudflare and other bot protections
-            \curl_setopt($handle, \CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
-            $headers = ['Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8', 'Accept-Language: en-US,en;q=0.9', 'Upgrade-Insecure-Requests: 1', 'Sec-Fetch-Dest: document', 'Sec-Fetch-Mode: navigate', 'Sec-Fetch-Site: none', 'Sec-Fetch-User: ?1'];
-            \curl_setopt($handle, \CURLOPT_HTTPHEADER, $headers);
-            $content = \curl_exec($handle);
-            $httpCode = \curl_getinfo($handle, \CURLINFO_HTTP_CODE);
-            \curl_close($handle);
-            if ($httpCode >= 400) {
-                return null;
-            }
-            return $content !== \false ? $content : null;
-        } catch (\Throwable $e) {
+        $response = \wp_safe_remote_get($url, ["user-agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36", 'timeout' => 10, 'redirection' => 10]);
+        if (\is_wp_error($response)) {
             return null;
         }
+        return $response['body'];
     }
     private function extractFaviconUrl(string $html, string $baseUrl) : ?string
     {
@@ -166,7 +152,7 @@ class FaviconDownloader
     }
     private function has_required_php_extensions() : bool
     {
-        return \extension_loaded('curl') && (\extension_loaded('gd') || \extension_loaded('imagick'));
+        return \extension_loaded('gd') || \extension_loaded('imagick');
     }
     public static function for(\IAWP\Favicon\Favicon $favicon) : self
     {

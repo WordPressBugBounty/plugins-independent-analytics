@@ -25,7 +25,7 @@ class Preview_Email extends \IAWP\AJAX\AJAX
             return;
         }
         $colors = Security::string(\trim($this->get_field('colors')));
-        $email = \IAWPSCOPED\iawp()->email_reports->get_email_body($colors);
+        $email = \IAWPSCOPED\iawp()->email_reports->get_email_body(\explode(',', $colors));
         \wp_send_json_success(['html' => $email]);
     }
 }

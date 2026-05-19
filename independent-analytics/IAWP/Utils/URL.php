@@ -11,7 +11,7 @@ class URL
     private $url;
     public function __construct(string $url)
     {
-        $this->url = $url;
+        $this->url = \strtolower($url);
     }
     public function is_valid_url() : bool
     {

@@ -227,6 +227,14 @@ class Plugin_Conflict_Detector
                 return ['plugin' => 'falcon', 'error' => \__('The Falcon plugin has disabled the REST API for anonymous visitors, which Independent Analytics needs to record stats. Please visit the Settings > Falcon menu, open the Security section, and uncheck the "Disable REST API for unauthenticated requests" option to allow Independent Analytics to record stats.', 'independent-analytics')];
             }
         }
+        if (\is_plugin_active('jonradio-private-site/jonradio-private-site.php')) {
+            $settings = \get_option('jr_ps_settings');
+            if (\is_array($settings) && \array_key_exists('private_api', $settings)) {
+                if ($settings['private_api']) {
+                    return ['plugin' => 'jonradio-private-site', 'error' => \__('The "My Private Site" plugin is blocking the REST API for logged-out users, which is preventing Independent Analytics from tracking them. To re-enable tracking, please visit the My Private Site > Site Privacy > Protection menu and disable the option blocking the REST API.', 'independent-analytics')];
+                }
+            }
+        }
         return null;
     }
 }

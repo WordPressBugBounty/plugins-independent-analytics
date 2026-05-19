@@ -32,7 +32,7 @@ class Campaign_Builder
         $content = \strlen($content) > 0 ? $content : null;
         $path = String_Util::str_starts_with($path, '/') ? \substr($path, 1) : $path;
         $is_path_a_url = (new URL($path))->is_valid_url();
-        $url = new URL(\trailingslashit(\site_url()) . $path);
+        $url = new URL(\trailingslashit(\home_url()) . $path);
         if ($is_path_a_url) {
             $has_errors = \true;
             $path_error = \esc_html__('Path should not be a full URL', 'independent-analytics');
@@ -63,7 +63,7 @@ class Campaign_Builder
     public function build_url($path, $source, $medium, $campaign, $term = null, $content = null) : string
     {
         $path = String_Util::str_starts_with($path, '/') ? \substr($path, 1) : $path;
-        $uri = Uri::createFromString(\trailingslashit(\site_url()) . $path);
+        $uri = Uri::createFromString(\trailingslashit(\home_url()) . $path);
         $existing_query = $uri->getQuery();
         if (\is_null($existing_query)) {
             $existing_query = [];

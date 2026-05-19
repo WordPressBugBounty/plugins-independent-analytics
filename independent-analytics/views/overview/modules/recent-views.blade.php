@@ -38,7 +38,10 @@ if($is_loaded) : ?>
                 </span>
             </div>
             <div class="page-title">
-                <?php echo $dataset[$i]['page_title']; ?>
+                <div class="page-title-text">
+                    <?php echo esc_html($dataset[$i]['page_title']); ?>
+                </div>
+                <a href="<?php echo esc_url($dataset[$i]['page_url']); ?>" target="_blank" class="link-purple"><span class="dashicons dashicons-external"></span></a>
             </div><?php
             if (($i + 1) % 10 == 0 || $i == count($dataset) - 1) : ?>
                 </div><?php

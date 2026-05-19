@@ -105,7 +105,7 @@ class Link_Rule_Finder
             return \false;
         }
         $url = URL::new($this->href);
-        $site_url = URL::new(\get_site_url());
+        $site_url = URL::new(\get_home_url());
         if (!$url->is_valid_url() || $url->get_domain() !== $site_url->get_domain()) {
             return \false;
         }
@@ -128,7 +128,7 @@ class Link_Rule_Finder
         if (\is_null($this->href)) {
             return \false;
         }
-        $site_url = URL::new(\get_site_url());
+        $site_url = URL::new(\get_home_url());
         $link_url = URL::new($this->href);
         // Only track valid http/https URLs and not other protocols like mailto:, tel:, etc
         if (!$link_url->is_valid_url()) {

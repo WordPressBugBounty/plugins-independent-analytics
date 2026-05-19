@@ -14,7 +14,6 @@ use IAWP\Overview\Overview;
 use IAWP\Plugin_Conflict_Detector;
 use IAWP\Quick_Stats;
 use IAWP\Real_Time;
-use IAWP\Report;
 use IAWP\Report_Finder;
 use IAWP\Tables\Table;
 use IAWP\Tables\Table_Journeys;
@@ -30,8 +29,7 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         $options = Dashboard_Options::getInstance();
         $date_rage = $options->get_date_range();
         $tab = (new Env())->get_tab();
-        $report = Report_Finder::new()->fetch_current_report();
-        $is_showing_skeleton_ui = $report instanceof Report && $report->has_filters();
+        $is_showing_skeleton_ui = \true;
         // Real-time is its own thing
         if ($tab === 'real-time') {
             $real_time = new Real_Time();
@@ -258,6 +256,49 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
                         <?php 
             echo \IAWPSCOPED\iawp_render('examiner.skeleton');
             ?>
+                    </div>
+                </div>
+            </div>
+        <?php 
+        }
+        ?>
+        <?php 
+        if (!\IAWPSCOPED\iawp_is_pro()) {
+            $type = $table->group()->id();
+            if ($type == 'referrer_type') {
+                $type = 'referrer';
+            } elseif ($type == 'country' || $type == 'city') {
+                $type = 'geolocation';
+            } elseif ($type == 'device_type' || $type == 'browser' || $type == 'os') {
+                $type = 'device';
+            }
+            $report_names = ['page' => \esc_html__('Pages', 'independent-analytics'), 'referrer' => \esc_html__('Referrers', 'independent-analytics'), 'geolocation' => \esc_html__('Geolocations', 'independent-analytics'), 'device' => \esc_html__('Devices', 'independent-analytics'), 'campaigns' => \esc_html__('UTM campaigns', 'independent-analytics'), 'clicks' => \esc_html__('Clicks', 'independent-analytics'), 'ecommerce' => \esc_html__('eCommerce orders', 'independent-analytics'), 'forms' => \esc_html__('Form submissions', 'independent-analytics')];
+            ?>
+            <div id="iawp-solo-report-upsell-modal" aria-hidden="true" class="mm micromodal-slide" data-controller="examiner">
+                <div tabindex="-1" class="mm__overlay mm__overlay--full-screen" data-action="click->examiner#closeUpsell:self" >
+                    <div role="dialog" aria-modal="true" class="mm__container solo-report-upsell-container">
+                        <div class="title-large"><?php 
+            \esc_html_e('Upgrade to Pro to Unlock Solo Reports', 'independent-analytics');
+            ?></div>
+                        <div>
+                            <p><?php 
+            \printf(\esc_html_x('Open a full report for this %s to see its metrics, chart, and segmented data from other reports:', 'page, referrer, geolocation, or device', 'independent-analytics'), $type);
+            ?></p>
+                            <ul>
+                                <?php 
+            foreach ($report_names as $id => $label) {
+                if ($type != $id) {
+                    echo '<li>' . $label . '</li>';
+                }
+            }
+            ?>
+                            </ul>
+                            <a class="iawp-button purple" href="https://independentwp.com/features/solo-reports/?utm_source=User+Dashboard&utm_medium=WP+Admin&utm_campaign=Solo+Reports+modal&utm_content=Modal" target="_blank">
+                                <?php 
+            \esc_html_e('Learn more about Solo Reports', 'independent-analytics');
+            ?> &rarr;
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

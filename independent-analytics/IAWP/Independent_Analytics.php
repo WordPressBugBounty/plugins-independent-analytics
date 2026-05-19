@@ -103,11 +103,12 @@ class Independent_Analytics
         \IAWP_FS()->add_filter('show_deactivation_feedback_form', function () {
             return \false;
         });
+        \IAWP_FS()->add_filter('plugin_icon', function () {
+            \IAWPSCOPED\iawp_url_to('img/plugin-icon.png');
+        });
         \IAWP_FS()->add_filter('connect-header', [$this, 'freemius_optin_heading']);
         \IAWP_FS()->add_filter('connect_message', [$this, 'freemius_optin_text']);
-        if (\function_exists('IAWPSCOPED\\fs_override_i18n')) {
-            fs_override_i18n(['opt-in-connect' => \__('Subscribe & Go To Analytics', 'independent-analytics'), 'skip' => \__('No, thanks', 'independent-analytics')], 'independent-analytics');
-        }
+        \add_action('admin_init', [$this, 'override_freemius_text']);
         // Other hooks
         \add_action('admin_init', [$this, 'maybe_delete_mu_plugin']);
         \add_action('admin_body_class', [$this, 'add_body_class']);
@@ -117,7 +118,13 @@ class Independent_Analytics
         \add_filter('plugin_row_meta', [$this, 'add_docs_link_in_plugins_menu'], 10, 2);
         \add_action('admin_footer', [$this, 'attach_system_appearance_script'], 99, 0);
         \add_filter('sgo_javascript_combine_excluded_inline_content', [$this, 'exclude_tracking_script_from_speed_optimizer'], 10, 1);
-        \add_action('admin_init', [$this, 'maybe_add_cookie']);
+        \add_action('admin_init', [$this, 'update_cookie']);
+    }
+    public function override_freemius_text()
+    {
+        if (\function_exists('IAWPSCOPED\\fs_override_i18n')) {
+            fs_override_i18n(['opt-in-connect' => \__('Subscribe & Go To Analytics', 'independent-analytics'), 'skip' => \__('No, thanks', 'independent-analytics')], 'independent-analytics');
+        }
     }
     public function add_upgrade_link_in_plugins_menu($links)
     {
@@ -449,12 +456,16 @@ class Independent_Analytics
             }
         }
     }
-    public function maybe_add_cookie()
+    public function update_cookie()
     {
-        if (Request::is_blocked_user_role() && $this->get_option('iawp_ignore_via_cookie', \false)) {
-            if (!isset($_COOKIE['iawp_ignore_visitor'])) {
-                \setcookie('iawp_ignore_visitor', '1', \time() + 365 * 24 * 60 * 60, \COOKIEPATH, \COOKIE_DOMAIN);
-            }
+        $should_have_cookie = Request::is_blocked_user_role() && $this->get_option('iawp_ignore_via_cookie', \false);
+        $has_cookie = isset($_COOKIE['iawp_ignore_visitor']);
+        if ($should_have_cookie && !$has_cookie) {
+            \setcookie('iawp_ignore_visitor', '1', \time() + 365 * 24 * 60 * 60, \COOKIEPATH, \COOKIE_DOMAIN);
+        }
+        if (!$should_have_cookie && $has_cookie) {
+            // Delete cookie by using a non-zero time in the past
+            \setcookie('iawp_ignore_visitor', '1', \time() - 60, \COOKIEPATH, \COOKIE_DOMAIN);
         }
     }
     public function changelog_viewed_since_update() : bool

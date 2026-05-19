@@ -43,7 +43,7 @@ class Settings
         }
         echo \IAWPSCOPED\iawp_render('settings.export-reports', ['report_finder' => \IAWP\Report_Finder::new()]);
         echo \IAWPSCOPED\iawp_render('settings.pruner', ['pruner' => new Pruning_Scheduler()]);
-        echo \IAWPSCOPED\iawp_render('settings.delete', ['site_name' => \get_bloginfo('name'), 'site_url' => \site_url(), 'is_pro' => \IAWPSCOPED\iawp_is_pro()]);
+        echo \IAWPSCOPED\iawp_render('settings.delete', ['is_pro' => \IAWPSCOPED\iawp_is_pro()]);
     }
     public function register_settings()
     {
@@ -369,10 +369,10 @@ class Settings
     }
     private function email_report_colors()
     {
-        return ['#5123a0', '#fafafa', '#3a1e6b', '#fafafa', '#5123a0', '#a985e6', '#ece9f2', '#f7f5fa', '#ece9f2', '#dedae6'];
+        return ['#5123a0', '#fafafa', '#3a1e6b', '#fafafa', '#5123a0', '#a985e6', '#ece9f2', '#f7f5fa', '#ece9f2', '#dedae6', '#000000'];
     }
     private function email_footer()
     {
-        return \sprintf(\esc_html__('This email was generated and delivered by %s', 'independent-analytics'), \esc_url(\get_site_url()));
+        return \sprintf(\esc_html__('This email was generated and delivered by %s', 'independent-analytics'), \esc_url(\get_home_url()));
     }
 }

@@ -247,7 +247,7 @@ class View
      */
     private function is_internal_referrer(?string $referrer_url) : bool
     {
-        return !empty($referrer_url) && String_Util::str_starts_with(\strtolower($referrer_url), \strtolower(\site_url()));
+        return !empty($referrer_url) && String_Util::str_starts_with(\strtolower($referrer_url), \strtolower(\get_home_url()));
     }
     private function referrer_id() : int
     {

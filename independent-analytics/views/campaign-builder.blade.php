@@ -34,7 +34,7 @@ $utm_content        = $utm_content ?? null;
                             <input type="text"
                                    name="site_url"
                                    id="iawp_site_url"
-                                   value="<?php echo trailingslashit(site_url()) ?>"
+                                   value="<?php echo trailingslashit(home_url()) ?>"
                                    disabled="disabled"
                             />
                             <p class="description"><?php esc_html_e('Campaign links always lead to your site', 'independent-analytics'); ?></p>
@@ -156,29 +156,8 @@ $utm_content        = $utm_content ?? null;
             </div>
         </form>
         <?php if (isset($new_campaign_url)): ?>
-            <div class="campaign new"
-                 data-campaign-builder-target="newCampaign">
-                <p class="campaign-title"><?php esc_html_e('New campaign created', 'independent-analytics'); ?>
-                    &#127881;</p>
-                <div class="campaign-copy">
-                    <div class="campaign-text">
-                        <input readonly class="campaign-url"
-                               data-controller="select-input"
-                               data-action="click->select-input#selectInput"
-                               value="<?php echo esc_attr($new_campaign_url); ?>"
-                               data-testid="new-campaign" />
-                    </div>
-                    <div class="campaign-actions">
-                        <button class="iawp-button purple"
-                                data-controller="clipboard"
-                                data-action="clipboard#copy"
-                                data-clipboard-text-value="<?php echo esc_attr($new_campaign_url); ?>"
-                                data-testid="copy-new-campaign"
-                        >
-                            <?php esc_html_e('Copy URL', 'independent-analytics'); ?>
-                        </button>
-                    </div>
-                </div>
+            <div class="new-campaign-notice">
+                <p><span class="dashicons dashicons-yes-alt"></span> <?php esc_html_e('New campaign created!', 'independent-analytics'); ?></p>
             </div>
         <?php endif; ?>
     </div>
