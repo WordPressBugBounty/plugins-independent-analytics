@@ -4,6 +4,7 @@ namespace IAWPSCOPED\Illuminate\Database;
 
 use IAWPSCOPED\Illuminate\Database\Query\Expression;
 use IAWPSCOPED\Illuminate\Support\Traits\Macroable;
+use RuntimeException;
 /** @internal */
 abstract class Grammar
 {
@@ -55,6 +56,12 @@ abstract class Grammar
         if (\stripos($value, ' as ') !== \false) {
             return $this->wrapAliasedValue($value, $prefixAlias);
         }
+        // If the given value is a JSON selector we will wrap it differently than a
+        // traditional value. We will need to split this path and wrap each part
+        // wrapped, etc. Otherwise, we will simply wrap the value as a string.
+        if ($this->isJsonSelector($value)) {
+            return $this->wrapJsonSelector($value);
+        }
         return $this->wrapSegments(\explode('.', $value));
     }
     /**
@@ -99,6 +106,28 @@ abstract class Grammar
             return '"' . \str_replace('"', '""', $value) . '"';
         }
         return $value;
+    }
+    /**
+     * Wrap the given JSON selector.
+     *
+     * @param  string  $value
+     * @return string
+     *
+     * @throws \RuntimeException
+     */
+    protected function wrapJsonSelector($value)
+    {
+        throw new RuntimeException('This database engine does not support JSON operations.');
+    }
+    /**
+     * Determine if the given string is a JSON selector.
+     *
+     * @param  string  $value
+     * @return bool
+     */
+    protected function isJsonSelector($value)
+    {
+        return \str_contains($value, '->');
     }
     /**
      * Convert an array of column names into a delimited string.

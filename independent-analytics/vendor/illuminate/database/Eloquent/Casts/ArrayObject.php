@@ -5,7 +5,13 @@ namespace IAWPSCOPED\Illuminate\Database\Eloquent\Casts;
 use ArrayObject as BaseArrayObject;
 use IAWPSCOPED\Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
-/** @internal */
+/**
+ * @template TKey of array-key
+ * @template TItem
+ *
+ * @extends  \ArrayObject<TKey, TItem>
+ * @internal
+ */
 class ArrayObject extends BaseArrayObject implements Arrayable, JsonSerializable
 {
     /**
@@ -31,8 +37,7 @@ class ArrayObject extends BaseArrayObject implements Arrayable, JsonSerializable
      *
      * @return array
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize() : array
     {
         return $this->getArrayCopy();
     }

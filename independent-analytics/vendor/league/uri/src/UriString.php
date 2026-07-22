@@ -15,6 +15,7 @@ use IAWPSCOPED\League\Uri\Exceptions\IdnaConversionFailed;
 use IAWPSCOPED\League\Uri\Exceptions\IdnSupportMissing;
 use IAWPSCOPED\League\Uri\Exceptions\SyntaxError;
 use IAWPSCOPED\League\Uri\Idna\Idna;
+use TypeError;
 use function array_merge;
 use function explode;
 use function filter_var;
@@ -124,7 +125,7 @@ final class UriString
     private const ZONE_ID_ADDRESS_BLOCK = "\xfe\x80";
     /**
      * Generate an URI string representation from its parsed representation
-     * returned by League\Uri\parse() or PHP's parse_url.
+     * returned by League\UriString::parse() or PHP's parse_url.
      *
      * If you supply your own array, you are responsible for providing
      * valid components without their URI delimiters.
@@ -138,7 +139,7 @@ final class UriString
      *  pass:?string,
      *  host:?string,
      *  port:?int,
-     *  path:string,
+     *  path:?string,
      *  query:?string,
      *  fragment:?string
      * } $components
@@ -232,7 +233,7 @@ final class UriString
             $uri = (string) $uri;
         }
         if (!is_scalar($uri)) {
-            throw new \TypeError(sprintf('The uri must be a scalar or a stringable object `%s` given', gettype($uri)));
+            throw new TypeError(sprintf('The uri must be a scalar or a stringable object `%s` given', gettype($uri)));
         }
         $uri = (string) $uri;
         if (isset(self::URI_SCHORTCUTS[$uri])) {

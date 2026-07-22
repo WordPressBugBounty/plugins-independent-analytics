@@ -5,7 +5,6 @@ namespace IAWP\Email_Reports;
 use DateTime;
 use IAWP\Date_Range\Date_Range;
 use IAWP\Date_Range\Relative_Date_Range;
-use IAWP\Utils\String_Util;
 use IAWP\Utils\Timezone;
 use IAWPSCOPED\Illuminate\Support\Carbon;
 /** @internal */
@@ -31,7 +30,7 @@ class Interval
     public function report_time_period_for_humans() : string
     {
         $prefix = $this->datetime_prefix;
-        if (\strlen($prefix) > 0 && !String_Util::str_ends_with($prefix, ' ')) {
+        if (\strlen($prefix) > 0 && !\str_ends_with($prefix, ' ')) {
             $prefix .= ' ';
         }
         $start = $this->date_range()->start()->setTimezone(Timezone::site_timezone());

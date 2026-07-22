@@ -12,6 +12,7 @@ class AJAX_Manager
     private function __construct()
     {
         $this->instances[] = new \IAWP\AJAX\Archive_Link();
+        $this->instances[] = new \IAWP\AJAX\Clear_Favorite_Report();
         $this->instances[] = new \IAWP\AJAX\Click_Tracking_Cache_Cleared();
         $this->instances[] = new \IAWP\AJAX\Configure_Pruner();
         $this->instances[] = new \IAWP\AJAX\Set_WooCommerce_Statuses_To_Track();
@@ -37,7 +38,7 @@ class AJAX_Manager
         $this->instances[] = new \IAWP\AJAX\Migration_Status();
         $this->instances[] = new \IAWP\AJAX\Pause_Email_Reports();
         $this->instances[] = new \IAWP\AJAX\Preview_Email();
-        $this->instances[] = new \IAWP\AJAX\Real_Time_Data();
+        $this->instances[] = new \IAWP\AJAX\FetchRealTimeData();
         $this->instances[] = new \IAWP\AJAX\Refresh_Modules();
         $this->instances[] = new \IAWP\AJAX\Rename_Report();
         $this->instances[] = new \IAWP\AJAX\Reorder_Modules();
@@ -45,6 +46,7 @@ class AJAX_Manager
         $this->instances[] = new \IAWP\AJAX\Reset_Overview();
         $this->instances[] = new \IAWP\AJAX\Save_Module();
         $this->instances[] = new \IAWP\AJAX\Save_Report();
+        $this->instances[] = new \IAWP\AJAX\SaveRealTimePreferences();
         $this->instances[] = new \IAWP\AJAX\Set_Favorite_Report();
         $this->instances[] = new \IAWP\AJAX\Sort_Links();
         $this->instances[] = new \IAWP\AJAX\Sort_Reports();

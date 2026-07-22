@@ -23,7 +23,7 @@ class XliffFileDumper extends FileDumper
     /**
      * {@inheritdoc}
      */
-    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = [])
+    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = []) : string
     {
         $xliffVersion = '1.2';
         if (\array_key_exists('xliff_version', $options)) {
@@ -45,7 +45,7 @@ class XliffFileDumper extends FileDumper
     /**
      * {@inheritdoc}
      */
-    protected function getExtension()
+    protected function getExtension() : string
     {
         return 'xlf';
     }
@@ -160,7 +160,7 @@ class XliffFileDumper extends FileDumper
         }
         return $dom->saveXML();
     }
-    private function hasMetadataArrayInfo(string $key, ?array $metadata = null) : bool
+    private function hasMetadataArrayInfo(string $key, array $metadata = null) : bool
     {
         return \is_iterable($metadata[$key] ?? null);
     }

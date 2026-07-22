@@ -50,26 +50,13 @@ final class Expression
      * @link https://tools.ietf.org/html/rfc6570#appendix-A
      */
     private const OPERATOR_HASH_LOOKUP = ['' => ['prefix' => '', 'joiner' => ',', 'query' => \false], '+' => ['prefix' => '', 'joiner' => ',', 'query' => \false], '#' => ['prefix' => '#', 'joiner' => ',', 'query' => \false], '.' => ['prefix' => '.', 'joiner' => '.', 'query' => \false], '/' => ['prefix' => '/', 'joiner' => '/', 'query' => \false], ';' => ['prefix' => ';', 'joiner' => ';', 'query' => \true], '?' => ['prefix' => '?', 'joiner' => '&', 'query' => \true], '&' => ['prefix' => '&', 'joiner' => '&', 'query' => \true]];
-    /**
-     * @var string
-     */
-    private $operator;
-    /**
-     * @var string
-     */
-    private $joiner;
-    /**
-     * @var array<VarSpecifier>
-     */
-    private $varSpecifiers;
-    /**
-     * @var array<string>
-     */
-    private $variableNames;
-    /**
-     * @var string
-     */
-    private $expressionString;
+    private string $operator;
+    /** @var array<VarSpecifier> */
+    private array $varSpecifiers;
+    private string $joiner;
+    /** @var array<string> */
+    private array $variableNames;
+    private string $expressionString;
     private function __construct(string $operator, VarSpecifier ...$varSpecifiers)
     {
         $this->operator = $operator;
@@ -83,17 +70,11 @@ final class Expression
      */
     private function setVariableNames() : array
     {
-        $mapper = static function (VarSpecifier $varSpecifier) : string {
-            return $varSpecifier->name();
-        };
-        return array_unique(array_map($mapper, $this->varSpecifiers));
+        return array_unique(array_map(static fn(VarSpecifier $varSpecifier): string => $varSpecifier->name(), $this->varSpecifiers));
     }
     private function setExpressionString() : string
     {
-        $mapper = static function (VarSpecifier $variable) : string {
-            return $variable->toString();
-        };
-        $varSpecifierString = implode(',', array_map($mapper, $this->varSpecifiers));
+        $varSpecifierString = implode(',', array_map(static fn(VarSpecifier $variable): string => $variable->toString(), $this->varSpecifiers));
         return '{' . $this->operator . $varSpecifierString . '}';
     }
     /**
@@ -118,10 +99,7 @@ final class Expression
         if ('' !== $parts['operator'] && \false !== strpos(self::RESERVED_OPERATOR, $parts['operator'])) {
             throw new SyntaxError('The operator used in the expression "' . $expression . '" is reserved.');
         }
-        $mapper = static function (string $varSpec) : VarSpecifier {
-            return VarSpecifier::createFromString($varSpec);
-        };
-        return new Expression($parts['operator'], ...array_map($mapper, explode(',', $parts['variables'])));
+        return new Expression($parts['operator'], ...array_map(static fn(string $varSpec): VarSpecifier => VarSpecifier::createFromString($varSpec), explode(',', $parts['variables'])));
     }
     /**
      * Returns the expression string representation.
@@ -144,10 +122,7 @@ final class Expression
         foreach ($this->varSpecifiers as $varSpecifier) {
             $parts[] = $this->replace($varSpecifier, $variables);
         }
-        $nullFilter = static function ($value) : bool {
-            return '' !== $value;
-        };
-        $expanded = implode($this->joiner, array_filter($parts, $nullFilter));
+        $expanded = implode($this->joiner, array_filter($parts, static fn($value): bool => '' !== $value));
         if ('' === $expanded) {
             return $expanded;
         }

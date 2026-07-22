@@ -6,8 +6,12 @@ use IAWPSCOPED\IPLib\ParseStringFlag;
 use IAWPSCOPED\IPLib\Range\RangeInterface;
 use IAWPSCOPED\IPLib\Range\Subnet;
 use IAWPSCOPED\IPLib\Range\Type as RangeType;
+use IAWPSCOPED\IPLib\Service\BinaryMath;
+use IAWPSCOPED\IPLib\Service\NumberInChunks;
 /**
  * An IPv4 address.
+ *
+ * @phpstan-consistent-constructor
  * @internal
  */
 class IPv4 implements AddressInterface
@@ -35,13 +39,13 @@ class IPv4 implements AddressInterface
     /**
      * A string representation of this address than can be used when comparing addresses and ranges.
      *
-     * @var string
+     * @var string|null
      */
     protected $comparableString;
     /**
      * An array containing RFC designated address ranges.
      *
-     * @var array|null
+     * @var \IPLib\Address\AssignedRange[]|null
      */
     private static $reservedRanges;
     /**
@@ -168,7 +172,7 @@ class IPv4 implements AddressInterface
     /**
      * Parse an array of bytes and returns an IPv4 instance if the array is valid, or null otherwise.
      *
-     * @param int[]|array $bytes
+     * @param array<int|mixed> $bytes
      *
      * @return static|null
      */
@@ -334,10 +338,14 @@ class IPv4 implements AddressInterface
                 $exceptions = array();
                 if (isset($data[1])) {
                     foreach ($data[1] as $exceptionRange => $exceptionType) {
-                        $exceptions[] = new AssignedRange(Subnet::parseString($exceptionRange), $exceptionType);
+                        $subnet = Subnet::parseString($exceptionRange);
+                        /** @var Subnet $subnet */
+                        $exceptions[] = new AssignedRange($subnet, $exceptionType);
                     }
                 }
-                $reservedRanges[] = new AssignedRange(Subnet::parseString($range), $data[0], $exceptions);
+                $subnet = Subnet::parseString($range);
+                /** @var Subnet $subnet */
+                $reservedRanges[] = new AssignedRange($subnet, $data[0], $exceptions);
             }
             self::$reservedRanges = $reservedRanges;
         }
@@ -370,7 +378,9 @@ class IPv4 implements AddressInterface
     public function toIPv6()
     {
         $myBytes = $this->getBytes();
-        return IPv6::parseString('2002:' . \sprintf('%02x', $myBytes[0]) . \sprintf('%02x', $myBytes[1]) . ':' . \sprintf('%02x', $myBytes[2]) . \sprintf('%02x', $myBytes[3]) . '::');
+        $ipv6 = IPv6::parseString('2002:' . \sprintf('%02x', $myBytes[0]) . \sprintf('%02x', $myBytes[1]) . ':' . \sprintf('%02x', $myBytes[2]) . \sprintf('%02x', $myBytes[3]) . '::');
+        /** @var IPv6 $ipv6 */
+        return $ipv6;
     }
     /**
      * Create an IPv6 representation of this address (in IPv6 IPv4-mapped notation).
@@ -381,7 +391,9 @@ class IPv4 implements AddressInterface
      */
     public function toIPv6IPv4Mapped()
     {
-        return IPv6::fromBytes(\array_merge(array(0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xff, 0xff), $this->getBytes()));
+        $ipv6 = IPv6::fromBytes(\array_merge(array(0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xff, 0xff), $this->getBytes()));
+        /** @var IPv6 $ipv6 */
+        return $ipv6;
     }
     /**
      * {@inheritdoc}
@@ -415,24 +427,23 @@ class IPv4 implements AddressInterface
      */
     public function getAddressAtOffset($n)
     {
-        if (!\is_int($n)) {
+        if (\is_int($n)) {
+            $thatChunks = NumberInChunks::fromInteger($n, NumberInChunks::CHUNKSIZE_BYTES);
+        } elseif (($s = BinaryMath::getInstance()->normalizeIntegerString($n)) !== '') {
+            $thatChunks = NumberInChunks::fromNumericString($s, NumberInChunks::CHUNKSIZE_BYTES);
+        } else {
             return null;
         }
-        $boundary = 256;
-        $mod = $n;
-        $bytes = $this->getBytes();
-        for ($i = \count($bytes) - 1; $i >= 0; $i--) {
-            $tmp = ($bytes[$i] + $mod) % $boundary;
-            $mod = (int) \floor(($bytes[$i] + $mod) / $boundary);
-            if ($tmp < 0) {
-                $tmp += $boundary;
-            }
-            $bytes[$i] = $tmp;
+        $myBytes = $this->getBytes();
+        while (isset($myBytes[1]) && $myBytes[0] === 0) {
+            \array_shift($myBytes);
         }
-        if ($mod !== 0) {
+        $myChunks = new NumberInChunks(\false, $myBytes, NumberInChunks::CHUNKSIZE_BYTES);
+        $result = $myChunks->add($thatChunks);
+        if ($result->negative || \count($result->chunks) > 4) {
             return null;
         }
-        return static::fromBytes($bytes);
+        return static::fromBytes(\array_pad($result->chunks, -4, 0));
     }
     /**
      * {@inheritdoc}
@@ -460,5 +471,59 @@ class IPv4 implements AddressInterface
     public function getReverseDNSLookupName()
     {
         return \implode('.', \array_reverse($this->getBytes())) . '.in-addr.arpa';
+    }
+    /**
+     * {@inheritdoc}
+     *
+     * @see \IPLib\Address\AddressInterface::shift()
+     */
+    public function shift($bits)
+    {
+        $bits = (int) $bits;
+        if ($bits === 0) {
+            return $this;
+        }
+        $absBits = \abs($bits);
+        if ($absBits >= 32) {
+            return new self('0.0.0.0');
+        }
+        $pad = \str_repeat('0', $absBits);
+        $paddedBits = $this->getBits();
+        if ($bits > 0) {
+            $paddedBits = $pad . \substr($paddedBits, 0, -$bits);
+        } else {
+            $paddedBits = \substr($paddedBits, $absBits) . $pad;
+        }
+        $bytes = \array_map('bindec', \str_split($paddedBits, 8));
+        return new static(\implode('.', $bytes));
+    }
+    /**
+     * {@inheritdoc}
+     *
+     * @see \IPLib\Address\AddressInterface::add()
+     */
+    public function add(AddressInterface $other)
+    {
+        if (!$other instanceof self) {
+            return null;
+        }
+        $myBytes = $this->getBytes();
+        $otherBytes = $other->getBytes();
+        $sum = \array_fill(0, 4, 0);
+        $carry = 0;
+        for ($index = 3; $index >= 0; $index--) {
+            $byte = $myBytes[$index] + $otherBytes[$index] + $carry;
+            if ($byte > 0xff) {
+                $carry = $byte >> 8;
+                $byte &= 0xff;
+            } else {
+                $carry = 0;
+            }
+            $sum[$index] = $byte;
+        }
+        if ($carry !== 0) {
+            return null;
+        }
+        return new static(\implode('.', $sum));
     }
 }

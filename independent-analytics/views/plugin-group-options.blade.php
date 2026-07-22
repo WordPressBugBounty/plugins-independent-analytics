@@ -23,7 +23,7 @@ $plugin_groups = array_filter($plugin_groups, function ($plugin_group) use ($opt
     // Only one group with one option? Don't render the button or modal.
     if(count($plugin_groups) === 1) {
         $plugin_group_options = array_filter($options, function ($option) use ($plugin_groups) {
-           return $option->is_member_of_plugin_group($plugin_groups[0]->id());
+            return $option->is_member_of_plugin_group($plugin_groups[0]->id());
         });
 
         if(count($plugin_group_options) === 1) {
@@ -87,7 +87,7 @@ $plugin_groups = array_filter($plugin_groups, function ($plugin_group) use ($opt
                                 continue;
                             }
 
-                            if(is_string($option->plugin_group_header()) && array_key_exists($index - 1, $options) && ($options[$index -1])->plugin_group_header() !== $option->plugin_group_header()) : ?>
+                            if(is_string($option->plugin_group_header()) && array_key_exists($index - 1, $options) && ($options[$index - 1])->plugin_group_header() !== $option->plugin_group_header()) : ?>
                                 <span class="metrics-subtitle"><?php echo esc_html($option->plugin_group_header()); ?></span>
                             <?php endif; ?>
 
@@ -109,7 +109,7 @@ $plugin_groups = array_filter($plugin_groups, function ($plugin_group) use ($opt
                             </label>
                         <?php endforeach;
 
-                        if ($plugin_group->requires_pro() && iawp_is_free()) : ?>
+                    if ($plugin_group->requires_pro() && iawp_is_free()) : ?>
                             <div class="required-plugin-note">
                                 <p><?php echo esc_html($plugin_group->upgrade_message()); ?></p>
                                 <p><a href="<?php echo esc_attr($plugin_group->upgrade_link()); ?>"

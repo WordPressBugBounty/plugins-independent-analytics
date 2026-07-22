@@ -70,13 +70,16 @@ trait InteractsWithPivotTable
         // in this joining table. We'll spin through the given IDs, checking to see
         // if they exist in the array of current ones, and if not we will insert.
         $current = $this->getCurrentlyAttachedPivots()->pluck($this->relatedPivotKey)->all();
-        $detach = \array_diff($current, \array_keys($records = $this->formatRecordsList($this->parseIds($ids))));
+        $records = $this->formatRecordsList($this->parseIds($ids));
         // Next, we will take the differences of the currents and given IDs and detach
         // all of the entities that exist in the "current" array but are not in the
         // array of the new IDs given to the method which will complete the sync.
-        if ($detaching && \count($detach) > 0) {
-            $this->detach($detach);
-            $changes['detached'] = $this->castKeys($detach);
+        if ($detaching) {
+            $detach = \array_diff($current, \array_keys($records));
+            if (\count($detach) > 0) {
+                $this->detach($detach);
+                $changes['detached'] = $this->castKeys($detach);
+            }
         }
         // Now we are finally ready to attach the new records. Note that we'll disable
         // touching until after the entire operation is complete so we don't fire a
@@ -156,7 +159,7 @@ trait InteractsWithPivotTable
         if ($this->using && empty($this->pivotWheres) && empty($this->pivotWhereIns) && empty($this->pivotWhereNulls)) {
             return $this->updateExistingPivotUsingCustomClass($id, $attributes, $touch);
         }
-        if (\in_array($this->updatedAt(), $this->pivotColumns)) {
+        if ($this->hasPivotColumn($this->updatedAt())) {
             $attributes = $this->addTimestampsToAttachment($attributes, \true);
         }
         $updated = $this->newPivotStatementForId($this->parseId($id))->update($this->castAttributes($attributes));
@@ -521,18 +524,11 @@ trait InteractsWithPivotTable
      */
     protected function getTypeSwapValue($type, $value)
     {
-        switch (\strtolower($type)) {
-            case 'int':
-            case 'integer':
-                return (int) $value;
-            case 'real':
-            case 'float':
-            case 'double':
-                return (float) $value;
-            case 'string':
-                return (string) $value;
-            default:
-                return $value;
-        }
+        return match (\strtolower($type)) {
+            'int', 'integer' => (int) $value,
+            'real', 'float', 'double' => (float) $value,
+            'string' => (string) $value,
+            default => $value,
+        };
     }
 }

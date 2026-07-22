@@ -12,6 +12,7 @@ declare (strict_types=1);
 namespace IAWPSCOPED\League\Uri\UriTemplate;
 
 use IAWPSCOPED\League\Uri\Exceptions\TemplateCanNotBeExpanded;
+use TypeError;
 use function gettype;
 use function is_array;
 use function is_bool;
@@ -25,9 +26,9 @@ final class VariableBag
     /**
      * @var array<string,string|array<string>>
      */
-    private $variables = [];
+    private array $variables = [];
     /**
-     * @param iterable<string,mixed> $variables
+     * @param iterable<string,string|bool|int|float|array<string|bool|int|float>> $variables
      */
     public function __construct(iterable $variables = [])
     {
@@ -56,7 +57,7 @@ final class VariableBag
         return $this->variables[$name] ?? null;
     }
     /**
-     * @param string|array<string> $value
+     * @param string|bool|int|float|array<string|bool|int|float> $value
      */
     public function assign(string $name, $value) : void
     {
@@ -78,7 +79,7 @@ final class VariableBag
             return (string) $value;
         }
         if (!is_array($value)) {
-            throw new \TypeError(sprintf('The variable ' . $name . ' must be NULL, a scalar or a stringable object `%s` given', gettype($value)));
+            throw new TypeError(sprintf('The variable ' . $name . ' must be NULL, a scalar or a stringable object `%s` given', gettype($value)));
         }
         if (!$isNestedListAllowed) {
             throw TemplateCanNotBeExpanded::dueToNestedListOfValue($name);
@@ -94,8 +95,6 @@ final class VariableBag
      */
     public function replace(VariableBag $variables) : self
     {
-        $instance = clone $this;
-        $instance->variables += $variables->variables;
-        return $instance;
+        return new self($this->variables + $variables->variables);
     }
 }

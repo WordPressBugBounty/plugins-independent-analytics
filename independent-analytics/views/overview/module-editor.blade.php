@@ -6,7 +6,7 @@
      data-module-editor-module-id-value="<?php echo esc_attr($module->id()); ?>"
      data-module-editor-reports-value="<?php echo esc_attr(json_encode($module->get_report_details())); ?>">
     <header class="module-header">
-        <div class="module-icon"><?php 
+        <div class="module-icon"><?php
             echo iawp_render('icons.overview.' . $module->module_type()); ?>
         </div>
         <div class="module-title-container">

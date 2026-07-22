@@ -104,7 +104,7 @@ abstract class Rows
     {
         return [$this->date_range->iso_start(), $this->date_range->iso_end()];
     }
-    protected function appears_to_be_for_real_time_analytics() : bool
+    protected function is_real_time() : bool
     {
         $difference_in_seconds = $this->date_range->end()->getTimestamp() - $this->date_range->start()->getTimestamp();
         $one_hour_in_seconds = 3600;

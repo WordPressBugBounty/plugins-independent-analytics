@@ -10,6 +10,7 @@
  */
 namespace IAWPSCOPED\Symfony\Component\Translation\Command;
 
+use IAWPSCOPED\Symfony\Component\Console\Attribute\AsCommand;
 use IAWPSCOPED\Symfony\Component\Console\CI\GithubActionReporter;
 use IAWPSCOPED\Symfony\Component\Console\Command\Command;
 use IAWPSCOPED\Symfony\Component\Console\Completion\CompletionInput;
@@ -30,20 +31,19 @@ use IAWPSCOPED\Symfony\Component\Translation\Util\XliffUtils;
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  * @internal
  */
+#[AsCommand(name: 'lint:xliff', description: 'Lint an XLIFF file and outputs encountered errors')]
 class XliffLintCommand extends Command
 {
-    protected static $defaultName = 'lint:xliff';
-    protected static $defaultDescription = 'Lint an XLIFF file and outputs encountered errors';
-    private $format;
-    private $displayCorrectFiles;
-    private $directoryIteratorProvider;
-    private $isReadableProvider;
-    private $requireStrictFileNames;
-    public function __construct(?string $name = null, ?callable $directoryIteratorProvider = null, ?callable $isReadableProvider = null, bool $requireStrictFileNames = \true)
+    private string $format;
+    private bool $displayCorrectFiles;
+    private ?\Closure $directoryIteratorProvider;
+    private ?\Closure $isReadableProvider;
+    private bool $requireStrictFileNames;
+    public function __construct(string $name = null, callable $directoryIteratorProvider = null, callable $isReadableProvider = null, bool $requireStrictFileNames = \true)
     {
         parent::__construct($name);
-        $this->directoryIteratorProvider = $directoryIteratorProvider;
-        $this->isReadableProvider = $isReadableProvider;
+        $this->directoryIteratorProvider = null === $directoryIteratorProvider || $directoryIteratorProvider instanceof \Closure ? $directoryIteratorProvider : \Closure::fromCallable($directoryIteratorProvider);
+        $this->isReadableProvider = null === $isReadableProvider || $isReadableProvider instanceof \Closure ? $isReadableProvider : \Closure::fromCallable($isReadableProvider);
         $this->requireStrictFileNames = $requireStrictFileNames;
     }
     /**
@@ -51,7 +51,7 @@ class XliffLintCommand extends Command
      */
     protected function configure()
     {
-        $this->setDescription(self::$defaultDescription)->addArgument('filename', InputArgument::IS_ARRAY, 'A file, a directory or "-" for reading from STDIN')->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format')->setHelp(<<<EOF
+        $this->addArgument('filename', InputArgument::IS_ARRAY, 'A file, a directory or "-" for reading from STDIN')->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format')->setHelp(<<<EOF
 The <info>%command.name%</info> command lints an XLIFF file and outputs to STDOUT
 the first encountered syntax error.
 
@@ -71,7 +71,7 @@ Or of a whole directory:
 EOF
 );
     }
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $io = new SymfonyStyle($input, $output);
         $filenames = (array) $input->getArgument('filename');
@@ -94,7 +94,7 @@ EOF
         }
         return $this->display($io, $filesInfo);
     }
-    private function validate(string $content, ?string $file = null) : array
+    private function validate(string $content, string $file = null) : array
     {
         $errors = [];
         // Avoid: Warning DOMDocument::loadXML(): Empty string supplied as input

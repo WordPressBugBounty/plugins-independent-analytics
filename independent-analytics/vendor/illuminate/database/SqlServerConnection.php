@@ -3,8 +3,6 @@
 namespace IAWPSCOPED\Illuminate\Database;
 
 use Closure;
-use IAWPSCOPED\Doctrine\DBAL\Driver\PDOSqlsrv\Driver as DoctrineDriver;
-use IAWPSCOPED\Doctrine\DBAL\Version;
 use IAWPSCOPED\Illuminate\Database\PDO\SqlServerDriver;
 use IAWPSCOPED\Illuminate\Database\Query\Grammars\SqlServerGrammar as QueryGrammar;
 use IAWPSCOPED\Illuminate\Database\Query\Processors\SqlServerProcessor;
@@ -99,10 +97,10 @@ class SqlServerConnection extends Connection
     /**
      * Get the Doctrine DBAL driver.
      *
-     * @return \Doctrine\DBAL\Driver\PDOSqlsrv\Driver|\Illuminate\Database\PDO\SqlServerDriver
+     * @return \Illuminate\Database\PDO\SqlServerDriver
      */
     protected function getDoctrineDriver()
     {
-        return \class_exists(Version::class) ? new DoctrineDriver() : new SqlServerDriver();
+        return new SqlServerDriver();
     }
 }

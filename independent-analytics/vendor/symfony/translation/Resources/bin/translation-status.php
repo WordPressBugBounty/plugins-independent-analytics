@@ -57,7 +57,7 @@ foreach (\array_slice($argv, 1) as $argumentOrOption) {
         $config['include_completed_languages'] = \false;
         continue;
     }
-    if (0 === \strpos($argumentOrOption, '-')) {
+    if (\str_starts_with($argumentOrOption, '-')) {
         $config['verbose_output'] = \true;
     } else {
         $config['locale_to_analyze'] = $argumentOrOption;
@@ -140,7 +140,7 @@ function extractTranslationKeys($filePath)
     $contents = new \SimpleXMLElement(\file_get_contents($filePath));
     foreach ($contents->file->body->{'trans-unit'} as $translationKey) {
         $translationId = (string) $translationKey['id'];
-        $translationKey = (string) ($translationKey['resname'] ?? $translationKey->source);
+        $translationKey = (string) $translationKey->source;
         $translationKeys[$translationId] = $translationKey;
     }
     return $translationKeys;

@@ -2,11 +2,12 @@
 
 namespace IAWPSCOPED\Illuminate\Database\Console\Migrations;
 
+use IAWPSCOPED\Illuminate\Contracts\Console\PromptsForMissingInput;
 use IAWPSCOPED\Illuminate\Database\Migrations\MigrationCreator;
 use IAWPSCOPED\Illuminate\Support\Composer;
 use IAWPSCOPED\Illuminate\Support\Str;
 /** @internal */
-class MigrateMakeCommand extends BaseCommand
+class MigrateMakeCommand extends BaseCommand implements PromptsForMissingInput
 {
     /**
      * The console command signature.
@@ -18,7 +19,7 @@ class MigrateMakeCommand extends BaseCommand
         {--table= : The table to migrate}
         {--path= : The location where the migration file should be created}
         {--realpath : Indicate any provided migration file paths are pre-resolved absolute paths}
-        {--fullpath : Output the full path of the migration}';
+        {--fullpath : Output the full path of the migration (Deprecated)}';
     /**
      * The console command description.
      *
@@ -93,10 +94,7 @@ class MigrateMakeCommand extends BaseCommand
     protected function writeMigration($name, $table, $create)
     {
         $file = $this->creator->create($name, $this->getMigrationPath(), $table, $create);
-        if (!$this->option('fullpath')) {
-            $file = \pathinfo($file, \PATHINFO_FILENAME);
-        }
-        $this->line("<info>Created Migration:</info> {$file}");
+        $this->components->info(\sprintf('Migration [%s] created successfully.', $file));
     }
     /**
      * Get migration path (either specified by '--path' option or default location).
@@ -109,5 +107,14 @@ class MigrateMakeCommand extends BaseCommand
             return !$this->usingRealPath() ? $this->laravel->basePath() . '/' . $targetPath : $targetPath;
         }
         return parent::getMigrationPath();
+    }
+    /**
+     * Prompt for missing input arguments using the returned questions.
+     *
+     * @return array
+     */
+    protected function promptForMissingArgumentsUsing()
+    {
+        return ['name' => 'What should the migration be named?'];
     }
 }

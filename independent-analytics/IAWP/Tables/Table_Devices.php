@@ -22,7 +22,11 @@ class Table_Devices extends \IAWP\Tables\Table
     {
         return 'devices';
     }
-    protected function groups() : Groups
+    public function name() : string
+    {
+        return \__('Devices', 'independent-analytics');
+    }
+    public function groups() : Groups
     {
         $groups = [];
         $groups[] = new Group('device_type', \__('Device Type', 'independent-analytics'), 'device_type', Device_Types::class, Device_Type_Statistics::class);

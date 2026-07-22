@@ -230,10 +230,6 @@ abstract class Page extends \IAWP\Models\Model
         }
         return $this->cached_category;
     }
-    public function most_popular_subtitle() : ?string
-    {
-        return null;
-    }
     public function examiner_title() : ?string
     {
         return $this->title();

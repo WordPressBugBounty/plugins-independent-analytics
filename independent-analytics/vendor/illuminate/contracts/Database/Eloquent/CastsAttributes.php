@@ -2,7 +2,11 @@
 
 namespace IAWPSCOPED\Illuminate\Contracts\Database\Eloquent;
 
-/** @internal */
+/**
+ * @template TGet
+ * @template TSet
+ * @internal
+ */
 interface CastsAttributes
 {
     /**
@@ -12,7 +16,7 @@ interface CastsAttributes
      * @param  string  $key
      * @param  mixed  $value
      * @param  array  $attributes
-     * @return mixed
+     * @return TGet|null
      */
     public function get($model, string $key, $value, array $attributes);
     /**
@@ -20,7 +24,7 @@ interface CastsAttributes
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $key
-     * @param  mixed  $value
+     * @param  TSet|null  $value
      * @param  array  $attributes
      * @return mixed
      */

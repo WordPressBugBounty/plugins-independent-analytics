@@ -6,9 +6,11 @@ use IAWPSCOPED\Illuminate\Console\Command;
 use IAWPSCOPED\Illuminate\Console\ConfirmableTrait;
 use IAWPSCOPED\Illuminate\Database\ConnectionResolverInterface as Resolver;
 use IAWPSCOPED\Illuminate\Database\Eloquent\Model;
+use IAWPSCOPED\Symfony\Component\Console\Attribute\AsCommand;
 use IAWPSCOPED\Symfony\Component\Console\Input\InputArgument;
 use IAWPSCOPED\Symfony\Component\Console\Input\InputOption;
 /** @internal */
+#[AsCommand(name: 'db:seed')]
 class SeedCommand extends Command
 {
     use ConfirmableTrait;
@@ -18,6 +20,16 @@ class SeedCommand extends Command
      * @var string
      */
     protected $name = 'db:seed';
+    /**
+     * The name of the console command.
+     *
+     * This name is used to identify the command during lazy loading.
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'db:seed';
     /**
      * The console command description.
      *
@@ -51,6 +63,7 @@ class SeedCommand extends Command
         if (!$this->confirmToProceed()) {
             return 1;
         }
+        $this->components->info('Seeding database.');
         $previousConnection = $this->resolver->getDefaultConnection();
         $this->resolver->setDefaultConnection($this->getDatabase());
         Model::unguarded(function () {
@@ -59,7 +72,6 @@ class SeedCommand extends Command
         if ($previousConnection) {
             $this->resolver->setDefaultConnection($previousConnection);
         }
-        $this->info('Database seeding completed successfully.');
         return 0;
     }
     /**
@@ -70,7 +82,7 @@ class SeedCommand extends Command
     protected function getSeeder()
     {
         $class = $this->input->getArgument('class') ?? $this->input->getOption('class');
-        if (\strpos($class, '\\') === \false) {
+        if (!\str_contains($class, '\\')) {
             $class = 'Database\\Seeders\\' . $class;
         }
         if ($class === 'Database\\Seeders\\DatabaseSeeder' && !\class_exists($class)) {

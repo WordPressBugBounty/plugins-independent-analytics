@@ -5,6 +5,7 @@ namespace IAWPSCOPED\Illuminate\Database\Concerns;
 use IAWPSCOPED\Illuminate\Container\Container;
 use IAWPSCOPED\Illuminate\Database\Eloquent\Builder;
 use IAWPSCOPED\Illuminate\Database\MultipleRecordsFoundException;
+use IAWPSCOPED\Illuminate\Database\Query\Expression;
 use IAWPSCOPED\Illuminate\Database\RecordsNotFoundException;
 use IAWPSCOPED\Illuminate\Pagination\Cursor;
 use IAWPSCOPED\Illuminate\Pagination\CursorPaginator;
@@ -12,6 +13,7 @@ use IAWPSCOPED\Illuminate\Pagination\LengthAwarePaginator;
 use IAWPSCOPED\Illuminate\Pagination\Paginator;
 use IAWPSCOPED\Illuminate\Support\Collection;
 use IAWPSCOPED\Illuminate\Support\LazyCollection;
+use IAWPSCOPED\Illuminate\Support\Str;
 use IAWPSCOPED\Illuminate\Support\Traits\Conditionable;
 use InvalidArgumentException;
 use RuntimeException;
@@ -97,8 +99,8 @@ trait BuildsQueries
      */
     public function chunkById($count, callable $callback, $column = null, $alias = null)
     {
-        $column = $column ?? $this->defaultKeyName();
-        $alias = $alias ?? $column;
+        $column ??= $this->defaultKeyName();
+        $alias ??= $column;
         $lastId = null;
         $page = 1;
         do {
@@ -117,7 +119,7 @@ trait BuildsQueries
             if ($callback($results, $page) === \false) {
                 return \false;
             }
-            $lastId = $results->last()->{$alias};
+            $lastId = \IAWPSCOPED\data_get($results->last(), $alias);
             if ($lastId === null) {
                 throw new RuntimeException("The chunkById operation was aborted because the [{$alias}] column is not present in the query result.");
             }
@@ -216,8 +218,8 @@ trait BuildsQueries
         if ($chunkSize < 1) {
             throw new InvalidArgumentException('The chunk size should be at least 1');
         }
-        $column = $column ?? $this->defaultKeyName();
-        $alias = $alias ?? $column;
+        $column ??= $this->defaultKeyName();
+        $alias ??= $column;
         return LazyCollection::make(function () use($chunkSize, $column, $alias, $descending) {
             $lastId = null;
             while (\true) {
@@ -259,11 +261,12 @@ trait BuildsQueries
     public function sole($columns = ['*'])
     {
         $result = $this->take(2)->get($columns);
-        if ($result->isEmpty()) {
+        $count = $result->count();
+        if ($count === 0) {
             throw new RecordsNotFoundException();
         }
-        if ($result->count() > 1) {
-            throw new MultipleRecordsFoundException();
+        if ($count > 1) {
+            throw new MultipleRecordsFoundException($count);
         }
         return $result->first();
     }
@@ -271,7 +274,7 @@ trait BuildsQueries
      * Paginate the given query using a cursor paginator.
      *
      * @param  int  $perPage
-     * @param  array  $columns
+     * @param  array|string  $columns
      * @param  string  $cursorName
      * @param  \Illuminate\Pagination\Cursor|string|null  $cursor
      * @return \Illuminate\Contracts\Pagination\CursorPaginator
@@ -286,7 +289,8 @@ trait BuildsQueries
             $addCursorConditions = function (self $builder, $previousColumn, $i) use(&$addCursorConditions, $cursor, $orders) {
                 $unionBuilders = isset($builder->unions) ? \IAWPSCOPED\collect($builder->unions)->pluck('query') : \IAWPSCOPED\collect();
                 if (!\is_null($previousColumn)) {
-                    $builder->where($this->getOriginalColumnNameForCursorPagination($this, $previousColumn), '=', $cursor->parameter($previousColumn));
+                    $originalColumn = $this->getOriginalColumnNameForCursorPagination($this, $previousColumn);
+                    $builder->where(Str::contains($originalColumn, ['(', ')']) ? new Expression($originalColumn) : $originalColumn, '=', $cursor->parameter($previousColumn));
                     $unionBuilders->each(function ($unionBuilder) use($previousColumn, $cursor) {
                         $unionBuilder->where($this->getOriginalColumnNameForCursorPagination($this, $previousColumn), '=', $cursor->parameter($previousColumn));
                         $this->addBinding($unionBuilder->getRawBindings()['where'], 'union');
@@ -294,7 +298,8 @@ trait BuildsQueries
                 }
                 $builder->where(function (self $builder) use($addCursorConditions, $cursor, $orders, $i, $unionBuilders) {
                     ['column' => $column, 'direction' => $direction] = $orders[$i];
-                    $builder->where($this->getOriginalColumnNameForCursorPagination($this, $column), $direction === 'asc' ? '>' : '<', $cursor->parameter($column));
+                    $originalColumn = $this->getOriginalColumnNameForCursorPagination($this, $column);
+                    $builder->where(Str::contains($originalColumn, ['(', ')']) ? new Expression($originalColumn) : $originalColumn, $direction === 'asc' ? '>' : '<', $cursor->parameter($column));
                     if ($i < $orders->count() - 1) {
                         $builder->orWhere(function (self $builder) use($addCursorConditions, $column, $i) {
                             $addCursorConditions($builder, $column, $i + 1);
@@ -330,10 +335,10 @@ trait BuildsQueries
         $columns = $builder instanceof Builder ? $builder->getQuery()->columns : $builder->columns;
         if (!\is_null($columns)) {
             foreach ($columns as $column) {
-                if (($position = \stripos($column, ' as ')) !== \false) {
-                    $as = \substr($column, $position, 4);
-                    [$original, $alias] = \explode($as, $column);
-                    if ($parameter === $alias) {
+                if (($position = \strripos($column, ' as ')) !== \false) {
+                    $original = \substr($column, 0, $position);
+                    $alias = \substr($column, $position + 4);
+                    if ($parameter === $alias || $builder->getGrammar()->wrap($parameter) === $alias) {
                         return $original;
                     }
                 }
@@ -385,10 +390,11 @@ trait BuildsQueries
      * Pass the query to a given callback.
      *
      * @param  callable  $callback
-     * @return $this|mixed
+     * @return $this
      */
     public function tap($callback)
     {
-        return $this->when(\true, $callback);
+        $callback($this);
+        return $this;
     }
 }

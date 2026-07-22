@@ -30,7 +30,7 @@ class XliffFileLoader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function load($resource, string $locale, string $domain = 'messages')
+    public function load(mixed $resource, string $locale, string $domain = 'messages') : MessageCatalogue
     {
         if (!\class_exists(XmlUtils::class)) {
             throw new RuntimeException('Loading translations from the Xliff format requires the Symfony Config component.');
@@ -92,14 +92,11 @@ class XliffFileLoader implements LoaderInterface
                 if (!(isset($attributes['resname']) || isset($translation->source))) {
                     continue;
                 }
-                $source = (string) (isset($attributes['resname']) && $attributes['resname'] ? $attributes['resname'] : $translation->source);
-                if (isset($translation->target) && 'needs-translation' === (string) $translation->target->attributes()['state'] && \in_array((string) $translation->target, [$source, (string) $translation->source], \true)) {
-                    continue;
-                }
+                $source = isset($attributes['resname']) && $attributes['resname'] ? $attributes['resname'] : $translation->source;
                 // If the xlf file has another encoding specified, try to convert it because
                 // simple_xml will always return utf-8 encoded values
                 $target = $this->utf8ToCharset((string) ($translation->target ?? $translation->source), $encoding);
-                $catalogue->set($source, $target, $domain);
+                $catalogue->set((string) $source, $target, $domain);
                 $metadata = ['source' => (string) $translation->source, 'file' => ['original' => (string) $fileAttributes['original']]];
                 if ($notes = $this->parseNotesMetadata($translation->note, $encoding)) {
                     $metadata['notes'] = $notes;
@@ -113,7 +110,7 @@ class XliffFileLoader implements LoaderInterface
                 if (isset($attributes['id'])) {
                     $metadata['id'] = (string) $attributes['id'];
                 }
-                $catalogue->setMetadata($source, $metadata, $domain);
+                $catalogue->setMetadata((string) $source, $metadata, $domain);
             }
         }
     }
@@ -155,14 +152,14 @@ class XliffFileLoader implements LoaderInterface
     /**
      * Convert a UTF8 string to the specified encoding.
      */
-    private function utf8ToCharset(string $content, ?string $encoding = null) : string
+    private function utf8ToCharset(string $content, string $encoding = null) : string
     {
         if ('UTF-8' !== $encoding && !empty($encoding)) {
             return \mb_convert_encoding($content, $encoding, 'UTF-8');
         }
         return $content;
     }
-    private function parseNotesMetadata(?\SimpleXMLElement $noteElement = null, ?string $encoding = null) : array
+    private function parseNotesMetadata(\SimpleXMLElement $noteElement = null, string $encoding = null) : array
     {
         $notes = [];
         if (null === $noteElement) {

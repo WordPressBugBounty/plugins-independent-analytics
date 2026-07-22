@@ -66,9 +66,6 @@ class Request
     }
     public static function ip()
     {
-        if (\defined('IAWP_TEST_IP')) {
-            return \IAWP_TEST_IP;
-        }
         $headers = self::ip_headers();
         if (\is_string(self::custom_ip_header())) {
             \array_unshift($headers, self::custom_ip_header());

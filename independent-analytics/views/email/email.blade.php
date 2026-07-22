@@ -299,8 +299,8 @@
                 </tbody>
             </table>
         </div><!--[if mso | IE]></td></tr></table><![endif]--> <?php for($x = 0; $x < count($stats); $x++) :
-  $stat = $stats[$x];
-  if ($x % 2 == 0) : ?>
+    $stat = $stats[$x];
+    if ($x % 2 == 0) : ?>
         <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" bgcolor="#ffffff" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
         <div style="background:#ffffff;background-color:#ffffff;margin:0px auto;max-width:600px;">
             <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
@@ -338,9 +338,9 @@
                                                                     style="font-family:-apple-system,BlinkMacSystemFont,avenir next,avenir,helvetica neue,helvetica,ubuntu,roboto,noto,segoe ui,arial,sans-serif;font-size:24px;line-height:1;text-align:left;color:#000000;">
                                                                     <mj-raw><?php echo wp_kses($stat->formatted_value(), ['span' => []]); ?></mj-raw></div>
                                                             </td>
-                                                        </tr> <?php 
-          if ($stat->growth_html_class() == 'bad' || $stat->growth_html_class() == 'down bad' ) : 
-      ?> <tr>
+                                                        </tr> <?php
+            if ($stat->growth_html_class() == 'bad' || $stat->growth_html_class() == 'down bad') :
+                ?> <tr>
                                                             <td align="left"
                                                                 style="font-size:0px;padding:0 24px 12px;word-break:break-word;">
                                                                 <div
@@ -483,20 +483,20 @@
                                                                         style="color:#000000;font-family:-apple-system,BlinkMacSystemFont,avenir next,avenir,helvetica neue,helvetica,ubuntu,roboto,noto,segoe ui,arial,sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;border:none;">
                                                                         <tr class="bar-chart-row" height="200"
                                                                             style="height: 200px; position:">
-                                                                            <?php 
-              for ($x = 0; $x < count($chart_views); $x++) :
-                  if (count($chart_views) == 24) {
-                      $color = ($x + 6) % 6 == 0 ? $colors['5'] : $colors['4']; 
-                  } elseif (count($chart_views) == 7) {
-                      $color = $x%2 == 0 ? $colors['4'] : $colors['5'];                             
-                  } else {
-                      $color = ($x + 5) % 5 == 0 ? $colors['5'] : $colors['4']; 
-                  }
-                  if ($chart_views[$x] == 0) {
-                      $height = 0;
-                  } else {
-                      $height = round(($chart_views[$x]/$most_views) * 200);
-                  } ?> <td height="200"
+                                                                            <?php
+                        for ($x = 0; $x < count($chart_views); $x++) :
+                            if (count($chart_views) == 24) {
+                                $color = ($x + 6) % 6 == 0 ? $colors['5'] : $colors['4'];
+                            } elseif (count($chart_views) == 7) {
+                                $color = $x % 2 == 0 ? $colors['4'] : $colors['5'];
+                            } else {
+                                $color = ($x + 5) % 5 == 0 ? $colors['5'] : $colors['4'];
+                            }
+                            if ($chart_views[$x] == 0) {
+                                $height = 0;
+                            } else {
+                                $height = round(($chart_views[$x] / $most_views) * 200);
+                            } ?> <td height="200"
                                                                                 style="height: 200px; padding: 2px; vertical-align: bottom;">
                                                                                 <!--[if mso]><?php echo '<table height="200"><tr><td height="' . esc_attr($height) . '" style="background-color: ' . esc_attr($color) . '; height: ' . esc_attr($height) . 'px; width: 100%; color: ' . esc_attr($color) . '">A</td></tr></table>'; ?><![endif]-->
                                                                                 <?php
@@ -585,7 +585,7 @@
         </div><!--[if mso | IE]></td></tr></table><![endif]--> <?php
 $x = 0;
 foreach($top_ten as $type) :
-if ($x % 2 == 0) : ?>
+    if ($x % 2 == 0) : ?>
         <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" bgcolor="#ffffff" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
         <div style="background:#ffffff;background-color:#ffffff;margin:0px auto;max-width:600px;">
             <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
@@ -645,8 +645,8 @@ if ($x % 2 == 0) : ?>
                     </tr>
                 </tbody>
             </table>
-        </div><!--[if mso | IE]></td></tr></table><![endif]--> <?php endif; ?><?php 
-$x++;
+        </div><!--[if mso | IE]></td></tr></table><![endif]--> <?php endif; ?><?php
+    $x++;
 endforeach; ?>
         <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="footer-outlook" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
         <div class="footer" style="margin:0px auto;max-width:600px;">

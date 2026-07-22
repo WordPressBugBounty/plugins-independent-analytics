@@ -68,7 +68,7 @@ class Pruner
             // Delete orphaned click targets
             $links_table = Tables::links();
             Illuminate_Builder::new()->from(Tables::click_targets(), 'orphans')->leftJoin("{$links_table} AS links", 'orphans.click_target_id', '=', 'links.click_target_id')->whereNull('links.id')->delete();
-        });
+        }, 3);
         \delete_option('iawp_beginning_of_time');
     }
     private function delete_session_orphans(string $table, string $column, ?string $sessions_column = null) : int

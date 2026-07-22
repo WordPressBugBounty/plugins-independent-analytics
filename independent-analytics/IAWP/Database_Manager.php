@@ -2,8 +2,9 @@
 
 namespace IAWP;
 
-use IAWP\Custom_WordPress_Columns\Views_Column;
 use IAWP\Utils\Dir;
+use IAWP\ViewsColumn\UpdateTotalViewsPostMeta;
+use IAWP\ViewsColumn\ViewsColumn;
 use IAWPSCOPED\Illuminate\Support\Collection;
 /** @internal */
 class Database_Manager
@@ -79,7 +80,7 @@ class Database_Manager
     }
     public function delete_all_post_meta() : void
     {
-        \delete_post_meta_by_key(Views_Column::$meta_key);
+        \delete_post_meta_by_key(ViewsColumn::$meta_key);
     }
     public static function register_actions() : void
     {
@@ -105,6 +106,9 @@ class Database_Manager
             $database_manager->delete_all_post_meta();
             \IAWP\Capability_Manager::reset_capabilities();
             \update_option('iawp_db_version', $db_version);
+        });
+        \add_action('iawp_restore_iawp_total_views_post_meta', function () {
+            UpdateTotalViewsPostMeta::update_all();
         });
     }
 }

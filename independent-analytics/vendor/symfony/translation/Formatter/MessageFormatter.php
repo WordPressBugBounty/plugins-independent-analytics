@@ -25,7 +25,7 @@ class MessageFormatter implements MessageFormatterInterface, IntlFormatterInterf
     /**
      * @param TranslatorInterface|null $translator An identity translator to use as selector for pluralization
      */
-    public function __construct(?TranslatorInterface $translator = null, ?IntlFormatterInterface $intlFormatter = null)
+    public function __construct(TranslatorInterface $translator = null, IntlFormatterInterface $intlFormatter = null)
     {
         $this->translator = $translator ?? new IdentityTranslator();
         $this->intlFormatter = $intlFormatter ?? new IntlFormatter();
@@ -33,7 +33,7 @@ class MessageFormatter implements MessageFormatterInterface, IntlFormatterInterf
     /**
      * {@inheritdoc}
      */
-    public function format(string $message, string $locale, array $parameters = [])
+    public function format(string $message, string $locale, array $parameters = []) : string
     {
         if ($this->translator instanceof TranslatorInterface) {
             return $this->translator->trans($message, $parameters, null, $locale);

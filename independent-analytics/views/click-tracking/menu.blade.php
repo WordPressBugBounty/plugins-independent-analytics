@@ -39,27 +39,27 @@
                     <?php
                     foreach($active_links as $link) {
                         echo iawp_render('click-tracking.link', [
-                            'link' => $link,
-                            'types' => $types,
+                            'link'       => $link,
+                            'types'      => $types,
                             'extensions' => $extensions,
-                            'protocols' => $protocols
+                            'protocols'  => $protocols,
                         ]);
                     } ?>
                 </div>
             </div>
             <p class="tracked-links-empty-message <?php echo count($active_links) === 0 ? "show" : ""; ?>"><?php esc_html_e('No link patterns found', 'independent-analytics'); ?></p>
-            <div id="blueprint-link" class="blueprint-link"><?php 
+            <div id="blueprint-link" class="blueprint-link"><?php
                 echo iawp_render('click-tracking.link', [
                     'link' => [
-                        'id' => null,
-                        'name' => '',
-                        'type' => 'class',
-                        'value' => '',
-                        'is_active' => null
+                        'id'        => null,
+                        'name'      => '',
+                        'type'      => 'class',
+                        'value'     => '',
+                        'is_active' => null,
                     ],
-                    'types' => $types,
+                    'types'      => $types,
                     'extensions' => $extensions,
-                    'protocols' => $protocols
+                    'protocols'  => $protocols,
                 ]); ?>
             </div>
         </div>
@@ -82,10 +82,10 @@
                 <div id="archived-links-list" class="archived-links-list"><?php
                     foreach($inactive_links as $link) {
                         echo iawp_render('click-tracking.link', [
-                            'link' => $link,
-                            'types' => $types,
+                            'link'       => $link,
+                            'types'      => $types,
                             'extensions' => $extensions,
-                            'protocols' => $protocols
+                            'protocols'  => $protocols,
                         ]);
                     } ?>
                 </div>

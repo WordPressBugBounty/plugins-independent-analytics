@@ -10,13 +10,75 @@
  */
 namespace IAWPSCOPED\Symfony\Contracts\Service\Test;
 
-\class_alias(ServiceLocatorTestCase::class, ServiceLocatorTest::class);
-if (\false) {
-    /**
-     * @deprecated since PHPUnit 9.6
-     * @internal
-     */
-    class ServiceLocatorTest
+use IAWPSCOPED\PHPUnit\Framework\TestCase;
+use IAWPSCOPED\Psr\Container\ContainerInterface;
+use IAWPSCOPED\Symfony\Contracts\Service\ServiceLocatorTrait;
+/** @internal */
+abstract class ServiceLocatorTest extends TestCase
+{
+    protected function getServiceLocator(array $factories) : ContainerInterface
     {
+        return new class($factories) implements ContainerInterface
+        {
+            use ServiceLocatorTrait;
+        };
+    }
+    public function testHas()
+    {
+        $locator = $this->getServiceLocator(['foo' => function () {
+            return 'bar';
+        }, 'bar' => function () {
+            return 'baz';
+        }, function () {
+            return 'dummy';
+        }]);
+        $this->assertTrue($locator->has('foo'));
+        $this->assertTrue($locator->has('bar'));
+        $this->assertFalse($locator->has('dummy'));
+    }
+    public function testGet()
+    {
+        $locator = $this->getServiceLocator(['foo' => function () {
+            return 'bar';
+        }, 'bar' => function () {
+            return 'baz';
+        }]);
+        $this->assertSame('bar', $locator->get('foo'));
+        $this->assertSame('baz', $locator->get('bar'));
+    }
+    public function testGetDoesNotMemoize()
+    {
+        $i = 0;
+        $locator = $this->getServiceLocator(['foo' => function () use(&$i) {
+            ++$i;
+            return 'bar';
+        }]);
+        $this->assertSame('bar', $locator->get('foo'));
+        $this->assertSame('bar', $locator->get('foo'));
+        $this->assertSame(2, $i);
+    }
+    public function testThrowsOnUndefinedInternalService()
+    {
+        if (!$this->getExpectedException()) {
+            $this->expectException(\IAWPSCOPED\Psr\Container\NotFoundExceptionInterface::class);
+            $this->expectExceptionMessage('The service "foo" has a dependency on a non-existent service "bar". This locator only knows about the "foo" service.');
+        }
+        $locator = $this->getServiceLocator(['foo' => function () use(&$locator) {
+            return $locator->get('bar');
+        }]);
+        $locator->get('foo');
+    }
+    public function testThrowsOnCircularReference()
+    {
+        $this->expectException(\IAWPSCOPED\Psr\Container\ContainerExceptionInterface::class);
+        $this->expectExceptionMessage('Circular reference detected for service "bar", path: "bar -> baz -> bar".');
+        $locator = $this->getServiceLocator(['foo' => function () use(&$locator) {
+            return $locator->get('bar');
+        }, 'bar' => function () use(&$locator) {
+            return $locator->get('baz');
+        }, 'baz' => function () use(&$locator) {
+            return $locator->get('bar');
+        }]);
+        $locator->get('foo');
     }
 }

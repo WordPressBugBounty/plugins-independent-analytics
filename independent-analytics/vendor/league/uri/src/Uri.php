@@ -11,6 +11,7 @@
 declare (strict_types=1);
 namespace IAWPSCOPED\League\Uri;
 
+use finfo;
 use IAWPSCOPED\League\Uri\Contracts\UriInterface;
 use IAWPSCOPED\League\Uri\Exceptions\FileinfoSupportMissing;
 use IAWPSCOPED\League\Uri\Exceptions\IdnaConversionFailed;
@@ -18,6 +19,7 @@ use IAWPSCOPED\League\Uri\Exceptions\IdnSupportMissing;
 use IAWPSCOPED\League\Uri\Exceptions\SyntaxError;
 use IAWPSCOPED\League\Uri\Idna\Idna;
 use IAWPSCOPED\Psr\Http\Message\UriInterface as Psr7UriInterface;
+use TypeError;
 use function array_filter;
 use function array_map;
 use function base64_decode;
@@ -146,13 +148,13 @@ final class Uri implements UriInterface
     /**
      * Supported schemes and corresponding default port.
      *
-     * @var array
+     * @var array<string, int|null>
      */
     private const SCHEME_DEFAULT_PORT = ['data' => null, 'file' => null, 'ftp' => 21, 'gopher' => 70, 'http' => 80, 'https' => 443, 'ws' => 80, 'wss' => 443];
     /**
      * URI validation methods per scheme.
      *
-     * @var array
+     * @var array<string>
      */
     private const SCHEME_VALIDATION_METHOD = ['data' => 'isUriWithSchemeAndPathOnly', 'file' => 'isUriWithSchemeHostAndPathOnly', 'ftp' => 'isNonEmptyHostUriWithoutFragmentAndQuery', 'gopher' => 'isNonEmptyHostUriWithoutFragmentAndQuery', 'http' => 'isNonEmptyHostUri', 'https' => 'isNonEmptyHostUri', 'ws' => 'isNonEmptyHostUriWithoutFragment', 'wss' => 'isNonEmptyHostUriWithoutFragment'];
     /**
@@ -161,71 +163,15 @@ final class Uri implements UriInterface
      * @var string
      */
     private const ASCII = " eiasntrolud][cmp'\ng|hv.fb,:=-q10C2*yx)(L9AS/P\"EjMIk3>5T<D4}B{8FwR67UGN;JzV#HOW_&!K?XQ%Y\\\tZ+~^\$@`\x00\x01\x02\x03\x04\x05\x06\x07\x08\v\f\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f";
-    /**
-     * URI scheme component.
-     *
-     * @var string|null
-     */
-    private $scheme;
-    /**
-     * URI user info part.
-     *
-     * @var string|null
-     */
-    private $user_info;
-    /**
-     * URI host component.
-     *
-     * @var string|null
-     */
-    private $host;
-    /**
-     * URI port component.
-     *
-     * @var int|null
-     */
-    private $port;
-    /**
-     * URI authority string representation.
-     *
-     * @var string|null
-     */
-    private $authority;
-    /**
-     * URI path component.
-     *
-     * @var string
-     */
-    private $path = '';
-    /**
-     * URI query component.
-     *
-     * @var string|null
-     */
-    private $query;
-    /**
-     * URI fragment component.
-     *
-     * @var string|null
-     */
-    private $fragment;
-    /**
-     * URI string representation.
-     *
-     * @var string|null
-     */
-    private $uri;
-    /**
-     * Create a new instance.
-     *
-     * @param ?string $scheme
-     * @param ?string $user
-     * @param ?string $pass
-     * @param ?string $host
-     * @param ?int    $port
-     * @param ?string $query
-     * @param ?string $fragment
-     */
+    private ?string $scheme;
+    private ?string $user_info;
+    private ?string $host;
+    private ?int $port;
+    private ?string $authority;
+    private string $path = '';
+    private ?string $query;
+    private ?string $fragment;
+    private ?string $uri;
     private function __construct(?string $scheme, ?string $user, ?string $pass, ?string $host, ?int $port, string $path, ?string $query, ?string $fragment)
     {
         $this->scheme = $this->formatScheme($scheme);
@@ -241,8 +187,7 @@ final class Uri implements UriInterface
     /**
      * Format the Scheme and Host component.
      *
-     * @param ?string $scheme
-     *
+     * @param  ?string     $scheme
      * @throws SyntaxError if the scheme is invalid
      */
     private function formatScheme(?string $scheme) : ?string
@@ -258,7 +203,6 @@ final class Uri implements UriInterface
     }
     /**
      * Set the UserInfo component.
-     *
      * @param ?string $user
      * @param ?string $password
      */
@@ -284,7 +228,6 @@ final class Uri implements UriInterface
     }
     /**
      * Validate and Format the Host component.
-     *
      * @param ?string $host
      */
     private function formatHost(?string $host) : ?string
@@ -355,7 +298,7 @@ final class Uri implements UriInterface
     /**
      * Format the Port component.
      *
-     * @param null|mixed $port
+     * @param object|null|int|string $port
      *
      * @throws SyntaxError
      */
@@ -365,7 +308,7 @@ final class Uri implements UriInterface
             return null;
         }
         if (!\is_int($port) && !(\is_string($port) && 1 === preg_match('/^\\d*$/', $port))) {
-            throw new SyntaxError(sprintf('The port `%s` is invalid', $port));
+            throw new SyntaxError('The port is expected to be an integer or a string representing an integer; ' . \gettype($port) . ' given.');
         }
         $port = (int) $port;
         if (0 > $port) {
@@ -434,12 +377,8 @@ final class Uri implements UriInterface
         return new self($components['scheme'], $components['user'], $components['pass'], $components['host'], $components['port'], $components['path'], $components['query'], $components['fragment']);
     }
     /**
-     * Create a new instance from a hash of parse_url parts.
-     *
-     * Create an new instance from a hash representation of the URI similar
-     * to PHP parse_url function result
-     *
-     * @param array<string, mixed> $components
+     * Create a new instance from a hash representation of the URI similar
+     * to PHP parse_url function result.
      */
     public static function createFromComponents(array $components = []) : self
     {
@@ -457,7 +396,7 @@ final class Uri implements UriInterface
     public static function createFromDataPath(string $path, $context = null) : self
     {
         static $finfo_support = null;
-        $finfo_support = $finfo_support ?? \class_exists(\finfo::class);
+        $finfo_support = $finfo_support ?? \class_exists(finfo::class);
         // @codeCoverageIgnoreStart
         if (!$finfo_support) {
             throw new FileinfoSupportMissing(sprintf('Please install ext/fileinfo to use the %s() method.', __METHOD__));
@@ -473,7 +412,7 @@ final class Uri implements UriInterface
         if (\false === $raw) {
             throw new SyntaxError(sprintf('The file `%s` does not exist or is not readable', $path));
         }
-        $mimetype = (string) (new \finfo(FILEINFO_MIME))->file(...$mime_args);
+        $mimetype = (string) (new finfo(FILEINFO_MIME))->file(...$mime_args);
         return Uri::createFromComponents(['scheme' => 'data', 'path' => str_replace(' ', '', $mimetype . ';base64,' . base64_encode($raw))]);
     }
     /**
@@ -527,7 +466,7 @@ final class Uri implements UriInterface
             return new self($uri->getScheme(), $user, $pass, $uri->getHost(), $uri->getPort(), $uri->getPath(), $uri->getQuery(), $uri->getFragment());
         }
         if (!$uri instanceof Psr7UriInterface) {
-            throw new \TypeError(sprintf('The object must implement the `%s` or the `%s`', Psr7UriInterface::class, UriInterface::class));
+            throw new TypeError(sprintf('The object must implement the `%s` or the `%s`', Psr7UriInterface::class, UriInterface::class));
         }
         $scheme = $uri->getScheme();
         if ('' === $scheme) {
@@ -602,7 +541,7 @@ final class Uri implements UriInterface
      *
      * @throws SyntaxError If the host can not be detected
      *
-     * @return array{0:?string, 1:?string}
+     * @return array{0:string|null, 1:int|null}
      */
     private static function fetchHostname(array $server) : array
     {
@@ -611,7 +550,10 @@ final class Uri implements UriInterface
             $server['SERVER_PORT'] = (int) $server['SERVER_PORT'];
         }
         if (isset($server['HTTP_HOST']) && 1 === preg_match(self::REGEXP_HOST_PORT, $server['HTTP_HOST'], $matches)) {
-            return [$matches['host'], isset($matches['port']) ? (int) $matches['port'] : $server['SERVER_PORT']];
+            if (isset($matches['port'])) {
+                $matches['port'] = (int) $matches['port'];
+            }
+            return [$matches['host'], $matches['port'] ?? $server['SERVER_PORT']];
         }
         if (!isset($server['SERVER_ADDR'])) {
             throw new SyntaxError('The host could not be detected');
@@ -928,6 +870,9 @@ final class Uri implements UriInterface
      */
     public function getPath() : string
     {
+        if (0 === strpos($this->path, '//')) {
+            return '/' . \ltrim($this->path, '/');
+        }
         return $this->path;
     }
     /**
@@ -976,7 +921,7 @@ final class Uri implements UriInterface
             $str = (string) $str;
         }
         if (!is_scalar($str)) {
-            throw new \TypeError(sprintf('The component must be a string, a scalar or a stringable object %s given.', \gettype($str)));
+            throw new SyntaxError(sprintf('The component must be a string, a scalar or a stringable object; `%s` given.', \gettype($str)));
         }
         $str = (string) $str;
         if (1 !== preg_match(self::REGEXP_INVALID_CHARS, $str)) {
@@ -1038,12 +983,14 @@ final class Uri implements UriInterface
     }
     /**
      * {@inheritDoc}
+     *
+     * @param string|object $path
      */
     public function withPath($path) : UriInterface
     {
         $path = $this->filterString($path);
         if (null === $path) {
-            throw new \TypeError('A path must be a string NULL given.');
+            throw new TypeError('A path must be a string NULL given.');
         }
         $path = $this->formatPath($path);
         if ($path === $this->path) {

@@ -104,6 +104,17 @@ class SQLiteGrammar extends Grammar
         return "strftime('{$type}', {$this->wrap($where['column'])}) {$where['operator']} cast({$value} as text)";
     }
     /**
+     * Compile the index hints for the query.
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  \Illuminate\Database\Query\IndexHint  $indexHint
+     * @return string
+     */
+    protected function compileIndexHint(Builder $query, $indexHint)
+    {
+        return $indexHint->type === 'force' ? "indexed by {$indexHint->index}" : '';
+    }
+    /**
      * Compile a "JSON length" statement into SQL.
      *
      * @param  string  $column
@@ -115,6 +126,17 @@ class SQLiteGrammar extends Grammar
     {
         [$field, $path] = $this->wrapJsonFieldAndPath($column);
         return 'json_array_length(' . $field . $path . ') ' . $operator . ' ' . $value;
+    }
+    /**
+     * Compile a "JSON contains key" statement into SQL.
+     *
+     * @param  string  $column
+     * @return string
+     */
+    protected function compileJsonContainsKey($column)
+    {
+        [$field, $path] = $this->wrapJsonFieldAndPath($column);
+        return 'json_type(' . $field . $path . ') is not null';
     }
     /**
      * Compile an update statement into SQL.

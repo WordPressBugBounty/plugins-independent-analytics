@@ -2,7 +2,6 @@
 
 namespace IAWP;
 
-use IAWP\Utils\String_Util;
 /** @internal */
 class Plugin_Conflict_Detector
 {
@@ -130,7 +129,7 @@ class Plugin_Conflict_Detector
             }
             if (\is_array($settings) && \array_key_exists('norest', $settings)) {
                 if ($settings['norest'] === '1') {
-                    if (\is_array($settings['restwhite']) && !\in_array('iawp', $settings['restwhite']) || \is_string($settings['restwhite']) && !String_Util::str_contains($settings['restwhite'], 'iawp')) {
+                    if (\is_array($settings['restwhite']) && !\in_array('iawp', $settings['restwhite']) || \is_string($settings['restwhite']) && !\str_contains($settings['restwhite'], 'iawp')) {
                         return ['plugin' => 'wp-cerber', 'error' => \__('The "WP Cerber" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the WP Cerber > Dashboard > Hardening menu and add "iawp" to your allowed namespaces. This will keep the REST API locked down while allowing requests for Independent Analytics.', 'independent-analytics')];
                     }
                 }
@@ -181,7 +180,7 @@ class Plugin_Conflict_Detector
             $settings = \get_option('admin_site_enhancements');
             if (\is_array($settings) && \array_key_exists('disable_rest_api', $settings)) {
                 if ($settings['disable_rest_api']) {
-                    if (\is_string($settings['disable_rest_api_excluded_routes']) && !String_Util::str_contains($settings['disable_rest_api_excluded_routes'], 'iawp/search')) {
+                    if (\is_string($settings['disable_rest_api_excluded_routes']) && !\str_contains($settings['disable_rest_api_excluded_routes'], 'iawp/search')) {
                         return ['plugin' => 'admin-site-enhancements', 'error' => \__('The "Admin and Site Enhancements Pro" plugin is blocking the REST API, which Independent Analytics needs to record views. Please visit the Tools > Enhancements menu, click on the "Disable Components" section, and then click the "Expand" link under "Disable REST API." You can then enter "iawp/search" into the textarea to whitelist the route used by Independent Analytics.', 'independent-analytics')];
                     }
                 }

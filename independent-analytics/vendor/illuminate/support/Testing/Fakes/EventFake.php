@@ -24,7 +24,13 @@ class EventFake implements Dispatcher
      *
      * @var array
      */
-    protected $eventsToFake;
+    protected $eventsToFake = [];
+    /**
+     * The event types that should be dispatched instead of intercepted.
+     *
+     * @var array
+     */
+    protected $eventsToDispatch = [];
     /**
      * All of the events that have been intercepted keyed by type.
      *
@@ -44,20 +50,39 @@ class EventFake implements Dispatcher
         $this->eventsToFake = Arr::wrap($eventsToFake);
     }
     /**
+     * Specify the events that should be dispatched instead of faked.
+     *
+     * @param  array|string  $eventsToDispatch
+     * @return $this
+     */
+    public function except($eventsToDispatch)
+    {
+        $this->eventsToDispatch = \array_merge($this->eventsToDispatch, Arr::wrap($eventsToDispatch));
+        return $this;
+    }
+    /**
      * Assert if an event has a listener attached to it.
      *
      * @param  string  $expectedEvent
-     * @param  string  $expectedListener
+     * @param  string|array  $expectedListener
      * @return void
      */
     public function assertListening($expectedEvent, $expectedListener)
     {
         foreach ($this->dispatcher->getListeners($expectedEvent) as $listenerClosure) {
             $actualListener = (new ReflectionFunction($listenerClosure))->getStaticVariables()['listener'];
-            if (\is_string($actualListener) && Str::endsWith($actualListener, '@handle')) {
-                $actualListener = Str::parseCallback($actualListener)[0];
+            $normalizedListener = $expectedListener;
+            if (\is_string($actualListener) && Str::contains($actualListener, '@')) {
+                $actualListener = Str::parseCallback($actualListener);
+                if (\is_string($expectedListener)) {
+                    if (Str::contains($expectedListener, '@')) {
+                        $normalizedListener = Str::parseCallback($expectedListener);
+                    } else {
+                        $normalizedListener = [$expectedListener, \method_exists($expectedListener, 'handle') ? 'handle' : '__invoke'];
+                    }
+                }
             }
-            if ($actualListener === $expectedListener || $actualListener instanceof Closure && $expectedListener === Closure::class) {
+            if ($actualListener === $normalizedListener || $actualListener instanceof Closure && $normalizedListener === Closure::class) {
                 PHPUnit::assertTrue(\true);
                 return;
             }
@@ -129,12 +154,8 @@ class EventFake implements Dispatcher
         if (!$this->hasDispatched($event)) {
             return \IAWPSCOPED\collect();
         }
-        $callback = $callback ?: function () {
-            return \true;
-        };
-        return \IAWPSCOPED\collect($this->events[$event])->filter(function ($arguments) use($callback) {
-            return $callback(...$arguments);
-        });
+        $callback = $callback ?: fn() => \true;
+        return \IAWPSCOPED\collect($this->events[$event])->filter(fn($arguments) => $callback(...$arguments));
     }
     /**
      * Determine if the given event has been dispatched.
@@ -224,10 +245,29 @@ class EventFake implements Dispatcher
      */
     protected function shouldFakeEvent($eventName, $payload)
     {
+        if ($this->shouldDispatchEvent($eventName, $payload)) {
+            return \false;
+        }
         if (empty($this->eventsToFake)) {
             return \true;
         }
         return \IAWPSCOPED\collect($this->eventsToFake)->filter(function ($event) use($eventName, $payload) {
+            return $event instanceof Closure ? $event($eventName, $payload) : $event === $eventName;
+        })->isNotEmpty();
+    }
+    /**
+     * Determine whether an event should be dispatched or not.
+     *
+     * @param  string  $eventName
+     * @param  mixed  $payload
+     * @return bool
+     */
+    protected function shouldDispatchEvent($eventName, $payload)
+    {
+        if (empty($this->eventsToDispatch)) {
+            return \false;
+        }
+        return \IAWPSCOPED\collect($this->eventsToDispatch)->filter(function ($event) use($eventName, $payload) {
             return $event instanceof Closure ? $event($eventName, $payload) : $event === $eventName;
         })->isNotEmpty();
     }

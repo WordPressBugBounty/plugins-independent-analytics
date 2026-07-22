@@ -34,6 +34,9 @@ class Capability_Manager
                 continue;
             }
             $user_role = \get_role($role);
+            if ($user_role === null) {
+                continue;
+            }
             // For the role, remove all previous capabilities
             foreach (self::all_capabilities() as $possible_capability => $label) {
                 $user_role->remove_cap($possible_capability);

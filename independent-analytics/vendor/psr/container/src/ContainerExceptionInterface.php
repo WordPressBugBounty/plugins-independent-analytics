@@ -2,10 +2,11 @@
 
 namespace IAWPSCOPED\Psr\Container;
 
+use Throwable;
 /**
  * Base interface representing a generic exception in a container.
  * @internal
  */
-interface ContainerExceptionInterface
+interface ContainerExceptionInterface extends Throwable
 {
 }

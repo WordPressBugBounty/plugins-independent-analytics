@@ -51,7 +51,8 @@ class Config_File_Manager
     }
     private static function config_file_path() : string
     {
-        return \IAWPSCOPED\iawp_path_to('/iawp-click-config.php');
+        $suffix = \IAWP\Click_Tracking\Site::file_suffix();
+        return \IAWPSCOPED\iawp_path_to("/iawp-click-config{$suffix}.php");
     }
     private static function delete_file(string $file) : void
     {

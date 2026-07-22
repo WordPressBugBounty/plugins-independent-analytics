@@ -22,6 +22,10 @@ class Table_Journeys extends \IAWP\Tables\Table
     {
         return 'journeys';
     }
+    public function name() : string
+    {
+        return \__('Journeys', 'independent-analytics');
+    }
     public function allow_downloading() : bool
     {
         return \false;
@@ -62,7 +66,7 @@ class Table_Journeys extends \IAWP\Tables\Table
         }));
         return $modified_filters;
     }
-    protected function groups() : Groups
+    public function groups() : Groups
     {
         $groups = [];
         $groups[] = new Group('journey', \__('User Journeys', 'independent-analytics'), '', Journeys::class, Journey_Statistics::class);

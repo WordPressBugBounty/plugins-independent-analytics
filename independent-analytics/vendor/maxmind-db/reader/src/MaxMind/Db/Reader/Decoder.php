@@ -51,6 +51,9 @@ class Decoder
         $this->pointerTestHack = $pointerTestHack;
         $this->switchByteOrder = $this->isPlatformLittleEndian();
     }
+    /**
+     * @return array<mixed>
+     */
     public function decode(int $offset) : array
     {
         $ctrlByte = \ord(Util::read($this->fileStream, $offset, 1));
@@ -81,6 +84,8 @@ class Decoder
     }
     /**
      * @param int<0, max> $size
+     *
+     * @return array{0:mixed, 1:int}
      */
     private function decodeByType(int $type, int $offset, int $size) : array
     {
@@ -121,6 +126,9 @@ class Decoder
             throw new InvalidDatabaseException("The MaxMind DB file's data section contains bad data (unknown data type or corrupt data)");
         }
     }
+    /**
+     * @return array{0:array<mixed>, 1:int}
+     */
     private function decodeArray(int $size, int $offset) : array
     {
         $array = [];
@@ -178,6 +186,9 @@ class Decoder
         [, $int] = $rc;
         return $int;
     }
+    /**
+     * @return array{0:array<string, mixed>, 1:int}
+     */
     private function decodeMap(int $size, int $offset) : array
     {
         $map = [];
@@ -188,6 +199,9 @@ class Decoder
         }
         return [$map, $offset];
     }
+    /**
+     * @return array{0:int, 1:int}
+     */
     private function decodePointer(int $ctrlByte, int $offset) : array
     {
         $pointerSize = ($ctrlByte >> 3 & 0x3) + 1;
@@ -271,6 +285,9 @@ class Decoder
         }
         return $integerAsString;
     }
+    /**
+     * @return array{0:int, 1:int}
+     */
     private function sizeFromCtrlByte(int $ctrlByte, int $offset) : array
     {
         $size = $ctrlByte & 0x1f;

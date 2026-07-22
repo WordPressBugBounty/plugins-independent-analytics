@@ -7,6 +7,8 @@ use IAWPSCOPED\IPLib\Address\IPv4;
 use IAWPSCOPED\IPLib\Address\IPv6;
 use IAWPSCOPED\IPLib\Address\Type as AddressType;
 use IAWPSCOPED\IPLib\Factory;
+use IAWPSCOPED\IPLib\Service\BinaryMath;
+use OutOfBoundsException;
 /**
  * Base class for range classes.
  * @internal
@@ -20,10 +22,18 @@ abstract class AbstractRange implements RangeInterface
      */
     public function getRangeType()
     {
+        /** @var \IPLib\Range\Pattern|\IPLib\Range\Subnet $this */
+        // @phpstan-ignore varTag.nativeType
         if ($this->rangeType === null) {
             $addressType = $this->getAddressType();
             if ($addressType === AddressType::T_IPv6 && Subnet::get6to4()->containsRange($this)) {
-                $this->rangeType = Factory::getRangeFromBoundaries($this->fromAddress->toIPv4(), $this->toAddress->toIPv4())->getRangeType();
+                $fromAddress = $this->fromAddress;
+                /** @var IPv6 $fromAddress */
+                $toAddress = $this->toAddress;
+                /** @var IPv6 $toAddress */
+                $range = Factory::getRangeFromBoundaries($fromAddress->toIPv4(), $toAddress->toIPv4());
+                /** @var RangeInterface $range */
+                $this->rangeType = $range->getRangeType();
             } else {
                 switch ($addressType) {
                     case AddressType::T_IPv4:
@@ -34,8 +44,6 @@ abstract class AbstractRange implements RangeInterface
                         $defaultType = IPv6::getDefaultReservedRangeType();
                         $reservedRanges = IPv6::getReservedRanges();
                         break;
-                    default:
-                        throw new \Exception('@todo');
                 }
                 $rangeType = null;
                 foreach ($reservedRanges as $reservedRange) {
@@ -56,16 +64,23 @@ abstract class AbstractRange implements RangeInterface
      */
     public function getAddressAtOffset($n)
     {
-        if (!\is_int($n)) {
+        if (\is_int($n)) {
+            $positive = $n >= 0;
+        } elseif (($s = BinaryMath::getInstance()->normalizeIntegerString($n)) !== '') {
+            $n = $s;
+            $positive = $n[0] !== '-';
+        } else {
             return null;
         }
-        $address = null;
-        if ($n >= 0) {
+        if ($positive) {
             $start = Factory::parseAddressString($this->getComparableStartString());
+            /** @var \IPLib\Address\AddressInterface $start */
             $address = $start->getAddressAtOffset($n);
         } else {
             $end = Factory::parseAddressString($this->getComparableEndString());
-            $address = $end->getAddressAtOffset($n + 1);
+            /** @var \IPLib\Address\AddressInterface $end */
+            $nPlus1 = \is_int($n) ? $n + 1 : BinaryMath::getInstance()->add1ToIntegerString($n);
+            $address = $end->getAddressAtOffset($nPlus1);
         }
         if ($address === null) {
             return null;
@@ -109,6 +124,51 @@ abstract class AbstractRange implements RangeInterface
                 if ($itsEnd <= $myEnd) {
                     $result = \true;
                 }
+            }
+        }
+        return $result;
+    }
+    /**
+     * {@inheritdoc}
+     *
+     * @see \IPLib\Range\RangeInterface::split()
+     */
+    public function split($networkPrefix, $forceSubnet = \false)
+    {
+        $networkPrefix = (int) $networkPrefix;
+        $myNetworkPrefix = $this->getNetworkPrefix();
+        if ($networkPrefix === $myNetworkPrefix) {
+            return array($forceSubnet ? $this->asSubnet() : $this);
+        }
+        if ($networkPrefix < $myNetworkPrefix) {
+            throw new OutOfBoundsException("The value of the \$networkPrefix parameter can't be smaller than the network prefix of the range ({$myNetworkPrefix})");
+        }
+        $startIp = $this->getStartAddress();
+        $maxPrefix = $startIp::getNumberOfBits();
+        if ($networkPrefix > $maxPrefix) {
+            throw new OutOfBoundsException("The value of the \$networkPrefix parameter can't be larger than the maximum network prefix of the range ({$maxPrefix})");
+        }
+        switch ($startIp->getAddressType()) {
+            case AddressType::T_IPv4:
+                $one = IPv4::fromBytes(array(0, 0, 0, 1));
+                break;
+            case AddressType::T_IPv6:
+                $one = IPv6::fromBytes(array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1));
+                break;
+        }
+        /** @var \IPLib\Address\AddressInterface $one */
+        $delta = $one->shift($networkPrefix - $maxPrefix);
+        $result = array();
+        while (\true) {
+            $range = Subnet::parseString("{$startIp}/{$networkPrefix}");
+            /** @var Subnet $range */
+            if (!$forceSubnet && $this instanceof Pattern) {
+                $range = $range->asPattern() ?: $range;
+            }
+            $result[] = $range;
+            $startIp = $startIp->add($delta);
+            if ($startIp === null || !$this->contains($startIp)) {
+                break;
             }
         }
         return $result;

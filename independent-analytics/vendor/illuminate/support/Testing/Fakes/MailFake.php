@@ -104,9 +104,7 @@ class MailFake implements Factory, Mailer, MailQueue
      */
     public function assertNothingSent()
     {
-        $mailableNames = \IAWPSCOPED\collect($this->mailables)->map(function ($mailable) {
-            return \get_class($mailable);
-        })->join(', ');
+        $mailableNames = \IAWPSCOPED\collect($this->mailables)->map(fn($mailable) => \get_class($mailable))->join(', ');
         PHPUnit::assertEmpty($this->mailables, 'The following mailables were sent unexpectedly: ' . $mailableNames);
     }
     /**
@@ -155,9 +153,7 @@ class MailFake implements Factory, Mailer, MailQueue
      */
     public function assertNothingQueued()
     {
-        $mailableNames = \IAWPSCOPED\collect($this->queuedMailables)->map(function ($mailable) {
-            return \get_class($mailable);
-        })->join(', ');
+        $mailableNames = \IAWPSCOPED\collect($this->queuedMailables)->map(fn($mailable) => \get_class($mailable))->join(', ');
         PHPUnit::assertEmpty($this->queuedMailables, 'The following mailables were queued unexpectedly: ' . $mailableNames);
     }
     /**
@@ -173,12 +169,8 @@ class MailFake implements Factory, Mailer, MailQueue
         if (!$this->hasSent($mailable)) {
             return \IAWPSCOPED\collect();
         }
-        $callback = $callback ?: function () {
-            return \true;
-        };
-        return $this->mailablesOf($mailable)->filter(function ($mailable) use($callback) {
-            return $callback($mailable);
-        });
+        $callback = $callback ?: fn() => \true;
+        return $this->mailablesOf($mailable)->filter(fn($mailable) => $callback($mailable));
     }
     /**
      * Determine if the given mailable has been sent.
@@ -203,12 +195,8 @@ class MailFake implements Factory, Mailer, MailQueue
         if (!$this->hasQueued($mailable)) {
             return \IAWPSCOPED\collect();
         }
-        $callback = $callback ?: function () {
-            return \true;
-        };
-        return $this->queuedMailablesOf($mailable)->filter(function ($mailable) use($callback) {
-            return $callback($mailable);
-        });
+        $callback = $callback ?: fn() => \true;
+        return $this->queuedMailablesOf($mailable)->filter(fn($mailable) => $callback($mailable));
     }
     /**
      * Determine if the given mailable has been queued.
@@ -228,9 +216,7 @@ class MailFake implements Factory, Mailer, MailQueue
      */
     protected function mailablesOf($type)
     {
-        return \IAWPSCOPED\collect($this->mailables)->filter(function ($mailable) use($type) {
-            return $mailable instanceof $type;
-        });
+        return \IAWPSCOPED\collect($this->mailables)->filter(fn($mailable) => $mailable instanceof $type);
     }
     /**
      * Get all of the mailed mailables for a given type.
@@ -240,9 +226,7 @@ class MailFake implements Factory, Mailer, MailQueue
      */
     protected function queuedMailablesOf($type)
     {
-        return \IAWPSCOPED\collect($this->queuedMailables)->filter(function ($mailable) use($type) {
-            return $mailable instanceof $type;
-        });
+        return \IAWPSCOPED\collect($this->queuedMailables)->filter(fn($mailable) => $mailable instanceof $type);
     }
     /**
      * Get a mailer instance by name.
@@ -264,6 +248,16 @@ class MailFake implements Factory, Mailer, MailQueue
     public function to($users)
     {
         return (new PendingMailFake($this))->to($users);
+    }
+    /**
+     * Begin the process of mailing a mailable class instance.
+     *
+     * @param  mixed  $users
+     * @return \Illuminate\Mail\PendingMail
+     */
+    public function cc($users)
+    {
+        return (new PendingMailFake($this))->cc($users);
     }
     /**
      * Begin the process of mailing a mailable class instance.

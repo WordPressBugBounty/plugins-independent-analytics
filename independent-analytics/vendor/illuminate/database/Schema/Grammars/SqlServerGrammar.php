@@ -2,6 +2,7 @@
 
 namespace IAWPSCOPED\Illuminate\Database\Schema\Grammars;
 
+use IAWPSCOPED\Illuminate\Database\Connection;
 use IAWPSCOPED\Illuminate\Database\Schema\Blueprint;
 use IAWPSCOPED\Illuminate\Support\Fluent;
 /** @internal */
@@ -87,6 +88,18 @@ class SqlServerGrammar extends Grammar
     public function compileAdd(Blueprint $blueprint, Fluent $command)
     {
         return \sprintf('alter table %s add %s', $this->wrapTable($blueprint), \implode(', ', $this->getColumns($blueprint)));
+    }
+    /**
+     * Compile a rename column command.
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $command
+     * @param  \Illuminate\Database\Connection  $connection
+     * @return array|string
+     */
+    public function compileRenameColumn(Blueprint $blueprint, Fluent $command, Connection $connection)
+    {
+        return $connection->usingNativeSchemaOperations() ? \sprintf("sp_rename '%s', %s, 'COLUMN'", $this->wrap($blueprint->getTable() . '.' . $command->from), $this->wrap($command->to)) : parent::compileRenameColumn($blueprint, $command, $connection);
     }
     /**
      * Compile a primary key command.
@@ -311,6 +324,24 @@ class SqlServerGrammar extends Grammar
     public function compileDropAllViews()
     {
         return "DECLARE @sql NVARCHAR(MAX) = N'';\n            SELECT @sql += 'DROP VIEW ' + QUOTENAME(OBJECT_SCHEMA_NAME(object_id)) + '.' + QUOTENAME(name) + ';'\n            FROM sys.views;\n\n            EXEC sp_executesql @sql;";
+    }
+    /**
+     * Compile the SQL needed to retrieve all table names.
+     *
+     * @return string
+     */
+    public function compileGetAllTables()
+    {
+        return "select name, type from sys.tables where type = 'U'";
+    }
+    /**
+     * Compile the SQL needed to retrieve all view names.
+     *
+     * @return string
+     */
+    public function compileGetAllViews()
+    {
+        return "select name, type from sys.objects where type = 'V'";
     }
     /**
      * Create the column definition for a char type.

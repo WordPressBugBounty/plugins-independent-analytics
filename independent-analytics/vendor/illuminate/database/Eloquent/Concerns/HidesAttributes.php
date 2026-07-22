@@ -2,26 +2,25 @@
 
 namespace IAWPSCOPED\Illuminate\Database\Eloquent\Concerns;
 
-use Closure;
 /** @internal */
 trait HidesAttributes
 {
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array
+     * @var array<string>
      */
     protected $hidden = [];
     /**
      * The attributes that should be visible in serialization.
      *
-     * @var array
+     * @var array<string>
      */
     protected $visible = [];
     /**
      * Get the hidden attributes for the model.
      *
-     * @return array
+     * @return array<string>
      */
     public function getHidden()
     {
@@ -30,7 +29,7 @@ trait HidesAttributes
     /**
      * Set the hidden attributes for the model.
      *
-     * @param  array  $hidden
+     * @param  array<string>  $hidden
      * @return $this
      */
     public function setHidden(array $hidden)
@@ -41,7 +40,7 @@ trait HidesAttributes
     /**
      * Get the visible attributes for the model.
      *
-     * @return array
+     * @return array<string>
      */
     public function getVisible()
     {
@@ -50,7 +49,7 @@ trait HidesAttributes
     /**
      * Set the visible attributes for the model.
      *
-     * @param  array  $visible
+     * @param  array<string>  $visible
      * @return $this
      */
     public function setVisible(array $visible)
@@ -61,7 +60,7 @@ trait HidesAttributes
     /**
      * Make the given, typically hidden, attributes visible.
      *
-     * @param  array|string|null  $attributes
+     * @param  array<string>|string|null  $attributes
      * @return $this
      */
     public function makeVisible($attributes)
@@ -76,8 +75,8 @@ trait HidesAttributes
     /**
      * Make the given, typically hidden, attributes visible if the given truth test passes.
      *
-     * @param  bool|Closure  $condition
-     * @param  array|string|null  $attributes
+     * @param  bool|\Closure  $condition
+     * @param  array<string>|string|null  $attributes
      * @return $this
      */
     public function makeVisibleIf($condition, $attributes)
@@ -87,7 +86,7 @@ trait HidesAttributes
     /**
      * Make the given, typically visible, attributes hidden.
      *
-     * @param  array|string|null  $attributes
+     * @param  array<string>|string|null  $attributes
      * @return $this
      */
     public function makeHidden($attributes)
@@ -98,8 +97,8 @@ trait HidesAttributes
     /**
      * Make the given, typically visible, attributes hidden if the given truth test passes.
      *
-     * @param  bool|Closure  $condition
-     * @param  array|string|null  $attributes
+     * @param  bool|\Closure  $condition
+     * @param  array<string>|string|null  $attributes
      * @return $this
      */
     public function makeHiddenIf($condition, $attributes)

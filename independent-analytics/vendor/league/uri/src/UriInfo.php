@@ -13,6 +13,7 @@ namespace IAWPSCOPED\League\Uri;
 
 use IAWPSCOPED\League\Uri\Contracts\UriInterface;
 use IAWPSCOPED\Psr\Http\Message\UriInterface as Psr7UriInterface;
+use TypeError;
 use function explode;
 use function implode;
 use function preg_replace_callback;
@@ -21,8 +22,8 @@ use function sprintf;
 /** @internal */
 final class UriInfo
 {
-    private const REGEXP_ENCODED_CHARS = ',%(2[D|E]|3[0-9]|4[1-9|A-F]|5[0-9|A|F]|6[1-9|A-F]|7[0-9|E]),i';
-    private const WHATWG_SPECIAL_SCHEMES = ['ftp', 'http', 'https', 'ws', 'wss'];
+    private const REGEXP_ENCODED_CHARS = ',%(2[D|E]|3[0-9]|4[1-9|A-F]|5[0-9|AF]|6[1-9|A-F]|7[0-9|E]),i';
+    private const WHATWG_SPECIAL_SCHEMES = ['ftp' => 21, 'http' => 80, 'https' => 443, 'ws' => 80, 'wss' => 443];
     /**
      * @codeCoverageIgnore
      */
@@ -45,7 +46,7 @@ final class UriInfo
      *
      * @param mixed $uri the URI to validate
      *
-     * @throws \TypeError if the URI object does not implements the supported interfaces.
+     * @throws TypeError if the URI object does not implements the supported interfaces.
      *
      * @return Psr7UriInterface|UriInterface
      */
@@ -54,7 +55,7 @@ final class UriInfo
         if ($uri instanceof Psr7UriInterface || $uri instanceof UriInterface) {
             return $uri;
         }
-        throw new \TypeError(sprintf('The uri must be a valid URI object received `%s`', \is_object($uri) ? \get_class($uri) : \gettype($uri)));
+        throw new TypeError(sprintf('The uri must be a valid URI object received `%s`', \is_object($uri) ? \get_class($uri) : \gettype($uri)));
     }
     /**
      * Normalize an URI for comparison.
@@ -76,9 +77,7 @@ final class UriInfo
         $fragmentOrig = $fragment;
         $pairs = null === $query ? [] : explode('&', $query);
         \sort($pairs, \SORT_REGULAR);
-        $replace = static function (array $matches) : string {
-            return rawurldecode($matches[0]);
-        };
+        $replace = static fn(array $matches): string => rawurldecode($matches[0]);
         $retval = preg_replace_callback(self::REGEXP_ENCODED_CHARS, $replace, [$path, implode('&', $pairs), $fragment]);
         if (null !== $retval) {
             [$path, $query, $fragment] = $retval + ['', $null, $null];
@@ -160,10 +159,18 @@ final class UriInfo
             $uri = Uri::createFromString($uri->getPath());
             $scheme = $uri->getScheme();
         }
-        if (\in_array($scheme, self::WHATWG_SPECIAL_SCHEMES, \true)) {
-            $null = self::emptyComponentValue($uri);
-            return (string) $uri->withFragment($null)->withQuery($null)->withPath('')->withUserInfo($null, null);
+        if (null === $scheme || !\array_key_exists($scheme, self::WHATWG_SPECIAL_SCHEMES)) {
+            return null;
         }
-        return null;
+        $null = self::emptyComponentValue($uri);
+        return (string) $uri->withFragment($null)->withQuery($null)->withPath('')->withUserInfo($null);
+    }
+    /**
+     * @param Psr7UriInterface|UriInterface $uri
+     * @param Psr7UriInterface|UriInterface $base_uri
+     */
+    public static function isCrossOrigin($uri, $base_uri) : bool
+    {
+        return null === ($uriString = self::getOrigin(Uri::createFromUri($uri))) || null === ($baseUriString = self::getOrigin(Uri::createFromUri($base_uri))) || $uriString !== $baseUriString;
     }
 }

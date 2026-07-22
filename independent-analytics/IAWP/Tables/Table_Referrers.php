@@ -18,7 +18,11 @@ class Table_Referrers extends \IAWP\Tables\Table
     {
         return 'referrers';
     }
-    protected function groups() : Groups
+    public function name() : string
+    {
+        return \__('Referrers', 'independent-analytics');
+    }
+    public function groups() : Groups
     {
         $groups = [];
         $groups[] = new Group('referrer', \__('Referrer', 'independent-analytics'), 'referrer', Referrers::class, Referrer_Statistics::class);

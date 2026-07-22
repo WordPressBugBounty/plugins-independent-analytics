@@ -8,11 +8,14 @@ if (!\function_exists('IAWPSCOPED\\collect')) {
     /**
      * Create a collection from the given value.
      *
-     * @param  mixed  $value
-     * @return \Illuminate\Support\Collection
+     * @template TKey of array-key
+     * @template TValue
+     *
+     * @param  \Illuminate\Contracts\Support\Arrayable<TKey, TValue>|iterable<TKey, TValue>|null  $value
+     * @return \Illuminate\Support\Collection<TKey, TValue>
      * @internal
      */
-    function collect($value = null)
+    function collect($value = [])
     {
         return new Collection($value);
     }
@@ -56,7 +59,7 @@ if (!\function_exists('IAWPSCOPED\\data_get')) {
             if ($segment === '*') {
                 if ($target instanceof Collection) {
                     $target = $target->all();
-                } elseif (!\is_array($target)) {
+                } elseif (!\is_iterable($target)) {
                     return \IAWPSCOPED\value($default);
                 }
                 $result = [];
@@ -163,6 +166,7 @@ if (!\function_exists('IAWPSCOPED\\value')) {
      * Return the default value of the given value.
      *
      * @param  mixed  $value
+     * @param  mixed  ...$args
      * @return mixed
      * @internal
      */

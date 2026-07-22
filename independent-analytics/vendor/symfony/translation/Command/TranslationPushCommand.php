@@ -10,6 +10,7 @@
  */
 namespace IAWPSCOPED\Symfony\Component\Translation\Command;
 
+use IAWPSCOPED\Symfony\Component\Console\Attribute\AsCommand;
 use IAWPSCOPED\Symfony\Component\Console\Command\Command;
 use IAWPSCOPED\Symfony\Component\Console\Completion\CompletionInput;
 use IAWPSCOPED\Symfony\Component\Console\Completion\CompletionSuggestions;
@@ -27,15 +28,14 @@ use IAWPSCOPED\Symfony\Component\Translation\TranslatorBag;
  * @author Mathieu Santostefano <msantostefano@protonmail.com>
  * @internal
  */
+#[AsCommand(name: 'translation:push', description: 'Push translations to a given provider.')]
 final class TranslationPushCommand extends Command
 {
     use TranslationTrait;
-    protected static $defaultName = 'translation:push';
-    protected static $defaultDescription = 'Push translations to a given provider.';
     private $providers;
     private $reader;
-    private $transPaths;
-    private $enabledLocales;
+    private array $transPaths;
+    private array $enabledLocales;
     public function __construct(TranslationProviderCollection $providers, TranslationReaderInterface $reader, array $transPaths = [], array $enabledLocales = [])
     {
         $this->providers = $providers;

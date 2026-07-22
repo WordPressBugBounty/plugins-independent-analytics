@@ -71,8 +71,7 @@ class ViewErrorBag implements Countable
      *
      * @return int
      */
-    #[\ReturnTypeWillChange]
-    public function count()
+    public function count() : int
     {
         return $this->getBag('default')->count();
     }

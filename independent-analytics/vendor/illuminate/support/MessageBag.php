@@ -121,7 +121,7 @@ class MessageBag implements Jsonable, JsonSerializable, MessageBagContract, Mess
     /**
      * Determine if messages exist for any of the given keys.
      *
-     * @param  array|string  $keys
+     * @param  array|string|null  $keys
      * @return bool
      */
     public function hasAny($keys = [])
@@ -165,7 +165,7 @@ class MessageBag implements Jsonable, JsonSerializable, MessageBagContract, Mess
         if (\array_key_exists($key, $this->messages)) {
             return $this->transform($this->messages[$key], $this->checkFormat($format), $key);
         }
-        if (Str::contains($key, '*')) {
+        if (\str_contains($key, '*')) {
             return $this->getMessagesForWildcardKey($key, $format);
         }
         return [];
@@ -220,6 +220,9 @@ class MessageBag implements Jsonable, JsonSerializable, MessageBagContract, Mess
      */
     protected function transform($messages, $format, $messageKey)
     {
+        if ($format == ':message') {
+            return (array) $messages;
+        }
         return \IAWPSCOPED\collect((array) $messages)->map(function ($message) use($format, $messageKey) {
             // We will simply spin through the given messages and transform each one
             // replacing the :message place holder with the real message allowing
@@ -316,8 +319,7 @@ class MessageBag implements Jsonable, JsonSerializable, MessageBagContract, Mess
      *
      * @return int
      */
-    #[\ReturnTypeWillChange]
-    public function count()
+    public function count() : int
     {
         return \count($this->messages, \COUNT_RECURSIVE) - \count($this->messages);
     }
@@ -335,8 +337,7 @@ class MessageBag implements Jsonable, JsonSerializable, MessageBagContract, Mess
      *
      * @return array
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize() : array
     {
         return $this->toArray();
     }

@@ -18,17 +18,16 @@
             </div>
         </div>
         <div class="buttons">
-            <div>
-                <button id="favorite-report-button"
-                        data-controller="set-favorite-report"
-                        data-set-favorite-report-type-value="overview"
-                        data-action="set-favorite-report#setFavoriteReport"
-                        class="iawp-button favorite <?php echo $env->is_favorite('overview') ? 'active' : ''; ?>"
-                >
-                    <span class="dashicons dashicons-star-filled"></span>
-                    <?php esc_html_e('Make default', 'independent-analytics'); ?>
-                </button>
-            </div>
+            <button id="favorite-report-button"
+                    class="iawp-button favorite <?php echo $env->is_favorite('overview') ? 'active' : ''; ?>"
+                    data-controller="set-favorite-report"
+                    data-set-favorite-report-type-value="overview"
+                    data-action="set-favorite-report#toggleFavoriteReport"
+                    data-unfavorited-text="<?php echo esc_attr_e('Use as default report') ?>"
+                    data-favorited-text="<?php echo esc_attr_e('Remove as default report') ?>"
+            >
+                <span class="dashicons dashicons-star-filled"></span>
+            </button>
         </div>
     </div>
     <div id="toolbar" class="toolbar">
@@ -64,13 +63,13 @@
         foreach($saved_modules as $module) {
             echo $module->get_module_html();
         }
-        if($env->can_write()) {
-            echo iawp_render('overview.module-picker', [
-                'template_modules' => $template_modules
-            ]);
-        } ?>
+            if($env->can_write()) {
+                echo iawp_render('overview.module-picker', [
+                    'template_modules' => $template_modules,
+                ]);
+            } ?>
     </div><?php
     echo iawp_render('overview.module-templates', [
-        'template_modules' => $template_modules
+        'template_modules' => $template_modules,
     ]); ?>
 </div>

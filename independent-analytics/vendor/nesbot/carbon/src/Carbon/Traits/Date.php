@@ -1265,7 +1265,7 @@ trait Date
      *
      * @return int
      */
-    public function getDaysFromStartOfWeek(int $weekStartsAt = null) : int
+    public function getDaysFromStartOfWeek(?int $weekStartsAt = null) : int
     {
         $firstDay = (int) ($weekStartsAt ?? $this->getTranslationMessage('first_day_of_week') ?? 0);
         return ($this->dayOfWeek + 7 - $firstDay) % 7;
@@ -1281,7 +1281,7 @@ trait Date
      *
      * @return static
      */
-    public function setDaysFromStartOfWeek(int $numberOfDays, int $weekStartsAt = null)
+    public function setDaysFromStartOfWeek(int $numberOfDays, ?int $weekStartsAt = null)
     {
         return $this->addDays($numberOfDays - $this->getDaysFromStartOfWeek($weekStartsAt));
     }
@@ -1345,7 +1345,7 @@ trait Date
      *
      * @return int|static
      */
-    public function utcOffset(int $minuteOffset = null)
+    public function utcOffset(?int $minuteOffset = null)
     {
         if (\func_num_args() < 1) {
             return $this->offsetMinutes;

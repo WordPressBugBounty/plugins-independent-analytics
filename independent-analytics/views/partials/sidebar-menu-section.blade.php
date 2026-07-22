@@ -27,29 +27,29 @@
             if ($upgrade) : ?>
                 <span class="pro-label">Pro</span><?php
             endif;
-            if ($supports_saved_reports && $can_edit_settings) : ?>
+if ($supports_saved_reports && $can_edit_settings) : ?>
                 <button class="add-new-report" data-controller="create-report"
                         data-action="create-report#create"
                         data-create-report-type-value="<?php echo esc_attr($report_type); ?>"
                         data-testid="add-new-report-<?php echo esc_attr($report_type); ?>"><span
                             class="dashicons dashicons-plus-alt2"></span></button><?php
-            endif; ?>
+endif; ?>
         </h3><?php
         if ($reports != null) : ?>
             <ol data-controller="<?php echo $can_edit_settings ? "sortable-reports" : "" ; ?>"
                 data-sortable-reports-type-value="<?php echo esc_attr($report_type); ?>"><?php
-                foreach ($reports as $report) : ?>
+    foreach ($reports as $report) : ?>
                     <li data-report-id="<?php echo esc_attr($report->id()); ?>"
                         class="<?php echo $report->is_current() ? 'current' : ''; ?> <?php echo $report->is_favorite() ? 'favorite' : '' ; ?>">
                         <a href="<?php echo esc_url($report->url()); ?>"
                            data-name-for-report-id="<?php echo esc_attr($report->id()); ?>"
                            data-testid="menu-link-<?php echo esc_attr(sanitize_title($report->name())); ?>"><?php echo esc_html($report->name()); ?></a>
                     </li><?php
-                endforeach; ?>
+    endforeach; ?>
             </ol><?php
         endif; ?>
     </div>
-    <a class="overlay-link" href="<?php echo esc_url($url); ?>" <?php echo $external ? 'target="_blank"' : '' ?>></a><?php 
+    <a class="overlay-link" href="<?php echo esc_url($url); ?>" <?php echo $external ? 'target="_blank"' : '' ?>></a><?php
     if ($collapsed_label) : ?>
         <span class="collapsed-label">
             <a href="<?php echo esc_url($url); ?>" <?php echo $external ? 'target="_blank"' : ''; ?>><?php

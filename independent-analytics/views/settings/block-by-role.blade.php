@@ -58,7 +58,7 @@
                 <input type="checkbox" name="iawp_ignore_via_cookie"
                     id="iawp_ignore_via_cookie" <?php checked(true, $ignore_cookie, true); ?>>
                 <span><?php esc_html_e('Ignore via cookie', 'independent-analytics'); ?></span>
-                <p class="description"><?php 
+                <p class="description"><?php
                     esc_html_e('Use a cookie so activity can be ignored when logged out too.', 'independent-analytics'); ?> 
                     <a href="https://independentwp.com/knowledgebase/tracking/block-user-roles/" target="_blank"><?php esc_html_e('Learn more.', 'independent-analytics'); ?></a>
                 </p>

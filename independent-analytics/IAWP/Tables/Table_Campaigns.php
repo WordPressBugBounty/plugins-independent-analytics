@@ -22,7 +22,11 @@ class Table_Campaigns extends \IAWP\Tables\Table
     {
         return 'campaigns';
     }
-    protected function groups() : Groups
+    public function name() : string
+    {
+        return \__('Campaigns', 'independent-analytics');
+    }
+    public function groups() : Groups
     {
         $groups = [];
         $groups[] = new Group('campaign', \__('Unique', 'independent-analytics'), 'title', Campaigns::class, Campaign_Statistics::class);

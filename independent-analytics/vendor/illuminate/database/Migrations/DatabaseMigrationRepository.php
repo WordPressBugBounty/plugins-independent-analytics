@@ -46,7 +46,7 @@ class DatabaseMigrationRepository implements MigrationRepositoryInterface
         return $this->table()->orderBy('batch', 'asc')->orderBy('migration', 'asc')->pluck('migration')->all();
     }
     /**
-     * Get list of migrations.
+     * Get the list of migrations.
      *
      * @param  int  $steps
      * @return array

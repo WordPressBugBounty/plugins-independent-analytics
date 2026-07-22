@@ -2,17 +2,30 @@
 
 namespace IAWPSCOPED\Illuminate\Support;
 
-use IAWPSCOPED\Doctrine\Inflector\Inflector;
 use IAWPSCOPED\Doctrine\Inflector\InflectorFactory;
 /** @internal */
 class Pluralizer
 {
     /**
-     * Uncountable word forms.
+     * The cached inflector instance.
+     *
+     * @var static
+     */
+    protected static $inflector;
+    /**
+     * The language that should be used by the inflector.
+     *
+     * @var string
+     */
+    protected static $language = 'english';
+    /**
+     * Uncountable non-nouns word forms.
+     *
+     * Contains words supported by Doctrine/Inflector/Rules/English/Uninflected.php
      *
      * @var string[]
      */
-    public static $uncountable = ['audio', 'bison', 'cattle', 'chassis', 'compensation', 'coreopsis', 'data', 'deer', 'education', 'emoji', 'equipment', 'evidence', 'feedback', 'firmware', 'fish', 'furniture', 'gold', 'hardware', 'information', 'jedi', 'kin', 'knowledge', 'love', 'metadata', 'money', 'moose', 'news', 'nutrition', 'offspring', 'plankton', 'pokemon', 'police', 'rain', 'recommended', 'related', 'rice', 'series', 'sheep', 'software', 'species', 'swine', 'traffic', 'wheat'];
+    public static $uncountable = ['recommended', 'related'];
     /**
      * Get the plural form of an English word.
      *
@@ -76,10 +89,20 @@ class Pluralizer
      */
     public static function inflector()
     {
-        static $inflector;
-        if (\is_null($inflector)) {
-            $inflector = InflectorFactory::createForLanguage('english')->build();
+        if (\is_null(static::$inflector)) {
+            static::$inflector = InflectorFactory::createForLanguage(static::$language)->build();
         }
-        return $inflector;
+        return static::$inflector;
+    }
+    /**
+     * Specify the language that should be used by the inflector.
+     *
+     * @param  string  $language
+     * @return void
+     */
+    public static function useLanguage(string $language)
+    {
+        static::$language = $language;
+        static::$inflector = null;
     }
 }

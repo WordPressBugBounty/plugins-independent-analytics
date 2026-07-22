@@ -10,22 +10,22 @@
         </a>
     </div>
     <p><?php
-        esc_html_e('Choose which order statuses should be counted in the analytics reports.', 'independent-analytics'); 
-    ?></p>
+        esc_html_e('Choose which order statuses should be counted in the analytics reports.', 'independent-analytics');
+        ?></p>
     <div class="settings-checkbox-group">
         <ol><?php
-            foreach ($statuses->get_statuses() as $status) : ?>
+                foreach ($statuses->get_statuses() as $status) : ?>
                 <li>
                     <label>
                         <input type="checkbox"
                             name="<?php echo esc_attr($status['id']); ?>" <?php
-                            echo $status['is_tracked'] === true ? 'checked' : ''; ?>
+                                echo $status['is_tracked'] === true ? 'checked' : ''; ?>
                             data-testid="wc-status-<?php echo esc_attr($status['id']); ?>"
                         >
                         <?php echo esc_html($status['name']); ?>
                     </label>
                 </li><?php
-            endforeach; ?>
+                endforeach; ?>
         </ol>
     </div>
     <div class="button-group">
@@ -35,7 +35,7 @@
                 data-testid="save-woocommerce-settings"
         >
             <?php
-            esc_html_e('Save', 'independent-analytics'); ?>
+                esc_html_e('Save', 'independent-analytics'); ?>
         </button>
         <button class="button iawp-button"
                 data-woocommerce-settings-target="resetButton"
@@ -43,7 +43,7 @@
                 data-testid="reset-woocommerce-settings"
         >
             <?php
-            esc_html_e('Reset to default statuses', 'independent-analytics'); ?>
+                esc_html_e('Reset to default statuses', 'independent-analytics'); ?>
         </button>
         <div class="button-group-message">
             <p data-woocommerce-settings-target="message"></p>

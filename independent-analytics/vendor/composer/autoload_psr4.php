@@ -7,7 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
-    'Symfony\\Polyfill\\Php73\\' => array($vendorDir . '/symfony/polyfill-php73'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Polyfill\\Intl\\Normalizer\\' => array($vendorDir . '/symfony/polyfill-intl-normalizer'),
     'Symfony\\Polyfill\\Intl\\Grapheme\\' => array($vendorDir . '/symfony/polyfill-intl-grapheme'),
@@ -28,13 +27,14 @@ return array(
     'IAWPSCOPED\\MaxMind\\Db\\' => array($vendorDir . '/maxmind-db/reader/src/MaxMind/Db'),
     'IAWPSCOPED\\League\\Uri\\' => array($vendorDir . '/league/uri/src', $vendorDir . '/league/uri-interfaces/src'),
     'IAWPSCOPED\\League\\Csv\\' => array($vendorDir . '/league/csv/src'),
-    'IAWPSCOPED\\Illuminate\\Support\\' => array($vendorDir . '/illuminate/support', $vendorDir . '/illuminate/collections', $vendorDir . '/illuminate/macroable'),
+    'IAWPSCOPED\\Illuminate\\Support\\' => array($vendorDir . '/illuminate/support', $vendorDir . '/illuminate/collections', $vendorDir . '/illuminate/conditionable', $vendorDir . '/illuminate/macroable'),
     'IAWPSCOPED\\Illuminate\\Database\\' => array($vendorDir . '/illuminate/database'),
     'IAWPSCOPED\\Illuminate\\Contracts\\' => array($vendorDir . '/illuminate/contracts'),
     'IAWPSCOPED\\Illuminate\\Container\\' => array($vendorDir . '/illuminate/container'),
     'IAWPSCOPED\\IPLib\\' => array($vendorDir . '/mlocati/ip-lib/src'),
-    'IAWPSCOPED\\Doctrine\\Inflector\\' => array($vendorDir . '/doctrine/inflector/lib/Doctrine/Inflector'),
+    'IAWPSCOPED\\Doctrine\\Inflector\\' => array($vendorDir . '/doctrine/inflector/src'),
     'IAWPSCOPED\\DeviceDetector\\' => array($vendorDir . '/matomo/device-detector'),
     'IAWPSCOPED\\Carbon\\Doctrine\\' => array($vendorDir . '/carbonphp/carbon-doctrine-types/src/Carbon/Doctrine'),
     'IAWPSCOPED\\Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),
+    'IAWPSCOPED\\Brick\\Math\\' => array($vendorDir . '/brick/math/src'),
 );

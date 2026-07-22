@@ -45,7 +45,8 @@ abstract class Table
         $this->is_new_group = $is_new_group;
         $this->filters = new Filters();
     }
-    protected abstract function groups() : Groups;
+    public abstract function name() : string;
+    public abstract function groups() : Groups;
     /**
      * @return array<Column>
      */

@@ -13,7 +13,7 @@ use IAWP\Map_Data;
 use IAWP\Overview\Overview;
 use IAWP\Plugin_Conflict_Detector;
 use IAWP\Quick_Stats;
-use IAWP\Real_Time;
+use IAWP\RealTime\RealTime;
 use IAWP\Report_Finder;
 use IAWP\Tables\Table;
 use IAWP\Tables\Table_Journeys;
@@ -32,7 +32,7 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         $is_showing_skeleton_ui = \true;
         // Real-time is its own thing
         if ($tab === 'real-time') {
-            $real_time = new Real_Time();
+            $real_time = new RealTime();
             $real_time->render_real_time_analytics();
             return;
         }

@@ -21,27 +21,11 @@ final class EnglishInflector implements InflectorInterface
     private const PLURAL_MAP = [
         // First entry: plural suffix, reversed
         // Second entry: length of plural suffix
-        // Third entry: Whether the suffix may succeed a vowel
+        // Third entry: Whether the suffix may succeed a vocal
         // Fourth entry: Whether the suffix may succeed a consonant
         // Fifth entry: singular suffix, normal
-        // bacteria (bacterium)
-        ['airetcab', 8, \true, \true, 'bacterium'],
-        // corpora (corpus)
-        ['aroproc', 7, \true, \true, 'corpus'],
-        // criteria (criterion)
-        ['airetirc', 8, \true, \true, 'criterion'],
-        // curricula (curriculum)
-        ['alucirruc', 9, \true, \true, 'curriculum'],
-        // genera (genus)
-        ['areneg', 6, \true, \true, 'genus'],
-        // media (medium)
-        ['aidem', 5, \true, \true, 'medium'],
-        // memoranda (memorandum)
-        ['adnaromem', 9, \true, \true, 'memorandum'],
-        // phenomena (phenomenon)
-        ['anemonehp', 9, \true, \true, 'phenomenon'],
-        // strata (stratum)
-        ['atarts', 6, \true, \true, 'stratum'],
+        // bacteria (bacterium), criteria (criterion), phenomena (phenomenon)
+        ['a', 1, \true, \true, ['on', 'um']],
         // nebulae (nebula)
         ['ea', 2, \true, \true, 'a'],
         // services (service)
@@ -60,16 +44,12 @@ final class EnglishInflector implements InflectorInterface
         ['nexo', 4, \false, \false, 'ox'],
         // indices (index), appendices (appendix), prices (price)
         ['seci', 4, \false, \true, ['ex', 'ix', 'ice']],
-        // codes (code)
-        ['sedoc', 5, \false, \true, 'code'],
         // selfies (selfie)
         ['seifles', 7, \true, \true, 'selfie'],
         // zombies (zombie)
         ['seibmoz', 7, \true, \true, 'zombie'],
         // movies (movie)
         ['seivom', 6, \true, \true, 'movie'],
-        // names (name)
-        ['seman', 5, \true, \false, 'name'],
         // conspectuses (conspectus), prospectuses (prospectus)
         ['sesutcep', 8, \true, \true, 'pectus'],
         // feet (foot)
@@ -86,10 +66,6 @@ final class EnglishInflector implements InflectorInterface
         ['sei', 3, \false, \true, 'y'],
         // accesses (access), addresses (address), kisses (kiss)
         ['sess', 4, \true, \false, 'ss'],
-        // statuses (status)
-        ['sesutats', 8, \true, \true, 'status'],
-        // article (articles), ancle (ancles)
-        ['sel', 3, \true, \true, 'le'],
         // analyses (analysis), ellipses (ellipsis), fungi (fungus),
         // neuroses (neurosis), theses (thesis), emphases (emphasis),
         // oases (oasis), crises (crisis), houses (house), bases (base),
@@ -121,8 +97,6 @@ final class EnglishInflector implements InflectorInterface
         // waltzes (waltz), heroes (hero), bushes (bush), arches (arch),
         // shoes (shoe)
         ['se', 2, \true, \true, ['', 'e']],
-        // status (status)
-        ['sutats', 6, \true, \true, 'status'],
         // tags (tag)
         ['s', 1, \true, \true, ''],
         // chateaux (chateau)
@@ -138,11 +112,9 @@ final class EnglishInflector implements InflectorInterface
     private const SINGULAR_MAP = [
         // First entry: singular suffix, reversed
         // Second entry: length of singular suffix
-        // Third entry: Whether the suffix may succeed a vowel
+        // Third entry: Whether the suffix may succeed a vocal
         // Fourth entry: Whether the suffix may succeed a consonant
         // Fifth entry: plural suffix, normal
-        // axes (axis)
-        ['sixa', 4, \false, \false, 'axes'],
         // criterion (criteria)
         ['airetirc', 8, \false, \false, 'criterion'],
         // nebulae (nebula)
@@ -189,26 +161,26 @@ final class EnglishInflector implements InflectorInterface
         ['hs', 2, \true, \true, 'shes'],
         // teeth (tooth)
         ['htoot', 5, \true, \true, 'teeth'],
-        // albums (album)
-        ['mubla', 5, \true, \true, 'albums'],
-        // bacteria (bacterium), curricula (curriculum), media (medium), memoranda (memorandum), phenomena (phenomenon), strata (stratum)
+        // bacteria (bacterium), criteria (criterion), phenomena (phenomenon)
         ['mu', 2, \true, \true, 'a'],
         // men (man), women (woman)
         ['nam', 3, \true, \true, 'men'],
         // people (person)
         ['nosrep', 6, \true, \true, ['persons', 'people']],
-        // criteria (criterion)
-        ['noiretirc', 9, \true, \true, 'criteria'],
-        // phenomena (phenomenon)
-        ['nonemonehp', 10, \true, \true, 'phenomena'],
+        // bacteria (bacterium), criteria (criterion), phenomena (phenomenon)
+        ['noi', 3, \true, \true, 'ions'],
+        // coupon (coupons)
+        ['nop', 3, \true, \true, 'pons'],
+        // seasons (season), treasons (treason), poisons (poison), lessons (lesson)
+        ['nos', 3, \true, \true, 'sons'],
+        // bacteria (bacterium), criteria (criterion), phenomena (phenomenon)
+        ['no', 2, \true, \true, 'a'],
         // echoes (echo)
         ['ohce', 4, \true, \true, 'echoes'],
         // heroes (hero)
         ['oreh', 4, \true, \true, 'heroes'],
         // atlases (atlas)
         ['salta', 5, \true, \true, 'atlases'],
-        // aliases (alias)
-        ['saila', 5, \true, \true, 'aliases'],
         // irises (iris)
         ['siri', 4, \true, \true, 'irises'],
         // analyses (analysis), ellipses (ellipsis), neuroses (neurosis)
@@ -223,12 +195,6 @@ final class EnglishInflector implements InflectorInterface
         ['sub', 3, \true, \true, 'buses'],
         // circuses (circus)
         ['suc', 3, \true, \true, 'cuses'],
-        // hippocampi (hippocampus)
-        ['supmacoppih', 11, \false, \false, 'hippocampi'],
-        // campuses (campus)
-        ['sup', 3, \true, \true, 'puses'],
-        // status (status)
-        ['sutats', 6, \true, \true, ['status', 'statuses']],
         // conspectuses (conspectus), prospectuses (prospectus)
         ['sutcep', 6, \true, \true, 'pectuses'],
         // fungi (fungus), alumni (alumnus), syllabi (syllabus), radii (radius)
@@ -267,22 +233,12 @@ final class EnglishInflector implements InflectorInterface
         'atad',
         // deer
         'reed',
-        // equipment
-        'tnempiuqe',
         // feedback
         'kcabdeef',
         // fish
         'hsif',
-        // health
-        'htlaeh',
-        // history
-        'yrotsih',
         // info
         'ofni',
-        // information
-        'noitamrofni',
-        // money
-        'yenom',
         // moose
         'esoom',
         // series
@@ -291,13 +247,10 @@ final class EnglishInflector implements InflectorInterface
         'peehs',
         // species
         'seiceps',
-        // traffic
-        'ciffart',
-        // aircraft
-        'tfarcria',
-        // hardware
-        'erawdrah',
     ];
+    /**
+     * {@inheritdoc}
+     */
     public function singularize(string $plural) : array
     {
         $pluralRev = \strrev($plural);
@@ -325,12 +278,12 @@ final class EnglishInflector implements InflectorInterface
                 if ($j === $suffixLength) {
                     // Is there any character preceding the suffix in the plural string?
                     if ($j < $pluralLength) {
-                        $nextIsVowel = \str_contains('aeiou', $lowerPluralRev[$j]);
-                        if (!$map[2] && $nextIsVowel) {
-                            // suffix may not succeed a vowel but next char is one
+                        $nextIsVocal = \false !== \strpos('aeiou', $lowerPluralRev[$j]);
+                        if (!$map[2] && $nextIsVocal) {
+                            // suffix may not succeed a vocal but next char is one
                             break;
                         }
-                        if (!$map[3] && !$nextIsVowel) {
+                        if (!$map[3] && !$nextIsVocal) {
                             // suffix may not succeed a consonant but next char is one
                             break;
                         }
@@ -359,6 +312,9 @@ final class EnglishInflector implements InflectorInterface
         // Assume that plural and singular is identical
         return [$plural];
     }
+    /**
+     * {@inheritdoc}
+     */
     public function pluralize(string $singular) : array
     {
         $singularRev = \strrev($singular);
@@ -386,12 +342,12 @@ final class EnglishInflector implements InflectorInterface
                 if ($j === $suffixLength) {
                     // Is there any character preceding the suffix in the plural string?
                     if ($j < $singularLength) {
-                        $nextIsVowel = \str_contains('aeiou', $lowerSingularRev[$j]);
-                        if (!$map[2] && $nextIsVowel) {
-                            // suffix may not succeed a vowel but next char is one
+                        $nextIsVocal = \false !== \strpos('aeiou', $lowerSingularRev[$j]);
+                        if (!$map[2] && $nextIsVocal) {
+                            // suffix may not succeed a vocal but next char is one
                             break;
                         }
-                        if (!$map[3] && !$nextIsVowel) {
+                        if (!$map[3] && !$nextIsVocal) {
                             // suffix may not succeed a consonant but next char is one
                             break;
                         }

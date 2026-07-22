@@ -39,10 +39,10 @@ return [
     'ka' => ['=' => ' tanasts\'ori ', '%' => ' p\'rotsent\'i ', '∑' => ' tankha ', '∆' => ' delt\'a ', '∞' => ' usasrulo ', '♥' => ' siq\'varuli ', '&' => ' da ', '+' => ' p\'lus '],
     // Russian
     'ru' => ['=' => ' ravnyj ', '%' => ' procent ', '∑' => ' summa ', '∆' => ' del\'ta ', '∞' => ' beskonecnost\' ', '♥' => ' lublu ', '&' => ' i ', '+' => ' plus '],
-    // Russian - Passport (2013), ICAO
-    'ru__passport_2013' => ['=' => ' ravnyj ', '%' => ' procent ', '∑' => ' summa ', '∆' => ' del\'ta ', '∞' => ' beskonecnost\' ', '♥' => ' lublu ', '&' => ' i ', '+' => ' plus '],
     // Russian - GOST 7.79-2000(B)
     'ru__gost_2000_b' => ['=' => ' ravnyj ', '%' => ' procent ', '∑' => ' summa ', '∆' => ' del\'ta ', '∞' => ' beskonecnost\' ', '♥' => ' lublu ', '&' => ' i ', '+' => ' plus '],
+    // Russian - Passport (2013), ICAO
+    'ru__passport_2013' => ['=' => ' ravnyj ', '%' => ' procent ', '∑' => ' summa ', '∆' => ' del\'ta ', '∞' => ' beskonecnost\' ', '♥' => ' lublu ', '&' => ' i ', '+' => ' plus '],
     // Ukrainian
     'uk' => ['=' => ' rivnij ', '%' => ' vidsotkiv ', '∑' => ' suma ', '∆' => ' del\'ta ', '∞' => ' neskincennist\' ', '♥' => ' lubov ', '&' => ' i ', '+' => ' plus '],
     // Kazakh

@@ -3,6 +3,7 @@
 namespace IAWPSCOPED\Illuminate\Database\Concerns;
 
 use Closure;
+use IAWPSCOPED\Illuminate\Database\DeadlockException;
 use RuntimeException;
 use Throwable;
 /** @internal */
@@ -32,11 +33,12 @@ trait ManagesTransactions
             }
             try {
                 if ($this->transactions == 1) {
+                    $this->fireConnectionEvent('committing');
                     $this->getPdo()->commit();
                 }
                 $this->transactions = \max(0, $this->transactions - 1);
-                if ($this->transactions == 0) {
-                    \IAWPSCOPED\optional($this->transactionsManager)->commit($this->getName());
+                if ($this->afterCommitCallbacksShouldBeExecuted()) {
+                    $this->transactionsManager?->commit($this->getName());
                 }
             } catch (Throwable $e) {
                 $this->handleCommitTransactionException($e, $currentAttempt, $attempts);
@@ -63,8 +65,8 @@ trait ManagesTransactions
         // let the developer handle it in another way. We will decrement too.
         if ($this->causedByConcurrencyError($e) && $this->transactions > 1) {
             $this->transactions--;
-            \IAWPSCOPED\optional($this->transactionsManager)->rollback($this->getName(), $this->transactions);
-            throw $e;
+            $this->transactionsManager?->rollback($this->getName(), $this->transactions);
+            throw new DeadlockException($e->getMessage(), \is_int($e->getCode()) ? $e->getCode() : 0, $e);
         }
         // If there was an exception we will rollback this transaction and then we
         // can check if we have exceeded the maximum attempt count for this and
@@ -86,7 +88,7 @@ trait ManagesTransactions
     {
         $this->createTransaction();
         $this->transactions++;
-        \IAWPSCOPED\optional($this->transactionsManager)->begin($this->getName(), $this->transactions);
+        $this->transactionsManager?->begin($this->getName(), $this->transactions);
         $this->fireConnectionEvent('beganTransaction');
     }
     /**
@@ -146,14 +148,24 @@ trait ManagesTransactions
      */
     public function commit()
     {
-        if ($this->transactions == 1) {
+        if ($this->transactionLevel() == 1) {
+            $this->fireConnectionEvent('committing');
             $this->getPdo()->commit();
         }
         $this->transactions = \max(0, $this->transactions - 1);
-        if ($this->transactions == 0) {
-            \IAWPSCOPED\optional($this->transactionsManager)->commit($this->getName());
+        if ($this->afterCommitCallbacksShouldBeExecuted()) {
+            $this->transactionsManager?->commit($this->getName());
         }
         $this->fireConnectionEvent('committed');
+    }
+    /**
+     * Determine if after commit callbacks should be executed.
+     *
+     * @return bool
+     */
+    protected function afterCommitCallbacksShouldBeExecuted()
+    {
+        return $this->transactions == 0 || $this->transactionsManager && $this->transactionsManager->callbackApplicableTransactions()->count() === 1;
     }
     /**
      * Handle an exception encountered when committing a transaction.
@@ -202,7 +214,7 @@ trait ManagesTransactions
             $this->handleRollBackException($e);
         }
         $this->transactions = $toLevel;
-        \IAWPSCOPED\optional($this->transactionsManager)->rollback($this->getName(), $this->transactions);
+        $this->transactionsManager?->rollback($this->getName(), $this->transactions);
         $this->fireConnectionEvent('rollingBack');
     }
     /**
@@ -216,7 +228,10 @@ trait ManagesTransactions
     protected function performRollBack($toLevel)
     {
         if ($toLevel == 0) {
-            $this->getPdo()->rollBack();
+            $pdo = $this->getPdo();
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
         } elseif ($this->queryGrammar->supportsSavepoints()) {
             $this->getPdo()->exec($this->queryGrammar->compileSavepointRollBack('trans' . ($toLevel + 1)));
         }
@@ -233,7 +248,7 @@ trait ManagesTransactions
     {
         if ($this->causedByLostConnection($e)) {
             $this->transactions = 0;
-            \IAWPSCOPED\optional($this->transactionsManager)->rollback($this->getName(), $this->transactions);
+            $this->transactionsManager?->rollback($this->getName(), $this->transactions);
         }
         throw $e;
     }

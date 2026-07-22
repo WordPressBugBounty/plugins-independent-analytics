@@ -9,7 +9,9 @@ use IAWPSCOPED\Illuminate\Database\ConnectionResolverInterface;
 use IAWPSCOPED\Illuminate\Database\Events\SchemaDumped;
 use IAWPSCOPED\Illuminate\Filesystem\Filesystem;
 use IAWPSCOPED\Illuminate\Support\Facades\Config;
+use IAWPSCOPED\Symfony\Component\Console\Attribute\AsCommand;
 /** @internal */
+#[AsCommand(name: 'schema:dump')]
 class DumpCommand extends Command
 {
     /**
@@ -21,6 +23,16 @@ class DumpCommand extends Command
                 {--database= : The database connection to use}
                 {--path= : The path where the schema dump file should be stored}
                 {--prune : Delete all existing migration files}';
+    /**
+     * The name of the console command.
+     *
+     * This name is used to identify the command during lazy loading.
+     *
+     * @var string|null
+     *
+     * @deprecated
+     */
+    protected static $defaultName = 'schema:dump';
     /**
      * The console command description.
      *
@@ -39,11 +51,12 @@ class DumpCommand extends Command
         $connection = $connections->connection($database = $this->input->getOption('database'));
         $this->schemaState($connection)->dump($connection, $path = $this->path($connection));
         $dispatcher->dispatch(new SchemaDumped($connection, $path));
-        $this->info('Database schema dumped successfully.');
+        $info = 'Database schema dumped';
         if ($this->option('prune')) {
             (new Filesystem())->deleteDirectory(database_path('migrations'), $preserve = \false);
-            $this->info('Migrations pruned successfully.');
+            $info .= ' and pruned';
         }
+        $this->components->info($info . ' successfully.');
     }
     /**
      * Create a schema state instance for the given connection.
@@ -64,7 +77,7 @@ class DumpCommand extends Command
      */
     protected function path(Connection $connection)
     {
-        return \IAWPSCOPED\tap($this->option('path') ?: database_path('schema/' . $connection->getName() . '-schema.dump'), function ($path) {
+        return \IAWPSCOPED\tap($this->option('path') ?: database_path('schema/' . $connection->getName() . '-schema.sql'), function ($path) {
             (new Filesystem())->ensureDirectoryExists(\dirname($path));
         });
     }

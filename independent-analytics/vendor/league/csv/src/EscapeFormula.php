@@ -28,28 +28,15 @@ use function method_exists;
  */
 class EscapeFormula
 {
-    /**
-     * Spreadsheet formula starting character.
-     */
+    /** Spreadsheet formula starting character. */
     const FORMULA_STARTING_CHARS = ['=', '-', '+', '@', "\t", "\r"];
+    /** Effective Spreadsheet formula starting characters. */
+    protected array $special_chars = [];
+    /** Escape character to escape each CSV formula field. */
+    protected string $escape;
     /**
-     * Effective Spreadsheet formula starting characters.
-     *
-     * @var array
-     */
-    protected $special_chars = [];
-    /**
-     * Escape character to escape each CSV formula field.
-     *
-     * @var string
-     */
-    protected $escape;
-    /**
-     * New instance.
-     *
      * @param string   $escape        escape character to escape each CSV formula field
      * @param string[] $special_chars additional spreadsheet formula starting characters
-     *
      */
     public function __construct(string $escape = "'", array $special_chars = [])
     {
@@ -67,7 +54,7 @@ class EscapeFormula
      *
      * @throws InvalidArgumentException if the string is not a single character
      *
-     * @return string[]
+     * @return array<string>
      */
     protected function filterSpecialCharacters(string ...$characters) : array
     {
@@ -81,7 +68,7 @@ class EscapeFormula
     /**
      * Returns the list of character the instance will escape.
      *
-     * @return string[]
+     * @return array<string>
      */
     public function getSpecialCharacters() : array
     {
@@ -130,6 +117,7 @@ class EscapeFormula
     }
     /**
      * @deprecated since 9.7.2 will be removed in the next major release
+     * @codeCoverageIgnore
      *
      * Tells whether the submitted value is stringable.
      *

@@ -4,9 +4,11 @@ namespace IAWPSCOPED\Illuminate\Database;
 
 use IAWPSCOPED\Doctrine\DBAL\Types\Type;
 use IAWPSCOPED\Illuminate\Database\Connectors\ConnectionFactory;
+use IAWPSCOPED\Illuminate\Database\Events\ConnectionEstablished;
 use IAWPSCOPED\Illuminate\Support\Arr;
 use IAWPSCOPED\Illuminate\Support\ConfigurationUrlParser;
 use IAWPSCOPED\Illuminate\Support\Str;
+use IAWPSCOPED\Illuminate\Support\Traits\Macroable;
 use InvalidArgumentException;
 use PDO;
 use RuntimeException;
@@ -16,6 +18,9 @@ use RuntimeException;
  */
 class DatabaseManager implements ConnectionResolverInterface
 {
+    use Macroable {
+        __call as macroCall;
+    }
     /**
      * The application instance.
      *
@@ -31,13 +36,13 @@ class DatabaseManager implements ConnectionResolverInterface
     /**
      * The active connection instances.
      *
-     * @var array
+     * @var array<string, \Illuminate\Database\Connection>
      */
     protected $connections = [];
     /**
      * The custom connection resolvers.
      *
-     * @var array
+     * @var array<string, callable>
      */
     protected $extensions = [];
     /**
@@ -49,7 +54,7 @@ class DatabaseManager implements ConnectionResolverInterface
     /**
      * The custom Doctrine column types.
      *
-     * @var array
+     * @var array<string, array>
      */
     protected $doctrineTypes = [];
     /**
@@ -82,6 +87,9 @@ class DatabaseManager implements ConnectionResolverInterface
         // set the "fetch mode" for PDO which determines the query return types.
         if (!isset($this->connections[$name])) {
             $this->connections[$name] = $this->configure($this->makeConnection($database), $type);
+            if ($this->app->bound('events')) {
+                $this->app['events']->dispatch(new ConnectionEstablished($this->connections[$name]));
+            }
         }
         return $this->connections[$name];
     }
@@ -304,7 +312,7 @@ class DatabaseManager implements ConnectionResolverInterface
     /**
      * Get all of the support drivers.
      *
-     * @return array
+     * @return string[]
      */
     public function supportedDrivers()
     {
@@ -313,7 +321,7 @@ class DatabaseManager implements ConnectionResolverInterface
     /**
      * Get all of the drivers that are actually available.
      *
-     * @return array
+     * @return string[]
      */
     public function availableDrivers()
     {
@@ -331,9 +339,19 @@ class DatabaseManager implements ConnectionResolverInterface
         $this->extensions[$name] = $resolver;
     }
     /**
+     * Remove an extension connection resolver.
+     *
+     * @param  string  $name
+     * @return void
+     */
+    public function forgetExtension($name)
+    {
+        unset($this->extensions[$name]);
+    }
+    /**
      * Return all of the created connections.
      *
-     * @return array
+     * @return array<string, \Illuminate\Database\Connection>
      */
     public function getConnections()
     {
@@ -369,6 +387,9 @@ class DatabaseManager implements ConnectionResolverInterface
      */
     public function __call($method, $parameters)
     {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
         return $this->connection()->{$method}(...$parameters);
     }
 }

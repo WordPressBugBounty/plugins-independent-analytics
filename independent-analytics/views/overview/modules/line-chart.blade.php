@@ -9,7 +9,7 @@ if ($is_loaded) : ?>
         class="module-chart"
         data-chart-labels-value="<?php echo esc_attr(json_encode($dataset['labels'])); ?>"
         data-chart-data-value="<?php echo esc_attr(json_encode([
-            $dataset['primary_dataset_id'] => $dataset['primary_dataset'],
+            $dataset['primary_dataset_id']   => $dataset['primary_dataset'],
             $dataset['secondary_dataset_id'] => $dataset['secondary_dataset'],
         ])); ?>"
         data-chart-locale-value="<?php echo esc_attr(get_bloginfo('language')); ?>"
@@ -28,5 +28,5 @@ else : ?>
     <div class="loading-message">
         <img src="<?php echo esc_url(iawp_url_to('img/loading.svg')) ?>" />
         <p><?php esc_html_e('Loading data...', 'independent-analytics'); ?></p>
-    </div><?php 
+    </div><?php
 endif;

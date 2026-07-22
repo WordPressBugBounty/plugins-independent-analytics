@@ -98,8 +98,11 @@ class ChangeColumn
     protected static function getDoctrineColumnChangeOptions(Fluent $fluent)
     {
         $options = ['type' => static::getDoctrineColumnType($fluent['type'])];
-        if (\in_array($fluent['type'], ['text', 'mediumText', 'longText'])) {
+        if (\in_array($fluent['type'], ['tinyText', 'text', 'mediumText', 'longText'])) {
             $options['length'] = static::calculateDoctrineTextLength($fluent['type']);
+        }
+        if ($fluent['type'] === 'char') {
+            $options['fixed'] = \true;
         }
         if (static::doesntNeedCharacterOptions($fluent['type'])) {
             $options['customSchemaOptions'] = ['collation' => '', 'charset' => ''];
@@ -115,25 +118,16 @@ class ChangeColumn
     protected static function getDoctrineColumnType($type)
     {
         $type = \strtolower($type);
-        switch ($type) {
-            case 'biginteger':
-                $type = 'bigint';
-                break;
-            case 'smallinteger':
-                $type = 'smallint';
-                break;
-            case 'mediumtext':
-            case 'longtext':
-                $type = 'text';
-                break;
-            case 'binary':
-                $type = 'blob';
-                break;
-            case 'uuid':
-                $type = 'guid';
-                break;
-        }
-        return Type::getType($type);
+        return Type::getType(match ($type) {
+            'biginteger' => 'bigint',
+            'smallinteger' => 'smallint',
+            'tinytext', 'mediumtext', 'longtext' => 'text',
+            'binary' => 'blob',
+            'uuid' => 'guid',
+            'char' => 'string',
+            'double' => 'float',
+            default => $type,
+        });
     }
     /**
      * Calculate the proper column length to force the Doctrine text type.
@@ -143,14 +137,12 @@ class ChangeColumn
      */
     protected static function calculateDoctrineTextLength($type)
     {
-        switch ($type) {
-            case 'mediumText':
-                return 65535 + 1;
-            case 'longText':
-                return 16777215 + 1;
-            default:
-                return 255 + 1;
-        }
+        return match ($type) {
+            'tinyText' => 1,
+            'mediumText' => 65535 + 1,
+            'longText' => 16777215 + 1,
+            default => 255 + 1,
+        };
     }
     /**
      * Determine if the given type does not need character / collation options.
@@ -160,7 +152,7 @@ class ChangeColumn
      */
     protected static function doesntNeedCharacterOptions($type)
     {
-        return \in_array($type, ['bigInteger', 'binary', 'boolean', 'date', 'dateTime', 'decimal', 'double', 'float', 'integer', 'json', 'mediumInteger', 'smallInteger', 'time', 'tinyInteger']);
+        return \in_array($type, ['bigInteger', 'binary', 'boolean', 'date', 'dateTime', 'decimal', 'double', 'float', 'integer', 'json', 'mediumInteger', 'smallInteger', 'time', 'timestamp', 'tinyInteger']);
     }
     /**
      * Get the matching Doctrine option for a given Fluent attribute name.
@@ -170,19 +162,13 @@ class ChangeColumn
      */
     protected static function mapFluentOptionToDoctrine($attribute)
     {
-        switch ($attribute) {
-            case 'type':
-            case 'name':
-                return;
-            case 'nullable':
-                return 'notnull';
-            case 'total':
-                return 'precision';
-            case 'places':
-                return 'scale';
-            default:
-                return $attribute;
-        }
+        return match ($attribute) {
+            'type', 'name' => null,
+            'nullable' => 'notnull',
+            'total' => 'precision',
+            'places' => 'scale',
+            default => $attribute,
+        };
     }
     /**
      * Get the matching Doctrine value for a given Fluent attribute.

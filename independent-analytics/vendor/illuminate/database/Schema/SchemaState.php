@@ -75,7 +75,7 @@ abstract class SchemaState
     /**
      * Create a new process instance.
      *
-     * @param  array  $arguments
+     * @param  mixed  ...$arguments
      * @return \Symfony\Component\Process\Process
      */
     public function makeProcess(...$arguments)

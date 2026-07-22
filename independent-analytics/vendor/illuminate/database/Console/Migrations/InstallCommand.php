@@ -46,7 +46,7 @@ class InstallCommand extends Command
     {
         $this->repository->setSource($this->input->getOption('database'));
         $this->repository->createRepository();
-        $this->info('Migration table created successfully.');
+        $this->components->info('Migration table created successfully.');
     }
     /**
      * Get the console command options.

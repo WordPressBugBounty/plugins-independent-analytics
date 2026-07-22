@@ -4,15 +4,19 @@ namespace IAWPSCOPED\Illuminate\Support\Testing\Fakes;
 
 use IAWPSCOPED\Carbon\CarbonImmutable;
 use Closure;
-use IAWPSCOPED\Illuminate\Bus\Batch;
 use IAWPSCOPED\Illuminate\Bus\BatchRepository;
 use IAWPSCOPED\Illuminate\Bus\PendingBatch;
 use IAWPSCOPED\Illuminate\Bus\UpdatedBatchJobCounts;
-use IAWPSCOPED\Illuminate\Support\Facades\Facade;
 use IAWPSCOPED\Illuminate\Support\Str;
 /** @internal */
 class BatchRepositoryFake implements BatchRepository
 {
+    /**
+     * The batches stored in the repository.
+     *
+     * @var \Illuminate\Bus\Batch[]
+     */
+    protected $batches = [];
     /**
      * Retrieve a list of batches.
      *
@@ -22,7 +26,7 @@ class BatchRepositoryFake implements BatchRepository
      */
     public function get($limit, $before)
     {
-        return [];
+        return $this->batches;
     }
     /**
      * Retrieve information about an existing batch.
@@ -32,7 +36,7 @@ class BatchRepositoryFake implements BatchRepository
      */
     public function find(string $batchId)
     {
-        //
+        return $this->batches[$batchId] ?? null;
     }
     /**
      * Store a new pending batch.
@@ -42,7 +46,9 @@ class BatchRepositoryFake implements BatchRepository
      */
     public function store(PendingBatch $batch)
     {
-        return new Batch(new QueueFake(Facade::getFacadeApplication()), $this, (string) Str::orderedUuid(), $batch->name, \count($batch->jobs), \count($batch->jobs), 0, [], $batch->options, CarbonImmutable::now(), null, null);
+        $id = (string) Str::orderedUuid();
+        $this->batches[$id] = new BatchFake($id, $batch->name, \count($batch->jobs), \count($batch->jobs), 0, [], $batch->options, CarbonImmutable::now(), null, null);
+        return $this->batches[$id];
     }
     /**
      * Increment the total number of jobs within the batch.
@@ -85,7 +91,9 @@ class BatchRepositoryFake implements BatchRepository
      */
     public function markAsFinished(string $batchId)
     {
-        //
+        if (isset($this->batches[$batchId])) {
+            $this->batches[$batchId]->finishedAt = now();
+        }
     }
     /**
      * Cancel the batch that has the given ID.
@@ -95,7 +103,9 @@ class BatchRepositoryFake implements BatchRepository
      */
     public function cancel(string $batchId)
     {
-        //
+        if (isset($this->batches[$batchId])) {
+            $this->batches[$batchId]->cancel();
+        }
     }
     /**
      * Delete the batch that has the given ID.
@@ -105,7 +115,7 @@ class BatchRepositoryFake implements BatchRepository
      */
     public function delete(string $batchId)
     {
-        //
+        unset($this->batches[$batchId]);
     }
     /**
      * Execute the given Closure within a storage specific transaction.

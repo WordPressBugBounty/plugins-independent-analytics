@@ -2,7 +2,6 @@
 
 namespace IAWP\Models;
 
-use IAWP\Utils\String_Util;
 /** @internal */
 class Page_Singular extends \IAWP\Models\Page
 {
@@ -70,7 +69,7 @@ class Page_Singular extends \IAWP\Models\Page
         $html = '<div class="post-type-icon">';
         if ($has_icon) {
             if (\esc_url_raw($icon) == $icon) {
-                if (String_Util::str_contains($icon, 'svg')) {
+                if (\str_contains($icon, 'svg')) {
                     $html .= '<span class="custom-icon" style="display: block;-webkit-mask: url(' . \esc_url($icon) . ') no-repeat center;mask: url(' . \esc_url($icon) . ') no-repeat center;"></span>';
                 } else {
                     $html .= '<span><img src="' . \esc_url($icon) . '" width="20px" height="20px" /></span>';

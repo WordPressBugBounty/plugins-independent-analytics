@@ -17,8 +17,8 @@ use IAWPSCOPED\Symfony\Component\Translation\Exception\UnsupportedSchemeExceptio
  */
 class TranslationProviderCollectionFactory
 {
-    private $factories;
-    private $enabledLocales;
+    private iterable $factories;
+    private array $enabledLocales;
     /**
      * @param iterable<mixed, ProviderFactoryInterface> $factories
      */

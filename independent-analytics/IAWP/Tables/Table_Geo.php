@@ -16,7 +16,11 @@ class Table_Geo extends \IAWP\Tables\Table
     {
         return 'geo';
     }
-    protected function groups() : Groups
+    public function name() : string
+    {
+        return \__('Geographic', 'independent-analytics');
+    }
+    public function groups() : Groups
     {
         $groups = [];
         $groups[] = new Group('country', \__('Country', 'independent-analytics'), 'country', Countries::class, Country_Statistics::class);

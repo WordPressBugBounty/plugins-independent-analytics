@@ -304,9 +304,9 @@ class Independent_Analytics
             });
         }
         if (\IAWP\Capability_Manager::show_branded_ui()) {
-            $menu_html = '<span class="menu-name">' . \esc_html__('Changelog', 'independent-analytics') . '</span>';
-            $menu_html = $this->changelog_viewed_since_update() ? $menu_html . ' <span class="menu-counter">' . \esc_html__('New', 'independent-analytics') . '</span>' : $menu_html;
-            \add_submenu_page('independent-analytics', \esc_html__('Changelog', 'independent-analytics'), $menu_html, \IAWP\Capability_Manager::menu_page_capability_string(), 'independent-analytics-updates', function () {
+            $menu_html = '<span class="menu-name">' . \esc_html__('Updates', 'independent-analytics') . '</span>';
+            $menu_html = $this->show_changelog_menu_label() ? $menu_html . ' <span class="menu-counter">' . \esc_html__('New', 'independent-analytics') . '</span>' : $menu_html;
+            \add_submenu_page('independent-analytics', \esc_html__('Updates', 'independent-analytics'), $menu_html, \IAWP\Capability_Manager::menu_page_capability_string(), 'independent-analytics-updates', function () {
                 $updates_page = new Updates_Page();
                 $updates_page->render(\false);
             });
@@ -339,7 +339,7 @@ class Independent_Analytics
         \wp_register_style('iawp-freemius-notice-styles', \IAWPSCOPED\iawp_url_to('dist/styles/freemius_notice_styles.css'), [], \IAWP_VERSION);
         \wp_register_style('iawp-posts-menu-styles', \IAWPSCOPED\iawp_url_to('dist/styles/posts_menu.css'), [], \IAWP_VERSION);
         \wp_register_style('iawp-wc-order-box-styles', \IAWPSCOPED\iawp_url_to('dist/styles/wc_order_box.css'), [], \IAWP_VERSION);
-        \wp_register_script('iawp-javascript', \IAWPSCOPED\iawp_url_to('dist/js/index.js'), ['wp-i18n'], \IAWP_VERSION);
+        \wp_register_script('iawp-javascript', \IAWPSCOPED\iawp_url_to('dist/js/index.js'), ['wp-i18n'], \IAWP_VERSION . 'wefwef');
         \wp_set_script_translations('iawp-javascript', 'independent-analytics');
         \wp_register_script('iawp-dashboard-widget-javascript', \IAWPSCOPED\iawp_url_to('dist/js/dashboard_widget.js'), ['wp-i18n'], \IAWP_VERSION);
         \wp_set_script_translations('iawp-dashboard-widget-javascript', 'independent-analytics');
@@ -349,7 +349,7 @@ class Independent_Analytics
         \wp_set_script_translations('iawp-settings-javascript', 'independent-analytics');
         \wp_register_script('iawp-click-tracking-menu-javascript', \IAWPSCOPED\iawp_url_to('dist/js/click-tracking-menu.js'), ['wp-i18n'], \IAWP_VERSION);
         \wp_set_script_translations('iawp-click-tracking-menu-javascript', 'independent-analytics');
-        if (\IAWP\Admin_Bar_Stats::is_option_enabled()) {
+        if (\IAWP\Admin_Bar_Stats::is_feature_enabled()) {
             \wp_register_style('iawp-admin-bar-stats', \IAWPSCOPED\iawp_url_to('dist/styles/admin_bar_stats.css'), [], \IAWP_VERSION);
         }
         if (\is_rtl()) {
@@ -386,13 +386,13 @@ class Independent_Analytics
         } elseif (\IAWPSCOPED\iawp_is_pro() && $this->is_woocommerce_support_enabled() && $hook == 'woocommerce_page_wc-orders') {
             \wp_enqueue_style('iawp-wc-order-box-styles');
         }
-        if (\IAWP\Admin_Bar_Stats::is_option_enabled()) {
+        if (\IAWP\Admin_Bar_Stats::is_feature_enabled()) {
             \wp_enqueue_style('iawp-admin-bar-stats');
         }
     }
     public function enqueue_scripts_and_styles_front_end()
     {
-        if (\IAWP\Admin_Bar_Stats::is_option_enabled()) {
+        if (\IAWP\Admin_Bar_Stats::is_feature_enabled()) {
             \wp_register_style('iawp-admin-bar-stats', \IAWPSCOPED\iawp_url_to('dist/styles/admin_bar_stats.css'), [], \IAWP_VERSION);
             \wp_enqueue_style('iawp-admin-bar-stats');
         }
@@ -401,7 +401,7 @@ class Independent_Analytics
     {
         \wp_register_script('iawp-translations', '');
         \wp_enqueue_script('iawp-translations');
-        \wp_add_inline_script('iawp-translations', 'const iawpText = ' . \json_encode(['views' => \__('Views', 'independent-analytics'), 'visitors' => \__('Visitors', 'independent-analytics'), 'sessions' => \__('Sessions', 'independent-analytics'), 'exactDates' => \__('Apply Exact Dates', 'independent-analytics'), 'relativeDates' => \__('Apply Relative Dates', 'independent-analytics'), 'copied' => \__('Copied', 'independent-analytics'), 'exportingPages' => \__('Exporting Pages...', 'independent-analytics'), 'exportPages' => \__('Export Pages', 'independent-analytics'), 'exportingReferrers' => \__('Exporting Referrers...', 'independent-analytics'), 'exportReferrers' => \__('Export Referrers', 'independent-analytics'), 'exportingGeolocations' => \__('Exporting Geolocations...', 'independent-analytics'), 'exportGeolocations' => \__('Export Geolocations', 'independent-analytics'), 'exportingDevices' => \__('Exporting Devices...', 'independent-analytics'), 'exportDevices' => \__('Export Devices', 'independent-analytics'), 'exportingCampaigns' => \__('Exporting Campaigns...', 'independent-analytics'), 'exportCampaigns' => \__('Export Campaigns', 'independent-analytics'), 'exportingClicks' => \__('Exporting Clicks', 'independent-analytics'), 'exportClicks' => \__('Export Clicks', 'independent-analytics'), 'invalidReportArchive' => \__('This report archive is invalid. Please export your reports and try again.', 'independent-analytics'), 'openMobileMenu' => \__('Open menu', 'independent-analytics'), 'closeMobileMenu' => \__('Close menu', 'independent-analytics'), 'noComparison' => \__('No Comparison', 'independent-analytics')]), 'before');
+        \wp_add_inline_script('iawp-translations', 'const iawpText = ' . \json_encode(['views' => \__('Views', 'independent-analytics'), 'visitors' => \__('Visitors', 'independent-analytics'), 'sessions' => \__('Sessions', 'independent-analytics'), 'orders' => \__('Orders', 'independent-analytics'), 'clicks' => \__('Clicks', 'independent-analytics'), 'formSubmissions' => \__('Form Submissions', 'independent-analytics'), 'exactDates' => \__('Apply Exact Dates', 'independent-analytics'), 'relativeDates' => \__('Apply Relative Dates', 'independent-analytics'), 'copied' => \__('Copied', 'independent-analytics'), 'exportingPages' => \__('Exporting Pages...', 'independent-analytics'), 'exportPages' => \__('Export Pages', 'independent-analytics'), 'exportingReferrers' => \__('Exporting Referrers...', 'independent-analytics'), 'exportReferrers' => \__('Export Referrers', 'independent-analytics'), 'exportingGeolocations' => \__('Exporting Geolocations...', 'independent-analytics'), 'exportGeolocations' => \__('Export Geolocations', 'independent-analytics'), 'exportingDevices' => \__('Exporting Devices...', 'independent-analytics'), 'exportDevices' => \__('Export Devices', 'independent-analytics'), 'exportingCampaigns' => \__('Exporting Campaigns...', 'independent-analytics'), 'exportCampaigns' => \__('Export Campaigns', 'independent-analytics'), 'exportingClicks' => \__('Exporting Clicks', 'independent-analytics'), 'exportClicks' => \__('Export Clicks', 'independent-analytics'), 'invalidReportArchive' => \__('This report archive is invalid. Please export your reports and try again.', 'independent-analytics'), 'openMobileMenu' => \__('Open menu', 'independent-analytics'), 'closeMobileMenu' => \__('Close menu', 'independent-analytics'), 'noComparison' => \__('No Comparison', 'independent-analytics')]), 'before');
     }
     public function enqueue_nonces()
     {
@@ -468,9 +468,11 @@ class Independent_Analytics
             \setcookie('iawp_ignore_visitor', '1', \time() - 60, \COOKIEPATH, \COOKIE_DOMAIN);
         }
     }
-    public function changelog_viewed_since_update() : bool
+    // Note: We don't use version_compare because we only want to notify of major version updates
+    // Ex. Show notice for 2.14.5 => 2.15.0, but not for 2.15.0 => 2.15.1
+    public function show_changelog_menu_label() : bool
     {
-        if (\number_format(\floatval(\IAWP_VERSION), 1) > \floatval($this->get_option('iawp_last_update_viewed', '0'))) {
+        if (\floatval(\IAWP_VERSION) > \floatval($this->get_option('iawp_last_update_viewed', '0'))) {
             return \true;
         }
         return \false;

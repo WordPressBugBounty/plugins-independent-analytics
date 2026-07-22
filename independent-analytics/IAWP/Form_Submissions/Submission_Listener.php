@@ -366,6 +366,53 @@ class Submission_Listener
             } catch (\Throwable $e) {
             }
         }, 10, 1);
+        // Core Forms
+        \add_action('cf_form_success', function ($submission, $form) {
+            try {
+                $submission = new \IAWP\Form_Submissions\Submission(
+                    32,
+                    \intval($form->id),
+                    // Form id
+                    Security::string($form->title)
+                );
+                $submission->record_submission();
+            } catch (\Throwable $e) {
+            }
+        }, 10, 2);
+        // Superb Addons
+        \add_action('superbaddons_form_after_submit', function ($form_id, $fields, $data) {
+            try {
+                $id_field = array_find($data['form_fields'], fn($field) => ($field['fieldName'] ?? null) === 'iawp-form-id');
+                if (!$id_field) {
+                    return;
+                }
+                $id = $id_field['defaultValue'] ?? null;
+                if (!\is_numeric($id)) {
+                    return;
+                }
+                $submission = new \IAWP\Form_Submissions\Submission(
+                    33,
+                    \intval($id),
+                    // Form id
+                    Security::string($data['form_name'])
+                );
+                $submission->record_submission();
+            } catch (\Throwable $e) {
+            }
+        }, 10, 3);
+        // Custom Breakdance Hook
+        \add_action('iawp_breakdance_form_submission', function ($id, $title) {
+            try {
+                $submission = new \IAWP\Form_Submissions\Submission(
+                    34,
+                    \intval($id),
+                    // Form id
+                    Security::string($title)
+                );
+                $submission->record_submission();
+            } catch (\Throwable $e) {
+            }
+        }, 10, 2);
         // Template
         // add_action('iawp_some_form_callback', function () {
         //     try {

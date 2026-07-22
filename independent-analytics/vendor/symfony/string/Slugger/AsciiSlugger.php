@@ -23,43 +23,37 @@ if (!\interface_exists(LocaleAwareInterface::class)) {
 class AsciiSlugger implements SluggerInterface, LocaleAwareInterface
 {
     private const LOCALE_TO_TRANSLITERATOR_ID = ['am' => 'Amharic-Latin', 'ar' => 'Arabic-Latin', 'az' => 'Azerbaijani-Latin', 'be' => 'Belarusian-Latin', 'bg' => 'Bulgarian-Latin', 'bn' => 'Bengali-Latin', 'de' => 'de-ASCII', 'el' => 'Greek-Latin', 'fa' => 'Persian-Latin', 'he' => 'Hebrew-Latin', 'hy' => 'Armenian-Latin', 'ka' => 'Georgian-Latin', 'kk' => 'Kazakh-Latin', 'ky' => 'Kirghiz-Latin', 'ko' => 'Korean-Latin', 'mk' => 'Macedonian-Latin', 'mn' => 'Mongolian-Latin', 'or' => 'Oriya-Latin', 'ps' => 'Pashto-Latin', 'ru' => 'Russian-Latin', 'sr' => 'Serbian-Latin', 'sr_Cyrl' => 'Serbian-Latin', 'th' => 'Thai-Latin', 'tk' => 'Turkmen-Latin', 'uk' => 'Ukrainian-Latin', 'uz' => 'Uzbek-Latin', 'zh' => 'Han-Latin'];
-    private $defaultLocale;
-    private $symbolsMap = ['en' => ['@' => 'at', '&' => 'and']];
+    private ?string $defaultLocale;
+    private \Closure|array $symbolsMap = ['en' => ['@' => 'at', '&' => 'and']];
     /**
      * Cache of transliterators per locale.
      *
      * @var \Transliterator[]
      */
-    private $transliterators = [];
-    /**
-     * @param array|\Closure|null $symbolsMap
-     */
-    public function __construct(?string $defaultLocale = null, $symbolsMap = null)
+    private array $transliterators = [];
+    public function __construct(string $defaultLocale = null, array|\Closure $symbolsMap = null)
     {
-        if (null !== $symbolsMap && !\is_array($symbolsMap) && !$symbolsMap instanceof \Closure) {
-            throw new \TypeError(\sprintf('Argument 2 passed to "%s()" must be array, Closure or null, "%s" given.', __METHOD__, \gettype($symbolsMap)));
-        }
         $this->defaultLocale = $defaultLocale;
         $this->symbolsMap = $symbolsMap ?? $this->symbolsMap;
     }
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale)
     {
         $this->defaultLocale = $locale;
     }
     /**
      * {@inheritdoc}
      */
-    public function getLocale()
+    public function getLocale() : string
     {
         return $this->defaultLocale;
     }
     /**
      * {@inheritdoc}
      */
-    public function slug(string $string, string $separator = '-', ?string $locale = null) : AbstractUnicodeString
+    public function slug(string $string, string $separator = '-', string $locale = null) : AbstractUnicodeString
     {
         $locale = $locale ?? $this->defaultLocale;
         $transliterator = [];

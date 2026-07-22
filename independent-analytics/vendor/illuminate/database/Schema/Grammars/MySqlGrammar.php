@@ -162,6 +162,18 @@ class MySqlGrammar extends Grammar
         })->all();
     }
     /**
+     * Compile a rename column command.
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $command
+     * @param  \Illuminate\Database\Connection  $connection
+     * @return array|string
+     */
+    public function compileRenameColumn(Blueprint $blueprint, Fluent $command, Connection $connection)
+    {
+        return $connection->usingNativeSchemaOperations() ? \sprintf('alter table %s rename column %s to %s', $this->wrapTable($blueprint), $this->wrap($command->from), $this->wrap($command->to)) : parent::compileRenameColumn($blueprint, $command, $connection);
+    }
+    /**
      * Compile a primary key command.
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
@@ -170,8 +182,7 @@ class MySqlGrammar extends Grammar
      */
     public function compilePrimary(Blueprint $blueprint, Fluent $command)
     {
-        $command->name(null);
-        return $this->compileKey($blueprint, $command, 'primary key');
+        return \sprintf('alter table %s add primary key %s(%s)', $this->wrapTable($blueprint), $command->algorithm ? 'using ' . $command->algorithm : '', $this->columnize($command->columns));
     }
     /**
      * Compile a unique key command.
@@ -410,6 +421,17 @@ class MySqlGrammar extends Grammar
     public function compileDisableForeignKeyConstraints()
     {
         return 'SET FOREIGN_KEY_CHECKS=0;';
+    }
+    /**
+     * Compile a table comment command.
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $command
+     * @return string
+     */
+    public function compileTableComment(Blueprint $blueprint, Fluent $command)
+    {
+        return \sprintf('alter table %s comment = %s', $this->wrapTable($blueprint), "'" . \str_replace("'", "''", $command->comment) . "'");
     }
     /**
      * Create the column definition for a char type.
@@ -831,8 +853,14 @@ class MySqlGrammar extends Grammar
      */
     protected function modifyVirtualAs(Blueprint $blueprint, Fluent $column)
     {
-        if (!\is_null($column->virtualAs)) {
-            return " as ({$column->virtualAs})";
+        if (!\is_null($virtualAs = $column->virtualAsJson)) {
+            if ($this->isJsonSelector($virtualAs)) {
+                $virtualAs = $this->wrapJsonSelector($virtualAs);
+            }
+            return " as ({$virtualAs})";
+        }
+        if (!\is_null($virtualAs = $column->virtualAs)) {
+            return " as ({$virtualAs})";
         }
     }
     /**
@@ -844,8 +872,14 @@ class MySqlGrammar extends Grammar
      */
     protected function modifyStoredAs(Blueprint $blueprint, Fluent $column)
     {
-        if (!\is_null($column->storedAs)) {
-            return " as ({$column->storedAs}) stored";
+        if (!\is_null($storedAs = $column->storedAsJson)) {
+            if ($this->isJsonSelector($storedAs)) {
+                $storedAs = $this->wrapJsonSelector($storedAs);
+            }
+            return " as ({$storedAs}) stored";
+        }
+        if (!\is_null($storedAs = $column->storedAs)) {
+            return " as ({$storedAs}) stored";
         }
     }
     /**
@@ -896,7 +930,7 @@ class MySqlGrammar extends Grammar
      */
     protected function modifyNullable(Blueprint $blueprint, Fluent $column)
     {
-        if (\is_null($column->virtualAs) && \is_null($column->storedAs)) {
+        if (\is_null($column->virtualAs) && \is_null($column->virtualAsJson) && \is_null($column->storedAs) && \is_null($column->storedAsJson)) {
             return $column->nullable ? ' null' : ' not null';
         }
         if ($column->nullable === \false) {
@@ -990,7 +1024,7 @@ class MySqlGrammar extends Grammar
      */
     protected function modifySrid(Blueprint $blueprint, Fluent $column)
     {
-        if (!\is_null($column->srid) && \is_int($column->srid) && $column->srid > 0) {
+        if (\is_int($column->srid) && $column->srid > 0) {
             return ' srid ' . $column->srid;
         }
     }
@@ -1006,5 +1040,16 @@ class MySqlGrammar extends Grammar
             return '`' . \str_replace('`', '``', $value) . '`';
         }
         return $value;
+    }
+    /**
+     * Wrap the given JSON selector.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    protected function wrapJsonSelector($value)
+    {
+        [$field, $path] = $this->wrapJsonFieldAndPath($value);
+        return 'json_unquote(json_extract(' . $field . $path . '))';
     }
 }

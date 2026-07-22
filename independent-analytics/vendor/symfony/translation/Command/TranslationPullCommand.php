@@ -10,6 +10,7 @@
  */
 namespace IAWPSCOPED\Symfony\Component\Translation\Command;
 
+use IAWPSCOPED\Symfony\Component\Console\Attribute\AsCommand;
 use IAWPSCOPED\Symfony\Component\Console\Command\Command;
 use IAWPSCOPED\Symfony\Component\Console\Completion\CompletionInput;
 use IAWPSCOPED\Symfony\Component\Console\Completion\CompletionSuggestions;
@@ -27,17 +28,16 @@ use IAWPSCOPED\Symfony\Component\Translation\Writer\TranslationWriterInterface;
  * @author Mathieu Santostefano <msantostefano@protonmail.com>
  * @internal
  */
+#[AsCommand(name: 'translation:pull', description: 'Pull translations from a given provider.')]
 final class TranslationPullCommand extends Command
 {
     use TranslationTrait;
-    protected static $defaultName = 'translation:pull';
-    protected static $defaultDescription = 'Pull translations from a given provider.';
     private $providerCollection;
     private $writer;
     private $reader;
-    private $defaultLocale;
-    private $transPaths;
-    private $enabledLocales;
+    private string $defaultLocale;
+    private array $transPaths;
+    private array $enabledLocales;
     public function __construct(TranslationProviderCollection $providerCollection, TranslationWriterInterface $writer, TranslationReaderInterface $reader, string $defaultLocale, array $transPaths = [], array $enabledLocales = [])
     {
         $this->providerCollection = $providerCollection;

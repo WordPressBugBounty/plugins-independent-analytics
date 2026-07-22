@@ -6,8 +6,12 @@ use IAWPSCOPED\IPLib\ParseStringFlag;
 use IAWPSCOPED\IPLib\Range\RangeInterface;
 use IAWPSCOPED\IPLib\Range\Subnet;
 use IAWPSCOPED\IPLib\Range\Type as RangeType;
+use IAWPSCOPED\IPLib\Service\BinaryMath;
+use IAWPSCOPED\IPLib\Service\NumberInChunks;
 /**
  * An IPv6 address.
+ *
+ * @phpstan-consistent-constructor
  * @internal
  */
 class IPv6 implements AddressInterface
@@ -49,7 +53,7 @@ class IPv6 implements AddressInterface
     /**
      * An array containing RFC designated address ranges.
      *
-     * @var array|null
+     * @var \IPLib\Address\AssignedRange[]|null
      */
     private static $reservedRanges;
     /**
@@ -132,7 +136,7 @@ class IPv6 implements AddressInterface
             }
         }
         $result = null;
-        if (\is_string($address) && \strpos($address, ':') !== \false && \strpos($address, ':::') === \false) {
+        if (\strpos($address, ':') !== \false && \strpos($address, ':::') === \false) {
             if ($flags & ParseStringFlag::MAY_INCLUDE_PORT && $address[0] === '[' && \preg_match('/^\\[(.+)]:\\d+$/', $address, $matches)) {
                 $address = $matches[1];
             }
@@ -189,7 +193,7 @@ class IPv6 implements AddressInterface
     /**
      * Parse an array of bytes and returns an IPv6 instance if the array is valid, or null otherwise.
      *
-     * @param int[]|array $bytes
+     * @param array<int|mixed> $bytes
      *
      * @return static|null
      */
@@ -219,7 +223,7 @@ class IPv6 implements AddressInterface
     /**
      * Parse an array of words and returns an IPv6 instance if the array is valid, or null otherwise.
      *
-     * @param int[]|array $words
+     * @param array<int|mixed> $words
      *
      * @return static|null
      */
@@ -316,7 +320,7 @@ class IPv6 implements AddressInterface
     {
         if ($this->words === null) {
             $this->words = \array_map(function ($chunk) {
-                return \hexdec($chunk);
+                return (int) \hexdec($chunk);
             }, \explode(':', $this->longAddress));
         }
         return $this->words;
@@ -368,10 +372,14 @@ class IPv6 implements AddressInterface
                 $exceptions = array();
                 if (isset($data[1])) {
                     foreach ($data[1] as $exceptionRange => $exceptionType) {
-                        $exceptions[] = new AssignedRange(Subnet::parseString($exceptionRange), $exceptionType);
+                        $subnet = Subnet::parseString($exceptionRange);
+                        /** @var Subnet $subnet */
+                        $exceptions[] = new AssignedRange($subnet, $exceptionType);
                     }
                 }
-                $reservedRanges[] = new AssignedRange(Subnet::parseString($range), $data[0], $exceptions);
+                $subnet = Subnet::parseString($range);
+                /** @var Subnet $subnet */
+                $reservedRanges[] = new AssignedRange($subnet, $data[0], $exceptions);
             }
             self::$reservedRanges = $reservedRanges;
         }
@@ -438,10 +446,16 @@ class IPv6 implements AddressInterface
     {
         $myBytes = $this->getBytes();
         $ipv6Bytes = \array_merge(\array_slice($myBytes, 0, 12), array(0xff, 0xff, 0xff, 0xff));
-        $ipv6String = static::fromBytes($ipv6Bytes)->toString($ipV6Long);
+        $ipv6 = static::fromBytes($ipv6Bytes);
+        /** @var IPv6 $ipv6 */
+        $ipv6String = $ipv6->toString($ipV6Long);
         $ipv4Bytes = \array_slice($myBytes, 12, 4);
-        $ipv4String = IPv4::fromBytes($ipv4Bytes)->toString($ipV4Long);
-        return \preg_replace('/((ffff:ffff)|(\\d+(\\.\\d+){3}))$/i', $ipv4String, $ipv6String);
+        $ipv4 = IPv4::fromBytes($ipv4Bytes);
+        /** @var IPv4 $ipv4 */
+        $ipv4String = $ipv4->toString($ipV4Long);
+        $result = \preg_replace('/((ffff:ffff)|(\\d+(\\.\\d+){3}))$/i', $ipv4String, $ipv6String);
+        /** @var string $result */
+        return $result;
     }
     /**
      * {@inheritdoc}
@@ -468,24 +482,23 @@ class IPv6 implements AddressInterface
      */
     public function getAddressAtOffset($n)
     {
-        if (!\is_int($n)) {
+        if (\is_int($n)) {
+            $thatChunks = NumberInChunks::fromInteger($n, NumberInChunks::CHUNKSIZE_WORDS);
+        } elseif (($s = BinaryMath::getInstance()->normalizeIntegerString($n)) !== '') {
+            $thatChunks = NumberInChunks::fromNumericString($s, NumberInChunks::CHUNKSIZE_WORDS);
+        } else {
             return null;
         }
-        $boundary = 0x10000;
-        $mod = $n;
-        $words = $this->getWords();
-        for ($i = \count($words) - 1; $i >= 0; $i--) {
-            $tmp = ($words[$i] + $mod) % $boundary;
-            $mod = (int) \floor(($words[$i] + $mod) / $boundary);
-            if ($tmp < 0) {
-                $tmp += $boundary;
-            }
-            $words[$i] = $tmp;
+        $myWords = $this->getWords();
+        while (isset($myWords[1]) && $myWords[0] === 0) {
+            \array_shift($myWords);
         }
-        if ($mod !== 0) {
+        $myChunks = new NumberInChunks(\false, $myWords, NumberInChunks::CHUNKSIZE_WORDS);
+        $result = $myChunks->add($thatChunks);
+        if ($result->negative || \count($result->chunks) > 8) {
             return null;
         }
-        return static::fromWords($words);
+        return static::fromWords(\array_pad($result->chunks, -8, 0));
     }
     /**
      * {@inheritdoc}
@@ -513,5 +526,62 @@ class IPv6 implements AddressInterface
     public function getReverseDNSLookupName()
     {
         return \implode('.', \array_reverse(\str_split(\str_replace(':', '', $this->toString(\true)), 1))) . '.ip6.arpa';
+    }
+    /**
+     * {@inheritdoc}
+     *
+     * @see \IPLib\Address\AddressInterface::shift()
+     */
+    public function shift($bits)
+    {
+        $bits = (int) $bits;
+        if ($bits === 0) {
+            return $this;
+        }
+        $absBits = \abs($bits);
+        if ($absBits >= 128) {
+            return new self('0000:0000:0000:0000:0000:0000:0000:0000');
+        }
+        $pad = \str_repeat('0', $absBits);
+        $paddedBits = $this->getBits();
+        if ($bits > 0) {
+            $paddedBits = $pad . \substr($paddedBits, 0, -$bits);
+        } else {
+            $paddedBits = \substr($paddedBits, $absBits) . $pad;
+        }
+        $bytes = \array_map('bindec', \str_split($paddedBits, 16));
+        /** @var int[] $bytes */
+        $result = static::fromWords($bytes);
+        /** @var IPv6 $result */
+        return $result;
+    }
+    /**
+     * {@inheritdoc}
+     *
+     * @see \IPLib\Address\AddressInterface::add()
+     */
+    public function add(AddressInterface $other)
+    {
+        if (!$other instanceof self) {
+            return null;
+        }
+        $myWords = $this->getWords();
+        $otherWords = $other->getWords();
+        $sum = \array_fill(0, 8, 0);
+        $carry = 0;
+        for ($index = 7; $index >= 0; $index--) {
+            $word = $myWords[$index] + $otherWords[$index] + $carry;
+            if ($word > 0xffff) {
+                $carry = $word >> 16;
+                $word &= 0xffff;
+            } else {
+                $carry = 0;
+            }
+            $sum[$index] = $word;
+        }
+        if ($carry !== 0) {
+            return null;
+        }
+        return static::fromWords($sum);
     }
 }

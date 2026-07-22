@@ -49,11 +49,11 @@
     <div id="iawp-calendars" class="iawp-calendars"><?php
         foreach($months as $month) {
             echo iawp_render('date-picker.calendar-month', [
-                'month' => $month,
-                'start_date' => $start_date->format('Y-m-d'),
-                'end_date' => $end_date->format('Y-m-d'),
+                'month'       => $month,
+                'start_date'  => $start_date->format('Y-m-d'),
+                'end_date'    => $end_date->format('Y-m-d'),
                 'user_format' => $user_format,
-                'first_data' => $first_data
+                'first_data'  => $first_data,
             ]);
         } ?>
     </div>

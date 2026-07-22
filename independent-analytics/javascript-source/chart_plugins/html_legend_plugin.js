@@ -8,6 +8,7 @@ module.exports = {
         }
     },
     afterUpdate(chart, args, options) {
+        const shouldAnimate = options.shouldAnimate ?? true;
         const legendContainer = this.getLegendContainer(options)
         let legendList = legendContainer.querySelector('ul');
 
@@ -38,7 +39,9 @@ module.exports = {
                 } else {
                     chart.setDatasetVisibility(legendData.datasetIndex, !chart.isDatasetVisible(legendData.datasetIndex));
                 }
-                chart.update();
+
+                chart.update(shouldAnimate ? null : 'none');
+
                 if (typeof options.callback === 'function') {
                     const visibleDatasets = chart.data.datasets.filter((dataset, index) => {
                         return chart.isDatasetVisible(index);

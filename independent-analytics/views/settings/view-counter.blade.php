@@ -6,7 +6,7 @@
         <?php settings_fields('iawp_view_counter_settings'); ?>
         <?php do_settings_sections('independent-analytics-view-counter-settings'); ?>
         <div class="shortcode-note">
-            <h3><?php esc_html_e('Using the shortcode','independent-analytics'); ?></h3>
+            <h3><?php esc_html_e('Using the shortcode', 'independent-analytics'); ?></h3>
             <p><?php esc_html_e('You can output the view counter in a custom location using the shortcode:', 'independent-analytics'); ?>
                 <code>[iawp_view_counter]</code>
             </p>

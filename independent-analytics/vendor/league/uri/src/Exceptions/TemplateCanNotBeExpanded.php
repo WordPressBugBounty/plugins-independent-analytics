@@ -11,9 +11,10 @@
 declare (strict_types=1);
 namespace IAWPSCOPED\League\Uri\Exceptions;
 
+use InvalidArgumentException;
 use IAWPSCOPED\League\Uri\Contracts\UriException;
 /** @internal */
-class TemplateCanNotBeExpanded extends \InvalidArgumentException implements UriException
+class TemplateCanNotBeExpanded extends InvalidArgumentException implements UriException
 {
     public static function dueToUnableToProcessValueListWithPrefix(string $variableName) : self
     {

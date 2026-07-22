@@ -6,7 +6,7 @@
         <div class="inner-container type">
             <select class="link-type" value="<?php echo esc_attr($link['type']); ?>"><?php
                 foreach ($types as $type => $title) : ?>
-                    <option value="<?php echo esc_attr($type); ?>" <?php selected($type, $link['type'], true ); ?>><?php echo esc_html($title); ?></option>    
+                    <option value="<?php echo esc_attr($type); ?>" <?php selected($type, $link['type'], true); ?>><?php echo esc_html($title); ?></option>    
                 <?php endforeach; ?>
             </select>
         </div>
@@ -21,11 +21,11 @@
                             <?php endforeach; ?>
                         </select><?php
                     elseif ($type == 'protocol') : ?>
-                        <select class="link-value"><?php 
+                        <select class="link-value"><?php
                             foreach ($protocols as $protocol) : ?>
                                 <option value="<?php echo esc_attr($protocol); ?>" <?php selected($protocol, $link['value'], true); ?>><?php echo esc_html($protocol); ?></option>
                             <?php endforeach; ?>
-                        </select><?php 
+                        </select><?php
                     elseif ($type === 'external') : ?>
                         <input class="link-value external" type="text" disabled/><?php
                     else :
@@ -42,45 +42,45 @@
                         if ($type == 'subdirectory') : ?>
                             <span class="value-suffix">/</span><?php
                         endif;
-                    endif; ?>
+                endif; ?>
                 </span>
             <?php endforeach; ?>
         </div>  
     </div>
     <div class="value-text-container">
-        <span class="name"><?php 
+        <span class="name"><?php
             if ($link['is_active']) : ?>
                 <span class="dashicons dashicons-yes-alt"></span><?php
             else : ?>
-                <span class="dashicons dashicons-dismiss"></span><?php 
+                <span class="dashicons dashicons-dismiss"></span><?php
             endif;
-            echo esc_html($link['name']); ?>
+echo esc_html($link['name']); ?>
         </span>
         <span class="type"><?php echo esc_html($types[$link['type']]); ?></span>
         <span class="value"><?php
-            if ($link['type'] == 'class') :
-                echo '.' . esc_html($link['value']); ?>
+if ($link['type'] == 'class') :
+    echo '.' . esc_html($link['value']); ?>
                 <button class="copy-class" data-controller="clipboard" data-action="clipboard#copy"
                     data-clipboard-text-value="<?php echo esc_attr($link['value']); ?>">
                     <span class="dashicons dashicons-clipboard"></span>
                 </button><?php
-            elseif ($link['type'] == 'id') : 
-                echo '#' . esc_html($link['value']); ?>
+elseif ($link['type'] == 'id') :
+    echo '#' . esc_html($link['value']); ?>
                 <button class="copy-class" data-controller="clipboard" data-action="clipboard#copy"
                         data-clipboard-text-value="<?php echo esc_attr($link['value']); ?>">
                 <span class="dashicons dashicons-clipboard"></span>
                 </button><?php
-            elseif ($link['type'] == 'extension') : 
-                echo '.' . esc_html($link['value']);
-            elseif ($link['type'] == 'domain') : 
-                echo esc_html($link['value']);
-            elseif ($link['type'] == 'subdirectory') :
-                echo '/' . esc_html($link['value']) . '/';
-            elseif ($link['type'] == 'protocol') : 
-                echo esc_html($link['value']) . ':';
-            else :
-                echo esc_html($link['value']);
-            endif; ?>
+elseif ($link['type'] == 'extension') :
+    echo '.' . esc_html($link['value']);
+elseif ($link['type'] == 'domain') :
+    echo esc_html($link['value']);
+elseif ($link['type'] == 'subdirectory') :
+    echo '/' . esc_html($link['value']) . '/';
+elseif ($link['type'] == 'protocol') :
+    echo esc_html($link['value']) . ':';
+else :
+    echo esc_html($link['value']);
+endif; ?>
         </span>
     </div><?php
     if ($link['is_active'] !== false) : ?>
@@ -95,13 +95,13 @@
         </div>
     <?php endif; ?>
     <button class="archive-button"><?php
-        if ($link['is_active']) : 
-            echo esc_html__('Archive', 'independent-analytics' );
-        else : 
-            echo esc_html__('Resume Tracking', 'independent-analytics' );
+        if ($link['is_active']) :
+            echo esc_html__('Archive', 'independent-analytics');
+        else :
+            echo esc_html__('Resume Tracking', 'independent-analytics');
         endif; ?>
-    </button><?php 
+    </button><?php
     if ($link['is_active'] === false) : ?>
-        <button class="delete-link-button"><?php echo esc_html__('Delete', 'independent-analytics' ); ?></button>
+        <button class="delete-link-button"><?php echo esc_html__('Delete', 'independent-analytics'); ?></button>
     <?php endif; ?>
 </div>

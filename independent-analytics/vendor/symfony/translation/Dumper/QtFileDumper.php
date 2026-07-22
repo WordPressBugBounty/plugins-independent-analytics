@@ -22,7 +22,7 @@ class QtFileDumper extends FileDumper
     /**
      * {@inheritdoc}
      */
-    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = [])
+    public function formatCatalogue(MessageCatalogue $messages, string $domain, array $options = []) : string
     {
         $dom = new \DOMDocument('1.0', 'utf-8');
         $dom->formatOutput = \true;
@@ -50,7 +50,7 @@ class QtFileDumper extends FileDumper
     /**
      * {@inheritdoc}
      */
-    protected function getExtension()
+    protected function getExtension() : string
     {
         return 'ts';
     }

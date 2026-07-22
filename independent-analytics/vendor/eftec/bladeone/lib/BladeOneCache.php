@@ -5,6 +5,7 @@
 namespace IAWPSCOPED\eftec\bladeone;
 
 use Exception;
+use JsonException;
 use function fclose;
 use function file_put_contents;
 use function filemtime;
@@ -36,29 +37,30 @@ use function time;
  * </code>
  *
  * @package  BladeOneCache
- * @version  3.42 2020-04-25
+ * @version  3.43.1 2025-09-03
  * @link     https://github.com/EFTEC/BladeOne
  * @author   Jorge Patricio Castro Castillo <jcastro arroba eftec dot cl>
  * @internal
  */
 trait BladeOneCache
 {
-    protected $curCacheId = 0;
-    protected $curCacheDuration = 0;
-    protected $curCachePosition = 0;
-    protected $cacheRunning = \false;
-    protected $cachePageRunning = \false;
-    protected $cacheLog;
+    protected int $curCacheId = 0;
+    protected int $curCacheDuration = 0;
+    protected int $curCachePosition = 0;
+    protected bool $cacheRunning = \false;
+    protected bool $cachePageRunning = \false;
+    /** @var string|null where the log file will be stored */
+    protected ?string $cacheLog;
     /**
      * @var array avoids comparing the file different times. It also avoids race conditions.
      */
-    private $cacheExpired = [];
+    private array $cacheExpired = [];
     /**
      * @var string=['get','post','getpost','request',null][$i]
      */
-    private $cacheStrategy;
-    /** @var array|null  */
-    private $cacheStrategyIndex;
+    private string $cacheStrategy;
+    /** @var array|null */
+    private ?array $cacheStrategyIndex;
     /**
      * @return null|string $cacheStrategy=['get','post','getpost','request',null][$i]
      */
@@ -68,7 +70,7 @@ trait BladeOneCache
     }
     /**
      * It sets the cache log. If not cache log then it does not generate a log file<br>
-     * The cache log stores each time a template is creates or expired.<br>
+     * The cache log stores each time a template is created or expired.<br>
      *
      * @param string $file
      */
@@ -76,6 +78,9 @@ trait BladeOneCache
     {
         $this->cacheLog = $file;
     }
+    /**
+     * @throws JsonException
+     */
     public function writeCacheLog($txt, $nivel) : void
     {
         if (!$this->cacheLog) {
@@ -102,7 +107,7 @@ trait BladeOneCache
             default:
                 $txtNivel = 'other';
         }
-        $txtarg = \json_encode($this->cacheUniqueGUID(\false));
+        $txtarg = \json_encode($this->cacheUniqueGUID(\false), \JSON_THROW_ON_ERROR);
         fwrite($fp, \date('c') . "\t{$txt}\t{$txtNivel}\t{$txtarg}\n");
         fclose($fp);
     }
@@ -110,7 +115,7 @@ trait BladeOneCache
      * It sets the strategy of the cache page.
      *
      * @param null|string $cacheStrategy =['get','post','getpost','request',null][$i]
-     * @param array|null $index if null then it reads all indexes. If not, it reads an indexes.
+     * @param array|null  $index         if null then it reads all indexes. If not, it reads an indexes.
      */
     public function setCacheStrategy($cacheStrategy, $index = null) : void
     {
@@ -151,12 +156,9 @@ trait BladeOneCache
         if ($this->cacheStrategyIndex === null || !is_array($r)) {
             $r = \serialize($r);
         } else {
-            $copy = [];
-            foreach ($r as $key => $item) {
-                if (\in_array($key, $this->cacheStrategyIndex, \true)) {
-                    $copy[$key] = $item;
-                }
-            }
+            $copy = \array_filter($r, function ($key) {
+                return \in_array($key, $this->cacheStrategyIndex, \true);
+            }, \ARRAY_FILTER_USE_KEY);
             $r = \serialize($copy);
         }
         return $serialize === \true ? \md5($r) : $r;
@@ -209,7 +211,7 @@ trait BladeOneCache
             $content = $this->run($view, $variables);
             // if no cache, then it runs normally.
             $this->fileName = $view;
-            // sometimes the filename is replaced (@include), so we restore it
+            // sometimes the filename is replaced (using the tag include), so we restore it
             $this->cacheEnd($content);
             // and it stores as a cache paged.
         } else {
@@ -221,9 +223,9 @@ trait BladeOneCache
     /**
      * Returns true if the block cache expired (or doesn't exist), otherwise false.
      *
-     * @param string $templateName name of the template to use (such hello for template hello.blade.php)
-     * @param string $id (id of cache, optional, if not id then it adds automatically a number)
-     * @param int $cacheDuration (duration of the cache in seconds)
+     * @param string $templateName  name of the template to use (such hello for template hello.blade.php)
+     * @param string $id            (id of cache, optional, if not id then it adds automatically a number)
+     * @param int    $cacheDuration (duration of the cache in seconds)
      * @return int 0=cache exists, 1= cache expired, 2=not exists, string= the cache file (if any)
      */
     public function cacheExpired($templateName, $id, $cacheDuration) : int
@@ -239,7 +241,7 @@ trait BladeOneCache
      * It returns true if the whole page expired.
      *
      * @param string $templateName
-     * @param int $cacheDuration is seconds.
+     * @param int    $cacheDuration is seconds.
      * @return int 0=cache exists, 1= cache expired, 2=not exists, string= the cache content (if any)
      */
     public function cachePageExpired($templateName, $cacheDuration) : int
@@ -255,7 +257,7 @@ trait BladeOneCache
      * This method is used by cacheExpired() and cachePageExpired()
      *
      * @param string $compiledFile
-     * @param int $cacheDuration is seconds.
+     * @param int    $cacheDuration is seconds.
      * @return int|mixed 0=cache exists, 1= cache expired, 2=not exists, string= the cache content (if any)
      */
     private function cacheExpiredInt($compiledFile, $cacheDuration)

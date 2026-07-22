@@ -13,5 +13,5 @@
 </div>
 
 <div class="journeys journeys-for-single-visitor" data-session-to-highlight="<?php echo is_int($session_id) ? $session_id : '' ?>">
-    <?php echo $rows; // This output is escaped in journeys.rows.blade.php ?>
+    <?php echo $rows; // This output is escaped in journeys.rows.blade.php?>
 </div>

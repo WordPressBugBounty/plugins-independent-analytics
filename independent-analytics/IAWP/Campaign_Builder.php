@@ -4,7 +4,6 @@ namespace IAWP;
 
 use IAWPSCOPED\Carbon\CarbonImmutable;
 use IAWP\Utils\Singleton;
-use IAWP\Utils\String_Util;
 use IAWP\Utils\URL;
 use IAWPSCOPED\Illuminate\Support\Carbon;
 use IAWPSCOPED\League\Uri\Uri;
@@ -30,7 +29,7 @@ class Campaign_Builder
         $campaign_error = null;
         $term = \strlen($term) > 0 ? $term : null;
         $content = \strlen($content) > 0 ? $content : null;
-        $path = String_Util::str_starts_with($path, '/') ? \substr($path, 1) : $path;
+        $path = \str_starts_with($path, '/') ? \substr($path, 1) : $path;
         $is_path_a_url = (new URL($path))->is_valid_url();
         $url = new URL(\trailingslashit(\home_url()) . $path);
         if ($is_path_a_url) {
@@ -62,7 +61,7 @@ class Campaign_Builder
     }
     public function build_url($path, $source, $medium, $campaign, $term = null, $content = null) : string
     {
-        $path = String_Util::str_starts_with($path, '/') ? \substr($path, 1) : $path;
+        $path = \str_starts_with($path, '/') ? \substr($path, 1) : $path;
         $uri = Uri::createFromString(\trailingslashit(\home_url()) . $path);
         $existing_query = $uri->getQuery();
         if (\is_null($existing_query)) {

@@ -2,6 +2,7 @@
 
 namespace IAWPSCOPED\Illuminate\Support;
 
+use BackedEnum;
 use IAWPSCOPED\Illuminate\Contracts\Support\Arrayable;
 use IAWPSCOPED\Illuminate\Contracts\Support\Htmlable;
 use IAWPSCOPED\Illuminate\Contracts\Support\Jsonable;
@@ -64,6 +65,9 @@ class Js implements Htmlable
         if ($data instanceof self) {
             return $data->toHtml();
         }
+        if ($data instanceof BackedEnum) {
+            $data = $data->value;
+        }
         $json = $this->jsonEncode($data, $flags, $depth);
         if (\is_string($data)) {
             return "'" . \substr($json, 1, -1) . "'";
@@ -101,7 +105,7 @@ class Js implements Htmlable
      */
     protected function convertJsonToJavaScriptExpression($json, $flags = 0)
     {
-        if ('[]' === $json || '{}' === $json) {
+        if ($json === '[]' || $json === '{}') {
             return $json;
         }
         if (Str::startsWith($json, ['"', '{', '['])) {

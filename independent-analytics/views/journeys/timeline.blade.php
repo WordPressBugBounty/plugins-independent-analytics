@@ -7,7 +7,9 @@
         <div class="journey-heading-container">
             <h3><?php esc_html_e('Session Timeline', 'independent-analytics'); ?></h3>
             <div class="journey-user-info">
-                <div class="view-all-sessions <?php if($timeline->origin()->session_count() == 1) echo 'no-other-sessions'; ?>">
+                <div class="view-all-sessions <?php if($timeline->origin()->session_count() == 1) {
+                    echo 'no-other-sessions';
+                } ?>">
                     <span class="dashicons dashicons-admin-users"></span>
                     <?php if($timeline->origin()->session_count() > 1): ?>
                         <a href="<?php echo esc_url($timeline->visitor_url()); ?>" target="_blank"><?php echo esc_html($timeline->session_count_message()); ?> &rarr;</a>

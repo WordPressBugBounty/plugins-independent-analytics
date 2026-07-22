@@ -48,9 +48,7 @@ class ConfigurationUrlParser
      */
     protected function getPrimaryOptions($url)
     {
-        return \array_filter(['driver' => $this->getDriver($url), 'database' => $this->getDatabase($url), 'host' => $url['host'] ?? null, 'port' => $url['port'] ?? null, 'username' => $url['user'] ?? null, 'password' => $url['pass'] ?? null], function ($value) {
-            return !\is_null($value);
-        });
+        return \array_filter(['driver' => $this->getDriver($url), 'database' => $this->getDatabase($url), 'host' => $url['host'] ?? null, 'port' => $url['port'] ?? null, 'username' => $url['user'] ?? null, 'password' => $url['pass'] ?? null], fn($value) => !\is_null($value));
     }
     /**
      * Get the database driver from the URL.

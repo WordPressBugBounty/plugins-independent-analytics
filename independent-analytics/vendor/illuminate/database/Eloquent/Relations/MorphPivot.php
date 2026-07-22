@@ -2,7 +2,6 @@
 
 namespace IAWPSCOPED\Illuminate\Database\Eloquent\Relations;
 
-use IAWPSCOPED\Illuminate\Support\Str;
 /** @internal */
 class MorphPivot extends Pivot
 {
@@ -117,7 +116,7 @@ class MorphPivot extends Pivot
         if (\is_array($ids)) {
             return $this->newQueryForCollectionRestoration($ids);
         }
-        if (!Str::contains($ids, ':')) {
+        if (!\str_contains($ids, ':')) {
             return parent::newQueryForRestoration($ids);
         }
         $segments = \explode(':', $ids);
@@ -132,7 +131,7 @@ class MorphPivot extends Pivot
     protected function newQueryForCollectionRestoration(array $ids)
     {
         $ids = \array_values($ids);
-        if (!Str::contains($ids[0], ':')) {
+        if (!\str_contains($ids[0], ':')) {
             return parent::newQueryForRestoration($ids);
         }
         $query = $this->newQueryWithoutScopes();

@@ -18,7 +18,11 @@ class Table_Clicks extends \IAWP\Tables\Table
     {
         return 'clicks';
     }
-    protected function groups() : Groups
+    public function name() : string
+    {
+        return \__('Clicks', 'independent-analytics');
+    }
+    public function groups() : Groups
     {
         $groups = [];
         $groups[] = new Group('link', \__('Links', 'independent-analytics'), 'link_target', Links::class, Click_Statistics::class);

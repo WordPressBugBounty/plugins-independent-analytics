@@ -7,6 +7,7 @@ use IAWPSCOPED\Illuminate\Database\ClassMorphViolationException;
 use IAWPSCOPED\Illuminate\Database\Eloquent\Builder;
 use IAWPSCOPED\Illuminate\Database\Eloquent\Collection;
 use IAWPSCOPED\Illuminate\Database\Eloquent\Model;
+use IAWPSCOPED\Illuminate\Database\Eloquent\PendingHasThroughRelationship;
 use IAWPSCOPED\Illuminate\Database\Eloquent\Relations\BelongsTo;
 use IAWPSCOPED\Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use IAWPSCOPED\Illuminate\Database\Eloquent\Relations\HasMany;
@@ -17,6 +18,7 @@ use IAWPSCOPED\Illuminate\Database\Eloquent\Relations\MorphMany;
 use IAWPSCOPED\Illuminate\Database\Eloquent\Relations\MorphOne;
 use IAWPSCOPED\Illuminate\Database\Eloquent\Relations\MorphTo;
 use IAWPSCOPED\Illuminate\Database\Eloquent\Relations\MorphToMany;
+use IAWPSCOPED\Illuminate\Database\Eloquent\Relations\Pivot;
 use IAWPSCOPED\Illuminate\Database\Eloquent\Relations\Relation;
 use IAWPSCOPED\Illuminate\Support\Arr;
 use IAWPSCOPED\Illuminate\Support\Str;
@@ -47,6 +49,23 @@ trait HasRelationships
      * @var array
      */
     protected static $relationResolvers = [];
+    /**
+     * Get the dynamic relation resolver if defined or inherited, or return null.
+     *
+     * @param  string  $class
+     * @param  string  $key
+     * @return mixed
+     */
+    public function relationResolver($class, $key)
+    {
+        if ($resolver = static::$relationResolvers[$class][$key] ?? null) {
+            return $resolver;
+        }
+        if ($parent = \get_parent_class($class)) {
+            return $this->relationResolver($parent, $key);
+        }
+        return null;
+    }
     /**
      * Define a dynamic relation resolver.
      *
@@ -99,7 +118,7 @@ trait HasRelationships
      */
     public function hasOneThrough($related, $through, $firstKey = null, $secondKey = null, $localKey = null, $secondLocalKey = null)
     {
-        $through = new $through();
+        $through = $this->newRelatedThroughInstance($through);
         $firstKey = $firstKey ?: $this->getForeignKey();
         $secondKey = $secondKey ?: $through->getForeignKey();
         return $this->newHasOneThrough($this->newRelatedInstance($related)->newQuery(), $this, $through, $firstKey, $secondKey, $localKey ?: $this->getKeyName(), $secondLocalKey ?: $through->getKeyName());
@@ -176,9 +195,9 @@ trait HasRelationships
         if (\is_null($foreignKey)) {
             $foreignKey = Str::snake($relation) . '_' . $instance->getKeyName();
         }
-        // Once we have the foreign key names, we'll just create a new Eloquent query
-        // for the related models and returns the relationship instance which will
-        // actually be responsible for retrieving and hydrating every relations.
+        // Once we have the foreign key names we'll just create a new Eloquent query
+        // for the related models and return the relationship instance which will
+        // actually be responsible for retrieving and hydrating every relation.
         $ownerKey = $ownerKey ?: $instance->getKeyName();
         return $this->newBelongsTo($instance->newQuery(), $this, $foreignKey, $ownerKey, $relation);
     }
@@ -281,6 +300,19 @@ trait HasRelationships
         return $caller['function'];
     }
     /**
+     * Create a pending has-many-through or has-one-through relationship.
+     *
+     * @param  string|\Illuminate\Database\Eloquent\Relations\HasMany|\Illuminate\Database\Eloquent\Relations\HasOne  $relationship
+     * @return \Illuminate\Database\Eloquent\PendingHasThroughRelationship
+     */
+    public function through($relationship)
+    {
+        if (\is_string($relationship)) {
+            $relationship = $this->{$relationship}();
+        }
+        return new PendingHasThroughRelationship($this, $relationship);
+    }
+    /**
      * Define a one-to-many relationship.
      *
      * @param  string  $related
@@ -321,7 +353,7 @@ trait HasRelationships
      */
     public function hasManyThrough($related, $through, $firstKey = null, $secondKey = null, $localKey = null, $secondLocalKey = null)
     {
-        $through = new $through();
+        $through = $this->newRelatedThroughInstance($through);
         $firstKey = $firstKey ?: $this->getForeignKey();
         $secondKey = $secondKey ?: $through->getForeignKey();
         return $this->newHasManyThrough($this->newRelatedInstance($related)->newQuery(), $this, $through, $firstKey, $secondKey, $localKey ?: $this->getKeyName(), $secondLocalKey ?: $through->getKeyName());
@@ -450,9 +482,9 @@ trait HasRelationships
         $instance = $this->newRelatedInstance($related);
         $foreignPivotKey = $foreignPivotKey ?: $name . '_id';
         $relatedPivotKey = $relatedPivotKey ?: $instance->getForeignKey();
-        // Now we're ready to create a new query builder for this related model and
-        // the relationship instances for this relation. This relations will set
-        // appropriate query constraints then entirely manages the hydrations.
+        // Now we're ready to create a new query builder for the related model and
+        // the relationship instances for this relation. This relation will set
+        // appropriate query constraints then entirely manage the hydrations.
         if (!$table) {
             $words = \preg_split('/(_)/u', $name, -1, \PREG_SPLIT_DELIM_CAPTURE);
             $lastWord = \array_pop($words);
@@ -590,6 +622,9 @@ trait HasRelationships
         if (!empty($morphMap) && \in_array(static::class, $morphMap)) {
             return \array_search(static::class, $morphMap, \true);
         }
+        if (static::class === Pivot::class) {
+            return static::class;
+        }
         if (Relation::requiresMorphMap()) {
             throw new ClassMorphViolationException($this);
         }
@@ -608,6 +643,16 @@ trait HasRelationships
                 $instance->setConnection($this->connection);
             }
         });
+    }
+    /**
+     * Create a new model instance for a related "through" model.
+     *
+     * @param  string  $class
+     * @return mixed
+     */
+    protected function newRelatedThroughInstance($class)
+    {
+        return new $class();
     }
     /**
      * Get all the loaded relations for the instance.

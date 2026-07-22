@@ -8,6 +8,7 @@ use IAWPSCOPED\Illuminate\Support\Arr;
 use IAWPSCOPED\Illuminate\Support\Env;
 use IAWPSCOPED\Illuminate\Support\HigherOrderTapProxy;
 use IAWPSCOPED\Illuminate\Support\Optional;
+use IAWPSCOPED\Illuminate\Support\Str;
 if (!\function_exists('IAWPSCOPED\\append_config')) {
     /**
      * Assign high numeric IDs to a config item to force appending.
@@ -91,7 +92,7 @@ if (!\function_exists('IAWPSCOPED\\e')) {
     /**
      * Encode HTML special characters in a string.
      *
-     * @param  \Illuminate\Contracts\Support\DeferringDisplayableValue|\Illuminate\Contracts\Support\Htmlable|string|null  $value
+     * @param  \Illuminate\Contracts\Support\DeferringDisplayableValue|\Illuminate\Contracts\Support\Htmlable|\BackedEnum|string|null  $value
      * @param  bool  $doubleEncode
      * @return string
      * @internal
@@ -103,6 +104,9 @@ if (!\function_exists('IAWPSCOPED\\e')) {
         }
         if ($value instanceof Htmlable) {
             return $value->toHtml();
+        }
+        if ($value instanceof \BackedEnum) {
+            $value = $value->value;
         }
         return \htmlspecialchars($value ?? '', \ENT_QUOTES, 'UTF-8', $doubleEncode);
     }
@@ -189,7 +193,7 @@ if (!\function_exists('IAWPSCOPED\\preg_replace_array')) {
     function preg_replace_array($pattern, array $replacements, $subject)
     {
         return \preg_replace_callback($pattern, function () use(&$replacements) {
-            foreach ($replacements as $key => $value) {
+            foreach ($replacements as $value) {
                 return \array_shift($replacements);
             }
         }, $subject);
@@ -199,7 +203,7 @@ if (!\function_exists('IAWPSCOPED\\retry')) {
     /**
      * Retry an operation a given number of times.
      *
-     * @param  int  $times
+     * @param  int|array  $times
      * @param  callable  $callback
      * @param  int|\Closure  $sleepMilliseconds
      * @param  callable|null  $when
@@ -211,6 +215,11 @@ if (!\function_exists('IAWPSCOPED\\retry')) {
     function retry($times, callable $callback, $sleepMilliseconds = 0, $when = null)
     {
         $attempts = 0;
+        $backoff = [];
+        if (\is_array($times)) {
+            $backoff = $times;
+            $times = \count($times) + 1;
+        }
         beginning:
         $attempts++;
         $times--;
@@ -220,11 +229,38 @@ if (!\function_exists('IAWPSCOPED\\retry')) {
             if ($times < 1 || $when && !$when($e)) {
                 throw $e;
             }
+            $sleepMilliseconds = $backoff[$attempts - 1] ?? $sleepMilliseconds;
             if ($sleepMilliseconds) {
-                \usleep(\IAWPSCOPED\value($sleepMilliseconds, $attempts) * 1000);
+                \usleep(\IAWPSCOPED\value($sleepMilliseconds, $attempts, $e) * 1000);
             }
             goto beginning;
         }
+    }
+}
+if (!\function_exists('IAWPSCOPED\\str')) {
+    /**
+     * Get a new stringable object from the given string.
+     *
+     * @param  string|null  $string
+     * @return \Illuminate\Support\Stringable|mixed
+     * @internal
+     */
+    function str($string = null)
+    {
+        if (\func_num_args() === 0) {
+            return new class
+            {
+                public function __call($method, $parameters)
+                {
+                    return Str::$method(...$parameters);
+                }
+                public function __toString()
+                {
+                    return '';
+                }
+            };
+        }
+        return Str::of($string);
     }
 }
 if (!\function_exists('IAWPSCOPED\\tap')) {
@@ -340,9 +376,12 @@ if (!\function_exists('IAWPSCOPED\\with')) {
     /**
      * Return the given value, optionally passed through the given callback.
      *
-     * @param  mixed  $value
-     * @param  callable|null  $callback
-     * @return mixed
+     * @template TValue
+     * @template TReturn
+     *
+     * @param  TValue  $value
+     * @param  (callable(TValue): (TReturn))|null  $callback
+     * @return ($callback is null ? TValue : TReturn)
      * @internal
      */
     function with($value, callable $callback = null)

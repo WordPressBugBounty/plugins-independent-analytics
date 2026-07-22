@@ -3,6 +3,7 @@
 namespace IAWP;
 
 use IAWP\Click_Tracking\Link_Rule_Finder;
+use IAWP\Click_Tracking\Site;
 use IAWP\Models\Visitor;
 use IAWP\Utils\Device;
 use IAWP\Utils\Request;
@@ -17,8 +18,10 @@ class REST_API
 {
     public function __construct()
     {
-        \add_action('wp_footer', [$this, 'echo_tracking_script']);
         \add_action('rest_api_init', [$this, 'register_rest_api']);
+        \add_action('wp_footer', [$this, 'echo_tracking_script']);
+        // Support tracking where wp_footer isn't called
+        \add_action('iawp_output_tracking_script', [$this, 'echo_tracking_script']);
         // Support for PDF Viewer by Themencode (free and pro versions)
         \add_action('tnc_pvfw_viewer_head', [$this, 'echo_tracking_script']);
         \add_action('tnc_pvfw_head', [$this, 'echo_tracking_script']);
@@ -60,6 +63,18 @@ class REST_API
         $payload = [];
         $current_resource = \IAWP\Resource_Identifier::for_resource_being_viewed();
         if (\is_null($current_resource)) {
+            return;
+        }
+        /** Use the iawp_user_excluded_posts filter to exclude the analytics tracking script on any page. 
+         *
+         * add_filter( 'iawp_user_excluded_posts', function ( $ids ) {
+         *  $ids[] = 1;
+         *
+         *   return $ids;
+         * });
+         */
+        $user_excluded_posts = \apply_filters('iawp_user_excluded_posts', []);
+        if ($current_resource->type() === 'singular' && \in_array($current_resource->meta_value(), $user_excluded_posts)) {
             return;
         }
         $payload['resource'] = $current_resource->type();
@@ -277,10 +292,14 @@ class REST_API
                     const url = "<?php 
         echo $track_click_url;
         ?>";
+                    const siteId = "<?php 
+        echo Site::id();
+        ?>";
                     const body = {
                         href: href,
                         classes: classes.join(' '),
                         ids: ids.join(' '),
+                        siteId: siteId,
                         ...<?php 
         echo \json_encode($data);
         ?>

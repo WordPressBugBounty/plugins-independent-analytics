@@ -13,7 +13,7 @@
 
         <!-- Header -->
         <div id="iawp-columns" class="iawp-columns">
-            <div class="iawp-row" data-controller="sort"><?php 
+            <div class="iawp-row" data-controller="sort"><?php
                 foreach ($all_columns as $column) :
                     $cell_class = $column->is_visible() ? 'cell' : 'cell hide'; ?>
                     <div class="<?php echo esc_attr($cell_class); ?>"
@@ -59,25 +59,25 @@
                                 <span class="animator"></span>
                             </div><?php
                         endforeach; ?>
-                    </div><?php 
+                    </div><?php
                 endforeach; ?>
             </div><?php
         endif;
 
-        if (!$render_skeleton) {
-            echo iawp_render('tables.rows', [
-                'table'                => $table,
-                'all_columns'          => $all_columns,
-                'visible_column_count' => $visible_column_count,
-                'number_of_shown_rows' => $number_of_shown_rows,
-                'rows'                 => $rows,
-                'render_skeleton'      => $render_skeleton,
-                'page_size'            => $page_size,
-                'sort_column'          => $sort_column,
-                'sort_direction'       => $sort_direction,
-                'has_campaigns'        => $has_campaigns,
-            ]);
-        } ?>
+             if (!$render_skeleton) {
+                 echo iawp_render('tables.rows', [
+                     'table'                => $table,
+                     'all_columns'          => $all_columns,
+                     'visible_column_count' => $visible_column_count,
+                     'number_of_shown_rows' => $number_of_shown_rows,
+                     'rows'                 => $rows,
+                     'render_skeleton'      => $render_skeleton,
+                     'page_size'            => $page_size,
+                     'sort_column'          => $sort_column,
+                     'sort_direction'       => $sort_direction,
+                     'has_campaigns'        => $has_campaigns,
+                 ]);
+             } ?>
     </div>
 </div>
 

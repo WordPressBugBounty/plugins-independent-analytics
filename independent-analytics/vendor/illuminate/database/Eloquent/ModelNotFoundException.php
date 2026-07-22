@@ -4,26 +4,29 @@ namespace IAWPSCOPED\Illuminate\Database\Eloquent;
 
 use IAWPSCOPED\Illuminate\Database\RecordsNotFoundException;
 use IAWPSCOPED\Illuminate\Support\Arr;
-/** @internal */
+/**
+ * @template TModel of \Illuminate\Database\Eloquent\Model
+ * @internal
+ */
 class ModelNotFoundException extends RecordsNotFoundException
 {
     /**
      * Name of the affected Eloquent model.
      *
-     * @var string
+     * @var class-string<TModel>
      */
     protected $model;
     /**
      * The affected model IDs.
      *
-     * @var int|array
+     * @var array<int, int|string>
      */
     protected $ids;
     /**
      * Set the affected Eloquent model and instance ids.
      *
-     * @param  string  $model
-     * @param  int|array  $ids
+     * @param  class-string<TModel>  $model
+     * @param  array<int, int|string>|int|string  $ids
      * @return $this
      */
     public function setModel($model, $ids = [])
@@ -41,7 +44,7 @@ class ModelNotFoundException extends RecordsNotFoundException
     /**
      * Get the affected Eloquent model.
      *
-     * @return string
+     * @return class-string<TModel>
      */
     public function getModel()
     {
@@ -50,7 +53,7 @@ class ModelNotFoundException extends RecordsNotFoundException
     /**
      * Get the affected Eloquent model IDs.
      *
-     * @return int|array
+     * @return array<int, int|string>
      */
     public function getIds()
     {

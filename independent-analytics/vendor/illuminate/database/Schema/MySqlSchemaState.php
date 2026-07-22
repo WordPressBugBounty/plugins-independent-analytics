@@ -76,7 +76,11 @@ class MySqlSchemaState extends SchemaState
     protected function connectionString()
     {
         $value = ' --user="${:LARAVEL_LOAD_USER}" --password="${:LARAVEL_LOAD_PASSWORD}"';
-        $value .= $this->connection->getConfig()['unix_socket'] ?? \false ? ' --socket="${:LARAVEL_LOAD_SOCKET}"' : ' --host="${:LARAVEL_LOAD_HOST}" --port="${:LARAVEL_LOAD_PORT}"';
+        $config = $this->connection->getConfig();
+        $value .= $config['unix_socket'] ?? \false ? ' --socket="${:LARAVEL_LOAD_SOCKET}"' : ' --host="${:LARAVEL_LOAD_HOST}" --port="${:LARAVEL_LOAD_PORT}"';
+        if (isset($config['options'][\PDO::MYSQL_ATTR_SSL_CA])) {
+            $value .= ' --ssl-ca="${:LARAVEL_LOAD_SSL_CA}"';
+        }
         return $value;
     }
     /**
@@ -87,8 +91,8 @@ class MySqlSchemaState extends SchemaState
      */
     protected function baseVariables(array $config)
     {
-        $config['host'] = $config['host'] ?? '';
-        return ['LARAVEL_LOAD_SOCKET' => $config['unix_socket'] ?? '', 'LARAVEL_LOAD_HOST' => \is_array($config['host']) ? $config['host'][0] : $config['host'], 'LARAVEL_LOAD_PORT' => $config['port'] ?? '', 'LARAVEL_LOAD_USER' => $config['username'], 'LARAVEL_LOAD_PASSWORD' => $config['password'] ?? '', 'LARAVEL_LOAD_DATABASE' => $config['database']];
+        $config['host'] ??= '';
+        return ['LARAVEL_LOAD_SOCKET' => $config['unix_socket'] ?? '', 'LARAVEL_LOAD_HOST' => \is_array($config['host']) ? $config['host'][0] : $config['host'], 'LARAVEL_LOAD_PORT' => $config['port'] ?? '', 'LARAVEL_LOAD_USER' => $config['username'], 'LARAVEL_LOAD_PASSWORD' => $config['password'] ?? '', 'LARAVEL_LOAD_DATABASE' => $config['database'], 'LARAVEL_LOAD_SSL_CA' => $config['options'][\PDO::MYSQL_ATTR_SSL_CA] ?? ''];
     }
     /**
      * Execute the given dump process.
@@ -106,7 +110,7 @@ class MySqlSchemaState extends SchemaState
             if (Str::contains($e->getMessage(), ['column-statistics', 'column_statistics'])) {
                 return $this->executeDumpProcess(Process::fromShellCommandLine(\str_replace(' --column-statistics=0', '', $process->getCommandLine())), $output, $variables);
             }
-            if (Str::contains($e->getMessage(), ['set-gtid-purged'])) {
+            if (\str_contains($e->getMessage(), 'set-gtid-purged')) {
                 return $this->executeDumpProcess(Process::fromShellCommandLine(\str_replace(' --set-gtid-purged=OFF', '', $process->getCommandLine())), $output, $variables);
             }
             throw $e;

@@ -2,20 +2,19 @@
 
 namespace IAWPSCOPED\Illuminate\Database\Eloquent\Concerns;
 
-use IAWPSCOPED\Illuminate\Support\Str;
 /** @internal */
 trait GuardsAttributes
 {
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var array<string>
      */
     protected $fillable = [];
     /**
      * The attributes that aren't mass assignable.
      *
-     * @var string[]|bool
+     * @var array<string>|bool
      */
     protected $guarded = ['*'];
     /**
@@ -27,13 +26,13 @@ trait GuardsAttributes
     /**
      * The actual columns that exist on the database and can be guarded.
      *
-     * @var array
+     * @var array<string>
      */
     protected static $guardableColumns = [];
     /**
      * Get the fillable attributes for the model.
      *
-     * @return array
+     * @return array<string>
      */
     public function getFillable()
     {
@@ -42,7 +41,7 @@ trait GuardsAttributes
     /**
      * Set the fillable attributes for the model.
      *
-     * @param  array  $fillable
+     * @param  array<string>  $fillable
      * @return $this
      */
     public function fillable(array $fillable)
@@ -53,7 +52,7 @@ trait GuardsAttributes
     /**
      * Merge new fillable attributes with existing fillable attributes on the model.
      *
-     * @param  array  $fillable
+     * @param  array<string>  $fillable
      * @return $this
      */
     public function mergeFillable(array $fillable)
@@ -64,7 +63,7 @@ trait GuardsAttributes
     /**
      * Get the guarded attributes for the model.
      *
-     * @return array
+     * @return array<string>
      */
     public function getGuarded()
     {
@@ -73,7 +72,7 @@ trait GuardsAttributes
     /**
      * Set the guarded attributes for the model.
      *
-     * @param  array  $guarded
+     * @param  array<string>  $guarded
      * @return $this
      */
     public function guard(array $guarded)
@@ -84,7 +83,7 @@ trait GuardsAttributes
     /**
      * Merge new guarded attributes with existing guarded attributes on the model.
      *
-     * @param  array  $guarded
+     * @param  array<string>  $guarded
      * @return $this
      */
     public function mergeGuarded(array $guarded)
@@ -161,7 +160,7 @@ trait GuardsAttributes
         if ($this->isGuarded($key)) {
             return \false;
         }
-        return empty($this->getFillable()) && \strpos($key, '.') === \false && !Str::startsWith($key, '_');
+        return empty($this->getFillable()) && !\str_contains($key, '.') && !\str_starts_with($key, '_');
     }
     /**
      * Determine if the given key is guarded.
@@ -174,7 +173,7 @@ trait GuardsAttributes
         if (empty($this->getGuarded())) {
             return \false;
         }
-        return $this->getGuarded() == ['*'] || !empty(\preg_grep('/^' . \preg_quote($key) . '$/i', $this->getGuarded())) || !$this->isGuardableColumn($key);
+        return $this->getGuarded() == ['*'] || !empty(\preg_grep('/^' . \preg_quote($key, '/') . '$/i', $this->getGuarded())) || !$this->isGuardableColumn($key);
     }
     /**
      * Determine if the given column is a valid, guardable column.

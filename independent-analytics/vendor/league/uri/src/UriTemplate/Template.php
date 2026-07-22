@@ -13,6 +13,7 @@ namespace IAWPSCOPED\League\Uri\UriTemplate;
 
 use IAWPSCOPED\League\Uri\Exceptions\SyntaxError;
 use IAWPSCOPED\League\Uri\Exceptions\TemplateCanNotBeExpanded;
+use TypeError;
 use function array_merge;
 use function array_unique;
 use function gettype;
@@ -31,18 +32,11 @@ final class Template
      * Expression regular expression pattern.
      */
     private const REGEXP_EXPRESSION_DETECTOR = '/\\{[^\\}]*\\}/x';
-    /**
-     * @var string
-     */
-    private $template;
-    /**
-     * @var array<string, Expression>
-     */
-    private $expressions = [];
-    /**
-     * @var array<string>
-     */
-    private $variableNames;
+    private string $template;
+    /** @var array<string, Expression> */
+    private array $expressions = [];
+    /** @var array<string> */
+    private array $variableNames;
     private function __construct(string $template, Expression ...$expressions)
     {
         $this->template = $template;
@@ -63,7 +57,7 @@ final class Template
     /**
      * @param object|string $template a string or an object with the __toString method
      *
-     * @throws \TypeError  if the template is not a string or an object with the __toString method
+     * @throws TypeError   if the template is not a string or an object with the __toString method
      * @throws SyntaxError if the template contains invalid expressions
      * @throws SyntaxError if the template contains invalid variable specification
      */
@@ -73,7 +67,7 @@ final class Template
             $template = (string) $template;
         }
         if (!is_string($template)) {
-            throw new \TypeError(sprintf('The template must be a string or a stringable object %s given.', gettype($template)));
+            throw new TypeError(sprintf('The template must be a string or a stringable object %s given.', gettype($template)));
         }
         /** @var string $remainder */
         $remainder = preg_replace(self::REGEXP_EXPRESSION_DETECTOR, '', $template);

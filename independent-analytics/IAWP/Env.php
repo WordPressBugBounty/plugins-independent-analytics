@@ -83,10 +83,10 @@ class Env
         $default_tab = 'views';
         $valid_tabs = ['views', 'referrers', 'geo', 'devices'];
         if (\IAWPSCOPED\iawp_is_pro()) {
+            $default_tab = 'overview';
             $valid_tabs = \array_merge($valid_tabs, ['campaigns', 'clicks', 'real-time']);
         }
         if (\IAWPSCOPED\iawp_is_pro() && \IAWP\Capability_Manager::can_view_all_analytics()) {
-            $default_tab = 'overview';
             $valid_tabs = \array_merge($valid_tabs, ['journeys', 'overview']);
         }
         $tab = \array_key_exists('tab', $_GET) ? \stripslashes(\sanitize_text_field($_GET['tab'])) : \false;

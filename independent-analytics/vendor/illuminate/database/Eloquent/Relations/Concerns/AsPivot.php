@@ -2,7 +2,6 @@
 
 namespace IAWPSCOPED\Illuminate\Database\Eloquent\Relations\Concerns;
 
-use IAWPSCOPED\Illuminate\Database\Eloquent\Builder;
 use IAWPSCOPED\Illuminate\Database\Eloquent\Model;
 use IAWPSCOPED\Illuminate\Support\Str;
 /** @internal */
@@ -63,7 +62,7 @@ trait AsPivot
     {
         $instance = static::fromAttributes($parent, [], $table, $exists);
         $instance->timestamps = $instance->hasTimestampAttributes($attributes);
-        $instance->setRawAttributes($attributes, $exists);
+        $instance->setRawAttributes(\array_merge($instance->getRawOriginal(), $attributes), $exists);
         return $instance;
     }
     /**
@@ -221,7 +220,7 @@ trait AsPivot
         if (\is_array($ids)) {
             return $this->newQueryForCollectionRestoration($ids);
         }
-        if (!Str::contains($ids, ':')) {
+        if (!\str_contains($ids, ':')) {
             return parent::newQueryForRestoration($ids);
         }
         $segments = \explode(':', $ids);
@@ -236,7 +235,7 @@ trait AsPivot
     protected function newQueryForCollectionRestoration(array $ids)
     {
         $ids = \array_values($ids);
-        if (!Str::contains($ids[0], ':')) {
+        if (!\str_contains($ids[0], ':')) {
             return parent::newQueryForRestoration($ids);
         }
         $query = $this->newQueryWithoutScopes();

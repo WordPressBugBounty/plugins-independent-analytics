@@ -18,7 +18,11 @@ class Table_Pages extends \IAWP\Tables\Table
     {
         return 'views';
     }
-    protected function groups() : Groups
+    public function name() : string
+    {
+        return \__('Pages', 'independent-analytics');
+    }
+    public function groups() : Groups
     {
         $groups = [];
         $groups[] = new Group('page', \__('Page', 'independent-analytics'), 'title', Pages::class, Page_Statistics::class);

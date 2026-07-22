@@ -84,8 +84,6 @@ class Env
                 return $matches[2];
             }
             return $value;
-        })->getOrCall(function () use($default) {
-            return \IAWPSCOPED\value($default);
-        });
+        })->getOrCall(fn() => \IAWPSCOPED\value($default));
     }
 }

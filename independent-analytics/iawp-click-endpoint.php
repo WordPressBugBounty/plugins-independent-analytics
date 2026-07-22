@@ -6,7 +6,7 @@
 
 class Cache
 {
-    private $attributes;
+    private array $attributes;
 
     public function __construct(array $attributes)
     {
@@ -21,11 +21,6 @@ class Cache
     public function avoid_temporary_directory(): bool
     {
         return $this->attributes['avoid_temporary_directory'] === true;
-    }
-
-    public function get_upload_directory(): string
-    {
-        return trim($this->attributes['upload_directory']);
     }
 
     public function get_custom_ip_header(): ?string
@@ -45,7 +40,8 @@ class Cache
 
 function get_cache(): ?Cache
 {
-    $file = __DIR__ . "/iawp-click-config.php";
+    $suffix = file_suffix();
+    $file   = __DIR__ . "/iawp-click-config{$suffix}.php";
 
     if (!is_readable($file)) {
         return null;
@@ -76,10 +72,6 @@ function get_cache(): ?Cache
 
 function get_ip_address(Cache $cache): ?string
 {
-    if (defined('IAWP_TEST_IP')) {
-        return IAWP_TEST_IP;
-    }
-
     $headers = [
         'HTTP_X_FORWARDED_FOR',
         'HTTP_X_FORWARDED',
@@ -118,14 +110,25 @@ function trailing_slash(string $path): string
 }
 
 /**
- * Get the path to the click data file and create it if needed.
- *
- * @return string
+ * A site will have a non-empty click file suffix only if it's part of a multi-site network.
  */
+function file_suffix(): string
+{
+    $site_id = get_body()['siteId'] ?? null;
+
+    if (is_string($site_id) && strlen($site_id) === 8) {
+        return '-' . $site_id;
+    }
+
+    return '';
+}
+
 function get_click_data_file(Cache $cache): string
 {
+    $suffix = file_suffix();
+
     if (!$cache->avoid_temporary_directory()) {
-        $text_file = trailing_slash(sys_get_temp_dir()) . "iawp-click-data.txt";
+        $text_file = trailing_slash(sys_get_temp_dir()) . "iawp-click-data{$suffix}.txt";
 
         if (is_file($text_file) && is_readable($text_file) && is_writable($text_file)) {
             return $text_file;
@@ -136,7 +139,7 @@ function get_click_data_file(Cache $cache): string
         }
     }
 
-    $php_file = trailing_slash(__DIR__) . "iawp-click-data.php";
+    $php_file = trailing_slash(__DIR__) . "iawp-click-data{$suffix}.php";
 
     if (is_file($php_file)) {
         return $php_file;
@@ -150,25 +153,28 @@ function get_click_data_file(Cache $cache): string
     exit;
 }
 
-$cache = get_cache();
+function get_body()
+{
+    $json_body = file_get_contents('php://input');
 
-if (is_null($cache) || is_null(get_ip_address($cache))) {
-    exit;
+    return json_decode($json_body, true);
 }
 
-if (!$cache->is_pro()) {
-    exit;
-}
-
-$json_body = file_get_contents('php://input');
-$body      = json_decode($json_body, true);
+$body = get_body();
 
 if (is_null($body)) {
     exit;
 }
 
+$cache = get_cache();
+
+if (is_null($cache) || !$cache->is_pro() || is_null(get_ip_address($cache))) {
+    exit;
+}
+
 $click_data_file = get_click_data_file($cache);
-$data            = [
+
+$data = [
     'href'          => $body['href'],
     'classes'       => $body['classes'],
     'ids'           => $body['ids'],

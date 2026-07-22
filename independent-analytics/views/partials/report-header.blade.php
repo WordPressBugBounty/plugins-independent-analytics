@@ -86,15 +86,17 @@
         <?php endif; ?>
 
         <div>
+
             <button id="favorite-report-button"
+                class="iawp-button favorite <?php echo $report->is_favorite() ? 'active' : ''; ?>"
                     data-controller="set-favorite-report"
                     data-set-favorite-report-id-value="<?php echo esc_attr($report->is_saved_report() ? $report->id() : ''); ?>"
                     data-set-favorite-report-type-value="<?php echo esc_attr($report->is_saved_report() ? '' : $report->type()); ?>"
-                    data-action="set-favorite-report#setFavoriteReport"
-                    class="iawp-button favorite <?php echo $report->is_favorite() ? 'active' : ''; ?>"
+                    data-action="set-favorite-report#toggleFavoriteReport"
+                    data-unfavorited-text="<?php echo esc_attr_e('Use as default report') ?>"
+                    data-favorited-text="<?php echo esc_attr_e('Remove as default report') ?>"
             >
                 <span class="dashicons dashicons-star-filled"></span>
-                <?php esc_html_e('Make default', 'independent-analytics'); ?>
             </button>
         </div>
 
@@ -103,7 +105,9 @@
                     class="modal-parent small delete-report">
                 <button id="delete-report-button"
                         data-action="delete-report#toggleModal"
-                        data-delete-report-target="modalButton" class="iawp-button">
+                        data-delete-report-target="modalButton" class="iawp-button"
+                        title="<?php echo esc_attr__('Delete report', 'independent-analytics') ?>"
+                >
                     <span class="dashicons dashicons-trash"></span>
                 </button>
                 <div class="iawp-modal small" data-delete-report-target="modal">

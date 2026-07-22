@@ -3,9 +3,9 @@
 namespace IAWPSCOPED\Illuminate\Database\Eloquent;
 
 /**
- * @method static static|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder withTrashed(bool $withTrashed = true)
- * @method static static|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder onlyTrashed()
- * @method static static|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder withoutTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder withTrashed(bool $withTrashed = true)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder withoutTrashed()
  * @internal
  */
 trait SoftDeletes
@@ -43,6 +43,9 @@ trait SoftDeletes
      */
     public function forceDelete()
     {
+        if ($this->fireModelEvent('forceDeleting') === \false) {
+            return \false;
+        }
         $this->forceDeleting = \true;
         return \IAWPSCOPED\tap($this->delete(), function ($deleted) {
             $this->forceDeleting = \false;
@@ -50,6 +53,15 @@ trait SoftDeletes
                 $this->fireModelEvent('forceDeleted', \false);
             }
         });
+    }
+    /**
+     * Force a hard delete on a soft deleted model without raising any events.
+     *
+     * @return bool|null
+     */
+    public function forceDeleteQuietly()
+    {
+        return static::withoutEvents(fn() => $this->forceDelete());
     }
     /**
      * Perform the actual delete query on this model instance.
@@ -76,7 +88,7 @@ trait SoftDeletes
         $time = $this->freshTimestamp();
         $columns = [$this->getDeletedAtColumn() => $this->fromDateTime($time)];
         $this->{$this->getDeletedAtColumn()} = $time;
-        if ($this->timestamps && !\is_null($this->getUpdatedAtColumn())) {
+        if ($this->usesTimestamps() && !\is_null($this->getUpdatedAtColumn())) {
             $this->{$this->getUpdatedAtColumn()} = $time;
             $columns[$this->getUpdatedAtColumn()] = $this->fromDateTime($time);
         }
@@ -87,7 +99,7 @@ trait SoftDeletes
     /**
      * Restore a soft-deleted model instance.
      *
-     * @return bool|null
+     * @return bool
      */
     public function restore()
     {
@@ -105,6 +117,15 @@ trait SoftDeletes
         $result = $this->save();
         $this->fireModelEvent('restored', \false);
         return $result;
+    }
+    /**
+     * Restore a soft-deleted model instance without raising any events.
+     *
+     * @return bool
+     */
+    public function restoreQuietly()
+    {
+        return static::withoutEvents(fn() => $this->restore());
     }
     /**
      * Determine if the model instance has been soft-deleted.
@@ -146,6 +167,16 @@ trait SoftDeletes
         static::registerModelEvent('restored', $callback);
     }
     /**
+     * Register a "forceDeleting" model event callback with the dispatcher.
+     *
+     * @param  \Closure|string  $callback
+     * @return void
+     */
+    public static function forceDeleting($callback)
+    {
+        static::registerModelEvent('forceDeleting', $callback);
+    }
+    /**
      * Register a "forceDeleted" model event callback with the dispatcher.
      *
      * @param  \Closure|string  $callback
@@ -171,7 +202,7 @@ trait SoftDeletes
      */
     public function getDeletedAtColumn()
     {
-        return \defined('IAWPSCOPED\\static::DELETED_AT') ? static::DELETED_AT : 'deleted_at';
+        return \defined(static::class . '::DELETED_AT') ? static::DELETED_AT : 'deleted_at';
     }
     /**
      * Get the fully qualified "deleted at" column.

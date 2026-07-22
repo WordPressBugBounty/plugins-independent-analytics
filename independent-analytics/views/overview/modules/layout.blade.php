@@ -28,9 +28,9 @@
     <div class="module-contents">
         <div class="<?php echo esc_attr($module->module_type()); ?> <?php echo $is_loaded ? "is-loaded" : "is-loading"; ?> <?php echo $is_empty ? "is-empty" : ""; ?>"><?php
             echo iawp_render('overview.modules.' . $module->module_type(), [
-                'module' => $module,
-                'dataset' => $dataset,
-                'is_empty' => $is_empty,
+                'module'    => $module,
+                'dataset'   => $dataset,
+                'is_empty'  => $is_empty,
                 'is_loaded' => $is_loaded,
             ]); ?>
         </div>

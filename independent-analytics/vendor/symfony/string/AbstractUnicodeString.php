@@ -34,8 +34,8 @@ abstract class AbstractUnicodeString extends AbstractString
     // all ASCII letters sorted by typical frequency of occurrence
     private const ASCII = " eiasntrolud][cmp'\ng|hv.fb,:=-q10C2*yx)(L9AS/P\"EjMIk3>5T<D4}B{8FwR67UGN;JzV#HOW_&!K?XQ%Y\\\tZ+~^\$@`\x00\x01\x02\x03\x04\x05\x06\x07\x08\v\f\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f";
     // the subset of folded case mappings that is not in lower case mappings
-    private const FOLD_FROM = ['İ', 'µ', 'ſ', "ͅ", 'ς', 'ϐ', 'ϑ', 'ϕ', 'ϖ', 'ϰ', 'ϱ', 'ϵ', 'ẛ', "ι", 'ß', 'ŉ', 'ǰ', 'ΐ', 'ΰ', 'և', 'ẖ', 'ẗ', 'ẘ', 'ẙ', 'ẚ', 'ẞ', 'ὐ', 'ὒ', 'ὔ', 'ὖ', 'ᾀ', 'ᾁ', 'ᾂ', 'ᾃ', 'ᾄ', 'ᾅ', 'ᾆ', 'ᾇ', 'ᾈ', 'ᾉ', 'ᾊ', 'ᾋ', 'ᾌ', 'ᾍ', 'ᾎ', 'ᾏ', 'ᾐ', 'ᾑ', 'ᾒ', 'ᾓ', 'ᾔ', 'ᾕ', 'ᾖ', 'ᾗ', 'ᾘ', 'ᾙ', 'ᾚ', 'ᾛ', 'ᾜ', 'ᾝ', 'ᾞ', 'ᾟ', 'ᾠ', 'ᾡ', 'ᾢ', 'ᾣ', 'ᾤ', 'ᾥ', 'ᾦ', 'ᾧ', 'ᾨ', 'ᾩ', 'ᾪ', 'ᾫ', 'ᾬ', 'ᾭ', 'ᾮ', 'ᾯ', 'ᾲ', 'ᾳ', 'ᾴ', 'ᾶ', 'ᾷ', 'ᾼ', 'ῂ', 'ῃ', 'ῄ', 'ῆ', 'ῇ', 'ῌ', 'ῒ', 'ῖ', 'ῗ', 'ῢ', 'ῤ', 'ῦ', 'ῧ', 'ῲ', 'ῳ', 'ῴ', 'ῶ', 'ῷ', 'ῼ', 'ﬀ', 'ﬁ', 'ﬂ', 'ﬃ', 'ﬄ', 'ﬅ', 'ﬆ', 'ﬓ', 'ﬔ', 'ﬕ', 'ﬖ', 'ﬗ'];
-    private const FOLD_TO = ['i̇', 'μ', 's', 'ι', 'σ', 'β', 'θ', 'φ', 'π', 'κ', 'ρ', 'ε', 'ṡ', 'ι', 'ss', 'ʼn', 'ǰ', 'ΐ', 'ΰ', 'եւ', 'ẖ', 'ẗ', 'ẘ', 'ẙ', 'aʾ', 'ss', 'ὐ', 'ὒ', 'ὔ', 'ὖ', 'ἀι', 'ἁι', 'ἂι', 'ἃι', 'ἄι', 'ἅι', 'ἆι', 'ἇι', 'ἀι', 'ἁι', 'ἂι', 'ἃι', 'ἄι', 'ἅι', 'ἆι', 'ἇι', 'ἠι', 'ἡι', 'ἢι', 'ἣι', 'ἤι', 'ἥι', 'ἦι', 'ἧι', 'ἠι', 'ἡι', 'ἢι', 'ἣι', 'ἤι', 'ἥι', 'ἦι', 'ἧι', 'ὠι', 'ὡι', 'ὢι', 'ὣι', 'ὤι', 'ὥι', 'ὦι', 'ὧι', 'ὠι', 'ὡι', 'ὢι', 'ὣι', 'ὤι', 'ὥι', 'ὦι', 'ὧι', 'ὰι', 'αι', 'άι', 'ᾶ', 'ᾶι', 'αι', 'ὴι', 'ηι', 'ήι', 'ῆ', 'ῆι', 'ηι', 'ῒ', 'ῖ', 'ῗ', 'ῢ', 'ῤ', 'ῦ', 'ῧ', 'ὼι', 'ωι', 'ώι', 'ῶ', 'ῶι', 'ωι', 'ff', 'fi', 'fl', 'ffi', 'ffl', 'st', 'st', 'մն', 'մե', 'մի', 'վն', 'մխ'];
+    private const FOLD_FROM = ['İ', 'µ', 'ſ', "ͅ", 'ς', 'ϐ', 'ϑ', 'ϕ', 'ϖ', 'ϰ', 'ϱ', 'ϵ', 'ẛ', "ι", 'ß', 'İ', 'ŉ', 'ǰ', 'ΐ', 'ΰ', 'և', 'ẖ', 'ẗ', 'ẘ', 'ẙ', 'ẚ', 'ẞ', 'ὐ', 'ὒ', 'ὔ', 'ὖ', 'ᾀ', 'ᾁ', 'ᾂ', 'ᾃ', 'ᾄ', 'ᾅ', 'ᾆ', 'ᾇ', 'ᾈ', 'ᾉ', 'ᾊ', 'ᾋ', 'ᾌ', 'ᾍ', 'ᾎ', 'ᾏ', 'ᾐ', 'ᾑ', 'ᾒ', 'ᾓ', 'ᾔ', 'ᾕ', 'ᾖ', 'ᾗ', 'ᾘ', 'ᾙ', 'ᾚ', 'ᾛ', 'ᾜ', 'ᾝ', 'ᾞ', 'ᾟ', 'ᾠ', 'ᾡ', 'ᾢ', 'ᾣ', 'ᾤ', 'ᾥ', 'ᾦ', 'ᾧ', 'ᾨ', 'ᾩ', 'ᾪ', 'ᾫ', 'ᾬ', 'ᾭ', 'ᾮ', 'ᾯ', 'ᾲ', 'ᾳ', 'ᾴ', 'ᾶ', 'ᾷ', 'ᾼ', 'ῂ', 'ῃ', 'ῄ', 'ῆ', 'ῇ', 'ῌ', 'ῒ', 'ΐ', 'ῖ', 'ῗ', 'ῢ', 'ΰ', 'ῤ', 'ῦ', 'ῧ', 'ῲ', 'ῳ', 'ῴ', 'ῶ', 'ῷ', 'ῼ', 'ﬀ', 'ﬁ', 'ﬂ', 'ﬃ', 'ﬄ', 'ﬅ', 'ﬆ', 'ﬓ', 'ﬔ', 'ﬕ', 'ﬖ', 'ﬗ'];
+    private const FOLD_TO = ['i̇', 'μ', 's', 'ι', 'σ', 'β', 'θ', 'φ', 'π', 'κ', 'ρ', 'ε', 'ṡ', 'ι', 'ss', 'i̇', 'ʼn', 'ǰ', 'ΐ', 'ΰ', 'եւ', 'ẖ', 'ẗ', 'ẘ', 'ẙ', 'aʾ', 'ss', 'ὐ', 'ὒ', 'ὔ', 'ὖ', 'ἀι', 'ἁι', 'ἂι', 'ἃι', 'ἄι', 'ἅι', 'ἆι', 'ἇι', 'ἀι', 'ἁι', 'ἂι', 'ἃι', 'ἄι', 'ἅι', 'ἆι', 'ἇι', 'ἠι', 'ἡι', 'ἢι', 'ἣι', 'ἤι', 'ἥι', 'ἦι', 'ἧι', 'ἠι', 'ἡι', 'ἢι', 'ἣι', 'ἤι', 'ἥι', 'ἦι', 'ἧι', 'ὠι', 'ὡι', 'ὢι', 'ὣι', 'ὤι', 'ὥι', 'ὦι', 'ὧι', 'ὠι', 'ὡι', 'ὢι', 'ὣι', 'ὤι', 'ὥι', 'ὦι', 'ὧι', 'ὰι', 'αι', 'άι', 'ᾶ', 'ᾶι', 'αι', 'ὴι', 'ηι', 'ήι', 'ῆ', 'ῆι', 'ηι', 'ῒ', 'ΐ', 'ῖ', 'ῗ', 'ῢ', 'ΰ', 'ῤ', 'ῦ', 'ῧ', 'ὼι', 'ωι', 'ώι', 'ῶ', 'ῶι', 'ωι', 'ff', 'fi', 'fl', 'ffi', 'ffl', 'st', 'st', 'մն', 'մե', 'մի', 'վն', 'մխ'];
     // the subset of upper case mappings that map one code point to many code points
     private const UPPER_FROM = ['ß', 'ﬀ', 'ﬁ', 'ﬂ', 'ﬃ', 'ﬄ', 'ﬅ', 'ﬆ', 'և', 'ﬓ', 'ﬔ', 'ﬕ', 'ﬖ', 'ﬗ', 'ŉ', 'ΐ', 'ΰ', 'ǰ', 'ẖ', 'ẗ', 'ẘ', 'ẙ', 'ẚ', 'ὐ', 'ὒ', 'ὔ', 'ὖ', 'ᾶ', 'ῆ', 'ῒ', 'ΐ', 'ῖ', 'ῗ', 'ῢ', 'ΰ', 'ῤ', 'ῦ', 'ῧ', 'ῶ'];
     private const UPPER_TO = ['SS', 'FF', 'FI', 'FL', 'FFI', 'FFL', 'ST', 'ST', 'ԵՒ', 'ՄՆ', 'ՄԵ', 'ՄԻ', 'ՎՆ', 'ՄԽ', 'ʼN', 'Ϊ́', 'Ϋ́', 'J̌', 'H̱', 'T̈', 'W̊', 'Y̊', 'Aʾ', 'Υ̓', 'Υ̓̀', 'Υ̓́', 'Υ̓͂', 'Α͂', 'Η͂', 'Ϊ̀', 'Ϊ́', 'Ι͂', 'Ϊ͂', 'Ϋ̀', 'Ϋ́', 'Ρ̓', 'Υ͂', 'Ϋ͂', 'Ω͂'];
@@ -45,10 +45,7 @@ abstract class AbstractUnicodeString extends AbstractString
     private static $transliterators = [];
     private static $tableZero;
     private static $tableWide;
-    /**
-     * @return static
-     */
-    public static function fromCodePoints(int ...$codes) : self
+    public static function fromCodePoints(int ...$codes) : static
     {
         $string = '';
         foreach ($codes as $code) {
@@ -136,10 +133,10 @@ abstract class AbstractUnicodeString extends AbstractString
         $str->string .= $s;
         return $str;
     }
-    public function camel() : parent
+    public function camel() : static
     {
         $str = clone $this;
-        $str->string = \str_replace(' ', '', \preg_replace_callback('/\\b.(?!\\p{Lu})/u', static function ($m) use(&$i) {
+        $str->string = \str_replace(' ', '', \preg_replace_callback('/\\b.(?![A-Z]{2,})/u', static function ($m) use(&$i) {
             return 1 === ++$i ? 'İ' === $m[0] ? 'i̇' : \mb_strtolower($m[0], 'UTF-8') : \mb_convert_case($m[0], \MB_CASE_TITLE, 'UTF-8');
         }, \preg_replace('/[^\\pL0-9]++/u', ' ', $this->string)));
         return $str;
@@ -159,18 +156,18 @@ abstract class AbstractUnicodeString extends AbstractString
         }
         return $codePoints;
     }
-    public function folded(bool $compat = \true) : parent
+    public function folded(bool $compat = \true) : static
     {
         $str = clone $this;
-        if (!$compat || \PHP_VERSION_ID < 70300 || !\defined('IAWPSCOPED\\Normalizer::NFKC_CF')) {
+        if (!$compat || !\defined('IAWPSCOPED\\Normalizer::NFKC_CF')) {
             $str->string = \normalizer_normalize($str->string, $compat ? \Normalizer::NFKC : \Normalizer::NFC);
-            $str->string = \mb_strtolower(\str_replace(self::FOLD_FROM, self::FOLD_TO, $str->string), 'UTF-8');
+            $str->string = \mb_strtolower(\str_replace(self::FOLD_FROM, self::FOLD_TO, $this->string), 'UTF-8');
         } else {
             $str->string = \normalizer_normalize($str->string, \Normalizer::NFKC_CF);
         }
         return $str;
     }
-    public function join(array $strings, ?string $lastGlue = null) : parent
+    public function join(array $strings, string $lastGlue = null) : static
     {
         $str = clone $this;
         $tail = null !== $lastGlue && 1 < \count($strings) ? $lastGlue . \array_pop($strings) : '';
@@ -180,7 +177,7 @@ abstract class AbstractUnicodeString extends AbstractString
         }
         return $str;
     }
-    public function lower() : parent
+    public function lower() : static
     {
         $str = clone $this;
         $str->string = \mb_strtolower(\str_replace('İ', 'i̇', $str->string), 'UTF-8');
@@ -210,10 +207,7 @@ abstract class AbstractUnicodeString extends AbstractString
         }
         return $matches;
     }
-    /**
-     * @return static
-     */
-    public function normalize(int $form = self::NFC) : self
+    public function normalize(int $form = self::NFC) : static
     {
         if (!\in_array($form, [self::NFC, self::NFD, self::NFKC, self::NFKD])) {
             throw new InvalidArgumentException('Unsupported normalization form.');
@@ -222,7 +216,7 @@ abstract class AbstractUnicodeString extends AbstractString
         \normalizer_is_normalized($str->string, $form) ?: ($str->string = \normalizer_normalize($str->string, $form));
         return $str;
     }
-    public function padBoth(int $length, string $padStr = ' ') : parent
+    public function padBoth(int $length, string $padStr = ' ') : static
     {
         if ('' === $padStr || !\preg_match('//u', $padStr)) {
             throw new InvalidArgumentException('Invalid UTF-8 string.');
@@ -231,7 +225,7 @@ abstract class AbstractUnicodeString extends AbstractString
         $pad->string = $padStr;
         return $this->pad($length, $pad, \STR_PAD_BOTH);
     }
-    public function padEnd(int $length, string $padStr = ' ') : parent
+    public function padEnd(int $length, string $padStr = ' ') : static
     {
         if ('' === $padStr || !\preg_match('//u', $padStr)) {
             throw new InvalidArgumentException('Invalid UTF-8 string.');
@@ -240,7 +234,7 @@ abstract class AbstractUnicodeString extends AbstractString
         $pad->string = $padStr;
         return $this->pad($length, $pad, \STR_PAD_RIGHT);
     }
-    public function padStart(int $length, string $padStr = ' ') : parent
+    public function padStart(int $length, string $padStr = ' ') : static
     {
         if ('' === $padStr || !\preg_match('//u', $padStr)) {
             throw new InvalidArgumentException('Invalid UTF-8 string.');
@@ -249,15 +243,12 @@ abstract class AbstractUnicodeString extends AbstractString
         $pad->string = $padStr;
         return $this->pad($length, $pad, \STR_PAD_LEFT);
     }
-    public function replaceMatches(string $fromRegexp, $to) : parent
+    public function replaceMatches(string $fromRegexp, string|callable $to) : static
     {
         if ($this->ignoreCase) {
             $fromRegexp .= 'i';
         }
         if (\is_array($to) || $to instanceof \Closure) {
-            if (!\is_callable($to)) {
-                throw new \TypeError(\sprintf('Argument 2 passed to "%s::replaceMatches()" must be callable, array given.', static::class));
-            }
             $replace = 'preg_replace_callback';
             $to = static function (array $m) use($to) : string {
                 $to = $to($m);
@@ -291,19 +282,19 @@ abstract class AbstractUnicodeString extends AbstractString
         $str->string = $string;
         return $str;
     }
-    public function reverse() : parent
+    public function reverse() : static
     {
         $str = clone $this;
         $str->string = \implode('', \array_reverse(\preg_split('/(\\X)/u', $str->string, -1, \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_NO_EMPTY)));
         return $str;
     }
-    public function snake() : parent
+    public function snake() : static
     {
         $str = $this->camel();
         $str->string = \mb_strtolower(\preg_replace(['/(\\p{Lu}+)(\\p{Lu}\\p{Ll})/u', '/([\\p{Ll}0-9])(\\p{Lu})/u'], 'IAWPSCOPED\\1_\\2', $str->string), 'UTF-8');
         return $str;
     }
-    public function title(bool $allWords = \false) : parent
+    public function title(bool $allWords = \false) : static
     {
         $str = clone $this;
         $limit = $allWords ? -1 : 1;
@@ -312,7 +303,7 @@ abstract class AbstractUnicodeString extends AbstractString
         }, $str->string, $limit);
         return $str;
     }
-    public function trim(string $chars = " \t\n\r\x00\v\f ﻿") : parent
+    public function trim(string $chars = " \t\n\r\x00\v\f ﻿") : static
     {
         if (" \t\n\r\x00\v\f ﻿" !== $chars && !\preg_match('//u', $chars)) {
             throw new InvalidArgumentException('Invalid UTF-8 chars.');
@@ -322,7 +313,7 @@ abstract class AbstractUnicodeString extends AbstractString
         $str->string = \preg_replace("{^[{$chars}]++|[{$chars}]++\$}uD", '', $str->string);
         return $str;
     }
-    public function trimEnd(string $chars = " \t\n\r\x00\v\f ﻿") : parent
+    public function trimEnd(string $chars = " \t\n\r\x00\v\f ﻿") : static
     {
         if (" \t\n\r\x00\v\f ﻿" !== $chars && !\preg_match('//u', $chars)) {
             throw new InvalidArgumentException('Invalid UTF-8 chars.');
@@ -332,7 +323,7 @@ abstract class AbstractUnicodeString extends AbstractString
         $str->string = \preg_replace("{[{$chars}]++\$}uD", '', $str->string);
         return $str;
     }
-    public function trimPrefix($prefix) : parent
+    public function trimPrefix($prefix) : static
     {
         if (!$this->ignoreCase) {
             return parent::trimPrefix($prefix);
@@ -347,7 +338,7 @@ abstract class AbstractUnicodeString extends AbstractString
         $str->string = \preg_replace("{^(?:{$prefix})}iuD", '', $this->string);
         return $str;
     }
-    public function trimStart(string $chars = " \t\n\r\x00\v\f ﻿") : parent
+    public function trimStart(string $chars = " \t\n\r\x00\v\f ﻿") : static
     {
         if (" \t\n\r\x00\v\f ﻿" !== $chars && !\preg_match('//u', $chars)) {
             throw new InvalidArgumentException('Invalid UTF-8 chars.');
@@ -357,7 +348,7 @@ abstract class AbstractUnicodeString extends AbstractString
         $str->string = \preg_replace("{^[{$chars}]++}uD", '', $str->string);
         return $str;
     }
-    public function trimSuffix($suffix) : parent
+    public function trimSuffix($suffix) : static
     {
         if (!$this->ignoreCase) {
             return parent::trimSuffix($suffix);
@@ -372,13 +363,10 @@ abstract class AbstractUnicodeString extends AbstractString
         $str->string = \preg_replace("{(?:{$suffix})\$}iuD", '', $this->string);
         return $str;
     }
-    public function upper() : parent
+    public function upper() : static
     {
         $str = clone $this;
         $str->string = \mb_strtoupper($str->string, 'UTF-8');
-        if (\PHP_VERSION_ID < 70300) {
-            $str->string = \str_replace(self::UPPER_FROM, self::UPPER_TO, $str->string);
-        }
         return $str;
     }
     public function width(bool $ignoreAnsiDecoration = \true) : int
@@ -406,10 +394,7 @@ abstract class AbstractUnicodeString extends AbstractString
         }
         return $width;
     }
-    /**
-     * @return static
-     */
-    private function pad(int $len, self $pad, int $type) : parent
+    private function pad(int $len, self $pad, int $type) : static
     {
         $sLen = $this->length();
         if ($len <= $sLen) {

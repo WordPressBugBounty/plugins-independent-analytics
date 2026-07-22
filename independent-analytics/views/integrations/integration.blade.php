@@ -1,6 +1,6 @@
 @php /** @var \IAWP\Integrations\Integration $integration */ @endphp
 
-<?php 
+<?php
 $class = '';
 if ($integration->activated()) {
     $class = 'active';

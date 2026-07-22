@@ -2,8 +2,6 @@
 
 namespace IAWPSCOPED\Illuminate\Database;
 
-use IAWPSCOPED\Doctrine\DBAL\Driver\PDOPgSql\Driver as DoctrineDriver;
-use IAWPSCOPED\Doctrine\DBAL\Version;
 use IAWPSCOPED\Illuminate\Database\PDO\PostgresDriver;
 use IAWPSCOPED\Illuminate\Database\Query\Grammars\PostgresGrammar as QueryGrammar;
 use IAWPSCOPED\Illuminate\Database\Query\Processors\PostgresProcessor;
@@ -11,30 +9,9 @@ use IAWPSCOPED\Illuminate\Database\Schema\Grammars\PostgresGrammar as SchemaGram
 use IAWPSCOPED\Illuminate\Database\Schema\PostgresBuilder;
 use IAWPSCOPED\Illuminate\Database\Schema\PostgresSchemaState;
 use IAWPSCOPED\Illuminate\Filesystem\Filesystem;
-use PDO;
 /** @internal */
 class PostgresConnection extends Connection
 {
-    /**
-     * Bind values to their parameters in the given statement.
-     *
-     * @param  \PDOStatement  $statement
-     * @param  array  $bindings
-     * @return void
-     */
-    public function bindValues($statement, $bindings)
-    {
-        foreach ($bindings as $key => $value) {
-            if (\is_int($value)) {
-                $pdoParam = PDO::PARAM_INT;
-            } elseif (\is_resource($value)) {
-                $pdoParam = PDO::PARAM_LOB;
-            } else {
-                $pdoParam = PDO::PARAM_STR;
-            }
-            $statement->bindValue(\is_string($key) ? $key : $key + 1, $value, $pdoParam);
-        }
-    }
     /**
      * Get the default query grammar instance.
      *
@@ -88,10 +65,10 @@ class PostgresConnection extends Connection
     /**
      * Get the Doctrine DBAL driver.
      *
-     * @return \Doctrine\DBAL\Driver\PDOPgSql\Driver|\Illuminate\Database\PDO\PostgresDriver
+     * @return \Illuminate\Database\PDO\PostgresDriver
      */
     protected function getDoctrineDriver()
     {
-        return \class_exists(Version::class) ? new DoctrineDriver() : new PostgresDriver();
+        return new PostgresDriver();
     }
 }

@@ -322,6 +322,10 @@ abstract class Statistics
             if (Str::startsWith($key, 'form_submissions')) {
                 $statistic->{$key} = \intval($value);
             }
+            if (\is_string($value) && \is_numeric($value)) {
+                $statistic->{$key} = $value + 0;
+                // PHP will correctly make it a float or an int
+            }
         }
         return $statistic;
     }

@@ -12,10 +12,6 @@ class Page_Not_Found extends \IAWP\Models\Page
         $this->not_found_url = $row->not_found_url;
         parent::__construct($row);
     }
-    public function most_popular_subtitle() : string
-    {
-        return $this->url();
-    }
     protected function resource_key() : string
     {
         return 'not_found_url';

@@ -4,6 +4,7 @@ namespace IAWPSCOPED\Illuminate\Container;
 
 use Countable;
 use IteratorAggregate;
+use Traversable;
 /** @internal */
 class RewindableGenerator implements Countable, IteratorAggregate
 {
@@ -34,10 +35,9 @@ class RewindableGenerator implements Countable, IteratorAggregate
     /**
      * Get an iterator from the generator.
      *
-     * @return mixed
+     * @return \Traversable
      */
-    #[\ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator() : Traversable
     {
         return ($this->generator)();
     }
@@ -46,8 +46,7 @@ class RewindableGenerator implements Countable, IteratorAggregate
      *
      * @return int
      */
-    #[\ReturnTypeWillChange]
-    public function count()
+    public function count() : int
     {
         if (\is_callable($count = $this->count)) {
             $this->count = $count();

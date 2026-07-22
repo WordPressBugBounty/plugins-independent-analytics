@@ -2,13 +2,17 @@
 
 namespace IAWPSCOPED\Illuminate\Contracts\Support;
 
-/** @internal */
+/**
+ * @template TKey of array-key
+ * @template TValue
+ * @internal
+ */
 interface Arrayable
 {
     /**
      * Get the instance as an array.
      *
-     * @return array
+     * @return array<TKey, TValue>
      */
     public function toArray();
 }

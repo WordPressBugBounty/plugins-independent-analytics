@@ -49,7 +49,7 @@
                         echo esc_html(sprintf(_n('%s view', '%s views', $row->views(), 'independent-analytics'), number_format_i18n($row->views()))); ?>
                     </span>
                 </p>
-                <p class="journey-cell duration-cell" data-duration-engagement-score="<?php echo esc_attr($row->duration_engagement_score()) ?>" data-duration="<?php echo esc_attr(floor($row->duration_in_seconds()/30)); ?>">
+                <p class="journey-cell duration-cell" data-duration-engagement-score="<?php echo esc_attr($row->duration_engagement_score()) ?>" data-duration="<?php echo esc_attr(floor($row->duration_in_seconds() / 30)); ?>">
                     <?php if($row->duration()): ?>
                         <span><span class="dashicons dashicons-clock"></span> <?php echo esc_html($row->duration()); ?></span>
                     <?php else: ?>

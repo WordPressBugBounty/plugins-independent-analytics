@@ -15,18 +15,18 @@
         <span class="dashicons dashicons-yes-alt"></span>
         <p><?php
             $status_message = $pruner->status_message();
-            if (!is_null($status_message)) {
-                echo wp_kses_post($status_message);
-            } ?>
+        if (!is_null($status_message)) {
+            echo wp_kses_post($status_message);
+        } ?>
         </p>
     </div>
     <div class="iawp-section">
         <select data-pruner-target="cutoffs" data-action="pruner#selectChanged" data-testid="data-pruner-select"><?php
-            foreach ($pruner->cutoff_options() as $cutoff_option) : ?>
+        foreach ($pruner->cutoff_options() as $cutoff_option) : ?>
                 <option value="<?php echo esc_attr($cutoff_option[0]); ?>" <?php
-                    echo $cutoff_option[0] === $pruner->get_pruning_cutoff() ? 'selected' : ''; ?>><?php echo esc_html($cutoff_option[1]); ?>
+                echo $cutoff_option[0] === $pruner->get_pruning_cutoff() ? 'selected' : ''; ?>><?php echo esc_html($cutoff_option[1]); ?>
                 </option><?php
-            endforeach; ?>
+        endforeach; ?>
         </select>
     </div>
     <div class="button-group">
@@ -47,13 +47,13 @@
                 <div role="dialog" aria-modal="true" aria-labelledby="raa-modal-title"
                      class="mm__container">
                     <h1><?php
-                        esc_html_e('Enable automatic data deletion', 'independent-analytics'); ?></h1>
+                    esc_html_e('Enable automatic data deletion', 'independent-analytics'); ?></h1>
                     <p>
                         <?php
-                        esc_html_e(
-                            'This will delete all data older then the selected timeframe, reducing the size of the database tables that Independent Analytics uses.',
-                            'independent-analytics'
-                        ) ?>
+                    esc_html_e(
+                        'This will delete all data older then the selected timeframe, reducing the size of the database tables that Independent Analytics uses.',
+                        'independent-analytics'
+                    ) ?>
                     </p>
                     <p>
                         <strong data-pruner-target="confirmationText" data-testid="date-confirmation"></strong>
@@ -67,14 +67,14 @@
                             data-testid="submit-data-pruner"
                     >
                         <?php
-                        esc_html_e('Enable Automatic Data Deletion', 'independent-analytics'); ?>
+                                esc_html_e('Enable Automatic Data Deletion', 'independent-analytics'); ?>
                     </button>
                     <button class="iawp-button ghost-purple"
                             data-action="pruner#cancelConfirmation"
                             data-testid="close-data-pruner"
                     >
                         <?php
-                        esc_html_e('Cancel', 'independent-analytics') ?>
+                                esc_html_e('Cancel', 'independent-analytics') ?>
                     </button>
             </div>
         </div>

@@ -14,15 +14,17 @@ class Timebox
     /**
      * Invoke the given callback within the specified timebox minimum.
      *
-     * @param  callable  $callback
+     * @template TCallReturnType
+     *
+     * @param  (callable($this): TCallReturnType)  $callback
      * @param  int  $microseconds
-     * @return mixed
+     * @return TCallReturnType
      */
     public function call(callable $callback, int $microseconds)
     {
         $start = \microtime(\true);
         $result = $callback($this);
-        $remainder = $microseconds - (\microtime(\true) - $start) * 1000000;
+        $remainder = \intval($microseconds - (\microtime(\true) - $start) * 1000000);
         if (!$this->earlyReturn && $remainder > 0) {
             $this->usleep($remainder);
         }
@@ -51,10 +53,10 @@ class Timebox
     /**
      * Sleep for the specified number of microseconds.
      *
-     * @param  $microseconds
+     * @param  int  $microseconds
      * @return void
      */
-    protected function usleep($microseconds)
+    protected function usleep(int $microseconds)
     {
         \usleep($microseconds);
     }

@@ -19,12 +19,7 @@ use IAWPSCOPED\Symfony\Component\Translation\Exception\InvalidArgumentException;
  */
 abstract class AbstractFileExtractor
 {
-    /**
-     * @param string|iterable $resource Files, a file or a directory
-     *
-     * @return iterable
-     */
-    protected function extractFiles($resource)
+    protected function extractFiles(string|iterable $resource) : iterable
     {
         if (\is_iterable($resource)) {
             $files = [];
@@ -45,11 +40,9 @@ abstract class AbstractFileExtractor
         return new \SplFileInfo($file);
     }
     /**
-     * @return bool
-     *
      * @throws InvalidArgumentException
      */
-    protected function isFile(string $file)
+    protected function isFile(string $file) : bool
     {
         if (!\is_file($file)) {
             throw new InvalidArgumentException(\sprintf('The "%s" file does not exist.', $file));
@@ -61,9 +54,7 @@ abstract class AbstractFileExtractor
      */
     protected abstract function canBeExtracted(string $file);
     /**
-     * @param string|array $resource Files, a file or a directory
-     *
      * @return iterable
      */
-    protected abstract function extractFromDirectory($resource);
+    protected abstract function extractFromDirectory(string|array $resource);
 }

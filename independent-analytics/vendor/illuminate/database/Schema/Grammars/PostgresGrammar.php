@@ -2,6 +2,7 @@
 
 namespace IAWPSCOPED\Illuminate\Database\Schema\Grammars;
 
+use IAWPSCOPED\Illuminate\Database\Connection;
 use IAWPSCOPED\Illuminate\Database\Schema\Blueprint;
 use IAWPSCOPED\Illuminate\Support\Fluent;
 /** @internal */
@@ -59,7 +60,7 @@ class PostgresGrammar extends Grammar
      */
     public function compileTableExists()
     {
-        return "select * from information_schema.tables where table_schema = ? and table_name = ? and table_type = 'BASE TABLE'";
+        return "select * from information_schema.tables where table_catalog = ? and table_schema = ? and table_name = ? and table_type = 'BASE TABLE'";
     }
     /**
      * Compile the query to determine the list of columns.
@@ -68,7 +69,7 @@ class PostgresGrammar extends Grammar
      */
     public function compileColumnListing()
     {
-        return 'select column_name from information_schema.columns where table_schema = ? and table_name = ?';
+        return 'select column_name from information_schema.columns where table_catalog = ? and table_schema = ? and table_name = ?';
     }
     /**
      * Compile a create table command.
@@ -105,6 +106,18 @@ class PostgresGrammar extends Grammar
         })->all();
     }
     /**
+     * Compile a rename column command.
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $command
+     * @param  \Illuminate\Database\Connection  $connection
+     * @return array|string
+     */
+    public function compileRenameColumn(Blueprint $blueprint, Fluent $command, Connection $connection)
+    {
+        return $connection->usingNativeSchemaOperations() ? \sprintf('alter table %s rename column %s to %s', $this->wrapTable($blueprint), $this->wrap($command->from), $this->wrap($command->to)) : parent::compileRenameColumn($blueprint, $command, $connection);
+    }
+    /**
      * Compile a primary key command.
      *
      * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
@@ -125,7 +138,14 @@ class PostgresGrammar extends Grammar
      */
     public function compileUnique(Blueprint $blueprint, Fluent $command)
     {
-        return \sprintf('alter table %s add constraint %s unique (%s)', $this->wrapTable($blueprint), $this->wrap($command->index), $this->columnize($command->columns));
+        $sql = \sprintf('alter table %s add constraint %s unique (%s)', $this->wrapTable($blueprint), $this->wrap($command->index), $this->columnize($command->columns));
+        if (!\is_null($command->deferrable)) {
+            $sql .= $command->deferrable ? ' deferrable' : ' not deferrable';
+        }
+        if ($command->deferrable && !\is_null($command->initiallyImmediate)) {
+            $sql .= $command->initiallyImmediate ? ' initially immediate' : ' initially deferred';
+        }
+        return $sql;
     }
     /**
      * Compile a plain index key command.
@@ -218,7 +238,7 @@ class PostgresGrammar extends Grammar
      */
     public function compileDropAllTables($tables)
     {
-        return 'drop table "' . \implode('","', $tables) . '" cascade';
+        return 'drop table ' . \implode(',', $this->escapeNames($tables)) . ' cascade';
     }
     /**
      * Compile the SQL needed to drop all views.
@@ -228,7 +248,7 @@ class PostgresGrammar extends Grammar
      */
     public function compileDropAllViews($views)
     {
-        return 'drop view "' . \implode('","', $views) . '" cascade';
+        return 'drop view ' . \implode(',', $this->escapeNames($views)) . ' cascade';
     }
     /**
      * Compile the SQL needed to drop all types.
@@ -238,27 +258,27 @@ class PostgresGrammar extends Grammar
      */
     public function compileDropAllTypes($types)
     {
-        return 'drop type "' . \implode('","', $types) . '" cascade';
+        return 'drop type ' . \implode(',', $this->escapeNames($types)) . ' cascade';
     }
     /**
      * Compile the SQL needed to retrieve all table names.
      *
-     * @param  string|array  $schema
+     * @param  string|array  $searchPath
      * @return string
      */
-    public function compileGetAllTables($schema)
+    public function compileGetAllTables($searchPath)
     {
-        return "select tablename from pg_catalog.pg_tables where schemaname in ('" . \implode("','", (array) $schema) . "')";
+        return "select tablename, concat('\"', schemaname, '\".\"', tablename, '\"') as qualifiedname from pg_catalog.pg_tables where schemaname in ('" . \implode("','", (array) $searchPath) . "')";
     }
     /**
      * Compile the SQL needed to retrieve all view names.
      *
-     * @param  string|array  $schema
+     * @param  string|array  $searchPath
      * @return string
      */
-    public function compileGetAllViews($schema)
+    public function compileGetAllViews($searchPath)
     {
-        return "select viewname from pg_catalog.pg_views where schemaname in ('" . \implode("','", (array) $schema) . "')";
+        return "select viewname, concat('\"', schemaname, '\".\"', viewname, '\"') as qualifiedname from pg_catalog.pg_views where schemaname in ('" . \implode("','", (array) $searchPath) . "')";
     }
     /**
      * Compile the SQL needed to retrieve all type names.
@@ -403,6 +423,29 @@ class PostgresGrammar extends Grammar
         return \sprintf('comment on column %s.%s is %s', $this->wrapTable($blueprint), $this->wrap($command->column->name), "'" . \str_replace("'", "''", $command->value) . "'");
     }
     /**
+     * Compile a table comment command.
+     *
+     * @param  \Illuminate\Database\Schema\Blueprint  $blueprint
+     * @param  \Illuminate\Support\Fluent  $command
+     * @return string
+     */
+    public function compileTableComment(Blueprint $blueprint, Fluent $command)
+    {
+        return \sprintf('comment on table %s is %s', $this->wrapTable($blueprint), "'" . \str_replace("'", "''", $command->comment) . "'");
+    }
+    /**
+     * Quote-escape the given tables, views, or types.
+     *
+     * @param  array  $names
+     * @return array
+     */
+    public function escapeNames($names)
+    {
+        return \array_map(static function ($name) {
+            return '"' . \IAWPSCOPED\collect(\explode('.', $name))->map(fn($segment) => \trim($segment, '\'"'))->implode('"."') . '"';
+        }, $names);
+    }
+    /**
      * Create the column definition for a char type.
      *
      * @param  \Illuminate\Support\Fluent  $column
@@ -410,7 +453,10 @@ class PostgresGrammar extends Grammar
      */
     protected function typeChar(Fluent $column)
     {
-        return "char({$column->length})";
+        if ($column->length) {
+            return "char({$column->length})";
+        }
+        return 'char';
     }
     /**
      * Create the column definition for a string type.
@@ -420,7 +466,10 @@ class PostgresGrammar extends Grammar
      */
     protected function typeString(Fluent $column)
     {
-        return "varchar({$column->length})";
+        if ($column->length) {
+            return "varchar({$column->length})";
+        }
+        return 'varchar';
     }
     /**
      * Create the column definition for a tiny text type.
