@@ -13,18 +13,6 @@ class Security
     {
         return \trim(\sanitize_text_field($string));
     }
-    public static function attr($att)
-    {
-        return \esc_attr($att);
-    }
-    public static function hex($hex)
-    {
-        return \sanitize_hex_color($hex);
-    }
-    public static function html($html)
-    {
-        return \wp_kses_post($html);
-    }
     public static function array($array)
     {
         if (\is_string($array)) {
@@ -51,5 +39,21 @@ class Security
     public static function svg($html)
     {
         return \wp_kses($html, ['svg' => ['height' => [], 'width' => [], 'fill' => [], 'viewbox' => [], 'style' => []], 'path' => ['d' => []]]);
+    }
+    public static function table_cell_content($html)
+    {
+        return \wp_kses($html, ['span' => ['class' => []], 'a' => ['href' => [], 'target' => [], 'class' => []], 'img' => ['alt' => [], 'src' => [], 'class' => [], 'height' => [], 'width' => [], 'loading' => []], 'div' => ['class' => []]]);
+    }
+    public static function user_journey_event_contents($html)
+    {
+        return \wp_kses($html, ['p' => [], 'a' => ['href' => [], 'target' => []], 'span' => ['class' => []]]);
+    }
+    public static function strong_tags_only($html)
+    {
+        return \wp_kses($html, ['strong' => []]);
+    }
+    public static function span_tags_only($html)
+    {
+        return \wp_kses($html, ['span' => ['class' => []]]);
     }
 }

@@ -20,7 +20,7 @@
 <?php endif; ?>
 
 <p class="iawp-referrer-box-title"><?php esc_html_e('Landing Page', 'independent-analytics'); ?></p>
-<p class="iawp-referrer-box-value" data-testid="landing-page"><a href="<?php echo $record->initial_page_url ?>" target="_blank"><?php echo $record->initial_page_title ?></a></p>
+<p class="iawp-referrer-box-value" data-testid="landing-page"><a href="<?php echo esc_url($record->initial_page_url); ?>" target="_blank"><?php echo esc_html($record->initial_page_title); ?></a></p>
 
 <p class="iawp-referrer-box-title"><?php esc_html_e('Pages viewed', 'independent-analytics'); ?></p>
 <p class="iawp-referrer-box-value" data-testid="pages-viewed"><?php echo $record->total_views ?></p>

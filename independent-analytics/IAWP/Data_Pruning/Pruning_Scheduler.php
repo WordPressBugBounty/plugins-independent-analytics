@@ -40,7 +40,7 @@ class Pruning_Scheduler
         $scheduled_at->setTimestamp(\wp_next_scheduled('iawp_prune'));
         $day = $scheduled_at->format(Format::date());
         $time = $scheduled_at->format(Format::time());
-        return \sprintf(\__('Next data pruning scheduled for %s at %s.', 'independent-analytics'), '<span>' . $day . '</span>', '<span>' . $time . '</span>');
+        return \sprintf(\__('Next data pruning scheduled for %s at %s.', 'independent-analytics'), '<strong>' . $day . '</strong>', '<strong>' . $time . '</strong>');
     }
     public function get_pruning_description(string $cutoff) : string
     {

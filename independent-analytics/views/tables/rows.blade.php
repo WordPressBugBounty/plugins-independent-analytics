@@ -68,7 +68,7 @@ if ($number_of_shown_rows > 0) :
                             <span class="dashicons dashicons-search"></span>
                             </button>
                         </div>
-                        <span class="cell-content"><?php echo wp_kses_post($table->get_cell_content($row, $column)); ?></span>
+                        <span class="cell-content"><?php echo \IAWP\Utils\Security::table_cell_content($table->get_cell_content($row, $column)); ?></span>
                         <span class="animator"></span>
                     </div><?php
             endforeach; ?>

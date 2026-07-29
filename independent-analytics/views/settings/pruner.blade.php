@@ -16,7 +16,7 @@
         <p><?php
             $status_message = $pruner->status_message();
         if (!is_null($status_message)) {
-            echo wp_kses_post($status_message);
+            echo \IAWP\Utils\Security::strong_tags_only($status_message);
         } ?>
         </p>
     </div>

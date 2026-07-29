@@ -19,7 +19,7 @@ class Filters
         echo \esc_attr(\json_encode($options->raw_filters()));
         ?>"
          data-filters-filter-logic-value="<?php 
-        echo Security::attr($options->filter_logic());
+        echo \esc_attr($options->filter_logic());
         ?>"
     >
         <span class="dashicons dashicons-filter"></span>
@@ -146,7 +146,7 @@ class Filters
             <button class="filters-condition-button"
                 data-action="filters#toggleModal"
                 data-filters-target="modalButton"><?php 
-            echo \wp_kses_post($filters[$i]->html_description());
+            echo Security::strong_tags_only($filters[$i]->html_description());
             ?></button>
         <?php 
         }

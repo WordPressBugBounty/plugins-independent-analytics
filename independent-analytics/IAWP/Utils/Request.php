@@ -148,10 +148,14 @@ class Request
     }
     private static function url()
     {
-        if (!empty($_SERVER['HTTP_HOST']) && !empty($_SERVER['REQUEST_URI'])) {
-            return \esc_url_raw(self::scheme() . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-        } else {
+        if (empty($_SERVER['HTTP_HOST']) || empty($_SERVER['REQUEST_URI'])) {
             return null;
         }
+        $url = self::scheme() . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        $decoded_url = \rawurldecode($url);
+        if (\str_contains($decoded_url, '<') || \str_contains($decoded_url, '>')) {
+            return null;
+        }
+        return \esc_url_raw($url);
     }
 }

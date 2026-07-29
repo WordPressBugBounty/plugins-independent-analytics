@@ -55,7 +55,7 @@
                     <?php endif; ?>
                     <span class="timeline-event-label"><?php echo esc_html($event->label()); ?></span>
                     <div class="timeline-event-contents">
-                        <?php echo wp_kses_post($event->html()); ?>
+                        <?php echo \IAWP\Utils\Security::user_journey_event_contents($event->html()); ?>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -74,7 +74,7 @@
                     <div class="journey-timeline-event <?php echo esc_attr($event->type()); ?>">
                         <span class="timeline-event-label"><?php echo esc_html($event->label()); ?></span>
                         <div class="timeline-event-contents">
-                            <?php echo wp_kses_post($event->html()); ?>
+                            <?php echo \IAWP\Utils\Security::user_journey_event_contents($event->html()); ?>
                         </div>
                     </div>
                 <?php endforeach; ?>

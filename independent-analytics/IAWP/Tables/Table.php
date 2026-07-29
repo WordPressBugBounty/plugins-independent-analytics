@@ -137,12 +137,12 @@ abstract class Table
             return Number_Formatter::percent($row->{$column_id}(), 2);
         } elseif ($column_id == 'url') {
             if ($row->is_deleted()) {
-                return \urldecode(\esc_url($row->url()));
+                return \esc_html(\urldecode($row->url()));
             } else {
-                return '<a href="' . \esc_url($row->url(\true)) . '" target="_blank" class="external-link">' . \urldecode(\esc_url($row->url())) . '<span class="dashicons dashicons-external"></span></a>';
+                return '<a href="' . \esc_url($row->url(\true)) . '" target="_blank" class="external-link">' . \esc_html(\urldecode($row->url())) . '<span class="dashicons dashicons-external"></span></a>';
             }
         } elseif ($column_id == 'author') {
-            return Security::html($row->avatar()) . ' ' . Security::string($row->author());
+            return Security::table_cell_content($row->avatar()) . ' ' . Security::string($row->author());
         } elseif ($column_id == 'date') {
             return Security::string(\date(Format::date(), \strtotime($row->date())));
         } elseif ($column_id == 'type' && \method_exists($row, 'icon') && \method_exists($row, 'type')) {
@@ -166,7 +166,7 @@ abstract class Table
         } elseif ($column_id === 'link_target') {
             $value = $row->{$column_id}();
             if (\is_string($value) && URL::new($value)->is_valid_url()) {
-                return '<a href="' . \esc_url($value) . '" target="_blank" class="external-link">' . \esc_url(\urldecode($value)) . '<span class="dashicons dashicons-external"></span></a>';
+                return '<a href="' . \esc_url($value) . '" target="_blank" class="external-link">' . \esc_html(\urldecode($value)) . '<span class="dashicons dashicons-external"></span></a>';
             }
             return Security::string($value);
         } else {

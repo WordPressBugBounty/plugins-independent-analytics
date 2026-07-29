@@ -4,7 +4,7 @@
  * Plugin Name:       Independent Analytics
  * Plugin URI:        https://independentwp.com/
  * Description:       User-friendly website analytics built for WordPress
- * Version:           2.15.0
+ * Version:           2.15.1
  * Requires at least: 5.9
  * Tested up to:      7.0
  * Requires PHP:      8.0.30

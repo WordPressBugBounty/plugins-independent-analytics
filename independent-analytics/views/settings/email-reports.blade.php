@@ -16,7 +16,7 @@
             <?php if($is_scheduled): ?>
                 <div id="next-email" class="schedule-notification is-scheduled" data-timestamp="<?php echo absint($timestamp); ?>">
                     <span class="dashicons dashicons-yes-alt"></span>
-                    <p><?php echo wp_kses_post($scheduled_date); ?></p>
+                    <p><?php echo \IAWP\Utils\Security::strong_tags_only($scheduled_date); ?></p>
                     <button class="iawp-button" type="button" data-controller="pause-emails" data-action="pause-emails#pause"><?php esc_html_e('Pause Emails', 'independent-analytics'); ?></button>
                 </div>
             <?php elseif($is_paused): ?>
@@ -28,7 +28,7 @@
             <?php else: ?>
                 <div id="next-email" class="schedule-notification is-not-scheduled">
                     <span class="dashicons dashicons-dismiss"></span>
-                    <p><?php echo wp_kses_post($scheduled_date); ?></p>
+                    <p><?php echo \IAWP\Utils\Security::strong_tags_only($scheduled_date); ?></p>
                 </div>
             <?php endif; ?>
             <div class="delivery-interval iawp-section">

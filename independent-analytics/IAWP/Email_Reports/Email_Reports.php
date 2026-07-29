@@ -72,7 +72,7 @@ class Email_Reports
         $date = $this->interval()->next_interval_start();
         $day = $date->format(Format::date());
         $time = $date->format(Format::time());
-        return \sprintf(\__('Next email scheduled for %s at %s.', 'independent-analytics'), '<span>' . $day . '</span>', '<span>' . $time . '</span>');
+        return \sprintf(\__('Next email scheduled for %s at %s.', 'independent-analytics'), '<strong>' . $day . '</strong>', '<strong>' . $time . '</strong>');
     }
     public function maybe_reschedule()
     {

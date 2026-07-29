@@ -94,31 +94,31 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         echo Security::string($table->group()->singular());
         ?>"
              data-report-relative-range-id-value="<?php 
-        echo Security::attr($options->relative_range_id());
+        echo \esc_attr($options->relative_range_id());
         ?>"
              data-report-exact-start-value="<?php 
-        echo Security::attr($options->start());
+        echo \esc_attr($options->start());
         ?>"
              data-report-exact-end-value="<?php 
-        echo Security::attr($options->end());
+        echo \esc_attr($options->end());
         ?>"
              data-report-group-value="<?php 
-        echo Security::attr($table->group()->id());
+        echo \esc_attr($table->group()->id());
         ?>"
              data-report-filters-value="<?php 
         echo \esc_attr(Security::json_encode($options->raw_filters()));
         ?>"
              data-report-filter-logic-value="<?php 
-        echo Security::attr($options->filter_logic());
+        echo \esc_attr($options->filter_logic());
         ?>"
              data-report-chart-interval-value="<?php 
-        echo Security::attr($options->chart_interval()->id());
+        echo \esc_attr($options->chart_interval()->id());
         ?>"
              data-report-sort-column-value="<?php 
-        echo Security::attr($sort_configuration->column());
+        echo \esc_attr($sort_configuration->column());
         ?>"
              data-report-sort-direction-value="<?php 
-        echo Security::attr($sort_configuration->direction());
+        echo \esc_attr($sort_configuration->direction());
         ?>"
              data-report-columns-value="<?php 
         echo \esc_attr(Security::json_encode($table->visible_column_ids()));
@@ -182,31 +182,31 @@ class Analytics_Page extends \IAWP\Admin_Page\Admin_Page
         echo Security::string($table->group()->singular());
         ?>"
              data-report-relative-range-id-value="<?php 
-        echo Security::attr($options->relative_range_id());
+        echo \esc_attr($options->relative_range_id());
         ?>"
              data-report-exact-start-value="<?php 
-        echo Security::attr($options->start());
+        echo \esc_attr($options->start());
         ?>"
              data-report-exact-end-value="<?php 
-        echo Security::attr($options->end());
+        echo \esc_attr($options->end());
         ?>"
              data-report-group-value="<?php 
-        echo Security::attr($table->group()->id());
+        echo \esc_attr($table->group()->id());
         ?>"
              data-report-filters-value="<?php 
         echo \esc_attr(Security::json_encode($options->raw_filters()));
         ?>"
              data-report-filter-logic-value="<?php 
-        echo Security::attr($options->filter_logic());
+        echo \esc_attr($options->filter_logic());
         ?>"
              data-report-chart-interval-value="<?php 
-        echo Security::attr($options->chart_interval()->id());
+        echo \esc_attr($options->chart_interval()->id());
         ?>"
              data-report-sort-column-value="<?php 
-        echo Security::attr($sort_configuration->column());
+        echo \esc_attr($sort_configuration->column());
         ?>"
              data-report-sort-direction-value="<?php 
-        echo Security::attr($sort_configuration->direction());
+        echo \esc_attr($sort_configuration->direction());
         ?>"
              data-report-columns-value="<?php 
         echo \esc_attr(Security::json_encode($table->visible_column_ids()));
