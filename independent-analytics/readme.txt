@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 7.0
 Requires PHP: 8.0.30
-Stable tag: 2.15.1
+Stable tag: 2.15.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -247,6 +247,9 @@ No, there are no limits on tracking. You can use Independent Analytics to track 
 
 == Changelog ==
 
+= 2.15.2 - August 4th, 2026
+
+- **Enhancement:** Real-time report supports switching between a 5-minute and 30-minute chart
 
 = 2.15.1 - July 29th, 2026
 

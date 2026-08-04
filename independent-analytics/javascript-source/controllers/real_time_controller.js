@@ -12,6 +12,8 @@ Chart.defaults.font.family =
 export default class extends Controller {
     static targets = [
         "pauseButton",
+        "chartMinutesButton",
+        "chartTitle",
         "realTimeChart",
         "visitorMessage",
         "viewsList",
@@ -27,6 +29,7 @@ export default class extends Controller {
         nonce: String,
         locale: String,
         startingAt: Number,
+        chartMinutes: Number,
         isTabVisible: {
             type: Boolean,
             default: true,
@@ -112,6 +115,32 @@ export default class extends Controller {
         select.removeAttribute("disabled");
     }
 
+    async changeChartMinutes(event) {
+        const chartMinutes = Number(event.currentTarget.dataset.chartMinutes);
+
+        if (chartMinutes === this.chartMinutesValue) {
+            return;
+        }
+
+        this.chartMinutesButtonTargets.forEach((button) => button.setAttribute("disabled", "disabled"));
+
+        const data = {
+            ...iawpActions.save_real_time_preferences,
+            chartMinutes,
+        };
+
+        const response = await fetch(ajaxurl, {
+            method: "POST",
+            body: new URLSearchParams(data),
+        });
+
+        if (response.ok) {
+            await this.refresh({ animateChart: false });
+        }
+
+        this.chartMinutesButtonTargets.forEach((button) => button.removeAttribute("disabled"));
+    }
+
     disableUI() {
         this.element.querySelectorAll(".most-popular-list li button").forEach((button) => {
             button.setAttribute("disabled", "disabled");
@@ -161,7 +190,7 @@ export default class extends Controller {
         button.classList.remove("is-removing");
     }
 
-    async refresh() {
+    async refresh({ animateChart = true } = {}) {
         clearInterval(this.interval);
 
         const data = {
@@ -188,7 +217,7 @@ export default class extends Controller {
         if (response.ok) {
             const { data } = await response.json();
             data.filter = filter;
-            this.rerender(data);
+            this.rerender(data, { animateChart });
         }
 
         if (!this.pausedAt) {
@@ -214,9 +243,11 @@ export default class extends Controller {
         this.startServerPolling();
     };
 
-    rerender(data) {
+    rerender(data, { animateChart = true } = {}) {
         this.visitorMessageTarget.textContent = data.visitors;
         this.startingAtValue = data.starting_at;
+        this.chartMinutesValue = data.chart_minutes;
+        this.updateChartMinutesButtons();
 
         if (data.filter) {
             this.summaryWithFilterTextTarget.textContent = data.filter.group + ": " + data.filter.name;
@@ -226,7 +257,7 @@ export default class extends Controller {
         }
 
         this.restartProgressAnimation();
-        this.updateChart(data.chart_data, { animate: true });
+        this.updateChart(data.chart_data, { animate: animateChart });
         this.updateMap(data.country_data);
 
         this.updateList({
@@ -583,6 +614,18 @@ export default class extends Controller {
         chart.update(shouldAnimate ? "realTimeShift" : "none");
     }
 
+    updateChartMinutesButtons() {
+        this.chartMinutesButtonTargets.forEach((button) => {
+            const isActive = Number(button.dataset.chartMinutes) === this.chartMinutesValue;
+
+            button.classList.toggle("active", isActive);
+
+            if (isActive) {
+                this.chartTitleTarget.textContent = button.dataset.chartTitle;
+            }
+        });
+    }
+
     prepareChartShiftAnimation(chart, previousChartData, nextChartData) {
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
             return false;
@@ -596,7 +639,14 @@ export default class extends Controller {
             return false;
         }
 
-        const shiftCount = Math.round((nextChartData.timestamps[0] - previousChartData.timestamps[0]) / 10);
+        const intervalSeconds = Math.abs(nextChartData.timestamps[1] - nextChartData.timestamps[0]);
+        const timestampShift = nextChartData.timestamps[0] - previousChartData.timestamps[0];
+
+        if (timestampShift % intervalSeconds !== 0) {
+            return false;
+        }
+
+        const shiftCount = timestampShift / intervalSeconds;
 
         if (shiftCount < 1 || shiftCount >= nextChartData.timestamps.length) {
             return false;

@@ -1,5 +1,6 @@
 <div data-controller="real-time"
      data-real-time-chart-data-value="<?php echo esc_attr(json_encode($chart_data)) ?>"
+     data-real-time-chart-minutes-value="<?php echo esc_attr($chart_minutes) ?>"
      data-real-time-starting-at-value="<?php echo esc_attr($starting_at) ?>"
      data-real-time-nonce-value="<?php echo wp_create_nonce('iawp_real_time') ?>"
      data-chart-locale-value="<?php echo esc_attr(get_bloginfo('language')); ?>"
@@ -77,8 +78,24 @@
             <div class="chart-container">
                 <div class="chart-inner">
                     <div class="legend-container">
-                        <h2 class="legend-title"><?php esc_html_e('Recent Activity', 'independent-analytics') ?></h2>
+                        <h2 class="legend-title" data-real-time-target="chartTitle"><?php echo esc_html(sprintf(__('Last %d Minutes', 'independent-analytics'), $chart_minutes)) ?></h2>
                         <div class="legend"></div>
+                        <div class="length-toggle">
+                            <button type="button" class="<?php echo $chart_minutes === 5 ? 'active' : '' ?>" 
+                                data-action="real-time#changeChartMinutes" 
+                                data-real-time-target="chartMinutesButton" 
+                                data-chart-minutes="5" 
+                                data-chart-title="<?php echo esc_attr(sprintf(__('Last %d Minutes', 'independent-analytics'), 5)) ?>">
+                                <?php echo esc_html_x('5m', '5 minutes', 'independent-analytics'); ?>
+                            </button>
+                            <button type="button" class="<?php echo $chart_minutes === 30 ? 'active' : '' ?>" 
+                                data-action="real-time#changeChartMinutes" 
+                                data-real-time-target="chartMinutesButton" 
+                                data-chart-minutes="30" 
+                                data-chart-title="<?php echo esc_attr(sprintf(__('Last %d Minutes', 'independent-analytics'), 30)) ?>">
+                                <?php echo esc_html_x('30m', '30 minutes', 'independent-analytics'); ?>
+                            </button>
+                        </div>
                     </div>
                     <div class="chart-canvas-container">
                         <canvas data-real-time-target="realTimeChart"></canvas>

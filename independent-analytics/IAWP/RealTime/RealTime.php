@@ -22,22 +22,28 @@ use IAWPSCOPED\Illuminate\Support\Collection;
 class RealTime
 {
     use Singleton;
+    public const CHART_MINUTES = [5, 30];
     private ?CarbonImmutable $starting_at;
     private ?Examiner_Config $examiner_config;
     public function __construct(?CarbonImmutable $starting_at = null, ?Examiner_Config $examiner_config = null)
     {
         $this->starting_at = $starting_at ?? CarbonImmutable::now(Timezone::utc_timezone());
-        $this->starting_at = $this->starting_at->ceilSeconds(10);
         $this->examiner_config = $examiner_config;
     }
     public function get_real_time_analytics() : array
     {
         // Clicks need to be processed before showing real-time data
         (new Click_Processing_Job())->handle();
-        $five_minutes_ago = $this->starting_at->subMinutes(5)->subSeconds(10);
+        $five_minutes_ago = $this->starting_at->subMinutes(5);
         $range = new Exact_Date_Range($five_minutes_ago->toDateTime(), $this->starting_at->toDateTime(), \false);
-        $recent_traffic = new \IAWP\RealTime\RecentTraffic($range, $this->examiner_config);
-        $visitors = $recent_traffic->visitor_count();
+        $chart_minutes = $this->get_chart_minutes_preference();
+        $chart_interval_seconds = $chart_minutes === 30 ? 60 : 10;
+        $chart_end = $chart_interval_seconds === 10 ? $this->starting_at->ceilSeconds($chart_interval_seconds) : $this->starting_at;
+        $chart_start = $chart_interval_seconds === 60 ? $chart_end->subMinutes($chart_minutes)->startOfMinute() : $chart_end->subMinutes($chart_minutes)->subSeconds($chart_interval_seconds);
+        $chart_range = new Exact_Date_Range($chart_start->toDateTime(), $chart_end->toDateTime(), \false);
+        $recent_traffic = new \IAWP\RealTime\RecentTraffic($chart_range, $this->examiner_config, $chart_interval_seconds);
+        $recent_visitors = new \IAWP\RealTime\RecentVisitors($range, $this->examiner_config);
+        $visitors = $recent_visitors->visitors();
         $chart_data = ['short_labels' => $recent_traffic->short_labels(), 'long_labels' => $recent_traffic->long_labels(), 'timestamps' => $recent_traffic->timestamps(), 'views' => $recent_traffic->views(), 'orders' => $recent_traffic->orders(), 'clicks' => $recent_traffic->clicks(), 'form_submissions' => $recent_traffic->form_submissions()];
         $geo_table = new Table_Geo();
         $countries = new Countries($range, $geo_table->sanitize_sort_parameters('visitors'));
@@ -83,7 +89,7 @@ class RealTime
             })->all();
             $lists[$table->id()] = ['id' => $table->id(), 'title' => $table->name(), 'group_id' => $group->id(), 'group_title' => $group->singular(), 'groups' => $groups, 'count' => \number_format_i18n(\count($list_items)), 'column' => \__('Visitors', 'independent-analytics'), 'entries' => $this->fill_rows_with_blanks($list_items, $minimum_items_per_list), 'icon' => \IAWPSCOPED\iawp_render('icons.' . $table->id()), 'empty' => \__('No data found', 'independent-analytics')];
         }
-        return ['visitors' => $visitors, 'starting_at' => $this->starting_at->format('Uv'), 'country_data' => $map_data->get_country_data(), 'chart_data' => $chart_data, 'lists' => $lists];
+        return ['visitors' => $visitors, 'starting_at' => $this->starting_at->format('Uv'), 'country_data' => $map_data->get_country_data(), 'chart_data' => $chart_data, 'chart_minutes' => $chart_minutes, 'lists' => $lists];
     }
     public function get_group_preference(string $table_id, ?string $default = null) : ?string
     {
@@ -96,6 +102,14 @@ class RealTime
     public function render_real_time_analytics()
     {
         echo \IAWPSCOPED\iawp_render('real-time', $this->get_real_time_analytics());
+    }
+    private function get_chart_minutes_preference() : int
+    {
+        $chart_minutes = (int) \get_user_meta(\get_current_user_id(), 'iawp_real_time_chart_minutes', \true);
+        if (!\in_array($chart_minutes, self::CHART_MINUTES, \true)) {
+            return 5;
+        }
+        return $chart_minutes;
     }
     private function fill_rows_with_blanks(array $rows, $items_per_list) : array
     {

@@ -58,15 +58,8 @@ module.exports = {
                 li.classList.add('hidden')
             }
 
-            // Color box
-            const boxSpan = document.createElement('span');
+            li.textContent = legendData.text
 
-            // Text
-            const textContainer = document.createElement('p');
-            textContainer.textContent = legendData.text
-
-            li.appendChild(boxSpan);
-            li.appendChild(textContainer);
             legendList.appendChild(li);
         });
     }

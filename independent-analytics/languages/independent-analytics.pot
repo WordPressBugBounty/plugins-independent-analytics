@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Independent Analytics 2.15.1\n"
+"Project-Id-Version: Independent Analytics 2.15.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/independent-analytics-production\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-07-28T22:03:32+00:00\n"
+"POT-Creation-Date: 2026-08-03T15:24:03+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: independent-analytics\n"
@@ -765,7 +765,7 @@ msgid "Upgrade to Pro &rarr;"
 msgstr ""
 
 #: IAWP/Independent_Analytics.php:404
-#: IAWP/RealTime/RealTime.php:84
+#: IAWP/RealTime/RealTime.php:90
 #: IAWP/Report.php:105
 #: IAWP/Statistics/Click_Statistics.php:23
 #: IAWP/Statistics/Statistics.php:211
@@ -774,7 +774,7 @@ msgstr ""
 #: IAWP/Tables/Table_Geo.php:32
 #: IAWP/Tables/Table_Pages.php:33
 #: IAWP/Tables/Table_Referrers.php:34
-#: views/real-time.blade.php:111
+#: views/real-time.blade.php:128
 msgid "Visitors"
 msgstr ""
 
@@ -1268,25 +1268,37 @@ msgstr ""
 msgid "Upgrade to Independent Analytics Pro to track form submissions."
 msgstr ""
 
-#: IAWP/RealTime/RealTime.php:84
+#: IAWP/RealTime/RealTime.php:90
 msgid "No data found"
 msgstr ""
 
-#: IAWP/RealTime/RecentTraffic.php:122
-#: IAWP/RealTime/RecentTraffic.php:139
+#: IAWP/RealTime/RecentTraffic.php:127
+msgid "0 mins"
+msgstr ""
+
+#: IAWP/RealTime/RecentTraffic.php:129
+#: IAWP/RealTime/RecentTraffic.php:150
 msgid "Now"
 msgstr ""
 
-#: IAWP/RealTime/RecentTraffic.php:132
+#: IAWP/RealTime/RecentTraffic.php:143
 msgid "min"
 msgstr ""
 
-#: IAWP/RealTime/RecentTraffic.php:134
+#: IAWP/RealTime/RecentTraffic.php:145
 msgid "mins"
 msgstr ""
 
-#: IAWP/RealTime/RecentTraffic.php:142
-msgid "seconds ago"
+#: IAWP/RealTime/RecentTraffic.php:154
+msgid "%d minute ago"
+msgstr ""
+
+#: IAWP/RealTime/RecentTraffic.php:156
+msgid "%d minutes ago"
+msgstr ""
+
+#: IAWP/RealTime/RecentTraffic.php:159
+msgid "%d seconds ago"
 msgstr ""
 
 #: IAWP/Report.php:37
@@ -1299,7 +1311,7 @@ msgstr ""
 
 #: IAWP/Report.php:37
 #: views/partials/sidebar.blade.php:220
-#: views/real-time.blade.php:9
+#: views/real-time.blade.php:10
 msgid "Real-Time"
 msgstr ""
 
@@ -2587,23 +2599,35 @@ msgstr ""
 msgid "Toggle Stats"
 msgstr ""
 
-#: views/real-time.blade.php:46
+#: views/real-time.blade.php:47
 msgid "Active Visitors"
 msgstr ""
 
-#: views/real-time.blade.php:55
+#: views/real-time.blade.php:56
 msgid "Active Visitors is the number of people who have viewed a page within the last 5 minutes"
 msgstr ""
 
-#: views/real-time.blade.php:61
+#: views/real-time.blade.php:62
 msgid "No filters applied"
 msgstr ""
 
-#: views/real-time.blade.php:80
-msgid "Recent Activity"
+#: views/real-time.blade.php:81
+#: views/real-time.blade.php:88
+#: views/real-time.blade.php:95
+msgid "Last %d Minutes"
 msgstr ""
 
-#: views/real-time.blade.php:164
+#: views/real-time.blade.php:89
+msgctxt "5 minutes"
+msgid "5m"
+msgstr ""
+
+#: views/real-time.blade.php:96
+msgctxt "30 minutes"
+msgid "30m"
+msgstr ""
+
+#: views/real-time.blade.php:181
 msgid "No results in the last 5 minutes."
 msgstr ""
 
