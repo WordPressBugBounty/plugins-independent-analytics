@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Independent Analytics 2.15.2\n"
+"Project-Id-Version: Independent Analytics 2.15.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/independent-analytics-production\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-03T15:24:03+00:00\n"
+"POT-Creation-Date: 2026-08-05T21:37:49+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: independent-analytics\n"
@@ -406,11 +406,11 @@ msgstr ""
 msgid "Open Dashboard"
 msgstr ""
 
-#: IAWP/Data_Pruning/Pruning_Scheduler.php:43
+#: IAWP/Data_Pruning/Pruning_Scheduler.php:50
 msgid "Next data pruning scheduled for %s at %s."
 msgstr ""
 
-#: IAWP/Data_Pruning/Pruning_Scheduler.php:51
+#: IAWP/Data_Pruning/Pruning_Scheduler.php:61
 msgid ""
 "All data from before %1$s will be deleted immediately. This will remove %2$s of your %3$s tracked sessions. \n"
 "\n"

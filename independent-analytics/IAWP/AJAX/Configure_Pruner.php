@@ -21,7 +21,7 @@ class Configure_Pruner extends \IAWP\AJAX\AJAX
         $is_confirmed = $this->get_boolean_field('isConfirmed');
         $pruning_scheduler = new Pruning_Scheduler();
         if ($cutoff !== 'disabled' && !$is_confirmed) {
-            \wp_send_json_error(['confirmationText' => $pruning_scheduler->get_pruning_description($cutoff)]);
+            \wp_send_json_error(['confirmationText' => $pruning_scheduler->get_confirmation_message($cutoff)]);
         }
         $was_updated = $pruning_scheduler->update_pruning_cutoff($cutoff);
         if ($was_updated && $pruning_scheduler->is_enabled()) {

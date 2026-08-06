@@ -17,7 +17,14 @@ class Pruning_Scheduler
     }
     public function is_enabled() : bool
     {
-        return \get_option('iawp_pruning_cutoff', 'disabled') !== 'disabled';
+        $value = \get_option('iawp_pruning_cutoff');
+        if (!\is_string($value)) {
+            return \false;
+        }
+        if ($this->convert_cutoff_to_date($value) === null) {
+            return \false;
+        }
+        return \true;
     }
     public function get_pruning_cutoff() : string
     {
@@ -42,10 +49,13 @@ class Pruning_Scheduler
         $time = $scheduled_at->format(Format::time());
         return \sprintf(\__('Next data pruning scheduled for %s at %s.', 'independent-analytics'), '<strong>' . $day . '</strong>', '<strong>' . $time . '</strong>');
     }
-    public function get_pruning_description(string $cutoff) : string
+    public function get_confirmation_message(string $cutoff) : string
     {
-        $date = $this->convert_cutoff_to_date($cutoff, \true);
         $utc_date = $this->convert_cutoff_to_date($cutoff);
+        if ($utc_date === null) {
+            return '';
+        }
+        $date = $this->convert_cutoff_to_date($cutoff)->setTimezone(Timezone::site_timezone());
         $formatted_date = $date->format(Format::date());
         $estimates = $this->get_pruning_estimates($utc_date);
         return \sprintf(\__("All data from before %1\$s will be deleted immediately. This will remove %2\$s of your %3\$s tracked sessions. \n\n This process will repeat daily at midnight.", 'independent-analytics'), $formatted_date, \number_format_i18n($estimates['sessions_to_be_deleted']), \number_format_i18n($estimates['sessions']));
@@ -94,30 +104,37 @@ class Pruning_Scheduler
         $tomorrow = new \DateTime('tomorrow', Timezone::site_timezone());
         \wp_schedule_event($tomorrow->getTimestamp(), 'daily', 'iawp_prune');
     }
-    private function convert_cutoff_to_date(string $cutoff, bool $as_site_timezone = \false) : \DateTime
+    private function convert_cutoff_to_date(string $cutoff) : ?\DateTime
     {
-        $beginning_of_today = new CarbonImmutable('today', Timezone::site_timezone());
-        if (!$as_site_timezone) {
-            $beginning_of_today = $beginning_of_today->setTimezone(Timezone::utc_timezone());
-        }
+        $date = new CarbonImmutable('today', Timezone::site_timezone());
         switch ($cutoff) {
             case 'thirty-days':
-                return $beginning_of_today->subDays(30)->toDate();
+                $date = $date->subDays(30);
+                break;
             case 'sixty-days':
-                return $beginning_of_today->subDays(60)->toDate();
+                $date = $date->subDays(60);
+                break;
             case 'ninety-days':
-                return $beginning_of_today->subDays(90)->toDate();
+                $date = $date->subDays(90);
+                break;
             case 'one-hundred-and-eighty-days':
-                return $beginning_of_today->subDays(180)->toDate();
+                $date = $date->subDays(180);
+                break;
             case 'one-year':
-                return $beginning_of_today->subYearsNoOverflow(1)->toDate();
+                $date = $date->subYearsNoOverflow(1);
+                break;
             case 'two-years':
-                return $beginning_of_today->subYearsNoOverflow(2)->toDate();
+                $date = $date->subYearsNoOverflow(2);
+                break;
             case 'three-years':
-                return $beginning_of_today->subYearsNoOverflow(3)->toDate();
+                $date = $date->subYearsNoOverflow(3);
+                break;
             case 'four-years':
-                return $beginning_of_today->subYearsNoOverflow(4)->toDate();
+                $date = $date->subYearsNoOverflow(4);
+                break;
+            default:
+                return null;
         }
-        return $beginning_of_today->toDate();
+        return $date->setTimezone(Timezone::utc_timezone())->toDate();
     }
 }
