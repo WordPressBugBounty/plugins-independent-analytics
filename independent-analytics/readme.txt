@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 7.0
 Requires PHP: 8.0.30
-Stable tag: 2.15.3
+Stable tag: 2.15.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -246,6 +246,10 @@ No, there are no limits on tracking. You can use Independent Analytics to track 
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.15.4 - August 10th, 2026
+
+- **Enhancement:** Minor edits to the sidebar menu
 
 = 2.15.3 - August 6th, 2026
 

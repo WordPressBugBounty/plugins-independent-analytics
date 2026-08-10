@@ -291,11 +291,18 @@ class Independent_Analytics
                 });
             }
         }
-        if (\IAWP\Capability_Manager::show_branded_ui()) {
-            \add_submenu_page('independent-analytics', \esc_html__('Help & Support', 'independent-analytics'), \esc_html__('Help & Support', 'independent-analytics'), \IAWP\Capability_Manager::menu_page_capability_string(), 'independent-analytics-support-center', function () {
-                $support_page = new Support_Page();
-                $support_page->render(\false);
-            });
+        // Only show Help & Support menu for Pro users.
+        if (\IAWPSCOPED\iawp_is_pro()) {
+            if (\IAWP\Capability_Manager::show_branded_ui()) {
+                \add_submenu_page('independent-analytics', \esc_html__('Help & Support', 'independent-analytics'), \esc_html__('Help & Support', 'independent-analytics'), \IAWP\Capability_Manager::menu_page_capability_string(), 'independent-analytics-support-center', function () {
+                    $support_page = new Support_Page();
+                    $support_page->render(\false);
+                });
+            }
+        } else {
+            if (\IAWP\Capability_Manager::show_branded_ui()) {
+                \add_submenu_page('independent-analytics', \esc_html__('Support Forum', 'independent-analytics'), \esc_html__('Support Forum', 'independent-analytics'), \IAWP\Capability_Manager::menu_page_capability_string(), \esc_url('https://wordpress.org/support/plugin/independent-analytics/'));
+            }
         }
         if (\IAWP\Capability_Manager::show_branded_ui()) {
             \add_submenu_page('independent-analytics', \esc_html__('Integrations', 'independent-analytics'), \esc_html__('Integrations', 'independent-analytics'), \IAWP\Capability_Manager::menu_page_capability_string(), 'independent-analytics-integrations', function () {
