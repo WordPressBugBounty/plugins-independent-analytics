@@ -3,9 +3,9 @@ Contributors: bensibley, andrewmead
 Tags: analytics, wordpress analytics, google analytics, statistics, visitor counter
 Donate link: https://independentwp.com
 Requires at least: 5.9
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 8.0.30
-Stable tag: 2.15.4
+Stable tag: 2.15.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -246,6 +246,11 @@ No, there are no limits on tracking. You can use Independent Analytics to track 
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.15.5 - August 20th, 2026
+
+- **Fix:** WooCommerce orders paid using "Pay with PayPal" outside of the Checkout page are correctly recorded
+- **Fix:** Added workaround for WooCommerce bug causing the Shop page to be unidentified
 
 = 2.15.4 - August 10th, 2026
 

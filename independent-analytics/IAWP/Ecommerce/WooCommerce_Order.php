@@ -170,6 +170,16 @@ class WooCommerce_Order
     }
     public static function register_hooks()
     {
+        // WooCommerce PayPal Payments (express checkout)
+        \add_action('woocommerce_paypal_payments_woocommerce_order_created_from_cart', function ($order) {
+            try {
+                $woocommerce_order = new self($order->get_id());
+                $woocommerce_order->insert();
+            } catch (\Throwable $e) {
+                \error_log('Independent Analytics was unable to track the analytics for a WooCommerce order. Please report this error to Independent Analytics. The error message is below.');
+                \error_log($e->getMessage());
+            }
+        });
         // Required for block checkout
         \add_action('woocommerce_store_api_checkout_order_processed', function ($order) {
             try {

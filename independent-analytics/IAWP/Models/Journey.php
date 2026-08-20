@@ -40,7 +40,7 @@ class Journey extends \IAWP\Models\Model
     }
     public function landing_page() : string
     {
-        return $this->row->cached_title;
+        return \is_null($this->row->cached_title) ? \esc_html__('(Untitled)', 'independent-analytics') : $this->row->cached_title;
     }
     public function referrer()
     {

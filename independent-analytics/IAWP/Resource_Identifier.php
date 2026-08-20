@@ -90,7 +90,14 @@ class Resource_Identifier
         } elseif (\is_post_type_archive() && !\is_tax()) {
             $type = 'post_type_archive';
             $meta_key = 'post_type';
-            $meta_value = \get_queried_object()->name;
+            $meta_value = '';
+            $queried_object = \get_queried_object();
+            if ($queried_object instanceof \WP_Post_Type) {
+                $meta_value = $queried_object->name;
+            } elseif ($queried_object instanceof \WP_Post) {
+                $post_type_name = \get_query_var('post_type');
+                $meta_value = \is_array($post_type_name) ? \reset($post_type_name) : $post_type_name;
+            }
         } elseif (\is_category()) {
             $category_id = \get_queried_object_id();
             $category_name = \get_the_category_by_ID($category_id);
