@@ -13,6 +13,18 @@ class FetchFaviconsJob extends \IAWP\Cron_Job
     protected $name = 'iawp_fetch_favicons';
     protected $interval = 'daily';
     protected $at_midnight = \true;
+    public function schedule()
+    {
+        if ($this->is_disabled()) {
+            $this->unschedule();
+            return;
+        }
+        parent::schedule();
+    }
+    public function should_execute_handler() : bool
+    {
+        return !$this->is_disabled();
+    }
     public function handle() : void
     {
         Server::increase_max_execution_time();
@@ -41,5 +53,9 @@ class FetchFaviconsJob extends \IAWP\Cron_Job
                 FaviconDownloader::for($favicon)->download();
             }
         }
+    }
+    private function is_disabled() : bool
+    {
+        return \defined('IAWP_DISABLE_FAVICON_FETCHING') && \IAWP_DISABLE_FAVICON_FETCHING === \true;
     }
 }

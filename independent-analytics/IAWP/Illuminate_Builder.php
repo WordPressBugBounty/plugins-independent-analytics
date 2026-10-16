@@ -80,8 +80,19 @@ class Illuminate_Builder
         $capsule->setAsGlobal();
         $capsule->bootEloquent();
         $connection = $capsule->getConnection();
+        self::enable_big_selects($connection);
         self::mariadb_connection_tweaks($connection);
         return $connection;
+    }
+    private static function enable_big_selects(Connection $connection) : void
+    {
+        if (!\defined('IAWP_USE_BIG_SELECT') || \IAWP_USE_BIG_SELECT !== \true) {
+            return;
+        }
+        try {
+            $connection->getPdo()->exec('SET SESSION SQL_BIG_SELECTS = 1');
+        } catch (\Throwable $exception) {
+        }
     }
     private static function mariadb_connection_tweaks(Connection $connection) : void
     {

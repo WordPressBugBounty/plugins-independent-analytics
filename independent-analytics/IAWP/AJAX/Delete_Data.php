@@ -4,7 +4,7 @@ namespace IAWP\AJAX;
 
 use IAWP\Capability_Manager;
 use IAWP\Database_Manager;
-use IAWP\Geo_Database_Manager;
+use IAWP\Geo\GeoDatabaseManager;
 /** @internal */
 class Delete_Data extends \IAWP\AJAX\AJAX
 {
@@ -28,8 +28,7 @@ class Delete_Data extends \IAWP\AJAX\AJAX
         }
         $database_manager = new Database_Manager();
         $database_manager->delete_all_data();
-        $geo_database_manager = new Geo_Database_Manager();
-        $geo_database_manager->delete_database();
+        GeoDatabaseManager::delete_database();
         Capability_Manager::reset_capabilities();
         \deactivate_plugins(\IAWP_PLUGIN_FILE);
         \wp_send_json_success(['redirectUrl' => \admin_url()]);

@@ -10,7 +10,7 @@ use IAWP\Utils\Timezone;
 /** @internal */
 class Pruning_Scheduler
 {
-    public static $cutoff_options = [['disabled', 'Keep data forever'], ['thirty-days', 'Keep data for 30 days'], ['sixty-days', 'Keep data for 60 days'], ['ninety-days', 'Keep data for 90 days'], ['one-hundred-and-eighty-days', 'Keep data for 180 days'], ['one-year', 'Keep data for 1 year'], ['two-years', 'Keep data for 2 years'], ['three-years', 'Keep data for 3 years'], ['four-years', 'Keep data for 4 years']];
+    public static $cutoff_options = [['disabled', 'Keep data forever'], ['thirty-days', 'Keep data for 30 days'], ['sixty-days', 'Keep data for 60 days'], ['ninety-days', 'Keep data for 90 days'], ['one-hundred-and-eighty-days', 'Keep data for 180 days'], ['one-year', 'Keep data for 1 year'], ['eighteen-months', 'Keep data for 18 months'], ['two-years', 'Keep data for 2 years'], ['three-years', 'Keep data for 3 years'], ['four-years', 'Keep data for 4 years']];
     public function cutoff_options() : array
     {
         return self::$cutoff_options;
@@ -121,7 +121,10 @@ class Pruning_Scheduler
                 $date = $date->subDays(180);
                 break;
             case 'one-year':
-                $date = $date->subYearsNoOverflow(1);
+                $date = $date->subYearNoOverflow();
+                break;
+            case 'eighteen-months':
+                $date = $date->subMonthsNoOverflow(18);
                 break;
             case 'two-years':
                 $date = $date->subYearsNoOverflow(2);

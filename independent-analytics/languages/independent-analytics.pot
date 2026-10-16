@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Independent Analytics 2.15.5\n"
+"Project-Id-Version: Independent Analytics 2.16.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/independent-analytics-production\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-20T18:01:56+00:00\n"
+"POT-Creation-Date: 2026-10-15T13:12:39+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: independent-analytics\n"
@@ -32,10 +32,10 @@ msgid "User-friendly website analytics built for WordPress"
 msgstr ""
 
 #: IAWP/Admin_Bar_Stats.php:38
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 #: IAWP/Report.php:105
 #: IAWP/Statistics/Click_Statistics.php:23
-#: IAWP/Statistics/Statistics.php:211
+#: IAWP/Statistics/Statistics.php:219
 #: IAWP/Tables/Table_Campaigns.php:41
 #: IAWP/Tables/Table_Devices.php:39
 #: IAWP/Tables/Table_Geo.php:32
@@ -68,13 +68,13 @@ msgid "All Time:"
 msgstr ""
 
 #: IAWP/Admin_Bar_Stats.php:38
-#: IAWP/Independent_Analytics.php:431
+#: IAWP/Independent_Analytics.php:434
 msgid "Analytics Dashboard"
 msgstr ""
 
 #: IAWP/Admin_Page/Analytics_Page.php:275
 #: IAWP/Admin_Page/Analytics_Page.php:358
-#: IAWP/Email_Reports/Email_Reports.php:184
+#: IAWP/Email_Reports/Email_Reports.php:188
 #: IAWP/Report.php:37
 #: IAWP/Report_Finder.php:106
 #: IAWP/Tables/Table_Pages.php:23
@@ -84,7 +84,7 @@ msgstr ""
 
 #: IAWP/Admin_Page/Analytics_Page.php:275
 #: IAWP/Admin_Page/Analytics_Page.php:358
-#: IAWP/Email_Reports/Email_Reports.php:188
+#: IAWP/Email_Reports/Email_Reports.php:192
 #: IAWP/Report.php:37
 #: IAWP/Report_Finder.php:108
 #: IAWP/Tables/Table_Referrers.php:23
@@ -98,7 +98,7 @@ msgstr ""
 
 #: IAWP/Admin_Page/Analytics_Page.php:275
 #: IAWP/Admin_Page/Analytics_Page.php:358
-#: IAWP/Email_Reports/Email_Reports.php:196
+#: IAWP/Email_Reports/Email_Reports.php:200
 #: IAWP/Overview/Modules/Module.php:412
 #: IAWP/Report.php:37
 #: IAWP/Report_Finder.php:112
@@ -113,7 +113,7 @@ msgstr ""
 
 #: IAWP/Admin_Page/Analytics_Page.php:275
 #: IAWP/Admin_Page/Analytics_Page.php:358
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 #: IAWP/Overview/Form_Field.php:98
 #: IAWP/Report.php:37
 #: IAWP/Report.php:105
@@ -121,7 +121,7 @@ msgstr ""
 #: IAWP/Report_Finder.php:116
 #: IAWP/Report_Finder.php:207
 #: IAWP/Statistics/Click_Statistics.php:23
-#: IAWP/Statistics/Statistics.php:215
+#: IAWP/Statistics/Statistics.php:223
 #: IAWP/Tables/Table_Campaigns.php:41
 #: IAWP/Tables/Table_Clicks.php:23
 #: IAWP/Tables/Table_Clicks.php:34
@@ -207,7 +207,7 @@ msgid "Geographic"
 msgstr ""
 
 #: IAWP/Admin_Page/Analytics_Page.php:358
-#: IAWP/Email_Reports/Email_Reports.php:200
+#: IAWP/Email_Reports/Email_Reports.php:204
 #: IAWP/Plugin_Group.php:97
 #: IAWP/Report.php:37
 #: IAWP/Report_Finder.php:114
@@ -256,35 +256,105 @@ msgstr ""
 msgid "System"
 msgstr ""
 
-#: IAWP/Campaign_Builder.php:37
+#: IAWP/Campaign_Autocomplete_Query.php:64
+msgid "Path"
+msgstr ""
+
+#: IAWP/Campaign_Autocomplete_Query.php:64
+#: IAWP/Campaign_Builder.php:42
+#: IAWP/Tables/Table_Campaigns.php:34
+#: IAWP/Tables/Table_Campaigns.php:41
+#: IAWP/Tables/Table_Journeys.php:77
+#: views/campaign-builder/editor.blade.php:75
+msgid "Source"
+msgstr ""
+
+#: IAWP/Campaign_Autocomplete_Query.php:64
+#: IAWP/Campaign_Builder.php:42
+#: IAWP/Tables/Table_Campaigns.php:35
+#: IAWP/Tables/Table_Campaigns.php:41
+#: IAWP/Tables/Table_Journeys.php:77
+#: views/campaign-builder/editor.blade.php:99
+msgid "Medium"
+msgstr ""
+
+#: IAWP/Campaign_Autocomplete_Query.php:64
+#: IAWP/Campaign_Builder.php:42
+#: IAWP/Tables/Table_Campaigns.php:36
+#: IAWP/Tables/Table_Campaigns.php:41
+#: IAWP/Tables/Table_Journeys.php:77
+#: views/campaign-builder/editor.blade.php:123
+msgid "Campaign"
+msgstr ""
+
+#: IAWP/Campaign_Autocomplete_Query.php:64
+#: IAWP/Campaign_Builder.php:42
+#: IAWP/Tables/Table_Campaigns.php:41
+#: IAWP/Tables/Table_Journeys.php:77
+#: views/campaign-builder/editor.blade.php:147
+msgid "Term"
+msgstr ""
+
+#: IAWP/Campaign_Autocomplete_Query.php:64
+#: IAWP/Campaign_Builder.php:42
+#: IAWP/Tables/Table_Campaigns.php:41
+#: IAWP/Tables/Table_Journeys.php:77
+#: views/campaign-builder/editor.blade.php:170
+msgid "Content"
+msgstr ""
+
+#: IAWP/Campaign_Autocomplete_Query.php:64
+msgid "Note"
+msgstr ""
+
+#: IAWP/Campaign_Builder.php:42
+msgid "Created At"
+msgstr ""
+
+#: IAWP/Campaign_Builder.php:42
+#: IAWP/Tables/Table_Pages.php:33
+msgid "URL"
+msgstr ""
+
+#: IAWP/Campaign_Builder.php:42
+#: views/campaign-builder/editor.blade.php:50
+msgid "Landing Page Path"
+msgstr ""
+
+#: IAWP/Campaign_Builder.php:42
+#: views/campaign-builder/editor.blade.php:195
+msgid "Private Note"
+msgstr ""
+
+#: IAWP/Campaign_Builder.php:84
 msgid "Path should not be a full URL"
 msgstr ""
 
-#: IAWP/Campaign_Builder.php:40
+#: IAWP/Campaign_Builder.php:86
 msgid "Path invalid"
 msgstr ""
 
-#: IAWP/Campaign_Builder.php:44
+#: IAWP/Campaign_Builder.php:89
 msgid "Source is required"
 msgstr ""
 
-#: IAWP/Campaign_Builder.php:48
+#: IAWP/Campaign_Builder.php:92
 msgid "Medium is required"
 msgstr ""
 
-#: IAWP/Campaign_Builder.php:52
+#: IAWP/Campaign_Builder.php:95
 msgid "Campaign is required"
 msgstr ""
 
-#: IAWP/Capability_Manager.php:13
+#: IAWP/Capability_Manager.php:31
 msgid "View analytics for authored content"
 msgstr ""
 
-#: IAWP/Capability_Manager.php:13
+#: IAWP/Capability_Manager.php:31
 msgid "View all analytics"
 msgstr ""
 
-#: IAWP/Capability_Manager.php:13
+#: IAWP/Capability_Manager.php:31
 msgid "View all analytics and edit settings"
 msgstr ""
 
@@ -365,6 +435,7 @@ msgid "404"
 msgstr ""
 
 #: IAWP/ColumnOptions/Plugins/ReferrerTypes.php:12
+#: IAWP/Independent_Analytics.php:414
 #: IAWP/Models/Page_Search.php:40
 msgid "Search"
 msgstr ""
@@ -490,54 +561,54 @@ msgstr ""
 msgid "All Time"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:70
+#: IAWP/Email_Reports/Email_Reports.php:71
 msgid "There is no email scheduled."
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:75
+#: IAWP/Email_Reports/Email_Reports.php:76
 msgid "Next email scheduled for %s at %s."
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:132
-#: IAWP/Settings.php:376
+#: IAWP/Email_Reports/Email_Reports.php:136
+#: IAWP/Settings.php:397
 msgid "This email was generated and delivered by %s"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:167
+#: IAWP/Email_Reports/Email_Reports.php:171
 msgid "[Test]"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:169
+#: IAWP/Email_Reports/Email_Reports.php:173
 msgid "Analytics Report for"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:192
+#: IAWP/Email_Reports/Email_Reports.php:196
 msgid "Countries"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:203
-#: IAWP/Tables/Table.php:445
-#: IAWP/Tables/Table.php:447
+#: IAWP/Email_Reports/Email_Reports.php:207
+#: IAWP/Tables/Table.php:456
+#: IAWP/Tables/Table.php:458
 #: views/email/email.blade.php:616
 msgid "Submissions"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:206
+#: IAWP/Email_Reports/Email_Reports.php:210
 #: IAWP/Plugin_Group.php:97
 msgid "Forms"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:210
+#: IAWP/Email_Reports/Email_Reports.php:214
 #: IAWP/Tables/Table_Clicks.php:29
 #: views/click-tracking/menu.blade.php:23
 msgid "Link Patterns"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:214
+#: IAWP/Email_Reports/Email_Reports.php:218
 msgid "Landing Pages"
 msgstr ""
 
-#: IAWP/Email_Reports/Email_Reports.php:218
+#: IAWP/Email_Reports/Email_Reports.php:222
 msgid "Exit Pages"
 msgstr ""
 
@@ -598,6 +669,7 @@ msgid "Exclude"
 msgstr ""
 
 #: IAWP/Filters.php:278
+#: IAWP/Independent_Analytics.php:414
 #: IAWP/Rows/Filter.php:73
 msgid "Contains"
 msgstr ""
@@ -660,15 +732,15 @@ msgstr ""
 msgid "Minimal Form"
 msgstr ""
 
-#: IAWP/Form_Submissions/Submission_Listener.php:129
+#: IAWP/Form_Submissions/Submission_Listener.php:133
 msgid "Appointment"
 msgstr ""
 
-#: IAWP/Form_Submissions/Submission_Listener.php:137
+#: IAWP/Form_Submissions/Submission_Listener.php:141
 msgid "Event"
 msgstr ""
 
-#: IAWP/Form_Submissions/Submission_Listener.php:311
+#: IAWP/Form_Submissions/Submission_Listener.php:315
 msgid "Divi Contact Form"
 msgstr ""
 
@@ -735,6 +807,7 @@ msgid "Settings"
 msgstr ""
 
 #: IAWP/Independent_Analytics.php:283
+#: views/campaign-builder/index.blade.php:34
 msgid "Campaign Builder"
 msgstr ""
 
@@ -761,6 +834,7 @@ msgid "Updates"
 msgstr ""
 
 #: IAWP/Independent_Analytics.php:315
+#: IAWP/Independent_Analytics.php:414
 msgid "New"
 msgstr ""
 
@@ -768,25 +842,25 @@ msgstr ""
 msgid "Upgrade to Pro &rarr;"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 #: IAWP/RealTime/RealTime.php:90
 #: IAWP/Report.php:105
 #: IAWP/Statistics/Click_Statistics.php:23
-#: IAWP/Statistics/Statistics.php:211
+#: IAWP/Statistics/Statistics.php:219
 #: IAWP/Tables/Table_Campaigns.php:41
 #: IAWP/Tables/Table_Devices.php:39
 #: IAWP/Tables/Table_Geo.php:32
 #: IAWP/Tables/Table_Pages.php:33
 #: IAWP/Tables/Table_Referrers.php:34
-#: views/real-time.blade.php:128
+#: views/real-time.blade.php:129
 msgid "Visitors"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 #: IAWP/Overview/Modules/New_Sessions_Module.php:34
 #: IAWP/Report.php:105
 #: IAWP/Statistics/Click_Statistics.php:23
-#: IAWP/Statistics/Statistics.php:211
+#: IAWP/Statistics/Statistics.php:219
 #: IAWP/Tables/Table_Campaigns.php:41
 #: IAWP/Tables/Table_Devices.php:39
 #: IAWP/Tables/Table_Geo.php:32
@@ -797,96 +871,96 @@ msgstr ""
 msgid "Sessions"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 #: IAWP/Overview/Form_Field.php:98
 #: IAWP/Report.php:105
 #: IAWP/Report_Finder.php:208
-#: IAWP/Statistics/Statistics.php:215
-#: IAWP/Tables/Table.php:441
+#: IAWP/Statistics/Statistics.php:223
+#: IAWP/Tables/Table.php:452
 msgid "Orders"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 #: IAWP/Overview/Form_Field.php:98
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:215
+#: IAWP/Statistics/Statistics.php:223
 msgid "Form Submissions"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 msgid "Apply Exact Dates"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 msgid "Apply Relative Dates"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 msgid "Copied"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 msgid "Exporting Pages..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 msgid "Export Pages"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 msgid "Exporting Referrers..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 msgid "Export Referrers"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 msgid "Exporting Geolocations..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 msgid "Export Geolocations"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 msgid "Exporting Devices..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 msgid "Export Devices"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 msgid "Exporting Campaigns..."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 msgid "Export Campaigns"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 msgid "Exporting Clicks"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 msgid "Export Clicks"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 msgid "This report archive is invalid. Please export your reports and try again."
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 #: views/partials/sidebar.blade.php:31
 msgid "Open menu"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 msgid "Close menu"
 msgstr ""
 
-#: IAWP/Independent_Analytics.php:411
+#: IAWP/Independent_Analytics.php:414
 #: IAWP/Overview/Form_Field.php:97
 #: views/chart.blade.php:42
 msgid "No Comparison"
@@ -1328,12 +1402,12 @@ msgid "Geo"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:211
+#: IAWP/Statistics/Statistics.php:219
 msgid "Average Session Duration"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:211
+#: IAWP/Statistics/Statistics.php:219
 #: IAWP/Tables/Table_Campaigns.php:41
 #: IAWP/Tables/Table_Devices.php:39
 #: IAWP/Tables/Table_Geo.php:32
@@ -1343,7 +1417,7 @@ msgid "Bounce Rate"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:213
+#: IAWP/Statistics/Statistics.php:221
 #: IAWP/Tables/Table_Campaigns.php:41
 #: IAWP/Tables/Table_Devices.php:39
 #: IAWP/Tables/Table_Geo.php:32
@@ -1352,63 +1426,63 @@ msgid "Views Per Session"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:215
-#: IAWP/Tables/Table.php:441
+#: IAWP/Statistics/Statistics.php:223
+#: IAWP/Tables/Table.php:452
 #: IAWP/Tables/Table_Journeys.php:77
 msgid "Gross Sales"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:215
-#: IAWP/Tables/Table.php:441
+#: IAWP/Statistics/Statistics.php:223
+#: IAWP/Tables/Table.php:452
 msgid "Refunds"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:215
-#: IAWP/Tables/Table.php:441
+#: IAWP/Statistics/Statistics.php:223
+#: IAWP/Tables/Table.php:452
 msgid "Refunded Amount"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:215
-#: IAWP/Tables/Table.php:441
+#: IAWP/Statistics/Statistics.php:223
+#: IAWP/Tables/Table.php:452
 msgid "Total Sales"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:215
-#: IAWP/Tables/Table.php:441
-#: IAWP/Tables/Table.php:445
-#: IAWP/Tables/Table.php:448
+#: IAWP/Statistics/Statistics.php:223
+#: IAWP/Tables/Table.php:452
+#: IAWP/Tables/Table.php:456
+#: IAWP/Tables/Table.php:459
 msgid "Conversion Rate"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:215
-#: IAWP/Tables/Table.php:441
+#: IAWP/Statistics/Statistics.php:223
+#: IAWP/Tables/Table.php:452
 msgid "Earnings Per Visitor"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:215
-#: IAWP/Tables/Table.php:441
+#: IAWP/Statistics/Statistics.php:223
+#: IAWP/Tables/Table.php:452
 msgid "Average Order Volume"
 msgstr ""
 
 #: IAWP/Report.php:105
-#: IAWP/Statistics/Statistics.php:215
+#: IAWP/Statistics/Statistics.php:223
 msgid "Form Conversion Rate"
 msgstr ""
 
 #: IAWP/Report.php:110
-#: IAWP/Statistics/Statistics.php:222
+#: IAWP/Statistics/Statistics.php:230
 msgctxt "Title of the contact form"
 msgid "%s Submissions"
 msgstr ""
 
 #: IAWP/Report.php:111
-#: IAWP/Statistics/Statistics.php:223
+#: IAWP/Statistics/Statistics.php:231
 msgctxt "Title of the contact form"
 msgid "%s Conversion Rate"
 msgstr ""
@@ -1471,135 +1545,135 @@ msgstr ""
 msgid "Form Submission"
 msgstr ""
 
-#: IAWP/Settings.php:50
+#: IAWP/Settings.php:61
 msgid "Basic Settings"
 msgstr ""
 
-#: IAWP/Settings.php:55
+#: IAWP/Settings.php:66
 msgid "Color scheme"
 msgstr ""
 
-#: IAWP/Settings.php:58
+#: IAWP/Settings.php:69
 msgid "Track logged in users"
 msgstr ""
 
-#: IAWP/Settings.php:60
+#: IAWP/Settings.php:71
 msgid "Admin toolbar stats"
 msgstr ""
 
-#: IAWP/Settings.php:62
+#: IAWP/Settings.php:73
 msgid "Dashboard widget"
 msgstr ""
 
-#: IAWP/Settings.php:64
+#: IAWP/Settings.php:75
 msgid "Views column"
 msgstr ""
 
-#: IAWP/Settings.php:67
+#: IAWP/Settings.php:78
 msgid "First day of week"
 msgstr ""
 
-#: IAWP/Settings.php:72
+#: IAWP/Settings.php:83
 msgid "Salt refresh rate"
 msgstr ""
 
-#: IAWP/Settings.php:100
+#: IAWP/Settings.php:121
 msgid "Sunday"
 msgstr ""
 
-#: IAWP/Settings.php:100
+#: IAWP/Settings.php:121
 msgid "Monday"
 msgstr ""
 
-#: IAWP/Settings.php:100
+#: IAWP/Settings.php:121
 msgid "Tuesday"
 msgstr ""
 
-#: IAWP/Settings.php:100
+#: IAWP/Settings.php:121
 msgid "Wednesday"
 msgstr ""
 
-#: IAWP/Settings.php:100
+#: IAWP/Settings.php:121
 msgid "Thursday"
 msgstr ""
 
-#: IAWP/Settings.php:100
+#: IAWP/Settings.php:121
 msgid "Friday"
 msgstr ""
 
-#: IAWP/Settings.php:100
+#: IAWP/Settings.php:121
 msgid "Saturday"
 msgstr ""
 
-#: IAWP/Settings.php:104
+#: IAWP/Settings.php:125
 msgid "Public View Counter"
 msgstr ""
 
-#: IAWP/Settings.php:108
+#: IAWP/Settings.php:129
 #: views/settings/view-counter/enable.blade.php:3
 msgid "Enable the view counter"
 msgstr ""
 
-#: IAWP/Settings.php:111
+#: IAWP/Settings.php:132
 msgid "Display on these post types"
 msgstr ""
 
-#: IAWP/Settings.php:115
+#: IAWP/Settings.php:136
 msgid "Show it in this location"
 msgstr ""
 
-#: IAWP/Settings.php:118
+#: IAWP/Settings.php:139
 msgid "Date range to count views"
 msgstr ""
 
-#: IAWP/Settings.php:122
+#: IAWP/Settings.php:143
 msgid "Exclude these pages"
 msgstr ""
 
-#: IAWP/Settings.php:126
+#: IAWP/Settings.php:147
 msgid "Minimum views required"
 msgstr ""
 
-#: IAWP/Settings.php:128
-#: IAWP/Settings.php:183
+#: IAWP/Settings.php:149
+#: IAWP/Settings.php:204
 #: IAWP/View_Counter.php:51
 #: IAWP/View_Counter.php:70
 msgid "Views:"
 msgstr ""
 
-#: IAWP/Settings.php:131
+#: IAWP/Settings.php:152
 msgid "Edit the label"
 msgstr ""
 
-#: IAWP/Settings.php:135
+#: IAWP/Settings.php:156
 msgid "Display the label"
 msgstr ""
 
-#: IAWP/Settings.php:139
+#: IAWP/Settings.php:160
 msgid "Display the icon"
 msgstr ""
 
-#: IAWP/Settings.php:142
+#: IAWP/Settings.php:163
 msgid "Make the view counter private?"
 msgstr ""
 
-#: IAWP/Settings.php:145
+#: IAWP/Settings.php:166
 msgid "Allow manual adjustment?"
 msgstr ""
 
-#: IAWP/Settings.php:161
+#: IAWP/Settings.php:182
 msgid "Uncheck all boxes to only show view count manually. See shortcode documentation below for details."
 msgstr ""
 
-#: IAWP/Settings.php:204
+#: IAWP/Settings.php:225
 msgid "Block IP Addresses"
 msgstr ""
 
-#: IAWP/Settings.php:211
+#: IAWP/Settings.php:232
 msgid "Scheduled Email Reports"
 msgstr ""
 
-#: IAWP/Settings.php:223
+#: IAWP/Settings.php:244
 msgid "Block by User Role"
 msgstr ""
 
@@ -1634,25 +1708,37 @@ msgstr ""
 msgid "(deleted)"
 msgstr ""
 
-#: IAWP/Tables/Table.php:219
+#: IAWP/Tables/Table.php:181
+msgid "Download Hourly Metrics CSV"
+msgstr ""
+
+#: IAWP/Tables/Table.php:181
+msgid "Download Daily Metrics CSV"
+msgstr ""
+
+#: IAWP/Tables/Table.php:181
+msgid "Download Weekly Metrics CSV"
+msgstr ""
+
+#: IAWP/Tables/Table.php:181
+msgid "Download Monthly Metrics CSV"
+msgstr ""
+
+#: IAWP/Tables/Table.php:220
 #: views/examiner/skeleton.blade.php:24
 #: views/overview/overview.blade.php:43
 msgid "Download Report"
 msgstr ""
 
-#: IAWP/Tables/Table.php:226
+#: IAWP/Tables/Table.php:227
 msgid "Choose a format"
 msgstr ""
 
-#: IAWP/Tables/Table.php:235
+#: IAWP/Tables/Table.php:236
 msgid "Download Table CSV"
 msgstr ""
 
-#: IAWP/Tables/Table.php:243
-msgid "Download Daily Metrics CSV"
-msgstr ""
-
-#: IAWP/Tables/Table.php:253
+#: IAWP/Tables/Table.php:257
 #: views/overview/overview.blade.php:54
 msgid "Download PDF"
 msgstr ""
@@ -1666,39 +1752,6 @@ msgstr ""
 #: views/journeys/table-heading.blade.php:5
 #: views/woocommerce-order-meta-box.blade.php:22
 msgid "Landing Page"
-msgstr ""
-
-#: IAWP/Tables/Table_Campaigns.php:34
-#: IAWP/Tables/Table_Campaigns.php:41
-#: IAWP/Tables/Table_Journeys.php:77
-#: views/campaign-builder.blade.php:62
-msgid "Source"
-msgstr ""
-
-#: IAWP/Tables/Table_Campaigns.php:35
-#: IAWP/Tables/Table_Campaigns.php:41
-#: IAWP/Tables/Table_Journeys.php:77
-#: views/campaign-builder.blade.php:81
-msgid "Medium"
-msgstr ""
-
-#: IAWP/Tables/Table_Campaigns.php:36
-#: IAWP/Tables/Table_Campaigns.php:41
-#: IAWP/Tables/Table_Journeys.php:77
-#: views/campaign-builder.blade.php:100
-msgid "Campaign"
-msgstr ""
-
-#: IAWP/Tables/Table_Campaigns.php:41
-#: IAWP/Tables/Table_Journeys.php:77
-#: views/campaign-builder.blade.php:118
-msgid "Term"
-msgstr ""
-
-#: IAWP/Tables/Table_Campaigns.php:41
-#: IAWP/Tables/Table_Journeys.php:77
-#: views/campaign-builder.blade.php:132
-msgid "Content"
 msgstr ""
 
 #: IAWP/Tables/Table_Campaigns.php:41
@@ -1833,10 +1886,6 @@ msgid "Exit Rate"
 msgstr ""
 
 #: IAWP/Tables/Table_Pages.php:33
-msgid "URL"
-msgstr ""
-
-#: IAWP/Tables/Table_Pages.php:33
 msgid "Author"
 msgstr ""
 
@@ -1929,115 +1978,88 @@ msgstr ""
 msgid "Customer Journey"
 msgstr ""
 
-#: views/campaign-builder.blade.php:18
-msgid "Campaign URL Builder"
+#: views/campaign-builder/editor.blade.php:15
+#: views/campaign-builder/editor.blade.php:18
+#: views/campaign-builder/editor.blade.php:225
+#: views/campaign-builder/editor.blade.php:228
+#: views/campaign-builder/index.blade.php:49
+#: views/campaign-builder/list.blade.php:29
+msgid "Create New Campaign"
 msgstr ""
 
-#: views/campaign-builder.blade.php:22
-msgid "Learn how to create campaigns"
+#: views/campaign-builder/editor.blade.php:16
+#: views/campaign-builder/editor.blade.php:226
+msgid "Update Campaign"
 msgstr ""
 
-#: views/campaign-builder.blade.php:31
+#: views/campaign-builder/editor.blade.php:27
+#: views/campaign-builder/qr-code.blade.php:14
+msgid "Close"
+msgstr ""
+
+#: views/campaign-builder/editor.blade.php:39
 msgid "Site URL"
 msgstr ""
 
-#: views/campaign-builder.blade.php:40
+#: views/campaign-builder/editor.blade.php:46
 msgid "Campaign links always lead to your site"
 msgstr ""
 
-#: views/campaign-builder.blade.php:45
-msgid "Landing Page Path"
-msgstr ""
-
-#: views/campaign-builder.blade.php:54
+#: views/campaign-builder/editor.blade.php:70
 msgid "Leave empty to use your homepage"
 msgstr ""
 
-#: views/campaign-builder.blade.php:73
+#: views/campaign-builder/editor.blade.php:94
 msgid "Name of the website the link will be placed on"
 msgstr ""
 
-#: views/campaign-builder.blade.php:88
+#: views/campaign-builder/editor.blade.php:108
 msgid "Social Media"
 msgstr ""
 
-#: views/campaign-builder.blade.php:92
+#: views/campaign-builder/editor.blade.php:118
 msgid "Type of website e.g. Search, Social, Ad"
 msgstr ""
 
-#: views/campaign-builder.blade.php:106
+#: views/campaign-builder/editor.blade.php:132
 msgid "5 Ways to Get More Traffic"
 msgstr ""
 
-#: views/campaign-builder.blade.php:110
+#: views/campaign-builder/editor.blade.php:142
 msgid "Title of the page or ad"
 msgstr ""
 
-#: views/campaign-builder.blade.php:124
+#: views/campaign-builder/editor.blade.php:156
 msgid "Get website traffic"
 msgstr ""
 
-#: views/campaign-builder.blade.php:127
+#: views/campaign-builder/editor.blade.php:166
 msgid "Keyword used in paid advertising"
 msgstr ""
 
-#: views/campaign-builder.blade.php:138
+#: views/campaign-builder/editor.blade.php:179
 msgid "Bio link"
 msgstr ""
 
-#: views/campaign-builder.blade.php:141
+#: views/campaign-builder/editor.blade.php:189
 msgid "Position of the link on the page e.g. author bio"
 msgstr ""
 
-#: views/campaign-builder.blade.php:152
-msgid "Create Campaign URL"
+#: views/campaign-builder/editor.blade.php:200
+msgid "This note is private and only visible in the Campaign Builder"
 msgstr ""
 
-#: views/campaign-builder.blade.php:160
-msgid "New campaign created!"
+#: views/campaign-builder/editor.blade.php:206
+#: views/campaign-builder/editor.blade.php:210
+msgid "The campaign could not be created. Please try again."
 msgstr ""
 
-#: views/campaign-builder.blade.php:166
-msgid "Latest Campaign URLs"
+#: views/campaign-builder/editor.blade.php:207
+msgid "The campaign could not be updated. Please try again."
 msgstr ""
 
-#: views/campaign-builder.blade.php:177
-msgctxt "Created five minutes ago"
-msgid "Created %s"
-msgstr ""
-
-#: views/campaign-builder.blade.php:186
-msgid "Copy URL"
-msgstr ""
-
-#: views/campaign-builder.blade.php:192
-msgid "Copy to Form"
-msgstr ""
-
-#: views/campaign-builder.blade.php:198
-#: views/click-tracking/link.blade.php:105
-#: views/click-tracking/menu.blade.php:80
-msgid "Delete"
-msgstr ""
-
-#: views/campaign-builder.blade.php:204
-msgid "No campaign URLs found"
-msgstr ""
-
-#: views/click-tracking/link.blade.php:89
-#: views/click-tracking/menu.blade.php:34
-msgid "Edit"
-msgstr ""
-
-#: views/click-tracking/link.blade.php:92
-#: views/overview/module-editor.blade.php:42
-#: views/partials/report-header.blade.php:53
-#: views/settings/pruner.blade.php:36
-#: views/settings/pruner.blade.php:41
-#: views/settings/woocommerce.blade.php:38
-msgid "Save"
-msgstr ""
-
+#: views/campaign-builder/editor.blade.php:220
+#: views/campaign-builder/qr-code.blade.php:187
 #: views/click-tracking/link.blade.php:93
 #: views/click-tracking/menu.blade.php:102
 #: views/date-picker/date-picker.blade.php:45
@@ -2051,15 +2073,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: views/click-tracking/link.blade.php:101
-#: views/click-tracking/menu.blade.php:79
-msgid "Resume Tracking"
-msgstr ""
-
-#: views/click-tracking/menu.blade.php:5
-msgid "View Clicks Report"
-msgstr ""
-
+#: views/campaign-builder/index.blade.php:39
 #: views/click-tracking/menu.blade.php:6
 #: views/settings/block-by-role.blade.php:5
 #: views/settings/block-ips.blade.php:5
@@ -2068,10 +2082,301 @@ msgstr ""
 #: views/settings/email-reports.blade.php:5
 #: views/settings/export-reports.blade.php:11
 #: views/settings/export-reports.blade.php:62
+#: views/settings/geolocation-provider.blade.php:5
 #: views/settings/pruner.blade.php:9
 #: views/settings/view-counter.blade.php:3
 #: views/settings/woocommerce.blade.php:9
 msgid "Read Tutorial"
+msgstr ""
+
+#: views/campaign-builder/index.blade.php:62
+msgid "Add Filter"
+msgstr ""
+
+#: views/campaign-builder/index.blade.php:67
+msgid "Filter campaigns"
+msgstr ""
+
+#: views/campaign-builder/index.blade.php:79
+#: views/campaign-builder/index.blade.php:80
+msgid "Search campaigns"
+msgstr ""
+
+#: views/campaign-builder/index.blade.php:101
+#: views/campaign-builder/index.blade.php:108
+msgid "Export All Campaigns"
+msgstr ""
+
+#: views/campaign-builder/index.blade.php:102
+msgid "Export %s Campaign"
+msgstr ""
+
+#: views/campaign-builder/index.blade.php:103
+msgid "Export %s Campaigns"
+msgstr ""
+
+#: views/campaign-builder/index.blade.php:121
+msgctxt "Any Field contains value"
+msgid "Any Field"
+msgstr ""
+
+#: views/campaign-builder/index.blade.php:122
+msgctxt "Any Field contains value"
+msgid "contains"
+msgstr ""
+
+#: views/campaign-builder/index.blade.php:123
+msgctxt "Field is value"
+msgid "is"
+msgstr ""
+
+#: views/campaign-builder/index.blade.php:128
+#: views/campaign-builder/index.blade.php:131
+msgid "Showing %1$s of %2$s campaigns"
+msgstr ""
+
+#: views/campaign-builder/index.blade.php:151
+msgid "Campaign URLs could not be refreshed."
+msgstr ""
+
+#: views/campaign-builder/index.blade.php:156
+msgid "Retry"
+msgstr ""
+
+#: views/campaign-builder/item.blade.php:29
+msgid "Copy URL"
+msgstr ""
+
+#: views/campaign-builder/item.blade.php:54
+msgid "Open URL in new tab"
+msgstr ""
+
+#: views/campaign-builder/item.blade.php:67
+#: views/campaign-builder/item.blade.php:68
+#: views/campaign-builder/item.blade.php:71
+#: views/campaign-builder/qr-code.blade.php:10
+msgid "Download QR Code"
+msgstr ""
+
+#: views/campaign-builder/item.blade.php:72
+msgid "Could not load. Try again."
+msgstr ""
+
+#: views/campaign-builder/item.blade.php:109
+#: views/click-tracking/link.blade.php:89
+#: views/click-tracking/menu.blade.php:34
+msgid "Edit"
+msgstr ""
+
+#: views/campaign-builder/item.blade.php:116
+msgid "Duplicate"
+msgstr ""
+
+#: views/campaign-builder/item.blade.php:123
+msgid "Confirm Delete"
+msgstr ""
+
+#: views/campaign-builder/item.blade.php:127
+#: views/click-tracking/link.blade.php:105
+#: views/click-tracking/menu.blade.php:80
+msgid "Delete"
+msgstr ""
+
+#: views/campaign-builder/item.blade.php:134
+msgctxt "Created July 24, 2026 (five minutes ago)"
+msgid "Created %1$s (%2$s)"
+msgstr ""
+
+#: views/campaign-builder/list.blade.php:10
+msgid "No Matching Campaigns"
+msgstr ""
+
+#: views/campaign-builder/list.blade.php:11
+msgid "No campaigns match your current filters"
+msgstr ""
+
+#: views/campaign-builder/list.blade.php:16
+msgid "Remove All Filters"
+msgstr ""
+
+#: views/campaign-builder/list.blade.php:21
+msgid "No Campaigns Found"
+msgstr ""
+
+#: views/campaign-builder/list.blade.php:23
+msgid "Create a campaign to start tracking the performance of your ads and promotions"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:2
+msgid "Choose a QR code logo"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:3
+msgid "Use as Logo"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:3
+msgid "The Media Library is unavailable. Please reload and try again."
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:4
+msgid "The QR code could not be generated. Please try again."
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:4
+msgid "The QR code could not be downloaded. Please try again."
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:23
+msgid "QR code preview"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:29
+msgid "Changes made here are auto-saved and reused for all campaigns."
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:36
+msgid "Size"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:47
+msgid "Pattern style"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:52
+#: views/campaign-builder/qr-code.blade.php:81
+#: views/campaign-builder/qr-code.blade.php:114
+msgid "Square"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:56
+#: views/campaign-builder/qr-code.blade.php:85
+#: views/campaign-builder/qr-code.blade.php:118
+msgid "Rounded"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:60
+msgid "Dots"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:64
+msgid "Pattern color"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:67
+msgid "Pattern color picker"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:69
+msgid "Pattern hex color"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:76
+msgid "Eye style"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:89
+msgid "Circular"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:93
+msgid "Eye color"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:96
+msgid "Eye color picker"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:98
+msgid "Eye hex color"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:105
+msgid "Frame style"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:110
+#: views/campaign-builder/qr-code.blade.php:143
+msgid "None"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:122
+msgid "Frame color"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:125
+msgid "Frame color picker"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:127
+msgid "Frame hex color"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:134
+msgid "Background style"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:139
+msgid "White"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:147
+msgid "Custom"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:151
+msgid "Background color"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:154
+msgid "Background color picker"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:156
+msgid "Background hex color"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:163
+msgid "Logo"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:169
+msgid "Choose Logo"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:176
+#: views/settings/block-by-role.blade.php:35
+#: views/settings/block-by-role.blade.php:50
+#: views/settings/block-ips.blade.php:35
+#: views/settings/block-ips.blade.php:50
+msgid "Remove"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:192
+msgid "Download PNG"
+msgstr ""
+
+#: views/campaign-builder/qr-code.blade.php:196
+msgid "Download SVG"
+msgstr ""
+
+#: views/click-tracking/link.blade.php:92
+#: views/overview/module-editor.blade.php:42
+#: views/partials/report-header.blade.php:53
+#: views/settings/geolocation-provider.blade.php:56
+#: views/settings/pruner.blade.php:36
+#: views/settings/pruner.blade.php:41
+#: views/settings/woocommerce.blade.php:38
+msgid "Save"
+msgstr ""
+
+#: views/click-tracking/link.blade.php:101
+#: views/click-tracking/menu.blade.php:79
+msgid "Resume Tracking"
+msgstr ""
+
+#: views/click-tracking/menu.blade.php:5
+msgid "View Clicks Report"
 msgstr ""
 
 #: views/click-tracking/menu.blade.php:11
@@ -2607,35 +2912,35 @@ msgstr ""
 msgid "Toggle Stats"
 msgstr ""
 
-#: views/real-time.blade.php:47
+#: views/real-time.blade.php:48
 msgid "Active Visitors"
 msgstr ""
 
-#: views/real-time.blade.php:56
+#: views/real-time.blade.php:57
 msgid "Active Visitors is the number of people who have viewed a page within the last 5 minutes"
 msgstr ""
 
-#: views/real-time.blade.php:62
+#: views/real-time.blade.php:63
 msgid "No filters applied"
 msgstr ""
 
-#: views/real-time.blade.php:81
-#: views/real-time.blade.php:88
-#: views/real-time.blade.php:95
+#: views/real-time.blade.php:82
+#: views/real-time.blade.php:89
+#: views/real-time.blade.php:96
 msgid "Last %d Minutes"
 msgstr ""
 
-#: views/real-time.blade.php:89
+#: views/real-time.blade.php:90
 msgctxt "5 minutes"
 msgid "5m"
 msgstr ""
 
-#: views/real-time.blade.php:96
+#: views/real-time.blade.php:97
 msgctxt "30 minutes"
 msgid "30m"
 msgstr ""
 
-#: views/real-time.blade.php:181
+#: views/real-time.blade.php:182
 msgid "No results in the last 5 minutes."
 msgstr ""
 
@@ -2650,13 +2955,6 @@ msgstr ""
 #: views/settings/block-by-role.blade.php:26
 #: views/settings/block-ips.blade.php:26
 msgid "Add"
-msgstr ""
-
-#: views/settings/block-by-role.blade.php:35
-#: views/settings/block-by-role.blade.php:50
-#: views/settings/block-ips.blade.php:35
-#: views/settings/block-ips.blade.php:50
-msgid "Remove"
 msgstr ""
 
 #: views/settings/block-by-role.blade.php:38
@@ -3015,6 +3313,38 @@ msgstr ""
 
 #: views/settings/export-reports.blade.php:67
 msgid "Import Reports"
+msgstr ""
+
+#: views/settings/geolocation-provider.blade.php:3
+msgid "Geolocation Provider"
+msgstr ""
+
+#: views/settings/geolocation-provider.blade.php:12
+msgid "Cloudflare geolocation headers are available. Switch to Cloudflare to use them for visitor geolocation."
+msgstr ""
+
+#: views/settings/geolocation-provider.blade.php:17
+msgid "Geolocations are being tracked with Cloudflare."
+msgstr ""
+
+#: views/settings/geolocation-provider.blade.php:22
+msgid "Cloudflare geolocation headers are missing. Geolocation data is not being tracked."
+msgstr ""
+
+#: views/settings/geolocation-provider.blade.php:36
+msgid "Local Database"
+msgstr ""
+
+#: views/settings/geolocation-provider.blade.php:37
+msgid "Use a local geolocation database to track visitor locations. This database is stored in the WordPress uploads directory."
+msgstr ""
+
+#: views/settings/geolocation-provider.blade.php:47
+msgid "Cloudflare"
+msgstr ""
+
+#: views/settings/geolocation-provider.blade.php:48
+msgid "Use Cloudflare geolocation headers to track visitor locations."
 msgstr ""
 
 #: views/settings/index.blade.php:6

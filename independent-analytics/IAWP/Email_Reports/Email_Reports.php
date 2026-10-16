@@ -3,6 +3,7 @@
 namespace IAWP\Email_Reports;
 
 use DateTime;
+use IAWP\Capability_Manager;
 use IAWP\Rows\Campaigns;
 use IAWP\Rows\Countries;
 use IAWP\Rows\Device_Types;
@@ -123,12 +124,15 @@ class Email_Reports
     }
     public function get_email_body(array $preview_colors = [])
     {
-        $statistics = new Page_Statistics($this->interval()->date_range());
-        $statistics->fetch();
-        $quick_stats = \array_values(\array_filter($statistics->get_statistics(), function (Statistic $statistics) {
-            return $statistics->is_visible() && $statistics->is_group_plugin_enabled();
-        }));
-        $chart = new \IAWP\Email_Reports\Email_Chart($statistics);
+        // Email reports should always include all analytics, regardless of the current user's access.
+        [$quick_stats, $chart, $top_ten] = Capability_Manager::with_all_analytics(function () {
+            $statistics = new Page_Statistics($this->interval()->date_range());
+            $statistics->fetch();
+            $quick_stats = \array_values(\array_filter($statistics->get_statistics(), function (Statistic $statistics) {
+                return $statistics->is_visible() && $statistics->is_group_plugin_enabled();
+            }));
+            return [$quick_stats, new \IAWP\Email_Reports\Email_Chart($statistics), $this->get_top_ten()];
+        });
         $footer_text = \IAWPSCOPED\iawp()->get_option('iawp_email_report_footer', \sprintf(\esc_html__('This email was generated and delivered by %s', 'independent-analytics'), \esc_url(\get_home_url())));
         return \IAWPSCOPED\iawp_render('email.email', [
             'site_title' => \get_bloginfo('name'),
@@ -136,7 +140,7 @@ class Email_Reports
             'date' => $this->interval()->report_time_period_for_humans(),
             // The value that needs to change
             'stats' => $quick_stats,
-            'top_ten' => $this->get_top_ten(),
+            'top_ten' => $top_ten,
             'chart_views' => $chart->views,
             'chart_title' => $this->interval()->chart_title(),
             'most_views' => $chart->most_views,

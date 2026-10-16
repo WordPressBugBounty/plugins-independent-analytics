@@ -178,6 +178,7 @@ abstract class Table
         $options = Dashboard_Options::getInstance();
         $start = $options->get_date_range()->start()->setTimezone(Timezone::site_timezone());
         $end = $options->get_date_range()->end()->setTimezone(Timezone::site_timezone());
+        $csv_labels = ['hourly' => \__('Download Hourly Metrics CSV', 'independent-analytics'), 'daily' => \__('Download Daily Metrics CSV', 'independent-analytics'), 'weekly' => \__('Download Weekly Metrics CSV', 'independent-analytics'), 'monthly' => \__('Download Monthly Metrics CSV', 'independent-analytics')];
         ?>
         <div id="toolbar" class="toolbar" data-filter-count="<?php 
         echo \count($options->filters());
@@ -238,9 +239,12 @@ abstract class Table
                             </button>
                             <button id="download-report-statistics-csv" class="iawp-button" data-report-target="exportReportStatistics" data-action="report#exportReportStatistics">
                                 <span class="dashicons dashicons-media-spreadsheet"></span>
-                                <span class="iawp-label">
+                                <span class="iawp-label"
+                                      data-labels="<?php 
+        echo \esc_attr(\wp_json_encode($csv_labels));
+        ?>">
                                     <?php 
-        \esc_html_e('Download Daily Metrics CSV', 'independent-analytics');
+        echo \esc_html($csv_labels[$options->chart_interval()->id()]);
         ?>
                                 </span>
                             </button>
@@ -335,6 +339,13 @@ abstract class Table
         return Collection::make($filters)->map(function ($filter) {
             return $this->sanitize_filter($filter);
         })->filter()->values()->all();
+    }
+    public function sanitize_filter_logic(?string $filter_logic) : string
+    {
+        if (!\in_array($filter_logic, ['and', 'or'])) {
+            return 'and';
+        }
+        return $filter_logic;
     }
     public function resolve_filter_conflicts(array $filters, string $filter_logic) : array
     {

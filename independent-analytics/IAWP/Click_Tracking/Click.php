@@ -4,7 +4,6 @@ namespace IAWP\Click_Tracking;
 
 use IAWP\Illuminate_Builder;
 use IAWP\Tables;
-use IAWPSCOPED\Illuminate\Database\Query\Builder;
 use IAWPSCOPED\Illuminate\Support\Str;
 /** @internal */
 class Click
@@ -19,9 +18,9 @@ class Click
     private $created_at;
     private function __construct(array $record)
     {
-        $this->protocol = $this->extract_protocol_from_href($record['href']);
-        $this->value = $this->extract_target_value_from_href($record['href']);
         $this->href = $record['href'];
+        $this->protocol = $this->extract_protocol_from_href($this->href);
+        $this->value = $this->extract_target_value_from_href($this->href);
         $this->classes = $record['classes'];
         $this->ids = $record['ids'];
         $this->resource_id = $record['resource_id'];
@@ -40,10 +39,13 @@ class Click
             return;
         }
         $view_id = $this->get_view_id();
-        if (\is_null($view_id)) {
+        if ($view_id === null) {
             return;
         }
         $click_target = $this->get_click_target();
+        if ($click_target === null) {
+            return;
+        }
         $link_ids = $link_rules->map(function (\IAWP\Click_Tracking\Link_Rule $link_rule) use($click_target) {
             return $this->get_link_id_for($link_rule->id(), $click_target->click_target_id);
         });
@@ -72,19 +74,19 @@ class Click
         }
         return $href;
     }
-    private function get_click_target() : object
+    private function get_click_target() : ?object
     {
-        $select_query = Illuminate_Builder::new()->from(Tables::click_targets())->where('target', '=', $this->value)->when(\is_null($this->protocol), function (Builder $query) {
-            $query->whereNull('protocol');
-        })->when(\is_string($this->protocol), function (Builder $query) {
-            $query->where('protocol', '=', $this->protocol);
-        });
+        $select_query = Illuminate_Builder::new()->from(Tables::click_targets())->where('target', '=', $this->value)->where('protocol', '=', $this->protocol);
         $match = $select_query->first();
         if (\is_object($match)) {
             return $match;
         }
         Illuminate_Builder::new()->from(Tables::click_targets())->insertOrIgnore(['target' => $this->value, 'protocol' => $this->protocol]);
-        return $select_query->first();
+        $match = $select_query->first();
+        if (\is_object($match)) {
+            return $match;
+        }
+        return null;
     }
     private function get_view_id() : ?int
     {

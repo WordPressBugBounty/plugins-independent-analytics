@@ -22,6 +22,7 @@ class Export_Report_Table extends \IAWP\AJAX\AJAX
     {
         $date_range = $this->get_date_range();
         $filters = $this->get_field('filters') ?? [];
+        $filter_logic = $this->get_string_field('filter_logic');
         $sort_column = $this->get_field('sort_column') ?? null;
         $sort_direction = $this->get_field('sort_direction') ?? null;
         $group = $this->get_field('group') ?? null;
@@ -30,9 +31,10 @@ class Export_Report_Table extends \IAWP\AJAX\AJAX
         /** @var Table $table */
         $table = new $table_class($group);
         $filters = $table->sanitize_filters($filters);
+        $filter_logic = $table->sanitize_filter_logic($filter_logic);
         $sort_configuration = $table->sanitize_sort_parameters($sort_column, $sort_direction);
         $rows_class = $table->group()->rows_class();
-        $rows_query = new $rows_class($date_range, $sort_configuration, null, $filters);
+        $rows_query = new $rows_class($date_range, $sort_configuration, null, $filters, $filter_logic);
         if ($examiner_config) {
             $rows_query->for_examiner($examiner_config);
         }

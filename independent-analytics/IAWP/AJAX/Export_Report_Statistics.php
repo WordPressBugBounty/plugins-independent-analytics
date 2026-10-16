@@ -25,6 +25,7 @@ class Export_Report_Statistics extends \IAWP\AJAX\AJAX
         $date_range = $this->get_date_range();
         $is_new_date_range = $this->get_field('is_new_date_range') === 'true';
         $filters = $this->get_field('filters') ?? [];
+        $filter_logic = $this->get_string_field('filter_logic');
         $sort_column = $this->get_field('sort_column') ?? null;
         $sort_direction = $this->get_field('sort_direction') ?? null;
         $group = $this->get_field('group') ?? null;
@@ -44,13 +45,14 @@ class Export_Report_Statistics extends \IAWP\AJAX\AJAX
             $table = new $table_class($group);
         }
         $filters = $table->sanitize_filters($filters);
+        $filter_logic = $table->sanitize_filter_logic($filter_logic);
         $sort_configuration = $table->sanitize_sort_parameters($sort_column, $sort_direction);
         $rows_class = $table->group()->rows_class();
         $statistics_class = $table->group()->statistics_class();
         if ($is_geo_table) {
-            $rows_query = new $rows_class($date_range, $sort_configuration, null, $filters);
+            $rows_query = new $rows_class($date_range, $sort_configuration, null, $filters, $filter_logic);
         } else {
-            $rows_query = new $rows_class($date_range, $sort_configuration, $number_of_rows, $filters);
+            $rows_query = new $rows_class($date_range, $sort_configuration, $number_of_rows, $filters, $filter_logic);
         }
         if ($examiner_config) {
             $rows_query->limit_to($examiner_config->id());

@@ -5,6 +5,9 @@ namespace IAWP;
 use IAWP\Data_Pruning\Pruning_Scheduler;
 use IAWP\Ecommerce\WooCommerce_Status_Manager;
 use IAWP\Email_Reports\Interval_Factory;
+use IAWP\Geo\CloudflareGeo;
+use IAWP\Geo\GeoDatabaseManager;
+use IAWP\Geo\GeoProvider;
 use IAWP\Utils\Request;
 /** @internal */
 class Settings
@@ -15,6 +18,9 @@ class Settings
         \add_action('admin_init', [$this, 'register_view_counter_settings']);
         \add_action('admin_init', [$this, 'register_blocked_ip_settings']);
         \add_action('admin_init', [$this, 'register_block_by_role_settings']);
+        \add_action('admin_init', [$this, 'register_geolocation_settings']);
+        \add_action('update_option_iawp_geo_provider', [$this, 'sync_geo_database'], 10, 0);
+        \add_action('add_option_iawp_geo_provider', [$this, 'sync_geo_database'], 10, 0);
         if (\IAWPSCOPED\iawp_is_pro()) {
             \add_action('admin_init', [$this, 'register_email_report_settings']);
         }
@@ -40,6 +46,11 @@ class Settings
         echo \IAWPSCOPED\iawp_render('settings.view-counter');
         if (\IAWPSCOPED\iawp()->is_woocommerce_support_enabled()) {
             echo \IAWPSCOPED\iawp_render('settings.woocommerce', ['statuses' => new WooCommerce_Status_Manager()]);
+        }
+        $geo_provider = GeoProvider::provider();
+        $cloudflare_available = CloudflareGeo::is_available();
+        if ($geo_provider === GeoProvider::CLOUDFLARE || $cloudflare_available) {
+            echo \IAWPSCOPED\iawp_render('settings.geolocation-provider', ['cloudflare_available' => $cloudflare_available, 'is_multisite' => \is_multisite(), 'provider' => $geo_provider]);
         }
         echo \IAWPSCOPED\iawp_render('settings.export-reports', ['report_finder' => \IAWP\Report_Finder::new()]);
         echo \IAWPSCOPED\iawp_render('settings.pruner', ['pruner' => new Pruning_Scheduler()]);
@@ -70,6 +81,16 @@ class Settings
             return \array_key_exists($input, \IAWP\VisitorSaltRefreshInterval::options()) ? $input : \IAWP\VisitorSaltRefreshInterval::interval();
         }]);
         \add_settings_field('iawp_visitor_salt_refresh_interval', \esc_html__('Salt refresh rate', 'independent-analytics'), [$this, 'visitor_salt_refresh_interval_callback'], 'independent-analytics-settings', 'iawp-settings-section', ['class' => 'visitor_salt_refresh_interval']);
+    }
+    public function register_geolocation_settings() : void
+    {
+        \register_setting('iawp_geolocation_settings', 'iawp_geo_provider', ['type' => 'string', 'default' => GeoProvider::DATABASE, 'sanitize_callback' => function ($provider) {
+            return GeoProvider::sanitize($provider);
+        }]);
+    }
+    public function sync_geo_database() : void
+    {
+        GeoDatabaseManager::sync();
     }
     public function appearance_callback()
     {

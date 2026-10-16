@@ -44,6 +44,11 @@ class URL
         }
         return Uri::createFromString($this->url)->getHost();
     }
+    public function get_domain_without_www() : ?string
+    {
+        $domain = $this->get_domain();
+        return \is_null($domain) ? null : \preg_replace('/^www\\./', '', $domain);
+    }
     public function get_extension() : ?string
     {
         if (!$this->is_valid_url()) {

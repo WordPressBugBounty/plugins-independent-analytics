@@ -57,7 +57,6 @@ abstract class Admin_Page
         echo \esc_url(\IAWPSCOPED\iawp_url_to('img/loading.svg'));
         ?>" />
                     </div>
-                    <button id="scroll-to-top" class="scroll-to-top"><span class="dashicons dashicons-arrow-up-alt"></span></button>
                 </div>
             </div>
         </div>

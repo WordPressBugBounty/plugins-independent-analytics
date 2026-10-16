@@ -106,7 +106,7 @@ class Link_Rule_Finder
         }
         $url = URL::new($this->href);
         $site_url = URL::new(\get_home_url());
-        if (!$url->is_valid_url() || $url->get_domain() !== $site_url->get_domain()) {
+        if (!$url->is_valid_url() || $url->get_domain_without_www() !== $site_url->get_domain_without_www()) {
             return \false;
         }
         $path = $url->get_path();
@@ -134,7 +134,7 @@ class Link_Rule_Finder
         if (!$link_url->is_valid_url()) {
             return \false;
         }
-        return $link_url->get_domain() !== $site_url->get_domain();
+        return $link_url->get_domain_without_www() !== $site_url->get_domain_without_www();
     }
     public static function new(?string $protocol, ?string $href, string $classes, ?string $id) : self
     {

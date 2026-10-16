@@ -77,6 +77,10 @@ class Tables
     {
         return self::prefix('campaigns');
     }
+    public static function campaign_urls() : string
+    {
+        return self::prefix('campaign_urls');
+    }
     public static function landing_pages() : string
     {
         return self::prefix('landing_pages');

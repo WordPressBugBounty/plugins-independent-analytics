@@ -36,6 +36,10 @@ class Submission_Listener
         // Gravity Forms
         \add_action('gform_after_submission', function ($entry, $form) {
             try {
+                // Ignore submissions that Gravity Forms has marked as spam
+                if (isset($entry['status']) && $entry['status'] === 'spam') {
+                    return;
+                }
                 $submission = new \IAWP\Form_Submissions\Submission(4, \intval($form['id']), Security::string($form['title']));
                 $submission->record_submission();
             } catch (\Throwable $e) {
@@ -260,10 +264,10 @@ class Submission_Listener
         // WP Store Locator
         \add_action('wpsl_store_search', function () {
             try {
-                $is_autoloaded = isset($_GET['autoload']) && $_GET['autoload'];
+                $is_page_load = !empty($_GET['autoload']) || !empty($_GET['skip_cache']) || !empty($_GET['approximate']);
                 // This hooks fires after the locations are fetched on page load. We only want to track
                 // manual form submissions.
-                if ($is_autoloaded) {
+                if ($is_page_load) {
                     return;
                 }
                 // There's only one possible form for this plugin. This is why the form id and the forms
@@ -338,7 +342,7 @@ class Submission_Listener
             }
         }, 10, 3);
         // Newletter
-        \add_action('newsletter_user_post_subscribe', function ($user) {
+        \add_action('newsletter_user_subscribe', function ($user) {
             try {
                 $form = \IAWP\Form_Submissions\Newsletter::get_form($user->referrer ?? null);
                 if (!$form) {

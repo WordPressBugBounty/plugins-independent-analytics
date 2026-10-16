@@ -4,6 +4,7 @@ namespace IAWP;
 
 use IAWP\Cron\Unscheduler;
 use IAWP\Data_Pruning\Pruning_Scheduler;
+use IAWP\Geo\GeoDatabaseManager;
 /** @internal */
 class ActivationLifecycle
 {
@@ -17,7 +18,7 @@ class ActivationLifecycle
             // If there is a database, run migration in a background process
             \IAWP\Migrations\Migration_Job::maybe_dispatch();
         }
-        (new \IAWP\Geo_Database_Manager())->health_check();
+        GeoDatabaseManager::sync();
         \update_option('iawp_need_clear_cache', \true, \true);
         if (\get_option('iawp_show_gsg') == '') {
             \update_option('iawp_show_gsg', '1', \true);
@@ -36,7 +37,7 @@ class ActivationLifecycle
     public static function handle_deactivation()
     {
         Unscheduler::unschedule_all_events();
-        (new \IAWP\Geo_Database_Manager())->delete_database();
+        GeoDatabaseManager::delete_database();
         \wp_delete_file(\trailingslashit(\WPMU_PLUGIN_DIR) . 'iawp-performance-boost.php');
         \delete_option('iawp_must_use_directory_not_writable');
     }

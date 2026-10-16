@@ -2,7 +2,7 @@
 
 namespace IAWP\Models;
 
-use IAWP\Geoposition;
+use IAWP\Geo\Geo;
 use IAWP\Illuminate_Builder;
 use IAWP\Query;
 use IAWP\Utils\Request;
@@ -23,7 +23,7 @@ use IAWP\Utils\Salt;
 class Visitor
 {
     private $id;
-    private $geoposition;
+    private $geo;
     private $current_session;
     /**
      * New instances should be created with a string ip address
@@ -34,12 +34,12 @@ class Visitor
     public function __construct(string $ip, string $user_agent)
     {
         $this->id = $this->fetch_visitor_id_by_hash($this->calculate_hash($ip, $user_agent));
-        $this->geoposition = new Geoposition($ip);
+        $this->geo = Geo::get($ip);
         $this->current_session = $this->fetch_current_session();
     }
-    public function geoposition() : Geoposition
+    public function geo() : ?Geo
     {
-        return $this->geoposition;
+        return $this->geo;
     }
     public function has_recorded_session() : bool
     {
@@ -98,7 +98,11 @@ class Visitor
     private function calculate_hash(string $ip, string $user_agent) : string
     {
         $salt = Salt::visitor_token_salt();
-        $result = $salt . $ip . $user_agent;
+        // Use this filter to modify the IP Address before Independent Analytics uses it
+        // add_filter('iawp_visitor_ip_address', function (string $ip): string {
+        //     return $ip;
+        // });
+        $result = $salt . \apply_filters('iawp_visitor_ip_address', $ip) . $user_agent;
         return \md5($result);
     }
     private function fetch_current_session()

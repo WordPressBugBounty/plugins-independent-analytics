@@ -34,6 +34,7 @@ class Filter extends \IAWP\AJAX\AJAX
         $date_range = $this->get_date_range();
         $is_new_date_range = $this->get_field('is_new_date_range') === 'true';
         $filters = $this->get_field('filters') ?? [];
+        $filter_logic = $this->get_string_field('filter_logic');
         $sort_column = $this->get_field('sort_column') ?? null;
         $sort_direction = $this->get_field('sort_direction') ?? null;
         $group = $this->get_field('group') ?? null;
@@ -46,11 +47,11 @@ class Filter extends \IAWP\AJAX\AJAX
         $is_geo_table = $table_type === 'geo';
         $is_journeys_table = $table_type === 'journeys';
         $table_class = Env::get_table();
-        $filter_logic = $this->get_filter_logic();
         $examiner_config = Examiner_Config::make(['type' => $this->get_field('examiner_type'), 'group' => $this->get_field('examiner_group'), 'id' => $this->get_int_field('examiner_id')]);
         /** @var Table $table */
         $table = new $table_class($group, $is_new_group);
         $filters = $table->sanitize_filters($filters);
+        $filter_logic = $table->sanitize_filter_logic($filter_logic);
         $filters = $table->resolve_filter_conflicts($filters, $filter_logic);
         $sort_configuration = $table->sanitize_sort_parameters($sort_column, $sort_direction);
         $rows_class = $table->group()->rows_class();
@@ -139,13 +140,5 @@ class Filter extends \IAWP\AJAX\AJAX
             }
         }
         return new Relative_Date_Range($relative_range_id);
-    }
-    private function get_filter_logic() : string
-    {
-        $value = $this->get_field('filter_logic');
-        if (!\in_array($value, ['and', 'or'])) {
-            return 'and';
-        }
-        return $value;
     }
 }

@@ -107,6 +107,11 @@ abstract class AJAX
             return \stripslashes(\sanitize_text_field($_POST[$field]));
         }
     }
+    protected function get_string_field(string $field) : string
+    {
+        $value = $this->get_field($field);
+        return \is_string($value) ? Security::string($value) : '';
+    }
     protected function get_int_field($field) : ?int
     {
         if (!\array_key_exists($field, $_POST)) {

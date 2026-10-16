@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 8.0.30
-Stable tag: 2.15.5
+Stable tag: 2.16.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -246,6 +246,21 @@ No, there are no limits on tracking. You can use Independent Analytics to track 
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.16.0 - October 15th, 2026
+
+- **Feature:** Newly redesigned Campaign Builder, including QR code generation and CSV exports
+- **Feature:** Added a new option to track visitor geolocations with Cloudflare
+- **Enhancement:** Ad clicks from OpenAI now recognized and track separately in the Referrers report
+- **Enhancement:** Added an 18 month option to the automatic data deletion setting
+- **Enhancement:** Added a filter for anyone who wants to modify or truncate IP addresses
+- **Enhancement:** Allow a constant to be set in wp-config.php to disable favicon fetching for referrers
+- **Enhancement:** Update the MMDB library for getting visitor locations accurately
+- **Fix:** Improved accuracy for tracking Facebook Ad traffic in the Referrers report
+- **Fix:** The Daily Metrics CSV now adapts to export hourly data based on the chart's setting
+- **Fix:** Exported CSVs now apply all the filter logic
+- **Fix:** Allow a constant to be set in wp-config.php to enable SQL_BIG_SELECTS for sites that throw errors due to their hosting disabling it
+- **Fix:** admin cookie used to ignore tracking is now removed when the option is disabled
 
 = 2.15.5 - August 20th, 2026
 

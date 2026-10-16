@@ -150,7 +150,7 @@ abstract class Rows
             return;
         }
         if ($this->using_logical_or_operator()) {
-            $query->where(function (Builder $query) {
+            $query->having(function (Builder $query) {
                 foreach ($this->filters as $index => $filter) {
                     $filter->apply_to_query($query, \IAWP\Rows\Filter::$AGGREGATE_FILTER, $index > 0);
                 }

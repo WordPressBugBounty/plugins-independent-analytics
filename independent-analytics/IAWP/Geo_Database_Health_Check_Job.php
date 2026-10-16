@@ -2,6 +2,7 @@
 
 namespace IAWP;
 
+use IAWP\Geo\GeoDatabaseManager;
 /** @internal */
 class Geo_Database_Health_Check_Job extends \IAWP\Cron_Job
 {
@@ -9,6 +10,6 @@ class Geo_Database_Health_Check_Job extends \IAWP\Cron_Job
     protected $interval = 'daily';
     public function handle() : void
     {
-        (new \IAWP\Geo_Database_Manager())->health_check();
+        GeoDatabaseManager::sync();
     }
 }

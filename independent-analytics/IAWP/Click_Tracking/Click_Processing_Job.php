@@ -49,13 +49,24 @@ class Click_Processing_Job extends Cron_Job
             if (!$payload_validator->is_valid() || \is_null($payload_validator->resource())) {
                 continue;
             }
-            if (\is_string($event['href']) && !$this->is_valid_href($event['href'])) {
-                continue;
+            $href = $event['href'];
+            // An anchor without a href produces an empty string. Treat it like a button or other element without a href.
+            if ($href === '') {
+                $href = null;
             }
-            $event['href'] = \sanitize_url($event['href']);
+            if (\is_string($href)) {
+                if (!$this->is_valid_href($href)) {
+                    continue;
+                }
+                $href = \sanitize_url($href);
+                // Sanitization can expand characters, such as spaces into %20.
+                if (Str::length($href) > 2083) {
+                    continue;
+                }
+            }
             $event['classes'] = Security::string($event['classes']);
             $event['ids'] = Security::string($event['ids']);
-            $click = \IAWP\Click_Tracking\Click::new(['href' => $event['href'], 'classes' => $event['classes'], 'ids' => $event['ids'], 'resource_id' => $payload_validator->resource()['id'], 'visitor_id' => Visitor::fetch_visitor_id_by_hash($event['visitor_token']), 'created_at' => CarbonImmutable::createFromTimestamp($event['created_at'], 'utc')]);
+            $click = \IAWP\Click_Tracking\Click::new(['href' => $href, 'classes' => $event['classes'], 'ids' => $event['ids'], 'resource_id' => $payload_validator->resource()['id'], 'visitor_id' => Visitor::fetch_visitor_id_by_hash($event['visitor_token']), 'created_at' => CarbonImmutable::createFromTimestamp($event['created_at'], 'utc')]);
             $click->track();
         }
         \fclose($job_handle);

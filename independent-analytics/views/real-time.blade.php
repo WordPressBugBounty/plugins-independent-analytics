@@ -16,6 +16,7 @@
                     data-real-time-target="pauseButton"
                     data-pause-title="<?php echo esc_attr_e('Pause updates') ?>"
                     data-play-title="<?php echo esc_attr_e('Resume updates') ?>"
+                    title="<?php echo esc_attr_e('Pause updates') ?>"
             >
                 <span class="real-time-progress-bar"></span>
                 <span class="dashicons dashicons-controls-pause"></span>

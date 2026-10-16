@@ -59,30 +59,35 @@ class View
     }
     public function fetch_or_create_country() : ?int
     {
-        if (!$this->visitor->geoposition()->valid_location()) {
+        $geo = $this->visitor->geo();
+        if (\is_null($geo)) {
             return null;
         }
         $countries_table = Query::get_table_name(Query::COUNTRIES);
-        $country_id = Illuminate_Builder::new()->from($countries_table)->where('country_code', '=', $this->visitor->geoposition()->country_code())->where('country', '=', $this->visitor->geoposition()->country())->where('continent', '=', $this->visitor->geoposition()->continent())->value('country_id');
+        $country_id = Illuminate_Builder::new()->from($countries_table)->where('country_code', '=', $geo->country_code())->value('country_id');
         if (!\is_null($country_id)) {
             return $country_id;
         }
-        Illuminate_Builder::new()->from($countries_table)->insertOrIgnore(['country_code' => $this->visitor->geoposition()->country_code(), 'country' => $this->visitor->geoposition()->country(), 'continent' => $this->visitor->geoposition()->continent()]);
-        return Illuminate_Builder::new()->from($countries_table)->where('country_code', '=', $this->visitor->geoposition()->country_code())->where('country', '=', $this->visitor->geoposition()->country())->where('continent', '=', $this->visitor->geoposition()->continent())->value('country_id');
+        Illuminate_Builder::new()->from($countries_table)->insertOrIgnore(['country_code' => $geo->country_code(), 'country' => $geo->country(), 'continent' => $geo->continent()]);
+        return Illuminate_Builder::new()->from($countries_table)->where('country_code', '=', $geo->country_code())->value('country_id');
     }
     public function fetch_or_create_city() : ?int
     {
-        if (!$this->visitor->geoposition()->valid_location()) {
+        $geo = $this->visitor->geo();
+        if (\is_null($geo)) {
             return null;
         }
         $country_id = $this->fetch_or_create_country();
+        if (\is_null($country_id)) {
+            return null;
+        }
         $cities_table = Query::get_table_name(Query::CITIES);
-        $city_id = Illuminate_Builder::new()->from($cities_table)->where('country_id', $country_id)->where('subdivision', '=', $this->visitor->geoposition()->subdivision())->where('city', '=', $this->visitor->geoposition()->city())->value('city_id');
+        $city_id = Illuminate_Builder::new()->from($cities_table)->where('country_id', $country_id)->where('subdivision', '=', $geo->subdivision())->where('city', '=', $geo->city())->value('city_id');
         if (!\is_null($city_id)) {
             return $city_id;
         }
-        Illuminate_Builder::new()->from($cities_table)->insertOrIgnore(['country_id' => $country_id, 'subdivision' => $this->visitor->geoposition()->subdivision(), 'city' => $this->visitor->geoposition()->city()]);
-        return Illuminate_Builder::new()->from($cities_table)->where('country_id', $country_id)->where('subdivision', '=', $this->visitor->geoposition()->subdivision())->where('city', '=', $this->visitor->geoposition()->city())->value('city_id');
+        Illuminate_Builder::new()->from($cities_table)->insertOrIgnore(['country_id' => $country_id, 'subdivision' => $geo->subdivision(), 'city' => $geo->city()]);
+        return Illuminate_Builder::new()->from($cities_table)->where('country_id', $country_id)->where('subdivision', '=', $geo->subdivision())->where('city', '=', $geo->city())->value('city_id');
     }
     /**
      * Fetch the last view, if any.

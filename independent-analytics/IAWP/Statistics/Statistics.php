@@ -2,6 +2,7 @@
 
 namespace IAWP\Statistics;
 
+use IAWPSCOPED\Carbon\CarbonImmutable;
 use DateInterval;
 use DatePeriod;
 use DateTime;
@@ -164,10 +165,17 @@ abstract class Statistics
             $csv_header[] = $statistic->name();
         }
         $total_rows = \count($statistics[0]->statistic_over_time());
+        $date_format = Format::date();
+        if ($this->chart_interval->id() === 'hourly') {
+            $start = CarbonImmutable::instance($this->date_range->start())->setTimezone(Timezone::site_timezone());
+            $end = CarbonImmutable::instance($this->date_range->end())->setTimezone(Timezone::site_timezone());
+            $date_format = $start->isSameDay($end) ? Format::time() : Format::date_time();
+        }
         for ($i = 0; $i < $total_rows; $i++) {
             $csv_row = [];
-            // The first row is the date interval label
-            $csv_row[] = $statistics[0]->statistic_over_time()[$i][0]->format(Format::date());
+            // The first column is the localized date interval label.
+            $date = CarbonImmutable::instance($statistics[0]->statistic_over_time()[$i][0]);
+            $csv_row[] = $date->translatedFormat($date_format);
             foreach ($statistics as $statistic) {
                 $csv_row[] = $statistic->format_value($statistic->statistic_over_time()[$i][1]);
             }

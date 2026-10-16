@@ -348,7 +348,7 @@ class Independent_Analytics
         \wp_register_style('iawp-wc-order-box-styles', \IAWPSCOPED\iawp_url_to('dist/styles/wc_order_box.css'), [], \IAWP_VERSION);
         \wp_register_script('iawp-javascript', \IAWPSCOPED\iawp_url_to('dist/js/index.js'), ['wp-i18n'], \IAWP_VERSION . 'wefwef');
         \wp_set_script_translations('iawp-javascript', 'independent-analytics');
-        \wp_register_script('iawp-dashboard-widget-javascript', \IAWPSCOPED\iawp_url_to('dist/js/dashboard_widget.js'), ['wp-i18n'], \IAWP_VERSION);
+        \wp_register_script('iawp-dashboard-widget-javascript', \IAWPSCOPED\iawp_url_to('dist/js/dashboard-widget.js'), ['wp-i18n'], \IAWP_VERSION);
         \wp_set_script_translations('iawp-dashboard-widget-javascript', 'independent-analytics');
         \wp_register_script('iawp-layout-javascript', \IAWPSCOPED\iawp_url_to('dist/js/layout.js'), ['wp-i18n'], \IAWP_VERSION);
         \wp_set_script_translations('iawp-layout-javascript', 'independent-analytics');
@@ -365,8 +365,11 @@ class Independent_Analytics
     }
     public function enqueue_scripts_and_styles($hook)
     {
-        $this->register_scripts_and_styles();
         $page = \IAWP\Env::get_page();
+        if ($page === 'independent-analytics-campaign-builder') {
+            \wp_enqueue_media();
+        }
+        $this->register_scripts_and_styles();
         $this->enqueue_translations();
         $this->enqueue_nonces();
         \wp_enqueue_style('iawp-freemius-notice-styles');
@@ -408,7 +411,7 @@ class Independent_Analytics
     {
         \wp_register_script('iawp-translations', '');
         \wp_enqueue_script('iawp-translations');
-        \wp_add_inline_script('iawp-translations', 'const iawpText = ' . \json_encode(['views' => \__('Views', 'independent-analytics'), 'visitors' => \__('Visitors', 'independent-analytics'), 'sessions' => \__('Sessions', 'independent-analytics'), 'orders' => \__('Orders', 'independent-analytics'), 'clicks' => \__('Clicks', 'independent-analytics'), 'formSubmissions' => \__('Form Submissions', 'independent-analytics'), 'exactDates' => \__('Apply Exact Dates', 'independent-analytics'), 'relativeDates' => \__('Apply Relative Dates', 'independent-analytics'), 'copied' => \__('Copied', 'independent-analytics'), 'exportingPages' => \__('Exporting Pages...', 'independent-analytics'), 'exportPages' => \__('Export Pages', 'independent-analytics'), 'exportingReferrers' => \__('Exporting Referrers...', 'independent-analytics'), 'exportReferrers' => \__('Export Referrers', 'independent-analytics'), 'exportingGeolocations' => \__('Exporting Geolocations...', 'independent-analytics'), 'exportGeolocations' => \__('Export Geolocations', 'independent-analytics'), 'exportingDevices' => \__('Exporting Devices...', 'independent-analytics'), 'exportDevices' => \__('Export Devices', 'independent-analytics'), 'exportingCampaigns' => \__('Exporting Campaigns...', 'independent-analytics'), 'exportCampaigns' => \__('Export Campaigns', 'independent-analytics'), 'exportingClicks' => \__('Exporting Clicks', 'independent-analytics'), 'exportClicks' => \__('Export Clicks', 'independent-analytics'), 'invalidReportArchive' => \__('This report archive is invalid. Please export your reports and try again.', 'independent-analytics'), 'openMobileMenu' => \__('Open menu', 'independent-analytics'), 'closeMobileMenu' => \__('Close menu', 'independent-analytics'), 'noComparison' => \__('No Comparison', 'independent-analytics')]), 'before');
+        \wp_add_inline_script('iawp-translations', 'const iawpText = ' . \json_encode(['views' => \__('Views', 'independent-analytics'), 'visitors' => \__('Visitors', 'independent-analytics'), 'sessions' => \__('Sessions', 'independent-analytics'), 'orders' => \__('Orders', 'independent-analytics'), 'clicks' => \__('Clicks', 'independent-analytics'), 'formSubmissions' => \__('Form Submissions', 'independent-analytics'), 'exactDates' => \__('Apply Exact Dates', 'independent-analytics'), 'relativeDates' => \__('Apply Relative Dates', 'independent-analytics'), 'copied' => \__('Copied', 'independent-analytics'), 'exportingPages' => \__('Exporting Pages...', 'independent-analytics'), 'exportPages' => \__('Export Pages', 'independent-analytics'), 'exportingReferrers' => \__('Exporting Referrers...', 'independent-analytics'), 'exportReferrers' => \__('Export Referrers', 'independent-analytics'), 'exportingGeolocations' => \__('Exporting Geolocations...', 'independent-analytics'), 'exportGeolocations' => \__('Export Geolocations', 'independent-analytics'), 'exportingDevices' => \__('Exporting Devices...', 'independent-analytics'), 'exportDevices' => \__('Export Devices', 'independent-analytics'), 'exportingCampaigns' => \__('Exporting Campaigns...', 'independent-analytics'), 'exportCampaigns' => \__('Export Campaigns', 'independent-analytics'), 'exportingClicks' => \__('Exporting Clicks', 'independent-analytics'), 'exportClicks' => \__('Export Clicks', 'independent-analytics'), 'invalidReportArchive' => \__('This report archive is invalid. Please export your reports and try again.', 'independent-analytics'), 'openMobileMenu' => \__('Open menu', 'independent-analytics'), 'closeMobileMenu' => \__('Close menu', 'independent-analytics'), 'noComparison' => \__('No Comparison', 'independent-analytics'), 'contains' => \__('Contains', 'independent-analytics'), 'search' => \__('Search', 'independent-analytics'), 'new' => \__('New', 'independent-analytics')]), 'before');
     }
     public function enqueue_nonces()
     {
@@ -465,14 +468,23 @@ class Independent_Analytics
     }
     public function update_cookie()
     {
-        $should_have_cookie = Request::is_blocked_user_role() && $this->get_option('iawp_ignore_via_cookie', \false);
+        $ignore_via_cookie = $this->get_option('iawp_ignore_via_cookie', \false);
+        $should_have_cookie = Request::is_blocked_user_role() && $ignore_via_cookie;
         $has_cookie = isset($_COOKIE['iawp_ignore_visitor']);
         if ($should_have_cookie && !$has_cookie) {
             \setcookie('iawp_ignore_visitor', '1', \time() + 365 * 24 * 60 * 60, \COOKIEPATH, \COOKIE_DOMAIN);
+            return;
         }
-        if (!$should_have_cookie && $has_cookie) {
+        // Remove the cookie when the option is disabled.
+        if ($has_cookie && !$ignore_via_cookie) {
             // Delete cookie by using a non-zero time in the past
             \setcookie('iawp_ignore_visitor', '1', \time() - 60, \COOKIEPATH, \COOKIE_DOMAIN);
+            return;
+        }
+        // Remove the cookie when a logged-in user's role is no longer ignored.
+        if ($has_cookie && \is_user_logged_in() && !$should_have_cookie) {
+            \setcookie('iawp_ignore_visitor', '1', \time() - 60, \COOKIEPATH, \COOKIE_DOMAIN);
+            return;
         }
     }
     // Note: We don't use version_compare because we only want to notify of major version updates

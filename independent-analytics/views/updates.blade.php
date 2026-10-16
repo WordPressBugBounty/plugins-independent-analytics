@@ -7,6 +7,23 @@
                     class="dashicons dashicons-external"></span></a>
         </div>
         <div class="entry">
+            <div class="text">
+                <div class="title-container">
+                    <h2 class="title">Version 2.16 - New Campaign Builder</h2>
+                    <span class="date">October 15th, 2026</span>
+                </div>
+                <div class="description-container">
+                    <p>Version 2.16.0 includes a major redesign of the Campaign Builder, including QR code generation and CSV exports.</p>
+                    <p>We've also added an option to track visitor geolocations using a built-in Cloudflare integration, and included over 
+                        a dozen other improvements and bug fixes.
+                    </p>
+                    <p>You can review the <a
+                            href="https://independentwp.com/changelog/version-2-16-0/"
+                            target="_blank">full changelog here</a>.</p>
+                </div>
+            </div>
+        </div>
+        <div class="entry">
             <div class="video-container">
                 <iframe src="https://www.youtube-nocookie.com/embed/ul2v7QKf0Ck?si=prvj40gZ2e1VtTe2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
@@ -40,25 +57,6 @@
                         and explore a timeline of every visitors journey through your website.</p>
                     <p>You can review the <a
                             href="https://independentwp.com/changelog/version-2-14-0/"
-                            target="_blank">full changelog here</a>.</p>
-                </div>
-            </div>
-        </div>
-        <div class="entry">
-            <div class="video-container">
-                <iframe src="https://www.youtube-nocookie.com/embed/GtuvpNcC0dA?si=lTdhF4Ue--OTTXN7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            </div>
-            <div class="text">
-                <div class="title-container">
-                    <h2 class="title">Version 2.13 - Exciting New Features & Improvements</h2>
-                    <span class="date">October 21st, 2025</span>
-                </div>
-                <div class="description-container">
-                    <p>Version 2.13.0 adds a variety of new features like an AI referrer type, the option to filter by ANY or ALL conditions, and 
-                        a new option to group the referrers table by referrer type.
-                    </p>
-                    <p>You can review the <a
-                            href="https://independentwp.com/changelog/version-2-13-0/"
                             target="_blank">full changelog here</a>.</p>
                 </div>
             </div>
