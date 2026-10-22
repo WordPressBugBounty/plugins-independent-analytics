@@ -2,14 +2,14 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Independent Analytics 2.16.0\n"
+"Project-Id-Version: Independent Analytics 2.16.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/independent-analytics-production\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-15T13:12:39+00:00\n"
+"POT-Creation-Date: 2026-10-21T18:47:02+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: independent-analytics\n"
@@ -1123,17 +1123,17 @@ msgstr ""
 msgid "Conversions"
 msgstr ""
 
-#: IAWP/Overview/Modules/Busiest_Day_Of_Week_Module.php:20
+#: IAWP/Overview/Modules/Busiest_Day_Of_Week_Module.php:21
 #: IAWP/Overview/Modules/Module.php:412
 msgid "Busiest Day of Week"
 msgstr ""
 
-#: IAWP/Overview/Modules/Busiest_Time_Of_Day_Module.php:19
+#: IAWP/Overview/Modules/Busiest_Time_Of_Day_Module.php:20
 #: IAWP/Overview/Modules/Module.php:412
 msgid "Busiest Time of Day"
 msgstr ""
 
-#: IAWP/Overview/Modules/Busiest_Time_Of_Day_Module.php:40
+#: IAWP/Overview/Modules/Busiest_Time_Of_Day_Module.php:42
 msgid "Hour"
 msgstr ""
 

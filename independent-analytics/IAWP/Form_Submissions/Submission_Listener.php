@@ -342,16 +342,17 @@ class Submission_Listener
             }
         }, 10, 3);
         // Newletter
-        \add_action('newsletter_user_subscribe', function ($user) {
+        \add_filter('newsletter_user_subscribe', function ($user) {
             try {
                 $form = \IAWP\Form_Submissions\Newsletter::get_form($user->referrer ?? null);
                 if (!$form) {
-                    return;
+                    return $user;
                 }
                 $submission = new \IAWP\Form_Submissions\Submission(29, \intval($form['id']), Security::string($form['title']));
                 $submission->record_submission();
             } catch (\Throwable $e) {
             }
+            return $user;
         }, 10, 1);
         // Everest Forms
         \add_action('everest_forms_process_complete', function ($fields, $entry, $form_data, $entry_id) {

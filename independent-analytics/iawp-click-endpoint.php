@@ -155,7 +155,24 @@ function get_click_data_file(Cache $cache): string
 
 function get_body()
 {
-    $json_body = file_get_contents('php://input');
+    $max_body_bytes = 16 * 1024;
+
+    if (($_SERVER['CONTENT_LENGTH'] ?? 0) > $max_body_bytes) {
+        http_response_code(413);
+        exit;
+    }
+
+    // Read one extra byte to detect oversized bodies even without Content-Length.
+    $json_body = file_get_contents('php://input', false, null, 0, $max_body_bytes + 1);
+
+    if ($json_body === false) {
+        return null;
+    }
+
+    if (strlen($json_body) > $max_body_bytes) {
+        http_response_code(413);
+        exit;
+    }
 
     return json_decode($json_body, true);
 }

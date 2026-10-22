@@ -392,7 +392,10 @@ export default class extends Controller {
     elementFromEntry(entry) {
         const id = entry["id"];
         const position = entry["position"];
-        const title = entry["title"];
+        // Decode entities once, without allowing title markup to become DOM elements.
+        const titleDecoder = document.createElement("textarea");
+        titleDecoder.innerHTML = entry["title"];
+        const title = titleDecoder.value;
         const group = entry["group"];
         const subtitle = entry["subtitle"];
         const visitors = entry["visitors"];

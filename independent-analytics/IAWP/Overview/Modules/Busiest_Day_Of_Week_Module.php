@@ -4,6 +4,7 @@ namespace IAWP\Overview\Modules;
 
 use IAWPSCOPED\Carbon\CarbonImmutable;
 use IAWPSCOPED\Carbon\CarbonInterface;
+use IAWP\Date_Range\Relative_Date_Range;
 use IAWP\Illuminate_Builder;
 use IAWP\Tables;
 use IAWP\Utils\Timezone;
@@ -21,9 +22,10 @@ class Busiest_Day_Of_Week_Module extends \IAWP\Overview\Modules\Module
     }
     public function calculate_dataset()
     {
+        $date_range = Relative_Date_Range::range_by_id($this->attributes['busiest_date_range'] ?? null);
         $tables = Tables::class;
         $offset = Timezone::site_offset();
-        $sessions_by_day_of_week = Illuminate_Builder::new()->selectRaw("DAYOFWEEK(CONVERT_TZ(sessions.created_at, '+00:00', '{$offset}')) - 1 AS day")->selectRaw("WEEK(CONVERT_TZ(sessions.created_at, '+00:00', '{$offset}')) AS week")->selectRaw('COUNT(*) AS sessions')->from($tables::sessions(), 'sessions')->whereRaw("CONVERT_TZ(sessions.created_at, '+00:00', '{$offset}') > CONVERT_TZ(CURDATE(), '+00:00', '{$offset}') - INTERVAL 90 DAY")->groupBy(['week', 'day']);
+        $sessions_by_day_of_week = Illuminate_Builder::new()->selectRaw("DAYOFWEEK(CONVERT_TZ(sessions.created_at, '+00:00', '{$offset}')) - 1 AS day")->selectRaw("WEEK(CONVERT_TZ(sessions.created_at, '+00:00', '{$offset}')) AS week")->selectRaw('COUNT(*) AS sessions')->from($tables::sessions(), 'sessions')->whereBetween('sessions.created_at', [$date_range->iso_start(), $date_range->iso_end()])->groupBy(['week', 'day']);
         $query = Illuminate_Builder::new()->select(['day'])->selectRaw('AVG(sessions) as sessions')->fromSub($sessions_by_day_of_week, 'sessions')->groupBy('day');
         return $query->get()->map(function ($row) {
             return ['day' => \intval($row->day), 'sessions' => \intval($row->sessions)];

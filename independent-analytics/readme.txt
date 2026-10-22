@@ -5,7 +5,7 @@ Donate link: https://independentwp.com
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 8.0.30
-Stable tag: 2.16.0
+Stable tag: 2.16.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -246,6 +246,13 @@ No, there are no limits on tracking. You can use Independent Analytics to track 
 13. Check your post view counts in the Posts menu
 
 == Changelog ==
+
+= 2.16.2 - October 22nd, 2026
+
+- **Fix:** Newsletter form submissions are being recorded
+
+= 2.16.1 - October 18th, 2026
+
 
 = 2.16.0 - October 15th, 2026
 

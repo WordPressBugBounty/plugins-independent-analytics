@@ -22,7 +22,7 @@ class Click extends \IAWP\Journey\Events\Event
         $this->session_id = $record->session_id;
         $this->created_at = $record->created_at;
         $this->click_id = $record->click_id;
-        $this->target = $record->target;
+        $this->target = $record->target ?? '';
         $this->rules = $record->rules;
     }
     public function type() : string
